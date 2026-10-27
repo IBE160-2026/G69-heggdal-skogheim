@@ -1,0 +1,21 @@
+JONAS EKSEMPELSEN
+E-post: jonas.eksempelsen@example.no | Telefon: 400 00 002 | Kristiansund
+
+UTDANNING
+2024–2027  Bachelor i IT og digitalisering, Høgskolen i Molde (pågår, 3. år)
+           Relevante fag: programmering i Python, databaser, nettverk og sikkerhet
+
+ARBEIDSERFARING
+2025–nå    Studentassistent (deltid), Høgskolen i Molde
+           - Hjalp førsteårsstudenter med oppgaver i introduksjonsfaget i programmering
+           - Holdt to veiledningstimer i uken
+2022–2024  Avisbud, Testposten Distribusjon
+
+FERDIGHETER
+- Programmering: Python, grunnleggende SQL
+- Operativsystemer: Windows og Linux (brukt i studiet)
+- Satt opp og vedlikeholdt eget hjemmenettverk med ruter og NAS
+- Språk: norsk (morsmål), engelsk (svært godt)
+
+ANNET
+- Glad i gaming og bygger egne PC-er
