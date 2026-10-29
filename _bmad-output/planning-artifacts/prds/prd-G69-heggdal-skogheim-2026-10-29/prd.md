@@ -461,7 +461,7 @@ Alle antakelsene ble tatt på hurtigsporet og er lest og bekreftet av Sondre og 
 - **§5 NFR-4:** Målene for ytelse (30 s og 2 s).
 - **§7.1:** Én tone på søknadsbrevet.
 
-**Avklart under Finalize 2026-10-29.** Sondre ba Claude ta disse valgene for å rette funnene fra gjennomgangen og avstemmingen (`review-rubric.md` og `reconcile-inputs.md`). De er logget i `.memlog.md` og kan endres før stories lages.
+**Avklart under Finalize 2026-10-29.** Innenfor rammene Sondre satte, foreslo Claude disse løsningene på funnene fra gjennomgangen og avstemmingen (`review-rubric.md` og `reconcile-inputs.md`). Hvert valg er begrunnet i `.memlog.md`, og gruppen går gjennom dem før stories lages.
 - **FR-9:** Uten belegg nedgraderes kravet ett hakk, ikke rett til Mangler. Dermed motsier ikke FR-9 regelen om ett hakk i FR-8.
 - **FR-6:** Fødselsnummer gjenkjennes ut fra 11 sifre med gyldig dato, og kan ha mellomrom. Kontonumre maskeres ikke.
 - **§3 Økt og FR-21:** *Ny analyse* tømmer innholdet, men avslutter ikke økten.
