@@ -38,7 +38,8 @@ Brukes for hvert par i testsettet. Alle punktene må være oppfylt for at paret 
 
 ## Robusthet (sjekkes én gang per versjon, ikke per par)
 
-- [ ] En CV i PDF med to kolonner leses inn uten teksttap.
+- [ ] En CV i PDF med to kolonner leses inn uten teksttap (`par-4-tokolonne-hotell/cv.pdf`, se «Innlesing» i fasiten).
+- [ ] DOCX-versjonen av par 1 (`par-1-butikk-bank/cv.docx`) gir samme tekst som `cv.txt`.
 - [ ] Ved feil fra språkmodellen vises en forståelig melding på norsk, og appen krasjer ikke.
 - [ ] Ved opplasting av en fil som ikke kan leses, vises en forståelig melding på norsk.
 - [ ] Appen starter i demomodus uten API-nøkkel.

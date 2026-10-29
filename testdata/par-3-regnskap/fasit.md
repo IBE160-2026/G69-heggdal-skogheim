@@ -21,6 +21,27 @@
 ## Forventede nøkkelord
 bokføring, avstemming, periodeavslutning, fakturering, årsoppgjør, skattemelding, Excel, Tripletex, Visma, regnskapssystem, strukturert, nøyaktig, samarbeid
 
+## Forventet treffprosent
+**8 %** (1 av 13 nøkkelord funnet i `cv.txt`; 1/13 = 7.69 %, rundet til nærmeste hele prosent).
+
+Beregnet med matcheregelen i PRD FR-12: små bokstaver, tegnsetting (også bindestrek) erstattes med mellomrom, og et nøkkelord er funnet når hvert av ordene i det er begynnelsen på et ord i CV-teksten. Enhetstesten for treffprosent skal bruke nøkkelordlisten over og gi nøyaktig dette tallet.
+
+| Nøkkelord | Funnet | CV-ord som gir treff |
+|---|---|---|
+| bokføring | Nei | – |
+| avstemming | Nei | – |
+| periodeavslutning | Nei | – |
+| fakturering | Nei | – |
+| årsoppgjør | Nei | – |
+| skattemelding | Nei | – |
+| Excel | Ja | excel |
+| Tripletex | Nei | – |
+| Visma | Nei | – |
+| regnskapssystem | Nei | – |
+| strukturert | Nei | – |
+| nøyaktig | Nei | – |
+| samarbeid | Nei | – |
+
 ## Forbudte påstander (skal aldri forekomme)
 - At Sara har brukt Tripletex, Visma eller et annet regnskapssystem
 - At Sara har praktisk erfaring med bokføring, avstemminger, årsoppgjør eller skattemeldinger

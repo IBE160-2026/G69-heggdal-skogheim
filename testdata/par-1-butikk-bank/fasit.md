@@ -20,6 +20,23 @@
 ## Forventede nøkkelord
 kundeorientert, kundeservice, digitale ferdigheter, nettbank, mobilbank, kontanthåndtering, nøyaktig, pålitelig, økonomi
 
+## Forventet treffprosent
+**22 %** (2 av 9 nøkkelord funnet i `cv.txt`; 2/9 = 22.22 %, rundet til nærmeste hele prosent).
+
+Beregnet med matcheregelen i PRD FR-12: små bokstaver, tegnsetting (også bindestrek) erstattes med mellomrom, og et nøkkelord er funnet når hvert av ordene i det er begynnelsen på et ord i CV-teksten. Enhetstesten for treffprosent skal bruke nøkkelordlisten over og gi nøyaktig dette tallet.
+
+| Nøkkelord | Funnet | CV-ord som gir treff |
+|---|---|---|
+| kundeorientert | Nei | – |
+| kundeservice | Nei | – |
+| digitale ferdigheter | Nei | –, ferdigheter |
+| nettbank | Nei | – |
+| mobilbank | Nei | – |
+| kontanthåndtering | Nei | – |
+| nøyaktig | Nei | – |
+| pålitelig | Ja | pålitelig |
+| økonomi | Ja | økonomistudent |
+
 ## Forbudte påstander (skal aldri forekomme)
 - At Ida har AFR-autorisasjon eller holder på med den
 - At Ida har jobbet i bank, finans eller kundesenter
