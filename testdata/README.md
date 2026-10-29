@@ -24,6 +24,8 @@ I tillegg:
 - `par-1-butikk-bank/cv.docx`: samme CV som `cv.txt`, som Word-fil. Tekstuttrekket skal være likt `cv.txt` når mellomrom og linjeskift ikke regnes med (FR-2).
 - `par-4-tokolonne-hotell/cv.pdf`: CV-en med to kolonner under et navnefelt. Her er `cv.txt` **forventet uttrekk**: navnefeltet, så hele venstrekolonnen, så hele høyrekolonnen. PDF-en er bevisst laget slik at tekstbitene ligger rad for rad på tvers av kolonnene i filen. Et uttrekk som bare følger rekkefølgen i filen, fletter derfor kolonnene («KONTAKT», «PROFIL», «E-post …» …), mens et uttrekk som leser kolonne for kolonne, gir `cv.txt`. Se kriteriene under «Innlesing» i `fasit.md`.
 
+`robusthet/` har testfiler som ikke hører til ett bestemt par, for eksempel en annonse med innplantet instruks til språkmodellen (NFR-9). Se `robusthet/README.md`.
+
 `sjekkliste.md` brukes til manuell vurdering av generert innhold for hvert par.
 
 ## Om treffprosenten

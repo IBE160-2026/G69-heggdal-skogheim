@@ -38,16 +38,19 @@ Dette er tekniske forslag og bakgrunn som ikke hører hjemme i PRD-en, men som a
 
 ## D. Algoritme for treffprosent (FR-12)
 ```
-normaliser(s) = små bokstaver, fjern tegnsetting (behold æøå), del på mellomrom
+normaliser(s) = små bokstaver, erstatt tegnsetting (også bindestrek) med mellomrom (behold æøå), del på mellomrom
 funnet(nøkkelord) =
   ordene i nøkkelordet = normaliser(nøkkelord)
   alle ordene w i nøkkelordet: finnes et ord c i normaliser(CV-tekst) der c begynner med w
-treffprosent = round(100 * antall funnet / antall nøkkelord)
+treffprosent = floor(100 * antall funnet / antall nøkkelord + 0,5)   # rund av halve opp
 ```
 
-Kjente svakheter:
-- Prefiks gir ikke treff når nøkkelordet er siste ledd i et sammensatt ord. *service* treffer for eksempel ikke *kundeservice*.
-- Svært korte nøkkelord, som «IT», kan gi falske treff. Forslag: krev at nøkkelord på to tegn eller færre treffer et helt ord.
+Dette er regelen i FR-12, slik Sondre og Kevin har godkjent den. Treffprosentene i `testdata/*/fasit.md` er regnet ut med den.
+
+Kjente svakheter, som dokumenteres i enhetstester:
+- Prefiks gir ikke treff når nøkkelordet er siste ledd i et sammensatt ord. *oppgjør* treffer for eksempel ikke *dagsoppgjør* (par 4).
+- Korte småord i nøkkelord med flere ord kan gi falske delvise treff. *av* i «oppsett av PC» treffer *avisbud* (par 2).
+- Svært korte nøkkelord, som «IT», kan gi falske treff. *Ikke valgt:* et forslag om at nøkkelord på to tegn eller færre må treffe et helt ord. Tas det inn senere, må FR-12 og alle fasitene oppdateres.
 
 Begge svakhetene dokumenteres i enhetstester.
 
