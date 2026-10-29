@@ -35,3 +35,20 @@ Finalize skulle ikke kjøres ennå.
 
 ### Åpne punkter
 - Vurder om matcheregelen i FR-12 skal justeres (siste ledd i sammensatte ord, småord) når antakelsene gjennomgås. Endres regelen, må treffprosentene i fasitene regnes ut på nytt.
+
+## 2026-10-29 kl. 15:05 — Sondre Skogheim
+
+### Oppgave
+Registrere at Kevin har lest og godkjent alt: den reviderte briefen og PRD-utkastet med testdata.
+
+### Plan
+- Oppdaterte status for godkjenning i PRD, memlogg og issues.md.
+
+### Resultat
+- **PRD:** Banneret sier nå at innholdet er godkjent av Sondre og Kevin, men at Finalize gjenstår. Alle 14 inline-merkene `[ANTAKELSE]` er endret til `[bekreftet antakelse]`. §10 punkt 5 (godkjenning) er markert som løst, og §11 heter nå «Antakelser (bekreftet)» og sier at matcheregelen i FR-12 er godkjent uendret.
+- **Memlogg:** ny oppføring om beslutningen (35 oppføringer).
+- **issues.md:** lukket godkjenningen av briefen, bekreftelsen av antakelsene og vurderingen av matcheregelen.
+- PRD og testdata er fortsatt ikke committet.
+
+### Åpne punkter
+Ingen nye. Finalize av PRD-en står fortsatt åpen i issues.md.
