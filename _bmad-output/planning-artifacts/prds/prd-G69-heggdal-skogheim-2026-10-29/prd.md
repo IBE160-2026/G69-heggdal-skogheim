@@ -2,7 +2,7 @@
 title: AI CV & Job Application Assistant — PRD
 status: final
 created: 2026-10-29
-updated: 2026-10-29
+updated: 2026-10-30
 authors: Sondre Skogheim, Kevin Heggdal
 course: IBE160 Programmering med KI, Høgskolen i Molde
 source_brief: _bmad-output/planning-artifacts/briefs/brief-G69-heggdal-skogheim-2026-09-17/brief.md (revidert 2026-10-27)
@@ -10,7 +10,7 @@ source_brief: _bmad-output/planning-artifacts/briefs/brief-G69-heggdal-skogheim-
 
 # PRD: AI CV & Job Application Assistant
 
-> **Ferdig (final), 2026-10-29.** Sondre og Kevin har lest og godkjent den reviderte briefen og utkastet til PRD-en. Valgene merket `[bekreftet antakelse]` ble tatt på hurtigsporet og er bekreftet av begge. Under Finalize ble funn fra gjennomgang og avstemming rettet. Valgene som ble tatt da, står for seg i §11 og bør leses av begge før stories lages. Begrunnelsene står i `.memlog.md`.
+> **Ferdig (final), 2026-10-29.** Sondre og Kevin har lest og godkjent den reviderte briefen og utkastet til PRD-en. Valgene merket `[bekreftet antakelse]` ble tatt på hurtigsporet og er bekreftet av begge. Under Finalize ble funn fra gjennomgang og avstemming rettet. Valgene som ble tatt da, står for seg i §11 og bør leses av begge før stories lages. **Oppdatert 2026-10-30** med gruppens avklaringer om FR-9, IP-adresser og FR-18 (§11). Begrunnelsene står i `.memlog.md`.
 
 ## 0. Om dokumentet
 
@@ -139,7 +139,6 @@ Over feltene står en kort tekst som forklarer tre ting:
 - CV-teksten sendes til en ekstern språkmodell (leverandør og land oppgis).
 - Ingenting lagres etter økten.
 - Brukeren bør fjerne fødselsnummer, adresse, bilde og helseopplysninger.
-- IP-adressen brukes kortvarig til å begrense bruken (NFR-1, NFR-3).
 
 Brukeren må krysse av for at informasjonen er forstått før den første analysen i økten.
 - *Analyser* er deaktivert til brukeren har krysset av. Avkrysningen gjelder resten av økten.
@@ -161,21 +160,21 @@ Systemet henter ut alle krav i annonsen, både «krav» og «ønsker», og viser
 Hvert krav får én kategori etter denne regelen:
 - **Oppfylt:** CV-teksten har konkret erfaring, utdanning eller dokumentasjon som direkte dekker kravet. Belegget vises.
 - **Delvis oppfylt:** CV-teksten har overførbar eller beslektet erfaring, eller kravet står bare som egenvurdering (for eksempel «nøyaktig» i profilen). Belegget vises, sammen med én setning om hvorfor kravet bare er delvis oppfylt. `[bekreftet antakelse]`
-- **Mangler:** Det finnes ikke belegg.
+- **Mangler:** Kravet er ikke dokumentert i CV-teksten, selv om brukeren kanskje har erfaringen. Språkmodellen fyller aldri inn kvalifikasjoner selv. Har brukeren erfaringen, legger hen den inn i CV-teksten i kontrollsteget før analysen. `[avklart av gruppen 2026-10-30]`
 - **Ved tvil velges den svakeste kategorien.**
 
 Konsekvenser som kan testes:
 - Ingen krav får høyere kategori enn i fasiten.
 - Krav med **Mangler** i fasiten får alltid **Mangler**.
-- Høyst ett krav per testpar får ett hakk lavere kategori enn i fasiten, også når det skyldes nedgradering i FR-9. `[bekreftet antakelse]`
+- Høyst ett krav per testpar får lavere kategori enn i fasiten, enten etter tvilsregelen eller etter nedgradering i FR-9. `[bekreftet antakelse; justert 2026-10-30 til regelen i FR-9]`
 
 #### FR-9: Kontrollere belegg i kode
-Systemet kontrollerer at hvert belegg finnes ordrett i CV-teksten. Store og små bokstaver, mellomrom og linjeskift regnes ikke med. Mangler belegget, nedgraderes kravet ett hakk (**Oppfylt** blir **Delvis oppfylt**, og **Delvis oppfylt** blir **Mangler**) og merkes «nedgradert: fant ikke belegg i CV-en». Et nedgradert **Delvis oppfylt**-krav viser ikke belegget som ikke ble funnet. `[bekreftet antakelse; ett hakk avklart under Finalize]`
+Systemet kontrollerer at hvert belegg finnes ordrett i CV-teksten. Store og små bokstaver, mellomrom og linjeskift regnes ikke med. Mangler belegget, er kravet ikke dokumentert i CV-teksten. Det plasseres da i **Mangler**, uansett hvilken kategori språkmodellen foreslo, og merkes «nedgradert: fant ikke belegg i CV-en». Belegget som ikke ble funnet, vises ikke. `[avklart av gruppen 2026-10-30]`
 - Enhetstester dekker tre tilfeller: belegg som finnes, belegg som er litt omskrevet (skal avvises) og belegg med andre linjeskift (skal godtas).
-- En enhetstest bekrefter at et **Oppfylt**-krav uten gyldig belegg blir **Delvis oppfylt**, ikke **Mangler**.
+- En enhetstest bekrefter at både et **Oppfylt**- og et **Delvis oppfylt**-krav uten gyldig belegg blir **Mangler**.
 
 #### FR-10: Ærlige råd ved Mangler
-For hvert krav med **Mangler** gir systemet et ærlig råd, for eksempel å vise vilje til å lære eller å peke på beslektet erfaring.
+For hvert krav med **Mangler** gir systemet et ærlig råd, for eksempel å vise vilje til å lære eller å peke på beslektet erfaring. Rådet sier også at brukeren som har erfaringen, kan legge den inn i CV-teksten i kontrollsteget (FR-3).
 - Ingen råd foreslår å påstå kvalifikasjonen. Dette kontrolleres mot forbudte påstander i fasiten.
 
 #### FR-11: Hente ut nøkkelord
@@ -206,7 +205,7 @@ Systemet lager et søknadsbrev på bokmål for stillingen og arbeidsgiveren i an
 - Brevet høres ikke ut som det er skrevet av en språkmodell: det er sammenhengende tekst uten punktlister og uten tomme fraser som «dynamisk og resultatorientert», «i dagens konkurranseutsatte marked» eller «jeg brenner for». Vurderes med sjekklisten.
 
 #### FR-15: Brevet bygger bare på belegg
-Brevet presenterer bare krav med **Oppfylt** eller **Delvis oppfylt** som kvalifikasjoner. Krav med **Mangler** kan bare nevnes som motivasjon for å lære. Under brevet står listen «Bygger på» med beleggene som er brukt. Beleggene kontrolleres som i FR-9, og belegg uten treff fjernes fra listen og merkes.
+Brevet presenterer bare krav med **Oppfylt** eller **Delvis oppfylt** som kvalifikasjoner. Krav med **Mangler** kan bare nevnes som motivasjon for å lære, aldri som noe brukeren har. Brevet fyller ikke inn kvalifikasjoner som ikke står i CV-teksten (FR-8, FR-27). Under brevet står listen «Bygger på» med beleggene som er brukt. Beleggene kontrolleres som i FR-9, og belegg uten treff fjernes fra listen og merkes.
 - Selve brevteksten kontrolleres ikke automatisk. Den kontrolleres mot forbudte påstander i SM-2.
 - Ingen forbudte påstander står i brevet, i noen av kjøringene i SM-2.
 
@@ -227,12 +226,13 @@ Systemet gir konkrete ATS-forslag om format, seksjonsoverskrifter og ordvalg. Et
 ### 4.5 Redigering, ny generering og kopiering
 
 #### FR-18: Redigere alt
-All tekst i resultatdelene vises i redigerbare felt, og brukerens endringer blir stående til økten avsluttes.
-- En endring gjelder bare den resultatdelen den gjøres i. Senere genereringer bygger på CV-teksten og den genererte gap-analysen, ikke på brukerens redigeringer. Treffprosenten endres ikke av redigering.
+All tekst i resultatdelene vises i redigerbare felt, og brukerens endringer blir stående til økten avsluttes. Fanene er uavhengige. `[avklart av gruppen 2026-10-30]`
+- Redigering i én fane påvirker ikke de andre fanene. Treffprosenten endres ikke av redigering.
+- Genereringer bygger på den originale CV-teksten (slik den sto etter kontrollsteget) og annonsen, aldri på brukerens redigeringer. Søknadsbrevet, CV-forbedringene og ATS-forslagene bruker i tillegg kategoriene fra den genererte, uredigerte gap-analysen, fordi FR-15 og FR-17 trenger dem. `[forslag fra Claude 2026-10-30, gruppen bekrefter]`
 
 #### FR-19: Generere én resultatdel på nytt
-Brukeren kan generere én resultatdel på nytt. Det er én generering.
-- Har brukeren redigert resultatdelen, ber systemet om bekreftelse før teksten overskrives.
+Brukeren kan generere én resultatdel på nytt. Det er én generering, og den bygger på det samme grunnlaget som i FR-18.
+- Har brukeren redigert resultatdelen, får brukeren en advarsel om at redigeringene i denne fanen overskrives, og må bekrefte før den nye genereringen starter. Redigeringer i andre faner berøres ikke.
 - Genereres gap-analysen på nytt, merkes de andre genererte resultatdelene «basert på forrige analyse», med tilbud om å generere dem på nytt.
 
 #### FR-20: Kopiere
@@ -280,15 +280,16 @@ Ingen resultatdel inneholder kvalifikasjoner, ferdigheter, utdanning, arbeidsgiv
 
 ## 5. Ikke-funksjonelle krav
 
-- **NFR-1 Personvern og lagring.** Ingen data fra økten skrives til database, disk eller nettleserlagring (localStorage, IndexedDB og cookies). CV-tekst, annonse, prompter og resultater skrives ikke til logger. Bare metadata som status, varighet og antall tokens logges. IP-adresser brukes bare til grensen per IP (NFR-3). De lagres hashet og slettes etter høyst én time.
+- **NFR-1 Personvern og lagring.** Ingen data fra økten skrives til database, disk eller nettleserlagring (localStorage, IndexedDB og cookies). CV-tekst, annonse, prompter og resultater skrives ikke til logger. Bare metadata som status, varighet og antall tokens logges. IP-adresser lagres ikke, verken i klartekst eller som hash, fordi de er personopplysninger. `[avklart av gruppen 2026-10-30]`
   - *Test:* gjennomgang av koden og et søk i loggen etter tekst fra testparene etter en kjøring.
 - **NFR-2 Hemmeligheter.** API-nøkkelen finnes bare som miljøvariabel på serveren: i Vercel i produksjon og i en `.env` som Git ignorerer, lokalt. Repoet har bare `.env.example` og fiktive testdata.
   - *Test:* nøkkelen og prefikset finnes ikke i JavaScript-koden som sendes til nettleseren eller i Git-historikken.
   - CV-filer (`*.pdf`, `*.docx`) er bare tillatt under `testdata/`. `.gitignore` blokkerer dem andre steder, og repoet sjekkes for ekte CV-er før innlevering.
 - **NFR-3 Kostnad og misbruk.** Grensene er `[bekreftet antakelse]`:
-  - En full kjøring er fire genereringer (§3 Kjøring). Nye genereringer telles mot grensen per IP.
+  - En full kjøring er fire genereringer (§3 Kjøring). Nye genereringer telles mot grensene.
   - Kostnaden per kjøring er mål 1 kr eller mindre.
-  - Det offentlige nettstedet har forbruksgrense hos leverandøren (semesterbudsjett 200 kr), en grense per IP-adresse (30 genereringer per time) og en daglig total grense.
+  - Det offentlige nettstedet har forbruksgrense hos leverandøren (semesterbudsjett 200 kr). Den er det harde taket.
+  - I tillegg begrenses bruken med en enkel rate-limit i minnet på serveren og/eller et tak på antall genereringer per dag. Ingen av dem bruker IP-adresser eller andre kjennetegn på brukeren (NFR-1). Mekanisme og tall avgjøres i arkitekturfasen (§10.1). `[avklart av gruppen 2026-10-30]`
   - Når en grense er nådd, gjelder FR-22.
 - **NFR-4 Ytelse.** Grensene er `[bekreftet antakelse]`:
   - Gap-analysen er ferdig innen 30 sekunder for alle testparene.
@@ -425,7 +426,7 @@ Med i MVP er alt i §4 og §5, i rekkefølgen grunnmur (4.1, 4.7) → 4.2 → 4.
 | Språkmodellen dikter opp kvalifikasjoner | Gjennomgående forbud (FR-27), belegg kontrolleres i kode (FR-9), brevet bygger bare på belegg (FR-15), tvilsregelen (FR-8), forbudte påstander i fasit og tre kjøringer per testpar (SM-2) |
 | PDF med to kolonner leses feil | Lesing kolonne for kolonne (FR-2), kontrollsteget (FR-3), testpar 4 (SM-5) |
 | Kostnaden med fire genereringer | Genereringer først når fanen åpnes (§3 Kjøring), maks fire per kjøring, grenser og budsjett (NFR-3), mock i utvikling (NFR-6) |
-| Noen misbruker gruppens nøkkel på den offentlige adressen | Forbruksgrense, grense per IP og daglig grense (NFR-3) |
+| Noen misbruker gruppens nøkkel på den offentlige adressen | Forbruksgrense hos leverandøren, rate-limit i minnet og/eller dagstak (NFR-3) |
 | Sensor har ikke nøkkel | Demomodus (FR-23 til FR-26), NFR-7, SM-6 |
 | Resultatene varierer mellom kjøringer | Tre kjøringer per testpar, lav temperatur (addendum) |
 | Tekst i CV-en eller annonsen prøver å styre språkmodellen | NFR-9: avgrenset data i promptene, kontroll på serveren, skjemavalidering, visning som ren tekst |
@@ -433,13 +434,14 @@ Med i MVP er alt i §4 og §5, i rekkefølgen grunnmur (4.1, 4.7) → 4.2 → 4.
 
 ## 10. Åpne spørsmål
 
-1. **Valg av leverandør og modell.** *Eier:* Sondre og Kevin. *Når:* i arkitekturfasen, før FR-7 implementeres. Kriteriene står i §6. Det må sjekkes direkte i vilkårene hvordan leverandøren lagrer og trener på API-data. Det er ikke verifisert ennå.
+1. **Valg av leverandør og modell.** *Eier:* Sondre og Kevin. *Når:* i arkitekturfasen, før FR-7 implementeres. Kriteriene står i §6. Det må sjekkes direkte i vilkårene hvordan leverandøren lagrer og trener på API-data. Det er ikke verifisert ennå. Samtidig velges mekanisme og tall for rate-limit og dagstak i NFR-3.
 2. **Skisser av opplasting, resultatside og redigering.** Faglærer har bedt om dem, og design teller 10 %. *Eier:* gruppen. *Når:* i `bmad-ux`, før epics og stories.
 3. ~~**Testpar 4 og DOCX.**~~ Løst 2026-10-29: `testdata/par-4-tokolonne-hotell/` (CV i PDF med to kolonner) og `testdata/par-1-butikk-bank/cv.docx`.
 4. ~~**Forventet treffprosent i fasit.**~~ Løst 2026-10-29: lagt inn i hver `fasit.md` med utregning (par 1: 22 %, par 2: 11 %, par 3: 8 %, par 4: 33 %).
 5. ~~**Godkjenning.**~~ Løst 2026-10-29: Kevin har lest og godkjent den reviderte briefen og dette utkastet, inkludert alle antakelsene i §11.
 6. **Brukerinnsikt.** Ingen intervjuer er gjort ennå. Valgfritt: en rask test med to eller tre medstudenter på et testpar før søknadsbrevet bygges.
 7. **Datatilsynet.** Sjekk om Datatilsynet har ny veiledning om generativ KI som påvirker informasjonsteksten i FR-5.
+8. **Tilbake til kontrollsteget etter analysen.** FR-8 og FR-10 sier at brukeren som har en erfaring som mangler i CV-teksten, legger den inn i kontrollsteget. *Ny analyse* (FR-21) tømmer derimot CV-teksten. Det er ikke bestemt hvordan brukeren kommer tilbake til kontrollsteget med CV-teksten og annonsen beholdt, og om det starter en ny kjøring. *Eier:* gruppen. *Når:* i `bmad-ux`, før epics og stories.
 
 ## 11. Antakelser (bekreftet)
 
@@ -451,27 +453,39 @@ Alle antakelsene ble tatt på hurtigsporet og er lest og bekreftet av Sondre og 
 - **§4.1 FR-4:** Grensene er 200–8 000 tegn for annonsen og maks 15 000 tegn for CV-teksten.
 - **§4.1 FR-5:** Brukeren krysser av for at personverninformasjonen er forstått før første analyse i økten.
 - **§4.1 FR-6:** Fødselsnummer maskeres automatisk.
-- **§4.2 FR-8:** Grensen mellom Oppfylt og Delvis oppfylt (egenvurdering gir Delvis oppfylt), og regelen om at høyst ett krav kan ligge ett hakk under fasiten.
-- **§4.2 FR-9:** Uten belegg nedgraderes kravet til Mangler.
+- **§4.2 FR-8:** Grensen mellom Oppfylt og Delvis oppfylt (egenvurdering gir Delvis oppfylt), og regelen om at høyst ett krav kan ligge under fasiten (fra 2026-10-30 uten kravet om ett hakk, se under).
+- **§4.2 FR-9:** Uten belegg nedgraderes kravet til Mangler. (Endret til ett hakk under Finalize, tilbake til Mangler etter gruppens avklaring 2026-10-30.)
 - **§4.2 FR-12:** Matcheregelen med prefiks for norske bøyninger og sammensatte ord.
 - **§4.3 FR-14:** Plassholdere for navn og kontaktinformasjon.
 - **§3 Kjøring:** Fire genereringer, ikke fem. Resultatdelene genereres første gang fanen åpnes.
 - **§4.7 FR-24 til FR-26:** Demomodus viser alle fire resultatdelene for demoeksempelet, *Prøv med eksempel* finnes også med nøkkel, og egen CV i demomodus går bare gjennom kontrollsteget.
-- **§5 NFR-3:** Grensene for kostnad og misbruk (1 kr per kjøring, 200 kr per semester, 30 genereringer per time per IP).
+- **§5 NFR-3:** Grensene for kostnad og misbruk (1 kr per kjøring, 200 kr per semester). Grensen på 30 genereringer per time per IP er erstattet etter gruppens avklaring 2026-10-30.
 - **§5 NFR-4:** Målene for ytelse (30 s og 2 s).
 - **§7.1:** Én tone på søknadsbrevet.
 
 **Avklart under Finalize 2026-10-29.** Innenfor rammene Sondre satte, foreslo Claude disse løsningene på funnene fra gjennomgangen og avstemmingen (`review-rubric.md` og `reconcile-inputs.md`). Hvert valg er begrunnet i `.memlog.md`, og gruppen går gjennom dem før stories lages.
-- **FR-9:** Uten belegg nedgraderes kravet ett hakk, ikke rett til Mangler. Dermed motsier ikke FR-9 regelen om ett hakk i FR-8.
+- ~~**FR-9:** Uten belegg nedgraderes kravet ett hakk, ikke rett til Mangler.~~ Forkastet av gruppen 2026-10-30, se under.
 - **FR-6:** Fødselsnummer gjenkjennes ut fra 11 sifre med gyldig dato, og kan ha mellomrom. Kontonumre maskeres ikke.
 - **§3 Økt og FR-21:** *Ny analyse* tømmer innholdet, men avslutter ikke økten.
 - **FR-14:** Kravene om at brevet ikke er generisk og ikke høres ut som en språkmodell, med eksempler på fraser som ikke skal brukes.
 - **FR-16 og FR-17:** Én setning om hvorfor per forslag.
-- **FR-18:** En redigering påvirker bare resultatdelen den gjøres i.
+- **FR-18:** En redigering påvirker bare resultatdelen den gjøres i. Beholdt og presisert av gruppen 2026-10-30, se under.
 - **FR-27:** Gjennomgående forbud mot oppdiktning i alle resultatdelene.
-- **NFR-1:** IP-adresser lagres hashet i høyst én time.
+- ~~**NFR-1:** IP-adresser lagres hashet i høyst én time.~~ Forkastet av gruppen 2026-10-30, se under.
 - **NFR-9:** Upålitelig inndata (prompt injection), med egen testfil.
 - **NFR-10:** Krav til sporbarhet og KI-styring.
 - **SM-6:** Kjøres av en medstudent utenfor gruppen.
 - **SM-9:** Tabell over hvordan hvert krav verifiseres.
 - **§7.3:** Beslutning for hver idé fra brainstormingen.
+
+**Avklart av gruppen 2026-10-30.** Sondre og Kevin har gått gjennom tre av valgene over og bestemt dette. Begrunnelsene står i `.memlog.md`.
+- **FR-8, FR-9 og FR-15:** Krav som ikke er dokumentert i CV-en, plasseres alltid i Mangler. Språkmodellen fyller aldri inn kvalifikasjoner selv. Har brukeren erfaringen, legger hen den inn i CV-teksten i kontrollsteget før analysen.
+- **NFR-1 og NFR-3:** Ingen lagring av IP-adresser eller hash av dem, fordi det er personopplysninger og bryter med «ingen varig lagring». Misbruk og kostnad begrenses med enkel rate-limit i minnet og/eller et tak på antall kall per dag.
+- **FR-18 og FR-19:** Fanene er uavhengige. Redigering i én fane påvirker ikke de andre. Ny generering bygger på original CV og annonse, og brukeren får en advarsel om at redigeringene i den fanen overskrives.
+
+Avklaringene kom i konflikt med andre krav. Claude foreslo disse løsningene, og gruppen bekrefter dem:
+- **FR-8:** Toleransen er nå «høyst ett krav per testpar under fasiten», uten krav om ett hakk. Ellers ville én nedgradering fra Oppfylt til Mangler etter FR-9 være to hakk og stryke testparet.
+- **FR-18:** «Original CV og annonse» tolkes som CV-teksten etter kontrollsteget og annonsen. Brevet, CV-forbedringene og ATS-forslagene bruker i tillegg kategoriene fra den genererte, uredigerte gap-analysen, fordi FR-15 og FR-17 trenger dem.
+- **§10.8:** Hvordan brukeren kommer tilbake til kontrollsteget etter en analyse, er et nytt åpent spørsmål.
+
+De øvrige ti valgene under «Avklart under Finalize» er ennå ikke gjennomgått av gruppen.

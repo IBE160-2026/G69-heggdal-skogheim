@@ -14,9 +14,9 @@ Brukes for hvert par i testsettet. Alle punktene må være oppfylt for at paret 
 
 - [ ] Alle krav fra annonsen er med.
 - [ ] Alle krav merket «Mangler» i fasiten havner i «Mangler» (aldri i «Oppfylt»).
-- [ ] Ingen krav får høyere kategori enn i fasiten, og høyst ett krav ligger ett hakk under (FR-8).
-- [ ] Hvert krav i «Oppfylt» og «Delvis oppfylt» viser til tekst som faktisk står i CV-en.
-- [ ] Rådene for krav som mangler, er ærlige og foreslår ikke å påstå kvalifikasjonen.
+- [ ] Ingen krav får høyere kategori enn i fasiten, og høyst ett krav ligger under (FR-8).
+- [ ] Hvert krav i «Oppfylt» og «Delvis oppfylt» viser til tekst som faktisk står i CV-en. Krav uten belegg står i «Mangler» (FR-9).
+- [ ] Rådene for krav som mangler, er ærlige og foreslår ikke å påstå kvalifikasjonen (FR-10).
 
 ## Nøkkelord
 

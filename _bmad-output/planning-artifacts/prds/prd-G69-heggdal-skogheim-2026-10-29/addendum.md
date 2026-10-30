@@ -61,7 +61,9 @@ Grovt overslag per full kjøring med fire genereringer: cirka 12 000 input-token
 - Genereringer først når fanen åpnes.
 - Mock under utvikling.
 - Forbruksgrense hos leverandøren.
-- Grense per IP-adresse, for eksempel med Vercel KV eller Upstash. KV lagrer bare tellere, ikke innhold, så NFR-1 holder.
+- Enkel rate-limit i minnet og/eller et dagstak på antall genereringer, uten IP-adresser (NFR-1, NFR-3). Forslaget om grense per IP med Vercel KV eller Upstash er forkastet av gruppen 2026-10-30, fordi IP-adresser og hash av dem er personopplysninger.
+- Merk: minnet i en serverløs funksjon på Vercel deles ikke mellom instanser og nullstilles ved kald start. En teller i minnet er derfor bare en myk grense, og forbruksgrensen hos leverandøren er det eneste sikre taket. Vurderes i arkitekturfasen.
+- Sjekk i arkitekturfasen om Vercel selv logger IP-adresser i plattformloggene, og om informasjonsteksten i FR-5 må nevne det.
 
 ## F. Vercel
 - **Fluid compute på Hobby-planen:** maks 300 s kjøretid. Sett `maxDuration` eksplisitt og strøm svarene.
