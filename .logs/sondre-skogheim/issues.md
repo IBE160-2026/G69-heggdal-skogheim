@@ -4,7 +4,7 @@
 - [x] 2026-10-27 [revidere-product-brief](999-2026-10-27-12-56-59-revidere-product-brief.md) — Testsettet mangler to-kolonne-CV i PDF og en DOCX-CV (løst 2026-10-29: par 4 med cv.pdf og par 1 cv.docx, se [testpar-4-docx-treffprosent](996-2026-10-29-14-56-10-testpar-4-docx-treffprosent.md))
 - [ ] 2026-10-27 [revidere-product-brief](999-2026-10-27-12-56-59-revidere-product-brief.md) — Velg AI-modell/plattform i arkitekturfasen
 - [x] 2026-10-27 [revidere-product-brief](999-2026-10-27-12-56-59-revidere-product-brief.md) — Lag PRD med BMAD (løst 2026-10-29: utkast laget, ferdigstilling er eget punkt)
-- [ ] 2026-10-27 [research-for-prd](998-2026-10-27-13-22-00-research-for-prd.md) — Gå gjennom research-utkastet og gjør researchen før torsdag (medstudent-samtaler, test av lignende verktøy)
+- [x] 2026-10-27 [research-for-prd](998-2026-10-27-13-22-00-research-for-prd.md) — Gå gjennom research-utkastet og gjør researchen før torsdag (medstudent-samtaler, test av lignende verktøy) (løst 2026-10-30, bekreftet av Sondre)
 - [x] 2026-10-29 [prd-utkast](997-2026-10-29-14-49-56-prd-utkast.md) — Bekreft eller endre alle [ANTAKELSE] i PRD §11 (Sondre og Kevin) (løst 2026-10-29: alle bekreftet)
 - [x] 2026-10-29 [prd-utkast](997-2026-10-29-14-49-56-prd-utkast.md) — Lag skisser av opplasting, resultatside og redigering i bmad-ux før epics (løst 2026-10-30, se [ux-design](994-2026-10-30-14-44-03-ux-design.md))
 - [x] 2026-10-29 [prd-utkast](997-2026-10-29-14-49-56-prd-utkast.md) — Legg forventet treffprosent inn i hver testdata/*/fasit.md (løst 2026-10-29: 22 %, 11 %, 8 %, 33 %)
