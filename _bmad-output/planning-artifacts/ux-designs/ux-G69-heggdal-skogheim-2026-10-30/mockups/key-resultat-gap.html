@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Skisse: Resultat, gap-analyse og nøkkelord</title>
+<style>
+/* Styres av: DESIGN.md (Colors: kategorifarger, belegg; Components: kategorimerke, kravkort,
+   belegg-sitat, treffmåler, nøkkelordbrikke) og EXPERIENCE.md (Information Architecture: Resultat;
+   Component Patterns: faner, verktøylinje, oppsummering, kravkort, treffmåler; Responsive;
+   Key Flows: UJ-1 steg 6-7). Innhold fra testpar 1 og fasiten. Skissen er statisk: fanene er shadcn Tabs,
+   glyfene ✓ ◐ ○ er plassholdere for lucide-ikoner, og grå felt er textarea med etikett. Ved konflikt gjelder spinene. */
+:root{--bg:#FAFAF7;--fg:#1C1917;--muted:#5F6B7A;--border:#E2E0DA;--primary:#1F5F5B;--primary-soft:#E6F0EF;
+--ok:#1C6B3C;--ok-bg:#E7F4EC;--de:#7A5200;--de-bg:#FDF3DC;--ma:#9A3412;--ma-bg:#FDEDE5;--be:#3F3A33;--be-bg:#F5F3EE}
+*{box-sizing:border-box}
+body{margin:0;padding:32px;background:#D9D7D2;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--fg)}
+h1.cap{font-size:14px;font-weight:600;color:#44403C;margin:0 0 12px}
+.row{display:flex;gap:32px;align-items:flex-start}
+.browser{background:var(--bg);border-radius:10px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.15);width:1000px;flex:none}
+.bar{background:#EDEBE6;padding:10px 14px;display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--border)}
+.dot{width:11px;height:11px;border-radius:50%;background:#C9C6BF}
+.url{margin-left:12px;background:#fff;border-radius:6px;padding:4px 12px;font-size:12px;color:var(--muted);flex:1}
+.page{max-width:960px;margin:0 auto;padding:24px 28px 36px}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.head h2{font-size:24px;margin:0;font-weight:600}
+.head p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.btn{font:inherit;font-size:14px;border-radius:6px;padding:8px 14px;border:1px solid var(--border);background:#fff;color:var(--fg);white-space:nowrap}
+.btn.primary{background:var(--primary);color:#fff;border-color:var(--primary);font-weight:600}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin:22px 0 0;overflow-x:auto}
+.tab{padding:10px 14px;font-size:14px;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+.tab.on{color:var(--primary);border-color:var(--primary);font-weight:600}
+.tools{display:flex;justify-content:flex-end;gap:8px;margin:14px 0}
+.summary{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.summary p{margin:0;font-size:16px}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{display:inline-flex;gap:6px;align-items:center;border-radius:9999px;padding:3px 10px;font-size:13px;font-weight:600}
+.b-ok{background:var(--ok-bg);color:var(--ok)}.b-de{background:var(--de-bg);color:var(--de)}.b-ma{background:var(--ma-bg);color:var(--ma)}
+h3.group{font-size:18px;font-weight:600;margin:24px 0 10px;display:flex;gap:8px;align-items:center}
+.card{background:#fff;border:1px solid var(--border);border-left-width:4px;border-radius:8px;padding:14px 16px;margin-bottom:10px}
+.card.ok{border-left-color:var(--ok)}.card.de{border-left-color:var(--de)}.card.ma{border-left-color:var(--ma)}
+.card .t{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;font-weight:600;font-size:15px}
+.lbl{font-size:12px;color:var(--muted);margin:10px 0 4px}
+.quote{background:var(--be-bg);color:var(--be);border-left:3px solid var(--primary);padding:7px 10px;font-size:14px;border-radius:0 4px 4px 0;margin-bottom:6px}
+.edit{border:1px solid #8A857C;border-radius:6px;padding:8px 10px;font-size:14px;line-height:1.45;background:#fff}
+.hit{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:26px}
+.hit .num{font-size:40px;font-weight:600;line-height:1}
+.hit .num small{font-size:14px;font-weight:500;color:var(--muted);margin-left:8px}
+.meter{height:6px;background:#ECEAE4;border-radius:9999px;margin:12px 0}
+.meter div{height:100%;width:22%;background:var(--primary);border-radius:9999px}
+.hint{font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chip{font-size:13px;border-radius:9999px;padding:3px 10px}
+.chip.f{background:var(--primary-soft);color:var(--primary)}
+.chip.m{border:1px dashed #BDB9B0;color:var(--muted)}
+/* mobil */
+.phone{width:360px;flex:none;background:#1C1917;border-radius:36px;padding:12px;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.screen{background:var(--bg);border-radius:26px;overflow:hidden;height:760px}
+.screen .page{padding:16px 14px}
+.screen .head h2{font-size:19px}
+.screen .btn{min-height:44px}
+.screen .tabs{flex-wrap:wrap;overflow:visible}
+.screen .tab{flex:1 1 45%;text-align:center}
+.over{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:0 0 2px}
+</style>
+</head>
+<body>
+<h1 class="cap">Resultat, fanen «Gap-analyse og nøkkelord» for testpar 1 (UJ-1, høydepunktet), PC og mobil 360 px</h1>
+<div class="row">
+<div class="browser">
+  <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">cv-assistent.vercel.app</span></div>
+  <div class="page">
+    <div class="head">
+      <div><h1 class="over">Resultat</h1><h2>Sommervikar – kundebehandler</h2><p>Sparebanken Testvik, Molde</p></div>
+      <div style="display:flex;gap:8px"><button class="btn">Endre CV-tekst</button><button class="btn">Ny analyse</button></div>
+    </div>
+    <div class="tabs">
+      <span class="tab on">Gap-analyse og nøkkelord</span><span class="tab">Søknadsbrev</span><span class="tab">CV-forbedringer</span><span class="tab">ATS-forslag</span>
+    </div>
+    <div class="tools"><button class="btn">Generer på nytt</button><button class="btn primary">Kopier</button></div>
+
+    <div class="summary">
+      <p>Du dekker <strong>3 av 6 krav</strong>. 2 er delvis oppfylt.</p>
+      <div class="badges">
+        <span class="badge b-ok">✓ Oppfylt 3</span><span class="badge b-de">◐ Delvis oppfylt 2</span><span class="badge b-ma">○ Mangler 1</span>
+      </div>
+    </div>
+
+    <h3 class="group"><span class="badge b-ok">✓ Oppfylt</span></h3>
+    <div class="card ok">
+      <div class="t">Kundeorientert</div>
+      <div class="lbl">Fra CV-en</div>
+      <div class="quote">«Hjalp kunder med å finne varer og svarte på spørsmål»</div>
+    </div>
+    <div class="card ok">
+      <div class="t">Erfaring med kontanthåndtering</div>
+      <div class="lbl">Fra CV-en</div>
+      <div class="quote">«Betjente kasse og tok imot kontanter og kortbetaling»</div>
+      <div class="quote">«Talte opp kontanter etter kiosksalg på kampdager»</div>
+    </div>
+    <div class="card ok">
+      <div class="t">Studerer økonomi eller tilsvarende</div>
+      <div class="lbl">Fra CV-en</div>
+      <div class="quote">«Bachelor i økonomi og administrasjon, Høgskolen i Molde (pågår)»</div>
+    </div>
+
+    <h3 class="group"><span class="badge b-de">◐ Delvis oppfylt</span></h3>
+    <div class="card de">
+      <div class="t">Gode digitale ferdigheter</div>
+      <div class="lbl">Fra CV-en</div>
+      <div class="quote">«Microsoft Office (Word, Excel, PowerPoint) – grunnleggende»</div>
+      <div class="lbl">Hvorfor delvis (kan redigeres)</div>
+      <div class="edit">Du bruker Office og regneark, men CV-en nevner ikke nettbank eller kundesystemer, som annonsen ber om.</div>
+    </div>
+    <div class="card de">
+      <div class="t">Nøyaktig og pålitelig</div>
+      <div class="lbl">Fra CV-en</div>
+      <div class="quote">«Pålitelig og vant til å holde orden på penger og oppgaver»</div>
+      <div class="lbl">Hvorfor delvis (kan redigeres)</div>
+      <div class="edit">Dette står i profilen som egenvurdering. Kasserervervet støtter det, men viser det ikke direkte.</div>
+    </div>
+
+    <h3 class="group"><span class="badge b-ma">○ Mangler</span></h3>
+    <div class="card ma">
+      <div class="t">Autorisasjon som finansiell rådgiver (AFR)</div>
+      <div class="lbl">Råd (kan redigeres)</div>
+      <div class="edit">Står ikke i CV-en din. Annonsen sier at det er en fordel, ikke et krav. Du kan skrive at du er interessert i å ta autorisasjonen. Har du den allerede, trykk <em>Endre CV-tekst</em> og legg den inn.</div>
+    </div>
+
+    <div class="hit">
+      <div class="num">22 %<small>veiledende treff, ikke en ATS-score</small></div>
+      <div class="meter"><div></div></div>
+      <p class="hint">2 av 9 nøkkelord fra annonsen finnes i CV-teksten. Legg bare til nøkkelord som CV-en har dekning for.</p>
+      <div class="lbl">Funnet i CV-en</div>
+      <div class="chips"><span class="chip f">✓ pålitelig</span><span class="chip f">✓ økonomi</span></div>
+      <div class="lbl">Ikke funnet</div>
+      <div class="chips"><span class="chip m">kundeorientert</span><span class="chip m">kundeservice</span><span class="chip m">digitale ferdigheter</span><span class="chip m">nettbank</span><span class="chip m">mobilbank</span><span class="chip m">kontanthåndtering</span><span class="chip m">nøyaktig</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="phone"><div class="screen"><div class="page">
+  <div class="head">
+    <div><h1 class="over">Resultat</h1><h2>Sommervikar – kundebehandler</h2><p>Sparebanken Testvik</p></div>
+    <button class="btn">Valg ▾</button>
+  </div>
+  <div class="tabs"><span class="tab on">Gap-analyse og nøkkelord</span><span class="tab">Søknadsbrev</span><span class="tab">CV-forbedringer</span><span class="tab">ATS-forslag</span></div>
+  <div class="tools"><button class="btn">Generer på nytt</button><button class="btn primary">Kopier</button></div>
+  <div class="summary"><p>Du dekker <strong>3 av 6 krav</strong>. 2 er delvis oppfylt.</p>
+    <div class="badges"><span class="badge b-ok">✓ Oppfylt 3</span><span class="badge b-de">◐ Delvis oppfylt 2</span><span class="badge b-ma">○ Mangler 1</span></div></div>
+  <h3 class="group"><span class="badge b-ok">✓ Oppfylt</span></h3>
+  <div class="card ok"><div class="t">Kundeorientert</div><div class="lbl">Fra CV-en</div>
+    <div class="quote">«Hjalp kunder med å finne varer og svarte på spørsmål»</div></div>
+  <div class="card ok"><div class="t">Erfaring med kontanthåndtering</div><div class="lbl">Fra CV-en</div>
+    <div class="quote">«Betjente kasse og tok imot kontanter og kortbetaling»</div></div>
+</div></div></div>
+</div>
+</body>
+</html>

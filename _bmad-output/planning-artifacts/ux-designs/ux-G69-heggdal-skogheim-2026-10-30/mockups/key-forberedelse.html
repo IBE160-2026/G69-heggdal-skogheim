@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Skisse: Forberedelse og kontrollsteg</title>
+<style>
+/* Styres av: DESIGN.md (Colors, Components: opplastingsfelt, personvernboks, primærknapp)
+   og EXPERIENCE.md (Information Architecture: Forberedelse; Component Patterns: CV-tekstfelt,
+   annonsefelt, avkrysning, Analyser; State Patterns: tom, kort CV-tekst; Key Flows: UJ-1 steg 1-4).
+   Skissen er statisk og viser bare utseendet; ekte komponenter er shadcn (Tabs, Checkbox, Alert). Ved konflikt gjelder DESIGN.md og EXPERIENCE.md. */
+:root{--bg:#FAFAF7;--fg:#1C1917;--muted:#5F6B7A;--border:#E2E0DA;--primary:#1F5F5B;--primary-soft:#E6F0EF;
+--input:#8A857C}
+*{box-sizing:border-box}
+body{margin:0;padding:32px;background:#D9D7D2;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--fg)}
+h1.cap{font-size:14px;font-weight:600;color:#44403C;margin:0 0 12px}
+.browser{background:var(--bg);border-radius:10px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.15);max-width:1180px}
+.bar{background:#EDEBE6;padding:10px 14px;display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--border)}
+.dot{width:11px;height:11px;border-radius:50%;background:#C9C6BF}
+.url{margin-left:12px;background:#fff;border-radius:6px;padding:4px 12px;font-size:12px;color:var(--muted);flex:1}
+.page{max-width:960px;margin:0 auto;padding:28px 24px 36px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.top h2{font-size:24px;margin:0 0 6px;font-weight:600}
+.top p{margin:0;color:var(--muted);font-size:15px}
+.btn{font:inherit;font-size:14px;border-radius:6px;padding:9px 16px;border:1px solid var(--border);background:#fff;color:var(--fg);cursor:pointer;white-space:nowrap}
+.btn.primary{background:var(--primary);color:#fff;border-color:var(--primary);font-weight:600;padding:11px 22px}
+.btn.primary[aria-disabled="true"]{background:#8FAFAD;border-color:#8FAFAD;color:#1C1917}
+.privacy{margin:22px 0;border:1px solid var(--border);background:#fff;border-radius:8px;padding:14px 16px;display:flex;gap:12px;font-size:14px;line-height:1.5}
+.privacy svg{flex:none;margin-top:2px}
+.privacy ul{margin:4px 0 0;padding-left:18px}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px}
+.panel h3{margin:0 0 4px;font-size:18px;font-weight:600}
+.meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-bottom:8px}
+.link{color:var(--primary);text-decoration:underline;font-size:13px}
+.note{font-size:13px;background:var(--primary-soft);color:var(--primary);padding:6px 10px;border-radius:6px;margin-bottom:8px}
+textarea{width:100%;font:inherit;font-size:13px;line-height:1.5;border:1px solid var(--input);border-radius:6px;padding:10px;resize:vertical;color:var(--fg);background:#fff}
+.count{font-size:12px;color:var(--muted);text-align:right;margin-top:4px}
+.confirm{margin-top:20px;display:flex;justify-content:space-between;align-items:center;gap:16px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.confirm label{display:flex;gap:10px;align-items:center;font-size:14px}
+.cb{width:18px;height:18px;border-radius:4px;background:var(--primary);display:inline-flex;align-items:center;justify-content:center}
+.states{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1180px}
+.state{background:var(--bg);border-radius:10px;padding:18px;box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.state h4{margin:0 0 10px;font-size:13px;color:#44403C}
+.drop{border:2px dashed var(--input);border-radius:8px;padding:30px 16px;text-align:center;font-size:14px;color:var(--muted);background:#fff}
+.drop strong{color:var(--fg)}
+.warn{font-size:13px;background:#fff;border:1px solid var(--border);color:var(--fg);padding:10px 12px;border-radius:6px;margin-bottom:8px;line-height:1.45}
+.reason{font-size:12px;color:var(--muted);margin:6px 0 0;text-align:right;list-style:none;padding:0}
+label.fl{display:block;font-size:13px;font-weight:500;margin:0 0 4px}
+</style>
+</head>
+<body>
+<h1 class="cap">Forberedelse, kontrollsteget etter innlesing av DOCX (UJ-1, steg 3–4), PC 1280 px</h1>
+<div class="browser">
+  <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">cv-assistent.vercel.app</span></div>
+  <div class="page">
+    <div class="top">
+      <div>
+        <h2>Se hva CV-en din dekker i en stillingsannonse</h2>
+        <p>Last opp CV-en og lim inn annonsen. Du ser krav for krav hva du dekker, og får et utkast til søknadsbrev.</p>
+      </div>
+      <button class="btn">Prøv med eksempel</button>
+    </div>
+
+    <div class="privacy">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F5F5B" stroke-width="2"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>
+      <div>
+        <strong>Om personvern</strong>
+        <ul>
+          <li>CV-teksten sendes til {leverandør} i {land}. Er landet utenfor EØS, står det her at opplysningene overføres ut av EØS.</li>
+          <li>Ingenting lagres. Alt er borte når du lukker fanen.</li>
+          <li>Du bør fjerne fødselsnummer, adresse, bilde og helseopplysninger før du analyserer.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panels">
+      <div class="panel">
+        <h3>Kontroller CV-teksten</h3>
+        <div class="meta"><span>ida-testesen-cv.docx</span><span class="link">Bytt fil</span></div>
+        <div class="note">Dette er teksten språkmodellen får. Rett det som ble feil.</div>
+        <label class="fl" for="cv">CV-tekst</label><textarea id="cv" rows="16">IDA TESTESEN
+E-post: ida.testesen@example.no | Telefon: 400 00 001 | Molde
+
+PROFIL
+Økonomistudent i 2. år som liker å jobbe med mennesker. Pålitelig og vant til å holde orden på penger og oppgaver.
+
+UTDANNING
+2025–2028  Bachelor i økonomi og administrasjon, Høgskolen i Molde (pågår)
+
+ARBEIDSERFARING
+2023–nå    Butikkmedarbeider (deltid), Fjordkroken Dagligvare, Molde
+           - Betjente kasse og tok imot kontanter og kortbetaling
+           - Hjalp kunder med å finne varer og svarte på spørsmål
+
+VERV OG FRIVILLIG ARBEID
+2024–nå    Kasserer, Molde Testballklubb (frivillig)
+           - Talte opp kontanter etter kiosksalg på kampdager</textarea>
+        <div class="count">1 214 av maks 15 000 tegn</div>
+      </div>
+      <div class="panel">
+        <h3>Stillingsannonse</h3>
+        <label class="fl" for="an">Annonse</label><div class="meta"><span>Lim inn hele annonsen</span><span></span></div>
+        <textarea id="an" rows="18">SOMMERVIKAR – KUNDEBEHANDLER
+Sparebanken Testvik, Molde
+
+Vi søker blide og serviceinnstilte sommervikarer til kundesenteret vårt i Molde for perioden juni–august.
+
+Arbeidsoppgaver:
+- Besvare henvendelser fra kunder på telefon, chat og i skranken
+- Hjelpe kunder med nettbank og mobilbank
+- Enkel kontanthåndtering i skranken
+
+Vi ser etter deg som:
+- Er kundeorientert og trives med å hjelpe andre
+- Har gode digitale ferdigheter
+- Har erfaring med kontanthåndtering
+- Er nøyaktig og pålitelig
+- Studerer økonomi eller tilsvarende (en fordel)
+- Har autorisasjon som finansiell rådgiver (AFR) (en fordel)</textarea>
+        <div class="count">812 tegn (200–8 000)</div>
+      </div>
+    </div>
+
+    <div class="confirm">
+      <label><span class="cb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span>Jeg har lest informasjonen om personvern.</label>
+      <button class="btn primary">Analyser</button>
+    </div>
+  </div>
+</div>
+
+<div class="states">
+  <div class="state">
+    <h4>CV-panelet før innlesing (tilstand 1), Analyser deaktivert med årsak</h4>
+    <div class="panel">
+      <h3>CV</h3>
+      <div class="drop"><button class="btn" style="border-color:var(--input)">Velg CV-fil</button><br><br>eller dra filen hit.<br>PDF, DOCX eller TXT, maks 5 MB</div>
+      <div style="margin-top:10px"><button class="btn">Lim inn CV-teksten</button></div>
+    </div>
+    <div style="text-align:right;margin-top:14px"><button class="btn primary" aria-disabled="true" aria-describedby="why">Analyser</button>
+    <ul class="reason" id="why"><li>Last opp eller lim inn CV-en din.</li><li>Lim inn annonsen.</li><li>Kryss av for personvern.</li></ul></div>
+  </div>
+  <div class="state">
+    <h4>Kort CV-tekst (under 300 tegn), for eksempel skannet PDF (FR-3)</h4>
+    <div class="panel">
+      <h3>Kontroller CV-teksten</h3>
+      <div class="meta"><span>cv-skannet.pdf</span><span class="link">Bytt fil</span></div>
+      <div class="warn">Fant nesten ikke tekst i filen. Den kan være skannet eller tom. Lim inn teksten selv i feltet under.</div>
+      <label class="fl" for="cv2">CV-tekst</label><textarea id="cv2" rows="4">MINA
+Side 1</textarea>
+      <div class="count">12 av maks 15 000 tegn</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

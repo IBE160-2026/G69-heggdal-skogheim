@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Skisse: Redigering av søknadsbrev og ny generering</title>
+<style>
+/* Styres av: DESIGN.md (Typography: letter; Components: belegg-sitat; Layout: letter-max) og
+   EXPERIENCE.md (Component Patterns: brevfelt, Bygger på, verktøylinje, bekreftelsesdialog;
+   State Patterns: redigert fane, utdatert fane; Key Flows: UJ-1 steg 8). FR-14, FR-15, FR-18, FR-19, FR-20.
+   Brevet er skrevet for testpar 1 uten forbudte påstander. Skissen er statisk; fanene er shadcn Tabs og brevet er en textarea. Ved konflikt gjelder spinene. */
+:root{--bg:#FAFAF7;--fg:#1C1917;--muted:#5F6B7A;--border:#E2E0DA;--primary:#1F5F5B;--primary-soft:#E6F0EF;
+--be:#3F3A33;--be-bg:#F5F3EE;--de:#7A5200;--de-bg:#FDF3DC}
+*{box-sizing:border-box}
+body{margin:0;padding:32px;background:#D9D7D2;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--fg)}
+h1.cap{font-size:14px;font-weight:600;color:#44403C;margin:0 0 12px}
+.browser{position:relative;background:var(--bg);border-radius:10px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.15);max-width:1000px}
+.bar{background:#EDEBE6;padding:10px 14px;display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--border)}
+.dot{width:11px;height:11px;border-radius:50%;background:#C9C6BF}
+.url{margin-left:12px;background:#fff;border-radius:6px;padding:4px 12px;font-size:12px;color:var(--muted);flex:1}
+.page{max-width:960px;margin:0 auto;padding:24px 28px 36px}
+.head{display:flex;justify-content:space-between;align-items:flex-start}
+.head h2{font-size:24px;margin:0;font-weight:600}.head p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.btn{font:inherit;font-size:14px;border-radius:6px;padding:8px 14px;border:1px solid var(--border);background:#fff;color:var(--fg);white-space:nowrap}
+.btn.primary{background:var(--primary);color:#fff;border-color:var(--primary);font-weight:600}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin:22px 0 0}
+.tab{padding:10px 14px;font-size:14px;color:var(--muted);border-bottom:2px solid transparent}
+.tab.on{color:var(--primary);border-color:var(--primary);font-weight:600}
+.tab em{font-style:normal;font-size:12px;font-weight:500;color:var(--muted);margin-left:6px}
+.tools{display:flex;justify-content:space-between;align-items:center;margin:14px 0}
+.wc{font-size:13px;color:var(--muted)}
+.letter{max-width:680px;background:#fff;border:2px solid var(--primary);border-radius:8px;padding:22px 26px;font-size:16px;line-height:1.6}
+.letter p{margin:0 0 12px}
+.ph{background:var(--de-bg);color:var(--de);border-radius:3px;padding:0 3px}
+.mark{background:#FFF7CC}
+.based{max-width:680px;margin-top:18px}
+.based h3{font-size:16px;margin:0 0 8px}
+.quote{background:var(--be-bg);color:var(--be);border-left:3px solid var(--primary);padding:6px 10px;font-size:14px;border-radius:0 4px 4px 0;margin-bottom:6px}
+.quote.gone{text-decoration:line-through;opacity:.7}
+.gone-note{font-size:12px;color:var(--muted);margin:-2px 0 8px 2px}
+.overlay{position:absolute;inset:44px 0 0 0;background:rgba(28,25,23,.45);display:flex;align-items:flex-start;justify-content:center;padding-top:150px}
+.dialog{background:#fff;border-radius:10px;width:440px;padding:22px;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.dialog h4{margin:0 0 8px;font-size:18px}
+.dialog p{margin:0 0 18px;font-size:14px;line-height:1.5;color:#44403C}
+.dialog .act{display:flex;justify-content:flex-end;gap:8px}
+.btn.focus{outline:2px solid var(--primary);outline-offset:2px}
+.note{font-size:13px;color:#44403C;margin-top:28px;max-width:1000px;line-height:1.5}
+</style>
+</head>
+<body>
+<h1 class="cap">Søknadsbrev etter redigering (UJ-1, steg 8), med dialogen som vises når brukeren trykker «Generer på nytt»</h1>
+<div class="browser">
+  <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">cv-assistent.vercel.app</span></div>
+  <div class="page">
+    <div class="head">
+      <div><h1 style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:0 0 2px">Resultat</h1><h2>Sommervikar – kundebehandler</h2><p>Sparebanken Testvik, Molde</p></div>
+      <div style="display:flex;gap:8px"><button class="btn">Endre CV-tekst</button><button class="btn">Ny analyse</button></div>
+    </div>
+    <div class="tabs"><span class="tab">Gap-analyse og nøkkelord</span><span class="tab on">Søknadsbrev<em>· redigert</em></span><span class="tab">CV-forbedringer</span><span class="tab">ATS-forslag</span></div>
+    <div class="tools"><span class="wc">173 ord (mål 250–400)</span><div style="display:flex;gap:8px"><button class="btn">Generer på nytt</button><button class="btn primary">Kopier</button></div></div>
+
+    <label style="display:block;font-size:13px;font-weight:500;margin:0 0 4px">Søknadsbrev</label>
+    <div style="font-size:13px;color:var(--muted);margin:0 0 8px">Fyll inn før du sender: [Ditt navn], [E-post], [Telefon]</div>
+    <div class="letter">
+      <p>[Ditt navn]<br>[E-post] · [Telefon]</p>
+      <p>Til Sparebanken Testvik, Molde</p>
+      <p><strong>Søknad på sommervikariat som kundebehandler</strong></p>
+      <p>Jeg søker sommervikariatet i kundesenteret deres i Molde. Jeg går andre året på bachelor i økonomi og administrasjon ved Høgskolen i Molde, og <span class="mark">jeg vil gjerne bruke sommeren på å lære hvordan en bank møter kundene sine</span>.</p>
+      <p>Siden 2023 har jeg jobbet deltid i butikk hos Fjordkroken Dagligvare. Der betjener jeg kassen, tar imot kontanter og kortbetaling og hjelper kunder som lurer på noe.</p>
+      <p>Som frivillig kasserer i Molde Testballklubb fører jeg oversikt over medlemskontingenten i et regneark og teller opp kontanter etter kiosksalget på kampdager. Begge deler har gjort meg vant til å holde orden på penger og oppgaver, og til å møte folk på en hyggelig måte.</p>
+      <p>Jeg har ikke jobbet med nettbank eller bankens kundesystemer før, men jeg har grunnleggende erfaring med Word, Excel og PowerPoint, og jeg vil gjerne lære systemene deres. Jeg har ikke AFR-autorisasjon, men jeg er interessert i å ta den hvis det blir aktuelt.</p>
+      <p>Jeg ser fram til å høre fra dere.</p>
+      <p>Vennlig hilsen<br>[Ditt navn]</p>
+    </div>
+
+    <div class="based">
+      <h3>Bygger på</h3>
+      <div class="quote">«Bachelor i økonomi og administrasjon, Høgskolen i Molde (pågår)»</div>
+      <div class="quote">«Betjente kasse og tok imot kontanter og kortbetaling»</div>
+      <div class="quote">«Førte oversikt over medlemskontingent i et regneark»</div>
+      <div class="quote">«Talte opp kontanter etter kiosksalg på kampdager»</div>
+      <div class="gone-note">1 belegg ble fjernet fordi det ikke fantes i CV-en.</div>
+    </div>
+  </div>
+
+  <div class="overlay">
+    <div class="dialog" role="alertdialog" aria-labelledby="dt">
+      <h4 id="dt">Lage nytt søknadsbrev?</h4>
+      <p>Redigeringene dine i Søknadsbrev blir overskrevet. Det nye bygger på CV-teksten og annonsen, ikke på endringene dine. Andre faner endres ikke.</p>
+      <div class="act"><button class="btn focus">Avbryt</button><button class="btn primary">Lag ny</button></div>
+    </div>
+  </div>
+</div>
+<p class="note">Brevet i skissen er forkortet, så det er under målet på 250 ord. Gul markering viser setningen Ida har endret, bare i skissen. Appen markerer ikke endringer. Brevfeltet er et vanlig tekstfelt, så plassholderne markeres ikke i feltet. De listes over feltet (FR-14). Brevfeltet har fokus (2 px kant i primærfargen) før dialogen åpnes. Avbryt har fokus som standard.</p>
+</body>
+</html>

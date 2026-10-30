@@ -229,6 +229,7 @@ Systemet gir konkrete ATS-forslag om format, seksjonsoverskrifter og ordvalg. Et
 #### FR-18: Redigere alt
 All tekst i resultatdelene vises i redigerbare felt, og brukerens endringer blir stående til økten avsluttes. Fanene er uavhengige. `[avklart av gruppen 2026-10-30]`
 - Redigering i én fane påvirker ikke de andre fanene. Treffprosenten endres ikke av redigering.
+- Kategorier, belegg, treffprosent og nøkkelord er kontrollert i kode og vises låst. All annen tekst kan redigeres. `[avklart i UX-fasen 2026-10-30]`
 - Genereringer bygger på den originale CV-teksten (slik den sto etter kontrollsteget) og annonsen, aldri på brukerens redigeringer. Søknadsbrevet, CV-forbedringene og ATS-forslagene bruker i tillegg kategoriene fra den genererte, uredigerte gap-analysen, fordi FR-15 og FR-17 trenger dem.
 
 #### FR-19: Generere én resultatdel på nytt
