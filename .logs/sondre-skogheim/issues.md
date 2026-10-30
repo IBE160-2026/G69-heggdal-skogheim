@@ -10,5 +10,8 @@
 - [x] 2026-10-29 [prd-utkast](997-2026-10-29-14-49-56-prd-utkast.md) — Legg forventet treffprosent inn i hver testdata/*/fasit.md (løst 2026-10-29: 22 %, 11 %, 8 %, 33 %)
 - [x] 2026-10-29 [prd-utkast](997-2026-10-29-14-49-56-prd-utkast.md) — Kjør Finalize i bmad-prd (memlog, avstemming, reviewer, triage, polish, status final) (løst 2026-10-29, se [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md))
 - [x] 2026-10-29 [testpar-4-docx-treffprosent](996-2026-10-29-14-56-10-testpar-4-docx-treffprosent.md) — Vurder matcheregelen i FR-12 (siste ledd i sammensatte ord, småord); ved endring må treffprosentene i fasitene regnes ut på nytt (løst 2026-10-29: godkjent uendret av Sondre og Kevin)
-- [ ] 2026-10-29 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Gruppen går gjennom valgene under «Avklart under Finalize» i PRD §11 før stories lages
+- [ ] 2026-10-29 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Gruppen går gjennom valgene under «Avklart under Finalize» i PRD §11 før stories lages (delvis 2026-10-30: FR-9, IP og FR-18 avklart, ti valg gjenstår)
 - [ ] 2026-10-29 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Valgfritt: full språkvask med bmad-review (structure, prose) på prd.md og addendum.md
+- [ ] 2026-10-30 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Gruppen bekrefter Claudes løsninger på konfliktene: FR-8-toleransen uten «ett hakk», og FR-18 med uredigert gap-analyse som grunnlag i tillegg til CV og annonse
+- [ ] 2026-10-30 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — PRD §10.8: bestem i bmad-ux hvordan brukeren kommer tilbake til kontrollsteget med teksten beholdt etter en analyse
+- [ ] 2026-10-30 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Arkitektur: velg mekanisme og tall for rate-limit i minnet og/eller dagstak (NFR-3), og sjekk om Vercel logger IP-adresser
