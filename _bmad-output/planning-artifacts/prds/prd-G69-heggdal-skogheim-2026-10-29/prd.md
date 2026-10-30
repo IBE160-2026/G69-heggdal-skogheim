@@ -10,7 +10,7 @@ source_brief: _bmad-output/planning-artifacts/briefs/brief-G69-heggdal-skogheim-
 
 # PRD: AI CV & Job Application Assistant
 
-> **Ferdig (final), 2026-10-29.** Sondre og Kevin har lest og godkjent den reviderte briefen og utkastet til PRD-en. Valgene merket `[bekreftet antakelse]` ble tatt på hurtigsporet og er bekreftet av begge. Under Finalize ble funn fra gjennomgang og avstemming rettet. Valgene som ble tatt da, står for seg i §11 og bør leses av begge før stories lages. **Oppdatert 2026-10-30** med gruppens avklaringer om FR-9, IP-adresser og FR-18 (§11). Begrunnelsene står i `.memlog.md`.
+> **Ferdig (final), 2026-10-29.** Sondre og Kevin har lest og godkjent den reviderte briefen og utkastet til PRD-en. Valgene merket `[bekreftet antakelse]` ble tatt på hurtigsporet og er bekreftet av begge. Under Finalize ble funn fra gjennomgang og avstemming rettet. Valgene som ble tatt da, står for seg i §11 og gjelder. **Oppdatert 2026-10-30** med gruppens avklaringer om FR-9, IP-adresser og FR-18 (§11). Begrunnelsene står i `.memlog.md`.
 
 ## 0. Om dokumentet
 
@@ -128,6 +128,7 @@ Brukeren ser CV-teksten i et redigerbart felt før analysen og kan endre den.
 - Analysen bruker CV-teksten slik den står i feltet når brukeren trykker *Analyser*.
 - Er CV-teksten kortere enn 300 tegn, får brukeren en advarsel. Den sier at filen kan være skannet eller tom, og foreslår å lime inn teksten. Ingen OCR i v1. `[bekreftet antakelse]`
 - Kontrollsteget er også forsvaret mot CV-er med tabeller: tekst som blir rotete, retter brukeren her.
+- Etter en analyse kan brukeren gå tilbake til kontrollsteget med knappen *Endre CV-tekst*. CV-teksten og annonsen beholdes. Slik legger brukeren inn en erfaring som manglet (FR-10). Trykker brukeren *Analyser* igjen, starter en ny kjøring, og alle resultatdelene erstattes. Har brukeren redigert en resultatdel, får hen en advarsel om at redigeringene overskrives, og må bekrefte (som i FR-19).
 
 #### FR-4: Legge inn annonse
 Brukeren kan lime inn annonsen i et tekstfelt.
@@ -228,7 +229,7 @@ Systemet gir konkrete ATS-forslag om format, seksjonsoverskrifter og ordvalg. Et
 #### FR-18: Redigere alt
 All tekst i resultatdelene vises i redigerbare felt, og brukerens endringer blir stående til økten avsluttes. Fanene er uavhengige. `[avklart av gruppen 2026-10-30]`
 - Redigering i én fane påvirker ikke de andre fanene. Treffprosenten endres ikke av redigering.
-- Genereringer bygger på den originale CV-teksten (slik den sto etter kontrollsteget) og annonsen, aldri på brukerens redigeringer. Søknadsbrevet, CV-forbedringene og ATS-forslagene bruker i tillegg kategoriene fra den genererte, uredigerte gap-analysen, fordi FR-15 og FR-17 trenger dem. `[forslag fra Claude 2026-10-30, gruppen bekrefter]`
+- Genereringer bygger på den originale CV-teksten (slik den sto etter kontrollsteget) og annonsen, aldri på brukerens redigeringer. Søknadsbrevet, CV-forbedringene og ATS-forslagene bruker i tillegg kategoriene fra den genererte, uredigerte gap-analysen, fordi FR-15 og FR-17 trenger dem.
 
 #### FR-19: Generere én resultatdel på nytt
 Brukeren kan generere én resultatdel på nytt. Det er én generering, og den bygger på det samme grunnlaget som i FR-18.
@@ -441,7 +442,7 @@ Med i MVP er alt i §4 og §5, i rekkefølgen grunnmur (4.1, 4.7) → 4.2 → 4.
 5. ~~**Godkjenning.**~~ Løst 2026-10-29: Kevin har lest og godkjent den reviderte briefen og dette utkastet, inkludert alle antakelsene i §11.
 6. **Brukerinnsikt.** Ingen intervjuer er gjort ennå. Valgfritt: en rask test med to eller tre medstudenter på et testpar før søknadsbrevet bygges.
 7. **Datatilsynet.** Sjekk om Datatilsynet har ny veiledning om generativ KI som påvirker informasjonsteksten i FR-5.
-8. **Tilbake til kontrollsteget etter analysen.** FR-8 og FR-10 sier at brukeren som har en erfaring som mangler i CV-teksten, legger den inn i kontrollsteget. *Ny analyse* (FR-21) tømmer derimot CV-teksten. Det er ikke bestemt hvordan brukeren kommer tilbake til kontrollsteget med CV-teksten og annonsen beholdt, og om det starter en ny kjøring. *Eier:* gruppen. *Når:* i `bmad-ux`, før epics og stories.
+8. ~~**Tilbake til kontrollsteget etter analysen.**~~ Løst 2026-10-30: knappen *Endre CV-tekst* i FR-3. Plassering og utseende avgjøres i `bmad-ux`.
 
 ## 11. Antakelser (bekreftet)
 
@@ -463,7 +464,7 @@ Alle antakelsene ble tatt på hurtigsporet og er lest og bekreftet av Sondre og 
 - **§5 NFR-4:** Målene for ytelse (30 s og 2 s).
 - **§7.1:** Én tone på søknadsbrevet.
 
-**Avklart under Finalize 2026-10-29.** Innenfor rammene Sondre satte, foreslo Claude disse løsningene på funnene fra gjennomgangen og avstemmingen (`review-rubric.md` og `reconcile-inputs.md`). Hvert valg er begrunnet i `.memlog.md`, og gruppen går gjennom dem før stories lages.
+**Avklart under Finalize 2026-10-29.** Innenfor rammene Sondre satte, foreslo Claude disse løsningene på funnene fra gjennomgangen og avstemmingen (`review-rubric.md` og `reconcile-inputs.md`). Hvert valg er begrunnet i `.memlog.md`. Valgene gjelder, med unntakene som er strøket over.
 - ~~**FR-9:** Uten belegg nedgraderes kravet ett hakk, ikke rett til Mangler.~~ Forkastet av gruppen 2026-10-30, se under.
 - **FR-6:** Fødselsnummer gjenkjennes ut fra 11 sifre med gyldig dato, og kan ha mellomrom. Kontonumre maskeres ikke.
 - **§3 Økt og FR-21:** *Ny analyse* tømmer innholdet, men avslutter ikke økten.
@@ -483,9 +484,7 @@ Alle antakelsene ble tatt på hurtigsporet og er lest og bekreftet av Sondre og 
 - **NFR-1 og NFR-3:** Ingen lagring av IP-adresser eller hash av dem, fordi det er personopplysninger og bryter med «ingen varig lagring». Misbruk og kostnad begrenses med enkel rate-limit i minnet og/eller et tak på antall kall per dag.
 - **FR-18 og FR-19:** Fanene er uavhengige. Redigering i én fane påvirker ikke de andre. Ny generering bygger på original CV og annonse, og brukeren får en advarsel om at redigeringene i den fanen overskrives.
 
-Avklaringene kom i konflikt med andre krav. Claude foreslo disse løsningene, og gruppen bekrefter dem:
+Avklaringene kom i konflikt med andre krav, som er løst slik:
 - **FR-8:** Toleransen er nå «høyst ett krav per testpar under fasiten», uten krav om ett hakk. Ellers ville én nedgradering fra Oppfylt til Mangler etter FR-9 være to hakk og stryke testparet.
 - **FR-18:** «Original CV og annonse» tolkes som CV-teksten etter kontrollsteget og annonsen. Brevet, CV-forbedringene og ATS-forslagene bruker i tillegg kategoriene fra den genererte, uredigerte gap-analysen, fordi FR-15 og FR-17 trenger dem.
-- **§10.8:** Hvordan brukeren kommer tilbake til kontrollsteget etter en analyse, er et nytt åpent spørsmål.
-
-De øvrige ti valgene under «Avklart under Finalize» er ennå ikke gjennomgått av gruppen.
+- **FR-3:** Brukeren kommer tilbake til kontrollsteget etter en analyse med knappen *Endre CV-tekst*. CV-teksten og annonsen beholdes, og en ny analyse er en ny kjøring (§10.8).
