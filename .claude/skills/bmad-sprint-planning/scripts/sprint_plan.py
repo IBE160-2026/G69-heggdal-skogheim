@@ -130,10 +130,16 @@ class JsonArgumentParser(argparse.ArgumentParser):
         sys.exit(2)
 
 
+# Project override (G69): Nordic letters are transliterated so story keys and
+# story filenames stay ASCII across Windows and macOS. Re-apply after a BMAD update.
+_NORDIC = str.maketrans({"æ": "ae", "ø": "o", "å": "aa", "ä": "ae", "ö": "o"})
+
+
 def _slug(text, maxlen=60):
     # Unicode-aware: a non-Latin title must keep its own characters in the key
     # rather than every such story collapsing onto one shared placeholder.
-    slug = re.sub(r"[^\w]+", "-", str(text).lower(), flags=re.UNICODE).strip("-")
+    text = str(text).lower().translate(_NORDIC)
+    slug = re.sub(r"[^\w]+", "-", text, flags=re.UNICODE).strip("-")
     slug = slug[:maxlen].strip("-")
     if not slug:
         # Nothing sluggable (punctuation/emoji only): a short content hash keeps
