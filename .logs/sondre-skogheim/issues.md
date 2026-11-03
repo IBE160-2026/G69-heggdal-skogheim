@@ -23,3 +23,4 @@
 - [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Første Vercel-publisering: velg EU-region (fra1/arn1) og sjekk om plattformloggene viser IP-adresser (FR-5)
 - [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Lag demosvarene (src/lib/llm/demo-svar/, én JSON per resultatdel) i grunnmuren
 - [ ] 2026-11-03 [epics-og-stories](992-2026-11-03-14-19-26-epics-og-stories.md) — Story 1.1 er stor: del i lokal app med CI og publisering på Vercel hvis den blir for stor for én økt
+- [ ] 2026-11-03 [sprint-planning](991-2026-11-03-14-28-16-sprint-planning.md) — Story-nøklene har æøå (f.eks. 2-4-velge-leverandør-ved-måling): bekreft at filnavnene fungerer på Windows og macOS, ellers gi titlene nye navn før story-filene lages
