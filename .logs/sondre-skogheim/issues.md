@@ -16,9 +16,10 @@
 - [x] 2026-10-30 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — PRD §10.8: bestem i bmad-ux hvordan brukeren kommer tilbake til kontrollsteget med teksten beholdt etter en analyse (løst 2026-10-30: knappen Endre CV-tekst i FR-3)
 - [x] 2026-10-30 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Arkitektur: velg mekanisme og tall for rate-limit i minnet og/eller dagstak (NFR-3), og sjekk om Vercel logger IP-adresser (løst 2026-11-03: AD-9; IP-sjekken i Vercel er flyttet til eget punkt, se [arkitektur](993-2026-11-03-13-03-39-arkitektur.md))
 - [x] 2026-10-30 [ux-design](994-2026-10-30-14-44-03-ux-design.md) — Bekreft shadcn/ui og Tailwind i bmad-architecture (løst 2026-11-03: shadcn 4.23 med Radix og Tailwind 4, se [arkitektur](993-2026-11-03-13-03-39-arkitektur.md))
-- [ ] 2026-10-30 [ux-design](994-2026-10-30-14-44-03-ux-design.md) — Gå gjennom lave funn i UX-gjennomgangene (review-rubric.md, review-tilgjengelighet.md) når stories lages
+- [x] 2026-10-30 [ux-design](994-2026-10-30-14-44-03-ux-design.md) — Gå gjennom lave funn i UX-gjennomgangene (review-rubric.md, review-tilgjengelighet.md) når stories lages (løst 2026-11-03: tatt inn som UX-DR i epics.md, se [epics-og-stories](992-2026-11-03-14-19-26-epics-og-stories.md))
 - [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Sondre og Kevin leser spinen og ARKITEKTUR-OVERSIKT.md og bekrefter eller overstyrer Claudes delegerte valg
 - [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Installer Node.js 24 LTS (Sondre og Kevin) før koding
 - [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Velg leverandør ved måling (AD-11): testsettet med Mistral og OpenAI, sjekk vilkår, sett forhåndsbetalt kreditt under 200 kr
 - [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Første Vercel-publisering: velg EU-region (fra1/arn1) og sjekk om plattformloggene viser IP-adresser (FR-5)
 - [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Lag demosvarene (src/lib/llm/demo-svar/, én JSON per resultatdel) i grunnmuren
+- [ ] 2026-11-03 [epics-og-stories](992-2026-11-03-14-19-26-epics-og-stories.md) — Story 1.1 er stor: del i lokal app med CI og publisering på Vercel hvis den blir for stor for én økt
