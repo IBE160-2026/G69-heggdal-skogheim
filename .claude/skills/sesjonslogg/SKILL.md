@@ -84,15 +84,15 @@ Unntaket er når tilstanden er reelt kritisk — f.eks. en migrasjon er kjørt m
 
 ## issues.md
 
-`.logs/<bruker-slug>/issues.md` er brukerens samlede liste over åpne punkter på tvers av alle sesjoner — det er denne brukeren faktisk sjekker. Opprett fila med overskriften `# Åpne punkter` hvis den mangler. Vedlikehold den hver gang du logger, **før** sesjonsfila committes:
+`.logs/<bruker-slug>/issues.md` er brukerens samlede liste over åpne punkter på tvers av alle sesjoner — det er denne brukeren faktisk sjekker. Opprett fila med overskriften `# Åpne punkter` og to seksjoner, `## Åpne` øverst og `## Løst` under, hvis den mangler. Åpne punkter står bare under `## Åpne`, slik at brukeren ser med én gang hva som gjenstår. Vedlikehold den hver gang du logger, **før** sesjonsfila committes:
 
 1. **Les lista først**, så du ikke dupliserer et punkt som alt er åpent.
-2. **Legg til** hvert nytt åpent punkt fra økten, med dato og lenke til sesjonsfila:
+2. **Legg til** hvert nytt åpent punkt fra økten nederst under `## Åpne`, med dato og lenke til sesjonsfila:
    ```markdown
    - [ ] 2026-08-08 [kurstab-redesign](999-2026-08-08-14-31-07-kurstab-redesign.md) — e2e-test for tastaturnavigasjon gjenstår
    ```
    Ikke legg til noe for `Ingen.`.
-3. **Lukk** punkter denne økten løste — også punkter fra tidligere sesjoner. Marker løste punkter med `[x]` og løsningsdato: `- [x] … (løst 2026-08-08)`. Ikke slett linjer — historikken har verdi. Referer til det lukkede punktet i Resultat.
+3. **Lukk** punkter denne økten løste — også punkter fra tidligere sesjoner. Marker løste punkter med `[x]` og løsningsdato: `- [x] … (løst 2026-08-08)`, og flytt linjen øverst under `## Løst` (nyeste først). Ikke slett linjer — historikken har verdi. Referer til det lukkede punktet i Resultat.
 
 Unntak: sier prosjektets rot-`CLAUDE.md`/`AGENTS.md` eksplisitt at åpne punkter skal føres et annet sted (f.eks. i en egen issue-tracker), følg den instruksen i stedet. Uten slik instruks gjelder alltid `issues.md`.
 
