@@ -1,4 +1,4 @@
-import { statusSvar, type StatusSvar } from "@/lib/kontrakt/status";
+import { statusSvar, type Modus, type StatusSvar } from "@/lib/kontrakt/status";
 
 export async function hentStatus(): Promise<StatusSvar | null> {
   try {
@@ -12,6 +12,6 @@ export async function hentStatus(): Promise<StatusSvar | null> {
   }
 }
 
-export function erDemomodus(status: StatusSvar | null): boolean {
+export function erDemomodus(status: { modus: Modus | null } | null): boolean {
   return status?.modus === "demo";
 }

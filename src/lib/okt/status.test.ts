@@ -52,14 +52,12 @@ describe("hentStatus", () => {
 });
 
 describe("erDemomodus", () => {
-  const leverandor = DEMO.leverandor;
-
   it("FR-23: demo viser banneret", () => {
-    expect(erDemomodus({ modus: "demo", leverandor })).toBe(true);
+    expect(erDemomodus({ modus: "demo" })).toBe(true);
   });
 
   it("FR-23: ekte viser ikke banneret", () => {
-    expect(erDemomodus({ modus: "ekte", leverandor })).toBe(false);
+    expect(erDemomodus({ modus: "ekte" })).toBe(false);
   });
 
   it("FR-23: manglende status viser ikke banneret", () => {

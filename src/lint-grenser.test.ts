@@ -18,6 +18,7 @@ describe("importgrenser", () => {
   it.each([
     ["@/lib/pipeline", "src/components/X.tsx"],
     ["@/lib/pipeline", "src/app/page.tsx"],
+    ["@/lib/kjerne/grenser", "src/components/X.tsx"],
     ["@/lib/pipeline", "src/lib/okt/x.ts"],
     ["../pipeline", "src/lib/okt/x.ts"],
     ["@/lib/okt", "src/lib/kjerne/x.ts"],
@@ -34,6 +35,9 @@ describe("importgrenser", () => {
 
   it.each([
     ["@/lib/pipeline", "src/app/api/x/route.ts"],
+    ["@/lib/okt/tilstand", "src/components/X.tsx"],
+    ["@/lib/kontrakt/status", "src/components/X.tsx"],
+    ["@/lib/kjerne/grenser", "src/lib/okt/x.ts"],
     ["@/lib/kontrakt", "src/lib/kjerne/x.ts"],
     ["../kontrakt", "src/lib/kjerne/x.ts"],
     ["./annen", "src/lib/kontrakt/x.ts"],

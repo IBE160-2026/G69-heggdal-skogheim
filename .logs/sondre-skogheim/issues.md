@@ -6,10 +6,13 @@
 - [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Installer Node.js 24 LTS (Sondre og Kevin) før koding
 - [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — npm audit rapporterte 21 sårbarheter (2 lave, 19 moderate) som ikke er vurdert
 - [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — _bmad/config.user.toml må lages på Sondres egen PC og hos Kevin, ellers stopper /bmad-build
-- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — Story 1.2 må flytte modus og leverandor inn i konteksten i lib/okt
+- [ ] 2026-11-04 [story-1-2-forberedelsessiden](989-2026-11-04-16-23-34-story-1-2-forberedelsessiden.md) — Test forberedelsessiden selv med tastatur, i 320 px og med 200 % zoom
+- [ ] 2026-11-04 [story-1-2-forberedelsessiden](989-2026-11-04-16-23-34-story-1-2-forberedelsessiden.md) — Flett PR #2 til main, og sett story 1.2 til done når testen er gjort
 
 ## Løst
 
+- [x] 2026-11-04 [story-1-2-forberedelsessiden](989-2026-11-04-16-23-34-story-1-2-forberedelsessiden.md) — Tokenet letter-max (UX-DR1) er ikke lagt inn, må inn når søknadsbrevet bygges (løst 2026-11-04: lagt inn i globals.css)
+- [x] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — Story 1.2 må flytte modus og leverandor inn i konteksten i lib/okt (løst 2026-11-04: OktProvider henter status, Demomodus bruker useOkt)
 - [x] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — Sjekk i Logs i Vercel om runtime-loggene viser IP-adresser (løst 2026-11-04: ingen IP i Runtime Logs eller i den synlige delen av Request Logs, story 5.2 kontrollerer på nytt)
 - [x] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — Åpne appen i nettleseren og se at demobanneret vises (løst 2026-11-04: sjekket i headless Edge mot produksjonen)
 - [x] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — Vercel-forhåndsvisningen i PR #1 feilet (løst 2026-11-04: framework nextjs i vercel.json, 1ce90fe)

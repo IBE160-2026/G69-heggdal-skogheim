@@ -1,24 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import { DemoBanner } from "@/components/DemoBanner";
-import { erDemomodus, hentStatus } from "@/lib/okt/status";
+import { useOkt } from "@/lib/okt/OktProvider";
+import { erDemomodus } from "@/lib/okt/status";
 
 export function Demomodus() {
-  const [erDemo, setErDemo] = useState(false);
+  const { tilstand } = useOkt();
 
-  useEffect(() => {
-    let aktiv = true;
-
-    void hentStatus().then((status) => {
-      if (aktiv) setErDemo(erDemomodus(status));
-    });
-
-    return () => {
-      aktiv = false;
-    };
-  }, []);
-
-  return erDemo ? <DemoBanner /> : null;
+  return erDemomodus(tilstand.okt) ? <DemoBanner /> : null;
 }
