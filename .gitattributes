@@ -1,0 +1,3 @@
+testdata/** text eol=lf
+testdata/**/*.[pP][dD][fF] binary
+testdata/**/*.[dD][oO][cC][xX] binary

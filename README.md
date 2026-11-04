@@ -8,3 +8,14 @@ Repoet inneholder gruppens applikasjon og dokumentasjon av utvikling, testing og
 
 - Kevin Heggdal
 - Sondre Skogheim
+
+## Kjøre appen lokalt
+
+Krav: Node 24.
+
+```bash
+npm ci
+npm run dev
+```
+
+Åpne http://localhost:3000. Uten API-nøkkel kjører appen i demomodus, og det trengs ingen `.env`-fil. Alle variablene står i `.env.example`.
