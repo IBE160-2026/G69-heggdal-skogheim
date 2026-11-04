@@ -18,9 +18,9 @@ Bygge forberedelsessiden etter spesifikasjonen: designtokener, personvernboks, a
 - Rettinger etter kodegjennomgang: avkrysningen vises først når leverandøren er kjent, `forlatt` settes bare ved for kort tekst, telleren er knyttet til feltet, `autoComplete="off"`, `letter-max` lagt inn, strengere vakt mot `ring-` i `ui/*`, U+00A0 i tallene, og `cn` er konfigurert med typografirollene (`ui/*` importerer den fra `lib/utils`). Nye dev-avhengigheter: `jsdom` 30.1.3 og `@testing-library/react` 16.3.3, med tester av handlinger, fokus og henting.
 - Full kontroll etter rettingene, i en ren kopi uten nøkkel: `npm ci`, lint, typesjekk, 141 av 141 tester og `npm run build` består. DOM-en og skjermbilde i 1280 px er sjekket i Edge mot produksjonsbygget. Fokus, tastatur og smal bredde er ikke sjekket i nettleser på nytt etter rettingene. Fokus og handlinger dekkes nå av jsdom-tester.
 - Committet som `9956150` på grenen `story-1-2-forberedelsessiden` og pushet med [PR #2](https://github.com/IBE160-2026/G69-heggdal-skogheim/pull/2). CI og Vercel-forhåndsvisningen består.
-- PR #2 er ikke flettet: sikkerhetskontrollen i Claude Code stoppet `gh pr merge` fordi PR-en ikke er gjennomgått. Story 1.2 står som `review`.
+- Sikkerhetskontrollen i Claude Code stoppet `gh pr merge`, så Sondre flettet PR #2 selv. Siden er publisert i produksjon.
+- Sondre testet i produksjon: tastatur med Tab, 200 % zoom, annonsefeltet og 320 px bredde virker. Story 1.2 er satt til `done`. NVDA og VoiceOver tas i story 2.2 og 5.2.
 - Under testingen lukket byggingen Edge-vinduer med tittelen `about:blank`.
 
 ### Åpne punkter
-- Flett PR #2 til `main`, og sett story 1.2 til `done` når testen under er gjort.
-- Sondre må teste selv med tastatur, i 320 px og med 200 % zoom (headless Edge etterlignet 200 % med 640 px bredde).
+- Ingen.

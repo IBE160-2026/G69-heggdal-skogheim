@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 11-03-2026 14:28
-last_updated: 11-04-2026 16:37
+last_updated: 11-04-2026 16:48
 project: G69-heggdal-skogheim
 project_key: NOKEY
 tracking_system: file-system
@@ -37,7 +37,7 @@ story_location: _bmad-output/implementation-artifacts
 development_status:
   epic-1: in-progress
   1-1-kjorbar-app-i-demomodus-lokalt-og-paa-vercel: done
-  1-2-forberedelsessiden-med-personvern-og-annonse: review
+  1-2-forberedelsessiden-med-personvern-og-annonse: done
   1-3-lime-inn-cv-tekst-og-kontrollere-den: backlog
   1-4-laste-opp-cv-som-docx-eller-txt: backlog
   1-5-laste-opp-cv-som-pdf-ogsaa-med-to-kolonner: backlog
