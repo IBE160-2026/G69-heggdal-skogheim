@@ -4,11 +4,11 @@
 
 - [ ] 2026-10-29 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Valgfritt: full språkvask med bmad-review (structure, prose) på prd.md og addendum.md
 - [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Installer Node.js 24 LTS (Sondre og Kevin) før koding
-- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — npm audit rapporterte 21 sårbarheter (2 lave, 19 moderate) som ikke er vurdert
-- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — _bmad/config.user.toml må lages på Sondres egen PC og hos Kevin, ellers stopper /bmad-build
 
 ## Løst
 
+- [x] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — npm audit rapporterte 21 sårbarheter (2 lave, 19 moderate) som ikke er vurdert (løst 2026-11-04: vurdert som ingen reell risiko nå, ny kjøring i story 5.2, se [rydde-issues](988-2026-11-04-16-52-44-rydde-issues.md))
+- [x] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — _bmad/config.user.toml må lages på Sondres egen PC og hos Kevin, ellers stopper /bmad-build (løst 2026-11-04: språket ligger nå i _bmad/custom/config.toml, se [rydde-issues](988-2026-11-04-16-52-44-rydde-issues.md))
 - [x] 2026-11-04 [story-1-2-forberedelsessiden](989-2026-11-04-16-23-34-story-1-2-forberedelsessiden.md) — Test forberedelsessiden selv med tastatur, i 320 px og med 200 % zoom (løst 2026-11-04: Sondre flettet og testet i produksjon)
 - [x] 2026-11-04 [story-1-2-forberedelsessiden](989-2026-11-04-16-23-34-story-1-2-forberedelsessiden.md) — Flett PR #2 til main, og sett story 1.2 til done når testen er gjort (løst 2026-11-04: Sondre flettet og testet i produksjon)
 - [x] 2026-11-04 [story-1-2-forberedelsessiden](989-2026-11-04-16-23-34-story-1-2-forberedelsessiden.md) — Tokenet letter-max (UX-DR1) er ikke lagt inn, må inn når søknadsbrevet bygges (løst 2026-11-04: lagt inn i globals.css)
