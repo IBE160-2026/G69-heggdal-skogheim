@@ -4,9 +4,16 @@
 
 - [ ] 2026-10-29 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Valgfritt: full språkvask med bmad-review (structure, prose) på prd.md og addendum.md
 - [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Installer Node.js 24 LTS (Sondre og Kevin) før koding
+- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — Story 1.1 del 2: legg adressen i README-en, flett PR #1 til main, sjekk at produksjonen er åpen uten innlogging og kjører i arn1, og sjekk om runtime-loggene viser IP-adresser
+- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — Åpne appen i nettleseren og se at demobanneret vises i full bredde øverst
+- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — npm audit rapporterte 21 sårbarheter (2 lave, 19 moderate) som ikke er vurdert
+- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — _bmad/config.user.toml må lages på Sondres egen PC og hos Kevin, ellers stopper /bmad-build
+- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — Story 1.2 må flytte modus og leverandor inn i konteksten i lib/okt
 
 ## Løst
 
+- [x] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — Vercel-forhåndsvisningen i PR #1 feilet (løst 2026-11-04: framework nextjs i vercel.json, 1ce90fe)
+- [x] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — CI-jobben er aldri kjørt på GitHub (løst 2026-11-04: kontroll består i PR #1)
 - [x] 2026-11-03 [sprint-planning](991-2026-11-03-14-28-16-sprint-planning.md) — Story-nøklene har æøå (f.eks. 2-4-velge-leverandør-ved-måling): bekreft at filnavnene fungerer på Windows og macOS, ellers gi titlene nye navn før story-filene lages (løst 2026-11-03: nøklene translittereres, æ→ae, ø→o, å→aa, se CLAUDE.md)
 - [x] 2026-11-03 [epics-og-stories](992-2026-11-03-14-19-26-epics-og-stories.md) — Story 1.1 er stor: del i lokal app med CI og publisering på Vercel hvis den blir for stor for én økt (løst 2026-11-03: avgjøres når story 1.1 bygges)
 - [x] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Lag demosvarene (src/lib/llm/demo-svar/, én JSON per resultatdel) i grunnmuren (løst 2026-11-03: flyttet til stories 2.1, 3.1, 4.1 og 4.2)

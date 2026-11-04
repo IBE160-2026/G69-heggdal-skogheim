@@ -59,3 +59,9 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# CV-filer er bare tillatt under testdata/
+*.[pP][dD][fF]
+*.[dD][oO][cC][xX]
+!testdata/**/*.[pP][dD][fF]
+!testdata/**/*.[dD][oO][cC][xX]
