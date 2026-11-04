@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { Demomodus } from "@/components/Demomodus";
+import { OktProvider } from "@/lib/okt/OktProvider";
 
 import "./globals.css";
 
@@ -28,8 +29,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Demomodus />
-        {children}
+        <OktProvider>
+          <Demomodus />
+          {children}
+        </OktProvider>
       </body>
     </html>
   );
