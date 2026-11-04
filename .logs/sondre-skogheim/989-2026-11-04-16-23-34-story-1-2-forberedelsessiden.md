@@ -16,8 +16,11 @@ Bygge forberedelsessiden etter spesifikasjonen: designtokener, personvernboks, a
 - `npm run lint`, `typecheck`, `test` (122 tester) og `build` består uten nøkkel.
 - Headless Edge mot `next start`: DOM-rekkefølge, `lang="nb"`, tokens, fokusring, tastaturflyt med fokus på bekreftelsesteksten, feil for kort og for lang annonse, klikkflater, ingen sidelengs rulling i 1280, 1024, 1023, 640 og 320 px, ingenting i nettleserlagring eller cookies, `/api/status` kalt én gang, og blokkert status gir generell tekst uten banner.
 - Rettinger etter kodegjennomgang: avkrysningen vises først når leverandøren er kjent, `forlatt` settes bare ved for kort tekst, telleren er knyttet til feltet, `autoComplete="off"`, `letter-max` lagt inn, strengere vakt mot `ring-` i `ui/*`, U+00A0 i tallene, og `cn` er konfigurert med typografirollene (`ui/*` importerer den fra `lib/utils`). Nye dev-avhengigheter: `jsdom` 30.1.3 og `@testing-library/react` 16.3.3, med tester av handlinger, fokus og henting.
-- Rettingene er kontrollert med testene for de endrede filene (82 tester). Full kontroll og nettleser er ikke kjørt på nytt etter rettingene.
-- Koden er ikke committet.
+- Full kontroll etter rettingene, i en ren kopi uten nøkkel: `npm ci`, lint, typesjekk, 141 av 141 tester og `npm run build` består. DOM-en og skjermbilde i 1280 px er sjekket i Edge mot produksjonsbygget. Fokus, tastatur og smal bredde er ikke sjekket i nettleser på nytt etter rettingene. Fokus og handlinger dekkes nå av jsdom-tester.
+- Committet som `9956150` på grenen `story-1-2-forberedelsessiden` og pushet med [PR #2](https://github.com/IBE160-2026/G69-heggdal-skogheim/pull/2). CI og Vercel-forhåndsvisningen består.
+- PR #2 er ikke flettet: sikkerhetskontrollen i Claude Code stoppet `gh pr merge` fordi PR-en ikke er gjennomgått. Story 1.2 står som `review`.
+- Under testingen lukket byggingen Edge-vinduer med tittelen `about:blank`.
 
 ### Åpne punkter
+- Flett PR #2 til `main`, og sett story 1.2 til `done` når testen under er gjort.
 - Sondre må teste selv med tastatur, i 320 px og med 200 % zoom (headless Edge etterlignet 200 % med 640 px bredde).

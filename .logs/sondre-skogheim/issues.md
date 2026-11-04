@@ -7,6 +7,7 @@
 - [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — npm audit rapporterte 21 sårbarheter (2 lave, 19 moderate) som ikke er vurdert
 - [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — _bmad/config.user.toml må lages på Sondres egen PC og hos Kevin, ellers stopper /bmad-build
 - [ ] 2026-11-04 [story-1-2-forberedelsessiden](989-2026-11-04-16-23-34-story-1-2-forberedelsessiden.md) — Test forberedelsessiden selv med tastatur, i 320 px og med 200 % zoom
+- [ ] 2026-11-04 [story-1-2-forberedelsessiden](989-2026-11-04-16-23-34-story-1-2-forberedelsessiden.md) — Flett PR #2 til main, og sett story 1.2 til done når testen er gjort
 
 ## Løst
 
