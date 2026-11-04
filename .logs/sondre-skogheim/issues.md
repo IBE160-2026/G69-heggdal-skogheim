@@ -4,6 +4,12 @@
 
 - [ ] 2026-10-29 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Valgfritt: full språkvask med bmad-review (structure, prose) på prd.md og addendum.md
 - [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Installer Node.js 24 LTS (Sondre og Kevin) før koding
+- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — Story 1.1 del 2: sett arn1 i vercel.json, publiser, legg adressen i README-en, og sjekk om runtime-loggene viser IP-adresser
+- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — CI-jobben er aldri kjørt på GitHub, og må bestå ved første push av grenen story-1-1-lokal-app
+- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — Åpne appen i nettleseren og se at demobanneret vises i full bredde øverst
+- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — npm audit rapporterte 21 sårbarheter (2 lave, 19 moderate) som ikke er vurdert
+- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — _bmad/config.user.toml må lages på Sondres egen PC og hos Kevin, ellers stopper /bmad-build
+- [ ] 2026-11-04 [story-1-1-lokal-app](990-2026-11-04-15-35-17-story-1-1-lokal-app.md) — Story 1.2 må flytte modus og leverandor inn i konteksten i lib/okt
 
 ## Løst
 
