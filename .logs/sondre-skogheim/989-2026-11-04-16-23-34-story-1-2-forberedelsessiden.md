@@ -15,8 +15,9 @@ Bygge forberedelsessiden etter spesifikasjonen: designtokener, personvernboks, a
 - Punktet om å flytte `modus` og `leverandor` inn i `lib/okt` er løst, også i `deferred-work.md` og `issues.md`.
 - `npm run lint`, `typecheck`, `test` (122 tester) og `build` består uten nøkkel.
 - Headless Edge mot `next start`: DOM-rekkefølge, `lang="nb"`, tokens, fokusring, tastaturflyt med fokus på bekreftelsesteksten, feil for kort og for lang annonse, klikkflater, ingen sidelengs rulling i 1280, 1024, 1023, 640 og 320 px, ingenting i nettleserlagring eller cookies, `/api/status` kalt én gang, og blokkert status gir generell tekst uten banner.
+- Rettinger etter kodegjennomgang: avkrysningen vises først når leverandøren er kjent, `forlatt` settes bare ved for kort tekst, telleren er knyttet til feltet, `autoComplete="off"`, `letter-max` lagt inn, strengere vakt mot `ring-` i `ui/*`, U+00A0 i tallene, og `cn` er konfigurert med typografirollene (`ui/*` importerer den fra `lib/utils`). Nye dev-avhengigheter: `jsdom` 30.1.3 og `@testing-library/react` 16.3.3, med tester av handlinger, fokus og henting.
+- Rettingene er kontrollert med testene for de endrede filene (82 tester). Full kontroll og nettleser er ikke kjørt på nytt etter rettingene.
 - Koden er ikke committet.
 
 ### Åpne punkter
 - Sondre må teste selv med tastatur, i 320 px og med 200 % zoom (headless Edge etterlignet 200 % med 640 px bredde).
-- `letter-max` står i UX-DR1, men ikke i spesifikasjonen for story 1.2, og er ikke lagt inn. Må inn når søknadsbrevet bygges.
