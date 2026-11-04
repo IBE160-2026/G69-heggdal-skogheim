@@ -9,6 +9,10 @@ Repoet inneholder gruppens applikasjon og dokumentasjon av utvikling, testing og
 - Kevin Heggdal
 - Sondre Skogheim
 
+## Publisert app
+
+https://g69-cv-assistent.vercel.app
+
 ## Kjøre appen lokalt
 
 Krav: Node 24.
