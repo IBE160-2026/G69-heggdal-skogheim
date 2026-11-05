@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { Demomodus } from "@/components/Demomodus";
+import { Kunngjoring } from "@/components/Kunngjoring";
 import { OktProvider } from "@/lib/okt/OktProvider";
 
 import "./globals.css";
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <OktProvider>
           <Demomodus />
           {children}
+          <Kunngjoring />
         </OktProvider>
       </body>
     </html>
