@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { annonseStatus, tegnAntall } from "./grenser";
+import { CV_KORT, CV_MAKS } from "@/lib/kontrakt/grenser";
+
+import { annonseStatus, cvStatus, tegnAntall } from "./grenser";
 
 describe("annonseStatus", () => {
   it.each([
@@ -29,5 +31,32 @@ describe("tegnAntall", () => {
     expect(tegnAntall("  abc \n")).toBe(3);
     expect(tegnAntall("a b")).toBe(3);
     expect(tegnAntall("   ")).toBe(0);
+  });
+});
+
+describe("cvStatus", () => {
+  it.each([
+    [0, "tom"],
+    [1, "ok"],
+    [299, "ok"],
+    [15000, "ok"],
+    [15001, "for_lang"],
+  ])("FR-4: %i tegn gir riktig status", (lengde, forventet) => {
+    expect(cvStatus("a".repeat(lengde))).toBe(forventet);
+  });
+
+  it("FR-4: bare mellomrom er tomt", () => {
+    expect(cvStatus("  \n\t ")).toBe("tom");
+  });
+
+  it("FR-4: mellomrom rundt teksten teller ikke", () => {
+    expect(cvStatus(`  ${"a".repeat(15000)}  \n`)).toBe("ok");
+  });
+});
+
+describe("CV-grensene", () => {
+  it("FR-3, FR-4: maks 15 000 tegn og varsel under 300 tegn", () => {
+    expect(CV_MAKS).toBe(15000);
+    expect(CV_KORT).toBe(300);
   });
 });

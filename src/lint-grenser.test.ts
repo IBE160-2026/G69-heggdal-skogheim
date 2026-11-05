@@ -19,6 +19,7 @@ describe("importgrenser", () => {
     ["@/lib/pipeline", "src/components/X.tsx"],
     ["@/lib/pipeline", "src/app/page.tsx"],
     ["@/lib/kjerne/grenser", "src/components/X.tsx"],
+    ["@/lib/kjerne/masker", "src/components/X.tsx"],
     ["@/lib/pipeline", "src/lib/okt/x.ts"],
     ["../pipeline", "src/lib/okt/x.ts"],
     ["@/lib/okt", "src/lib/kjerne/x.ts"],
