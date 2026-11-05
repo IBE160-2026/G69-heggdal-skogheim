@@ -19,3 +19,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-3-lime-inn-cv-tekst-og-kontrollere-den.md`
   summary: Decide whether the CV field and the ad field should have `spellCheck={false}`, so that browser spell checkers in the cloud do not get the text.
   evidence: Chrome’s enhanced spell check (opt-in) sends field text to Google. The ad field has had the same behaviour since story 1.2. Turning it off removes typo marks for the user, so this is a UX choice for the whole app.
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-4-laste-opp-cv-som-docx-eller-txt.md`
+  summary: Add an automated check that the browser build of mammoth reads the `{ arrayBuffer }` input that `lesDocx` builds.
+  evidence: Vitest loads mammoth's Node build, which reads only `buffer`. Removing `arrayBuffer` from `lesDocx` keeps every test green, but DOCX upload would fail in the browser. Today only the manual check after `next build` covers it. Story 1.5 or 5.1 could alias `mammoth/lib/unzip.js` to `browser/unzip.js` in one test.
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-4-laste-opp-cv-som-docx-eller-txt.md`
+  summary: Add a check that mammoth is not in the page chunk after `next build` (AD-7, dynamic import).
+  evidence: A static `import mammoth` passes every test and adds about 400 kB to the start page. Checking it needs build output, outside `npm test`; the browser smoke test from story 1.2's deferred item could include it.

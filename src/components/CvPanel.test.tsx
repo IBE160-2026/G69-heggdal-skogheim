@@ -20,7 +20,7 @@ const LANG = `CV-teksten er for lang. Maks 15${NBSP}000 tegn.`;
 function medCv(cvTekst: string): OktTilstand {
   return {
     ...startTilstand,
-    innhold: { utkast: { ...startTilstand.innhold.utkast, cvTekst } },
+    innhold: { utkast: { ...startTilstand.innhold.utkast, cvTekst }, cvFil: null },
   };
 }
 
@@ -37,7 +37,7 @@ function klar(cvTekst: string): OktTilstand {
   return {
     ...startTilstand,
     okt: { ...startTilstand.okt, bekreftetPersonvern: true },
-    innhold: { utkast: { cvTekst, annonse: "a".repeat(200) } },
+    innhold: { utkast: { cvTekst, annonse: "a".repeat(200) }, cvFil: null },
   };
 }
 
@@ -77,11 +77,14 @@ afterEach(() => {
 });
 
 describe("CvPanel, tilstand 1", () => {
-  it("FR-1: har overskrift og plassholderlinje", () => {
+  it("FR-1: har overskrift og opplastingsfelt", () => {
     const html = vis();
 
     expect(html).toContain(">CV</h2>");
-    expect(html).toContain("Opplasting av CV-fil kommer snart.");
+    expect(html).not.toContain("Opplasting av CV-fil kommer snart.");
+    expect(html).toContain(">Velg CV-fil</button>");
+    expect(html).toContain('accept=".pdf,.docx,.txt"');
+    expect(html).toContain("eller dra filen hit. DOCX eller TXT, maks 5 MB");
     expect(html).toContain(">Lim inn CV-teksten</button>");
     expect(html).not.toContain("<textarea");
   });

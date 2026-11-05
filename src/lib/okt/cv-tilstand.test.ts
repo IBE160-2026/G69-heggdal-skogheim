@@ -19,7 +19,7 @@ const ANNONSE_FOR_LANG = "Annonsen er for lang. Maks 8\u00a0000 tegn.";
 function medCv(cvTekst: string): OktTilstand {
   return {
     ...startTilstand,
-    innhold: { utkast: { ...startTilstand.innhold.utkast, cvTekst } },
+    innhold: { utkast: { ...startTilstand.innhold.utkast, cvTekst }, cvFil: null },
   };
 }
 
