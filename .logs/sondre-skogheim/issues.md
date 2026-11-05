@@ -4,6 +4,10 @@
 
 - [ ] 2026-10-29 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Valgfritt: full språkvask med bmad-review (structure, prose) på prd.md og addendum.md
 - [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Installer Node.js 24 LTS (Sondre og Kevin) før koding
+- [ ] 2026-11-05 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Avgjør med gruppen om masker også skal fange «010190-12345» og flere mellomrom (krever ny FR-6 og nye tester)
+- [ ] 2026-11-05 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Avgjør om CV- og annonsefeltet skal ha spellCheck={false} (Chromes utvidede stavekontroll kan sende teksten til Google)
+- [ ] 2026-11-05 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Story 1.4 må selv vise varselet om kort tekst når en fil gir 0 tegn
+- [ ] 2026-11-05 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Story 1.6 må sjekke maskeringen ved trykk på Analyser i Safari
 
 ## Løst
 
