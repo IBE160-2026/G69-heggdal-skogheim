@@ -22,3 +22,21 @@ Starte story 1.4 uten å vente på at PR-en for 1.3 er gjennomgått, og bygge op
 ### Åpne punkter
 - Manuell test av story 1.4 etter testplanen i chatten: knapp og dra og slipp med `cv.docx`, avviste filer, PDF, lesefeil, *Bytt fil*, tastatur, 320 px, 200 % zoom, nettverksfanen og DOCX etter `npm run build && npm start`. Sett så 1.4 til `done`.
 - Lag PR for 1.4 først når PR-en for 1.3 er merget, og rebaser 1.4 på `main`.
+
+## 2026-11-07 kl. 22:29 — Kevin Heggdal
+
+### Oppgave
+Fullføre den manuelle testen av story 1.4, sette storyen til `done` i `sprint-status.yaml` og gjøre klart for commit og push til `story-1.4-laste-opp-cv-som-docx-eller-txt`. Kevin godkjenner før noe committes eller pushes.
+
+### Plan
+- Testfilene til test 8–13 ble laget på nytt utenfor prosjektet, i scratchpad-mappen for økten: `CV.DOCX` (kopi av `par-1-butikk-bank/cv.docx`), `for-stor.txt` (5 MB + 1 byte), `cv.odt`, `odelagt.docx` (2000 tilfeldige byte), `windows-1252.txt`, `tom.txt` (0 byte) og `kort-med-fnr.txt`. For PDF ble `testdata/par-4-tokolonne-hotell/cv.pdf` brukt.
+- Kevin kjørte testplanen fra økten 2026-11-05.
+
+### Resultat
+- Alle 16 manuelle tester er bestått, også DOCX-opplasting etter `npm run build && npm start`.
+- `sprint-status.yaml`: `1-4-laste-opp-cv-som-docx-eller-txt` er endret fra `review` til `done`, og `last_updated` er satt til 11-07-2026 22:29. `epic-1` står fortsatt som `in-progress`, fordi 1.5 og 1.6 gjenstår.
+- Ingen kodeendringer. Punktet om manuell test i `issues.md` er lukket.
+- Ikke committet ennå. Kevin godkjenner commit og push først.
+
+### Åpne punkter
+- Lag PR for 1.4 først når PR-en for 1.3 er merget, og rebaser 1.4 på `main` (står allerede i `issues.md`).
