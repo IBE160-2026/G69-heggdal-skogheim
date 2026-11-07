@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
         loaders: ["@tailwindcss/turbopack"],
         as: "*.css",
       },
+      // Demotekstene importeres som tekst med `?raw` (lib/kontrakt/demo.ts).
+      "*.txt": { condition: { query: "?raw" }, type: "text" },
     },
   },
 };

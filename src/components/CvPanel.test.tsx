@@ -20,7 +20,7 @@ const LANG = `CV-teksten er for lang. Maks 15${NBSP}000 tegn.`;
 function medCv(cvTekst: string): OktTilstand {
   return {
     ...startTilstand,
-    innhold: { utkast: { ...startTilstand.innhold.utkast, cvTekst }, cvFil: null },
+    innhold: { utkast: { ...startTilstand.innhold.utkast, cvTekst }, cvFil: null, demoVarsel: null },
   };
 }
 
@@ -37,7 +37,7 @@ function klar(cvTekst: string): OktTilstand {
   return {
     ...startTilstand,
     okt: { ...startTilstand.okt, bekreftetPersonvern: true },
-    innhold: { utkast: { cvTekst, annonse: "a".repeat(200) }, cvFil: null },
+    innhold: { utkast: { cvTekst, annonse: "a".repeat(200) }, cvFil: null, demoVarsel: null },
   };
 }
 

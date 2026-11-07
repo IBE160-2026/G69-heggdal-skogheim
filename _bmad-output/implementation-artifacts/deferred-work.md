@@ -31,3 +31,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-5-laste-opp-cv-som-pdf-ogsaa-med-to-kolonner.md`
   summary: Check whether one-column CVs with a date table («2024–nå | Servitør …») are read as two columns, so that all dates come before all roles, and adjust the column rule if so (medium, unverified).
   evidence: `finnKolonnegrense` needs only one bit on each side of a gap of at least 12 pt. The header and footer trimming from round 2 can remove a full-width profile paragraph at the top. It happens only when no heading covers the space between dates and text, so it depends on the PDF. To settle it, run `lesPdf` on real one-column CV PDFs from Word and Canva.
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-6-analyser-med-egen-cv-i-demomodus.md`
+  summary: Add a check after `next build` that the demo texts from `?raw` (`DEMO_CV`, `DEMO_ANNONSE`) end up as the file text in the client chunks, for example by searching for a line from `testdata/par-1-butikk-bank/cv.txt`.
+  evidence: Vitest uses Vite's own `?raw`, so the Turbopack rule in `next.config.ts` is never run by a test. A wrong rule or a change after a Next upgrade keeps every test and the build green, and then the demo example would always get the API-key warning in production. Today only a manual check covers it.
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-6-analyser-med-egen-cv-i-demomodus.md`
+  summary: Make the focus tests in `src/components/CvPanel-fil.test.tsx` wait for focus with `waitFor`, so they do not fail now and then in the full test run.
+  evidence: During story 1.6, 2 of 6 full `npm test` runs failed on `expect(document.activeElement).toBe(felt)`. One time it was «FR-3: tom fil (0 byte)», the other «FR-22: lesefeil i nettleseren». Each passed 5 of 5 alone. `findByLabelText` resolves when the field appears, before the focus effect has run. The tests come from story 1.4, and the flakiness can break CI.

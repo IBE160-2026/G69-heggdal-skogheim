@@ -1,3 +1,4 @@
+import { erDemoeksempel } from "@/lib/kjerne/demo";
 import { annonseStatus, cvStatus, tegnAntall } from "@/lib/kjerne/grenser";
 import type { AnnonseStatus, CvStatus } from "@/lib/kjerne/grenser";
 import { FODSELSNUMMER_FJERNET, maskerMedAntall } from "@/lib/kjerne/masker";
@@ -14,6 +15,10 @@ export type Kunngjoring = { tekst: string; nr: number };
 // CV-filen som er valgt. Teksten selv står i `utkast.cvTekst`.
 export type CvFil = { navn: string; tilstand: "leser" | "lest" | "feilet" };
 
+// Varselet når *Analyser* trykkes på egen CV i demomodus (FR-26). `nr` øker for hvert
+// trykk, så fokus flyttes til varselet igjen.
+export type DemoVarsel = { nr: number };
+
 export type OktTilstand = {
   okt: {
     bekreftetPersonvern: boolean;
@@ -23,6 +28,7 @@ export type OktTilstand = {
   innhold: {
     utkast: { cvTekst: string; annonse: string };
     cvFil: CvFil | null;
+    demoVarsel: DemoVarsel | null;
   };
   kunngjoring: Kunngjoring | null;
 };
@@ -42,7 +48,11 @@ export type OktHandling =
 
 export const startTilstand: OktTilstand = {
   okt: { bekreftetPersonvern: false, modus: null, leverandor: null },
-  innhold: { utkast: { cvTekst: "", annonse: "" }, cvFil: null },
+  innhold: {
+    utkast: { cvTekst: "", annonse: "" },
+    cvFil: null,
+    demoVarsel: null,
+  },
   kunngjoring: null,
 };
 
@@ -101,6 +111,36 @@ function maskerCv(tilstand: OktTilstand, cvTekst: string): OktTilstand {
   return medCvTekst(tilstand, tekst, [antall > 0 ? fjernetTekst(antall) : null]);
 }
 
+// Varselet gjelder teksten da *Analyser* ble trykket. Endres teksten, forsvinner det.
+function utenDemoVarsel(tilstand: OktTilstand): OktTilstand {
+  if (!tilstand.innhold.demoVarsel) return tilstand;
+  return { ...tilstand, innhold: { ...tilstand.innhold, demoVarsel: null } };
+}
+
+// *Analyser* maskerer først. Ble et nytt fødselsnummer maskert, eller er knappen
+// deaktivert, skjer ingenting mer. Ellers gir egen CV i demomodus varselet (FR-26).
+// Ukjent modus regnes som demo. Analysen selv kommer i Epic 2.
+function analyser(tilstand: OktTilstand): OktTilstand {
+  const maskert = maskerCv(tilstand, tilstand.innhold.utkast.cvTekst);
+  // Teksten endres bare når et nytt fødselsnummer ble maskert.
+  const nyttNummer =
+    maskert.innhold.utkast.cvTekst !== tilstand.innhold.utkast.cvTekst;
+  if (nyttNummer || arsakerTilAnalyse(maskert).length > 0) return maskert;
+
+  const { cvTekst, annonse } = maskert.innhold.utkast;
+  if (maskert.okt.modus === "ekte" || erDemoeksempel(cvTekst, annonse)) {
+    return maskert;
+  }
+
+  return {
+    ...maskert,
+    innhold: {
+      ...maskert.innhold,
+      demoVarsel: { nr: (maskert.innhold.demoVarsel?.nr ?? 0) + 1 },
+    },
+  };
+}
+
 function medCvFil(tilstand: OktTilstand, cvFil: CvFil | null): OktTilstand {
   return { ...tilstand, innhold: { ...tilstand.innhold, cvFil } };
 }
@@ -122,7 +162,10 @@ export function reducer(
     case "statusHentet":
       if (!handling.status) return tilstand;
       return {
-        ...tilstand,
+        // Et varsel gitt mens modus var ukjent, gjelder ikke i ekte modus.
+        ...(handling.status.modus === "ekte"
+          ? utenDemoVarsel(tilstand)
+          : tilstand),
         okt: {
           ...tilstand.okt,
           modus: handling.status.modus,
@@ -140,6 +183,7 @@ export function reducer(
         innhold: {
           ...tilstand.innhold,
           utkast: { ...tilstand.innhold.utkast, annonse: handling.annonse },
+          demoVarsel: null,
         },
         kunngjoring: kunngjor(tilstand.kunngjoring, [
           passertGrense(
@@ -151,16 +195,19 @@ export function reducer(
       };
     // Mens brukeren skriver, maskeres ingenting.
     case "cvEndret":
-      return medCvTekst(tilstand, handling.cvTekst, []);
+      return medCvTekst(utenDemoVarsel(tilstand), handling.cvTekst, []);
     case "cvLimtInn":
-      return maskerCv(tilstand, handling.cvTekst);
+      return maskerCv(utenDemoVarsel(tilstand), handling.cvTekst);
     case "cvForlatt":
-    case "analyserTrykket":
-      // Analysen kommer i story 1.6. Til da maskerer *Analyser* bare.
       return maskerCv(tilstand, tilstand.innhold.utkast.cvTekst);
+    case "analyserTrykket":
+      return analyser(tilstand);
     case "cvFilLeses":
       return {
-        ...medCvFil(tilstand, { navn: handling.navn, tilstand: "leser" }),
+        ...medCvFil(utenDemoVarsel(tilstand), {
+          navn: handling.navn,
+          tilstand: "leser",
+        }),
         kunngjoring: kunngjor(tilstand.kunngjoring, [LESER_CV]),
       };
     // Innlest tekst maskeres som innliming (AD-13) og kuttes aldri. Et svar uten
@@ -168,15 +215,18 @@ export function reducer(
     case "cvFilLest":
       if (!erLeser(tilstand)) return tilstand;
       return medCvFil(
-        maskerCv(tilstand, handling.cvTekst),
+        maskerCv(utenDemoVarsel(tilstand), handling.cvTekst),
         ferdigLest(tilstand, "lest"),
       );
     case "cvFilFeilet":
       if (!erLeser(tilstand)) return tilstand;
-      return medCvFil(medCvTekst(tilstand, "", []), ferdigLest(tilstand, "feilet"));
+      return medCvFil(
+        medCvTekst(utenDemoVarsel(tilstand), "", []),
+        ferdigLest(tilstand, "feilet"),
+      );
     // Tilbake til tilstand 1 uten tekst og filnavn.
     case "cvFilByttet":
-      return medCvFil(medCvTekst(tilstand, "", []), null);
+      return medCvFil(medCvTekst(utenDemoVarsel(tilstand), "", []), null);
   }
 }
 
