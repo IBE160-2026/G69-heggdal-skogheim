@@ -9,6 +9,7 @@ import {
   fireEvent,
   render,
   screen,
+  waitFor,
 } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -122,6 +123,13 @@ async function kontrollFelt() {
   return (await screen.findByLabelText("CV-tekst")) as HTMLTextAreaElement;
 }
 
+// Fokus settes i en effekt etter at feltet vises, så testen venter på begge (UX-DR24).
+async function kontrollFeltMedFokus() {
+  const felt = await kontrollFelt();
+  await waitFor(() => expect(document.activeElement).toBe(felt));
+  return felt;
+}
+
 function utenMellomrom(tekst: string) {
   return tekst.replace(/\s+/g, "");
 }
@@ -156,11 +164,10 @@ describe("CvPanel, opplasting", () => {
 
     expect(screen.getByText("Leser CV-en …", { selector: "section p" })).toBeTruthy();
     expect(liveTekst()).toBe("Leser CV-en …");
-    const felt = await kontrollFelt();
+    const felt = await kontrollFeltMedFokus();
     expect(utenMellomrom(felt.value)).toBe(utenMellomrom(TXT));
     expect(screen.getByText("cv.docx")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Bytt fil" })).toBeTruthy();
-    expect(document.activeElement).toBe(felt);
   });
 
   it("FR-1: CV.DOCX med dra og slipp gir kontrollsteget", async () => {
@@ -168,10 +175,9 @@ describe("CvPanel, opplasting", () => {
 
     slipp(fil(DOCX, "CV.DOCX"));
 
-    const felt = await kontrollFelt();
+    const felt = await kontrollFeltMedFokus();
     expect(utenMellomrom(felt.value)).toBe(utenMellomrom(TXT));
     expect(screen.getByText("CV.DOCX")).toBeTruthy();
-    expect(document.activeElement).toBe(felt);
   });
 
   it("FR-1: cv.pdf med to kolonner gir «Leser CV-en …», så kontrollsteget med fokus", async () => {
@@ -180,14 +186,13 @@ describe("CvPanel, opplasting", () => {
     velg(fil(PDF, "cv.pdf"));
 
     expect(screen.getByText("Leser CV-en …", { selector: "section p" })).toBeTruthy();
-    const felt = await kontrollFelt();
+    const felt = await kontrollFeltMedFokus();
     expect(felt.value).toContain("SPRÅK");
     expect(felt.value).toContain("PROFIL");
     expect(felt.value.indexOf("SPRÅK")).toBeLessThan(felt.value.indexOf("PROFIL"));
     expect(felt.value).toContain("Reiselivsstudent som trives");
     expect(screen.getByText("cv.pdf")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Bytt fil" })).toBeTruthy();
-    expect(document.activeElement).toBe(felt);
   });
 
   it("FR-1: CV.PDF med dra og slipp gir kontrollsteget", async () => {
@@ -196,14 +201,13 @@ describe("CvPanel, opplasting", () => {
     slipp(fil(PDF, "CV.PDF"));
 
     expect(screen.getByText("Leser CV-en …", { selector: "section p" })).toBeTruthy();
-    const felt = await kontrollFelt();
+    const felt = await kontrollFeltMedFokus();
     expect(felt.value).toContain("MINA FIKTIVSEN");
     expect(felt.value).toContain("SPRÅK");
     expect(felt.value).toContain("PROFIL");
     expect(felt.value.indexOf("SPRÅK")).toBeLessThan(felt.value.indexOf("PROFIL"));
     expect(screen.getByText("CV.PDF")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Bytt fil" })).toBeTruthy();
-    expect(document.activeElement).toBe(felt);
   });
 
   it("FR-6: fødselsnummer i en TXT-fil maskeres, med linje og live-melding", async () => {
@@ -359,10 +363,9 @@ describe("CvPanel, filer som ikke kan leses", () => {
 
     velg(lag());
 
-    const felt = await kontrollFelt();
+    const felt = await kontrollFeltMedFokus();
     const melding = screen.getByText(LESEFEIL);
     expect(felt.value).toBe("");
-    expect(document.activeElement).toBe(felt);
     expect(felt.getAttribute("aria-describedby")).toContain(melding.id);
     expect(screen.getByRole("button", { name: "Bytt fil" })).toBeTruthy();
   });
@@ -375,12 +378,11 @@ describe("CvPanel, filer som ikke kan leses", () => {
 
     velg(fil(innhold, "tom.txt"));
 
-    const felt = await kontrollFelt();
+    const felt = await kontrollFeltMedFokus();
     expect(felt.value).toBe(innhold);
     expect(screen.getByText("tom.txt")).toBeTruthy();
     expect(screen.getByText(KORT)).toBeTruthy();
     expect(screen.queryByText(LESEFEIL)).toBeNull();
-    expect(document.activeElement).toBe(felt);
   });
 
   it("FR-3: en skannet PDF uten tekstlag gir tomt felt med fokus og varsel, og tekst kan skrives inn", async () => {
@@ -388,12 +390,11 @@ describe("CvPanel, filer som ikke kan leses", () => {
 
     velg(fil(pdfUtenTekst(), "cv.pdf"));
 
-    const felt = await kontrollFelt();
+    const felt = await kontrollFeltMedFokus();
     expect(felt.value).toBe("");
     expect(screen.getByText("cv.pdf")).toBeTruthy();
     expect(screen.getByText(KORT)).toBeTruthy();
     expect(screen.queryByText(LESEFEIL)).toBeNull();
-    expect(document.activeElement).toBe(felt);
 
     fireEvent.change(felt, { target: { value: "Ola Nordmann" } });
 
