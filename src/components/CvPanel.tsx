@@ -178,7 +178,7 @@ export function CvPanel() {
             }}
           />
           <p id={HJELP_ID} className="mt-2 text-sm text-muted-foreground">
-            eller dra filen hit. DOCX eller TXT, maks 5 MB
+            eller dra filen hit. PDF, DOCX eller TXT, maks 5 MB
           </p>
         </div>
         {avvist ? (

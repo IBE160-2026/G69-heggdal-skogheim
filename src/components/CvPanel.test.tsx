@@ -84,7 +84,7 @@ describe("CvPanel, tilstand 1", () => {
     expect(html).not.toContain("Opplasting av CV-fil kommer snart.");
     expect(html).toContain(">Velg CV-fil</button>");
     expect(html).toContain('accept=".pdf,.docx,.txt"');
-    expect(html).toContain("eller dra filen hit. DOCX eller TXT, maks 5 MB");
+    expect(html).toContain("eller dra filen hit. PDF, DOCX eller TXT, maks 5 MB");
     expect(html).toContain(">Lim inn CV-teksten</button>");
     expect(html).not.toContain("<textarea");
   });

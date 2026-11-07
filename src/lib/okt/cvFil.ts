@@ -1,6 +1,9 @@
 import { lesDocx } from "@/lib/innlesing/docx";
+import { lesPdf } from "@/lib/innlesing/pdf";
 import { lesTxt } from "@/lib/innlesing/txt";
 import { CV_FIL_MAKS } from "@/lib/kontrakt/grenser";
+
+import { hentGetDocument } from "./pdfjs";
 
 export type CvFilSvar =
   | { type: "lest"; cvTekst: string }
@@ -8,11 +11,10 @@ export type CvFilSvar =
   | { type: "feilet" };
 
 export const FIL_AVVIST =
-  "Filen kan ikke brukes. Velg en DOCX- eller TXT-fil på maks 5 MB.";
-export const PDF_AVVIST =
-  "PDF-filer kan ikke leses ennå. Velg en DOCX- eller TXT-fil, eller lim inn CV-teksten.";
+  "Filen kan ikke brukes. Velg en PDF-, DOCX- eller TXT-fil på maks 5 MB.";
 
 const LESERE: Record<string, (data: ArrayBuffer) => string | Promise<string>> = {
+  ".pdf": async (data) => lesPdf(data, await hentGetDocument()),
   ".docx": lesDocx,
   ".txt": lesTxt,
 };
@@ -26,7 +28,6 @@ function endelse(navn: string): string {
 // MIME-typen brukes ikke. Gir meldingen for en avvist fil, ellers null.
 export function avvisCvFil(fil: File): string | null {
   const type = endelse(fil.name);
-  if (type === ".pdf") return PDF_AVVIST;
   if (!LESERE[type] || fil.size > CV_FIL_MAKS) return FIL_AVVIST;
 
   return null;

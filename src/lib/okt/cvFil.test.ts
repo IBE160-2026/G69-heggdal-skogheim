@@ -1,12 +1,20 @@
 import { readFileSync } from "node:fs";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { CV_FIL_MAKS } from "@/lib/kontrakt/grenser";
 
-import { avvisCvFil, FIL_AVVIST, lesCvFil, PDF_AVVIST } from "./cvFil";
+import { avvisCvFil, FIL_AVVIST, lesCvFil } from "./cvFil";
+
+// Node-testene bruker legacy-builden av pdfjs med den samme lesPdf.
+vi.mock("./pdfjs", () => ({
+  hentGetDocument: async () =>
+    (await import("pdfjs-dist/legacy/build/pdf.mjs")).getDocument,
+}));
 
 const DOCX = readFileSync("testdata/par-1-butikk-bank/cv.docx");
 const TXT = readFileSync("testdata/par-1-butikk-bank/cv.txt", "utf8");
+const PDF = readFileSync("testdata/par-4-tokolonne-hotell/cv.pdf");
+const PDF_TXT = readFileSync("testdata/par-4-tokolonne-hotell/cv.txt", "utf8");
 
 function fil(innhold: BlobPart, navn: string, type = "") {
   return new File([innhold], navn, { type });
@@ -77,11 +85,39 @@ describe("lesCvFil", () => {
     },
   );
 
-  it.each(["cv.pdf", "CV.PDF"])("FR-1: %s avvises med PDF-meldingen", async (navn) => {
-    await expect(lesCvFil(fil("%PDF-1.7", navn))).resolves.toEqual({
+  it.each(["cv.pdf", "CV.PDF"])("FR-1: %s leses", async (navn) => {
+    const svar = await lesCvFil(fil(PDF, navn));
+
+    expect(svar.type).toBe("lest");
+    if (svar.type === "lest") {
+      expect(utenMellomrom(svar.cvTekst)).toBe(utenMellomrom(PDF_TXT));
+    }
+  });
+
+  it("FR-1: PDF på 5 MB + 1 byte avvises før lesing", async () => {
+    const stor = fil(new Uint8Array(CV_FIL_MAKS + 1), "cv.pdf");
+    stor.arrayBuffer = () => {
+      throw new Error("skal ikke leses");
+    };
+
+    await expect(lesCvFil(stor)).resolves.toEqual({
       type: "avvist",
-      melding: PDF_AVVIST,
+      melding: FIL_AVVIST,
     });
+  });
+
+  it("FR-22: ødelagt PDF gir feilet", async () => {
+    const bytes = new Uint8Array(256).map((_, i) => (i * 37 + 11) % 256);
+
+    await expect(lesCvFil(fil(bytes, "cv.pdf"))).resolves.toEqual({
+      type: "feilet",
+    });
+  });
+
+  it("FR-1: formatmeldingen nevner PDF, DOCX og TXT", () => {
+    expect(FIL_AVVIST).toBe(
+      "Filen kan ikke brukes. Velg en PDF-, DOCX- eller TXT-fil på maks 5 MB.",
+    );
   });
 
   it("FR-22: ødelagt DOCX gir feilet", async () => {
@@ -109,7 +145,7 @@ describe("lesCvFil", () => {
 
   it("FR-1: avvisCvFil avgjør uten å lese filen", () => {
     expect(avvisCvFil(fil("x", "cv.txt"))).toBeNull();
-    expect(avvisCvFil(fil("x", "cv.pdf"))).toBe(PDF_AVVIST);
+    expect(avvisCvFil(fil("x", "cv.pdf"))).toBeNull();
     expect(avvisCvFil(fil("x", "cv.odt"))).toBe(FIL_AVVIST);
   });
 

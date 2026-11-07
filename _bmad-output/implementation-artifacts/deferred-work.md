@@ -25,3 +25,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-4-laste-opp-cv-som-docx-eller-txt.md`
   summary: Add a check that mammoth is not in the page chunk after `next build` (AD-7, dynamic import).
   evidence: A static `import mammoth` passes every test and adds about 400 kB to the start page. Checking it needs build output, outside `npm test`; the browser smoke test from story 1.2's deferred item could include it.
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-5-laste-opp-cv-som-pdf-ogsaa-med-to-kolonner.md`
+  summary: Add an automated browser test of PDF upload on the production build: the modern pdfjs build, the worker URL from the bundler, and `testdata/par-4-tokolonne-hotell/cv.pdf` read in the review step. It fits with the browser smoke test deferred in story 1.2.
+  evidence: Every PDF test mocks `hentGetDocument` or uses the legacy build, and `pdfjs.test.ts` only checks the `workerSrc` string. A wrong worker name or a bundler change after a Next upgrade would break all PDF uploads in production while every test passes. Today only the manual check after `next build && next start` covers it.
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-5-laste-opp-cv-som-pdf-ogsaa-med-to-kolonner.md`
+  summary: Check whether one-column CVs with a date table («2024–nå | Servitør …») are read as two columns, so that all dates come before all roles, and adjust the column rule if so (medium, unverified).
+  evidence: `finnKolonnegrense` needs only one bit on each side of a gap of at least 12 pt. The header and footer trimming from round 2 can remove a full-width profile paragraph at the top. It happens only when no heading covers the space between dates and text, so it depends on the PDF. To settle it, run `lesPdf` on real one-column CV PDFs from Word and Canva.

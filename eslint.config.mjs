@@ -21,10 +21,14 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
-    // AD-2: UI-et når serverlagene og kjernen bare via lib/okt og API-rutene.
+    // AD-2: UI-et når serverlagene, kjernen og pdfjs-dist bare via lib/okt og
+    // API-rutene.
     files: ["src/components/**", "src/app/**"],
     ignores: ["src/app/api/**"],
-    rules: forbudteImporter(["(^|/)lib/(llm|pipeline|kjerne|innlesing)(/|$)"]),
+    rules: forbudteImporter([
+      "(^|/)lib/(llm|pipeline|kjerne|innlesing)(/|$)",
+      "^pdfjs-dist(/|$)",
+    ]),
   },
   {
     files: ["src/lib/okt/**"],
