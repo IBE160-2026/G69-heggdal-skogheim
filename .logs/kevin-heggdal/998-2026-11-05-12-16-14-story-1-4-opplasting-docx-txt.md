@@ -36,7 +36,7 @@ Fullføre den manuelle testen av story 1.4, sette storyen til `done` i `sprint-s
 - Alle 16 manuelle tester er bestått, også DOCX-opplasting etter `npm run build && npm start`.
 - `sprint-status.yaml`: `1-4-laste-opp-cv-som-docx-eller-txt` er endret fra `review` til `done`, og `last_updated` er satt til 11-07-2026 22:29. `epic-1` står fortsatt som `in-progress`, fordi 1.5 og 1.6 gjenstår.
 - Ingen kodeendringer. Punktet om manuell test i `issues.md` er lukket.
-- Ikke committet ennå. Kevin godkjenner commit og push først.
+- Etter Kevins godkjenning er endringen i sprint-status committet som `50be4f9` (BMAD: story 1.4 satt til done). Den og loggcommiten er pushet til `origin/story-1.4-laste-opp-cv-som-docx-eller-txt` på GitHub. Ingen PR er opprettet, og ingenting er merget.
 
 ### Åpne punkter
 - Lag PR for 1.4 først når PR-en for 1.3 er merget, og rebaser 1.4 på `main` (står allerede i `issues.md`).
