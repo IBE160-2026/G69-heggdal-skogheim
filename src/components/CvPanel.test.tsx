@@ -113,6 +113,14 @@ describe("CvPanel, tilstand 2", () => {
     expect(html).toContain('aria-describedby="cv-varsel cv-teller"');
   });
 
+  it("NFR-1: feltet har autoComplete og stavekontroll av", () => {
+    monter("Ola");
+    const felt = screen.getByLabelText("CV-tekst");
+
+    expect(felt.getAttribute("autocomplete")).toBe("off");
+    expect(felt.getAttribute("spellcheck")).toBe("false");
+  });
+
   it("FR-3: tomt felt etter tømming beholder tilstand 2", () => {
     monter("Ola");
     const felt = screen.getByLabelText("CV-tekst");

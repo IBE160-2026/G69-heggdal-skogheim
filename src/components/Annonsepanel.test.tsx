@@ -86,6 +86,10 @@ describe("Annonsepanel, markup", () => {
     expect(vis("")).toContain('autoComplete="off"');
   });
 
+  it("NFR-1: feltet har stavekontroll av", () => {
+    expect(monter().getAttribute("spellcheck")).toBe("false");
+  });
+
   it("FR-4: telleren måler etter trim og skiller tusen med hardt mellomrom", () => {
     expect(vis(`  ${"a".repeat(50)}  `)).toContain(`50 tegn (200–8${NBSP}000)`);
     expect(vis("a".repeat(8001))).toContain(`8${NBSP}001 tegn (200–8${NBSP}000)`);
