@@ -43,6 +43,8 @@ export function Annonsepanel() {
         value={annonse}
         rows={12}
         autoComplete="off"
+        // Utvidet stavekontroll i nettleseren kan sende teksten til en skytjeneste.
+        spellCheck={false}
         className="min-h-60 field-sizing-fixed"
         aria-invalid={feil ? true : undefined}
         aria-describedby={feil ? `${beskrivelse} ${FEIL_ID}` : beskrivelse}

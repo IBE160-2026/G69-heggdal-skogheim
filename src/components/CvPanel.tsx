@@ -290,6 +290,8 @@ export function CvPanel() {
         value={cvTekst}
         rows={16}
         autoComplete="off"
+        // Utvidet stavekontroll i nettleseren kan sende teksten til en skytjeneste.
+        spellCheck={false}
         className="mt-1 min-h-60 field-sizing-fixed"
         aria-invalid={feil ? true : undefined}
         aria-describedby={beskrivelse}

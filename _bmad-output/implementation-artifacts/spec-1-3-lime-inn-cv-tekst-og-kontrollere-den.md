@@ -48,7 +48,8 @@ context:
 
 | Scenario | Input / State | Expected Output / Behavior | Error Handling |
 |----------|--------------|---------------------------|----------------|
-| Fødselsnummer | «01019012345», «010190 12345» | `[fødselsnummer fjernet]` | N/A |
+| Fødselsnummer | «01019012345», «010190 12345», «010190  12345», «010190-12345», «010190 – 12345» | `[fødselsnummer fjernet]` | N/A |
+| Ikke skille | Fire mellomrom, to bindestreker, tabulator, linjeskift, punktum eller skråstrek mellom 6 og 5 sifre | Uendret | N/A |
 | Ikke fødselsnummer | «400 00 001», «1990», «1234.56.78903», «12345678903», «310290 12345» | Uendret | N/A |
 | Siffer rundt | «101019012345», «010190123456» | Uendret | N/A |
 | Idempotens | `masker(masker(x))` | Lik `masker(x)` | N/A |
@@ -112,7 +113,7 @@ context:
 | Focus reaches active *Analyser* without a click (mousedown then drag off), so the typed number stays unmasked (blind, edge, gap) | medium | The blur skip assumes a click will follow; with no `click`, nothing masks until the field is left again | patch, `onBlur` on *Analyser* sends `cvForlatt` (idempotent) |
 | Blur rule reads `aria-disabled` from the DOM instead of state (blind) | low | Masking breaks silently if `AnalyserKnapp` changes how it shows disabled; `arsakerTilAnalyse(tilstand)` is available | patch, direct replacement |
 | NBSP between the 6 and 5 digits not masked (blind, edge) | medium | PDF and Word text often has U+00A0; FR-6 "ett mellomrom" covers a non-breaking space | patch, `[ \u00a0]?` + test |
-| Hyphen or several spaces as separator not masked (blind, edge) | medium | Real formats, but FR-6 allows only one space; a wider rule changes the PRD | defer |
+| Hyphen or several spaces as separator not masked (blind, edge) | medium | Real formats, but FR-6 allows only one space; a wider rule changes the PRD | defer, fixed 2026-11-09 in `story-1.3-oppfolging-fnr-stavekontroll` (1–3 spaces, or one hyphen or en dash with at most one space on each side; FR-6 updated) |
 | Literal NBSP in strings instead of `\u00a0` (blind) | low | The tool wrote invisible characters; easy to break when editing. Direct correction in this story's files only, not in `Annonsepanel` | patch |
 | Drag-and-drop not masked right away (blind, edge) | low | Only `onPaste` set the flag; one direct handler | patch, `onDrop` |
 | Paste flag stays set when a paste changes nothing (edge) | low | The next non-key change is masked early; masking early is harmless, and `onDrop`/`onKeyDown` reset or set it anyway | rejected |
@@ -120,7 +121,7 @@ context:
 | No mod-11 check digit (blind) | false | FR-6 defines the rule as a valid date only, recorded as a decision in the frozen intent; over-masking is the safe direction | rejected |
 | `antallFjernet` counts placeholders, line and live message can differ (blind, edge) | false | Frozen decision: the line counts the placeholders in the field; the live message counts this event | rejected |
 | Short-text warning mentions a file when the user pasted (blind) | false | Wording fixed by the AC and `EXPERIENCE.md`; Kevin chose 1–299 characters | rejected, spec edit |
-| No `spellCheck={false}` on the CV field (blind) | low | Chrome's opt-in enhanced spell check can send field text to Google; the annonse field has the same exposure from story 1.2, and turning it off is a UX choice for the whole app | defer |
+| No `spellCheck={false}` on the CV field (blind) | low | Chrome's opt-in enhanced spell check can send field text to Google; the annonse field has the same exposure from story 1.2, and turning it off is a UX choice for the whole app | defer, fixed 2026-11-09 in `story-1.3-oppfolging-fnr-stavekontroll` (`spellCheck={false}` on the CV field and the ad field) |
 | Old message stays in the `sr-only` region (blind) | low | Rarely met in browse mode; clearing needs timers or extra state | rejected |
 | Caret jumps to the end after a masked paste (edge) | low | Only when the paste contains a number; fixing needs selection handling | rejected |
 | Panel falls back to state 1 on remount with an empty field (edge) | false | `CvPanel` is never remounted today; story 2.7 owns the way back to the control step | rejected |
