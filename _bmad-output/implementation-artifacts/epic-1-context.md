@@ -19,7 +19,7 @@ Denne epicen legger grunnmuren: en publisert app som kan startes uten API-nøkke
 
 - **Grenser:** CV-fil er PDF, DOCX eller TXT på maks 5 MB. Annonsen er 200–8 000 tegn, CV-teksten maks 15 000. Under 300 tegn CV-tekst gir advarsel om skannet eller tom fil. Ingen OCR, og tekst kuttes aldri.
 - **Innlesing:** Filen forlater aldri nettleseren. Bare CV-teksten sendes, og først ved *Analyser*. DOCX og TXT skal gi `cv.txt` når mellomrom og linjeskift ikke regnes med. For testpar 4 skal alle linjene finnes uten blandede kolonner.
-- **Fødselsnummer:** 11 sifre, eventuelt med mellomrom etter de seks første, der de seks første er en gyldig dato (DDMMÅÅ). Telefonnumre, årstall, kontonumre og 11 sifre uten gyldig dato maskeres ikke.
+- **Fødselsnummer:** 11 sifre der de seks første er en gyldig dato (DDMMÅÅ). Mellom de seks første og de fem siste kan det stå ingenting, 1–3 mellomrom, eller én bindestrek eller tankestrek med høyst ett mellomrom på hver side. Tabulator og linjeskift regnes ikke som skille. Telefonnumre, årstall, kontonumre og 11 sifre uten gyldig dato maskeres ikke.
 - **Personvern og lagring:** Avkrysning kreves før første analyse og gjelder hele økten. Ingenting skrives til disk, database, nettleserlagring eller cookies, og innhold logges aldri.
 - **Hemmeligheter:** API-nøkkelen finnes bare som miljøvariabel på serveren. CV-filer er bare tillatt under `testdata/`.
 - **Sensor:** Fra en fersk klone starter appen i demomodus med høyst tre kommandoer. README-en har Vercel-adressen. Mangler en variabel, gir det demomodus eller standardverdi, aldri krasj.
