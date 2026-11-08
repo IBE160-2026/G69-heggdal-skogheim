@@ -27,3 +27,22 @@ Commit `e1e286e` (2026-11-05 kl. 02:10), 20 filer, +1247/−19, bygger på `55b3
 - Avgjør om CV- og annonsefeltet skal ha `spellCheck={false}`, siden Chromes utvidede stavekontroll kan sende teksten til Google.
 - Story 1.4 må selv vise varselet om kort tekst når en fil gir 0 tegn.
 - Story 1.6 må sjekke maskeringen ved trykk på *Analyser* i Safari, der knapper ikke får fokus ved klikk.
+
+## 2026-11-08 kl. 12:39 — Sondre Skogheim
+
+### Oppgave
+Sondre ville vite hva han må godkjenne av Kevins arbeid på epic 1. Kevin tar alle stories i epic 1, og Sondre tar epic 2 når Kevin er ferdig.
+
+### Plan
+- Leste Kevins logger og `issues.md` på grenen `origin/story-1.6-analyser-med-egen-cv-i-demomodus` (`.logs/kevin-heggdal/`), og PR #3 med `gh pr view 3`.
+- Kevins grener ligger oppå hverandre: 1.3 → 1.4 → 1.5 → 1.6. Han lager PR for neste story først når den forrige er flettet.
+
+### Resultat
+- Sondre flettet PR #3 (story 1.3) på GitHub med en merge commit, `133b57e`, 2026-11-08 kl. 12:36. CI på `main` besto. PR-en ble flettet uten en innsendt *Approve*-review.
+- Status i epic 1 etter Kevins `sprint-status.yaml`: 1.3 og 1.4 er `done`, mens 1.5 og 1.6 står som `review` til testene med NVDA og VoiceOver i Safari er gjort eller sløyfet. Det står som åpne punkter i Kevins `issues.md`.
+- Punktet om varsel ved 0 tegn fra fil er lukket. Kevin løste det i story 1.4.
+- Punktet om maskering ved klikk på *Analyser* i Safari er lukket her, fordi det står i Kevins `issues.md` under story 1.6.
+
+### Åpne punkter
+- Godkjenn og flett Kevins PR-er for 1.4, 1.5 og 1.6 når de kommer, én om gangen.
+- Punktene om `masker` og `spellCheck={false}` fra 5. november står fortsatt åpne. Sondre skal svare Kevin på dem.
