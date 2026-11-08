@@ -17,6 +17,7 @@ function vis(tilstand: OktTilstand) {
 const KLAR: OktTilstand = {
   okt: { ...startTilstand.okt, bekreftetPersonvern: true },
   innhold: { utkast: { cvTekst: "CV-tekst", annonse: "a".repeat(200) } },
+  kunngjoring: null,
 };
 
 describe("AnalyserKnapp", () => {

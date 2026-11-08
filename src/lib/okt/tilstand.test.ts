@@ -21,6 +21,7 @@ describe("reducer", () => {
     expect(startTilstand).toEqual({
       okt: { bekreftetPersonvern: false, modus: null, leverandor: null },
       innhold: { utkast: { cvTekst: "", annonse: "" } },
+      kunngjoring: null,
     });
   });
 
