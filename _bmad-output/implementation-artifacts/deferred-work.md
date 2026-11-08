@@ -13,3 +13,9 @@
 - source_spec: none
   summary: Story 5.2 must run `npm audit` again and take any safe updates for `minimatch` and `deepmerge`, without `--force`.
   evidence: The 21 findings on 2026-11-04 come from these two packages through ESLint and `shadcn`, and `npm audit fix` changes nothing today.
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-3-lime-inn-cv-tekst-og-kontrollere-den.md`
+  summary: Decide with the group whether `masker` should also catch «010190-12345» and several spaces between the 6 and 5 digits. That means changing FR-6 and the tests.
+  evidence: The review found these formats in pasted CVs, but FR-6 allows only one space. Today they are sent unmasked. A non-breaking space is already handled in story 1.3.
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-3-lime-inn-cv-tekst-og-kontrollere-den.md`
+  summary: Decide whether the CV field and the ad field should have `spellCheck={false}`, so that browser spell checkers in the cloud do not get the text.
+  evidence: Chrome’s enhanced spell check (opt-in) sends field text to Google. The ad field has had the same behaviour since story 1.2. Turning it off removes typo marks for the user, so this is a UX choice for the whole app.
