@@ -145,9 +145,9 @@ Brukeren må krysse av for at informasjonen er forstått før den første analys
 - *Analyser* er deaktivert til brukeren har krysset av. Avkrysningen gjelder resten av økten.
 
 #### FR-6: Maskere fødselsnummer
-Systemet erstatter fødselsnumre i CV-teksten med `[fødselsnummer fjernet]` før teksten sendes. Et fødselsnummer er 11 sifre, eventuelt med mellomrom etter de seks første, der de seks første er en gyldig dato (DDMMÅÅ). `[bekreftet antakelse]`
+Systemet erstatter fødselsnumre i CV-teksten med `[fødselsnummer fjernet]` før teksten sendes. Et fødselsnummer er 11 sifre der de seks første er en gyldig dato (DDMMÅÅ). Mellom de seks første og de fem siste kan det stå ingenting, 1–3 mellomrom (også hardt mellomrom), eller én bindestrek eller tankestrek med høyst ett mellomrom på hver side. Tabulator, linjeskift og andre tegn regnes ikke som skille. `[bekreftet antakelse, utvidet med bindestrek og flere mellomrom etter gjennomgangen av story 1.3, 2026-11-09]`
 - Maskeringen vises i kontrollsteget, så brukeren ser hva som sendes.
-- En enhetstest bekrefter at «01019012345» og «010190 12345» maskeres, mens telefonnumre («400 00 001»), årstall, kontonumre («1234.56.78903») og 11 sifre uten gyldig dato («12345678903») ikke maskeres.
+- En enhetstest bekrefter at «01019012345», «010190 12345», «010190  12345» og «010190-12345» maskeres, mens telefonnumre («400 00 001»), årstall, kontonumre («1234.56.78903») og 11 sifre uten gyldig dato («12345678903») ikke maskeres.
 
 ### 4.2 Gap-analyse og nøkkelord
 

@@ -27,7 +27,7 @@ FR-2: Systemet leser ut CV-teksten. Ved to kolonner leses hver kolonne ferdig f�
 FR-3: Kontrollsteg: CV-teksten vises i et redigerbart felt, og analysen bruker teksten slik den står da. Under 300 tegn vises en advarsel om skannet eller tom fil, med forslag om å lime inn teksten. Ingen OCR. Etter en analyse kan brukeren gå tilbake med *Endre CV-tekst*, og CV-teksten og annonsen beholdes. *Analyser* starter en ny kjøring som erstatter alle resultatdelene, med en advarsel og bekreftelse hvis noe er redigert.
 FR-4: Annonsen limes inn i et tekstfelt. Annonsen må være 200–8 000 tegn og CV-teksten maks 15 000 tegn. Utenfor grensene vises en norsk melding, og *Analyser* er deaktivert. Grensene håndheves også på serveren.
 FR-5: Informasjon om personvern over feltene: CV-teksten sendes til en ekstern språkmodell (leverandør og land), ingenting lagres etter økten, og brukeren bør fjerne fødselsnummer, adresse, bilde og helseopplysninger. Brukeren må krysse av før første analyse i økten, og avkrysningen gjelder resten av økten.
-FR-6: Fødselsnumre (11 sifre, eventuelt med mellomrom etter de seks første, der de seks første er en gyldig dato DDMMÅÅ) erstattes med `[fødselsnummer fjernet]` før sending, og det vises i kontrollsteget. Enhetstest: «01019012345» og «010190 12345» maskeres. Telefonnumre, årstall, kontonumre og «12345678903» maskeres ikke.
+FR-6: Fødselsnumre (11 sifre der de seks første er en gyldig dato DDMMÅÅ, og der det mellom de seks første og de fem siste kan stå ingenting, 1–3 mellomrom, eller én bindestrek eller tankestrek med høyst ett mellomrom på hver side) erstattes med `[fødselsnummer fjernet]` før sending, og det vises i kontrollsteget. Enhetstest: «01019012345», «010190 12345», «010190  12345» og «010190-12345» maskeres. Telefonnumre, årstall, kontonumre og «12345678903» maskeres ikke.
 FR-7: Systemet henter ut alle krav i annonsen, både krav og ønsker, og viser dem i en liste. Hvert krav i fasiten er med (vurderes manuelt med sjekklisten).
 FR-8: Hvert krav får én kategori: **Oppfylt** (direkte dekning, belegg vises), **Delvis oppfylt** (overførbar erfaring eller egenvurdering, belegg og én setning om hvorfor) eller **Mangler** (ikke dokumentert i CV-teksten). Ved tvil velges den svakeste. Ingen krav over fasit, Mangler i fasiten er alltid Mangler, og høyst ett krav per testpar ligger under fasiten.
 FR-9: Hvert belegg kontrolleres ordrett mot CV-teksten (store og små bokstaver, mellomrom og linjeskift regnes ikke med). Mangler belegget, blir kravet **Mangler** og merkes «nedgradert: fant ikke belegg i CV-en», og belegget vises ikke. Enhetstester: belegg som finnes, belegg som er omskrevet (avvises), belegg med andre linjeskift (godtas), og Oppfylt og Delvis oppfylt uten belegg blir Mangler.
@@ -257,7 +257,7 @@ slik at jeg kan rette feil og vite at fødselsnummeret mitt ikke blir sendt.
 
 **Gitt** `masker` i `lib/kjerne`
 **Når** enhetstestene kjører
-**Så** maskeres «01019012345» og «010190 12345» til `[fødselsnummer fjernet]`, mens «400 00 001», årstall, «1234.56.78903» og «12345678903» ikke maskeres
+**Så** maskeres «01019012345», «010190 12345», «010190  12345» og «010190-12345» til `[fødselsnummer fjernet]`, mens «400 00 001», årstall, «1234.56.78903» og «12345678903» ikke maskeres
 **Og** `masker(masker(x)) === masker(x)`, og testnavnene starter med `FR-6:`
 
 **Gitt** CV-panelet i tilstand 1
