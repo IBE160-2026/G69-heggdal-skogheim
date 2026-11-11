@@ -19,7 +19,7 @@ function vis(annonse: string) {
     <OktProvider
       startTilstand={{
         ...startTilstand,
-        innhold: { utkast: { cvTekst: "", annonse } },
+        innhold: { utkast: { cvTekst: "", annonse }, cvFil: null },
       }}
     >
       <Annonsepanel />

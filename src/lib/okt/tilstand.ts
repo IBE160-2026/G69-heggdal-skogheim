@@ -11,6 +11,9 @@ import type {
 // Meldingen til live-regionen. `nr` øker for hver ny melding, så samme tekst leses opp igjen.
 export type Kunngjoring = { tekst: string; nr: number };
 
+// CV-filen som er valgt. Teksten selv står i `utkast.cvTekst`.
+export type CvFil = { navn: string; tilstand: "leser" | "lest" | "feilet" };
+
 export type OktTilstand = {
   okt: {
     bekreftetPersonvern: boolean;
@@ -19,6 +22,7 @@ export type OktTilstand = {
   };
   innhold: {
     utkast: { cvTekst: string; annonse: string };
+    cvFil: CvFil | null;
   };
   kunngjoring: Kunngjoring | null;
 };
@@ -30,16 +34,21 @@ export type OktHandling =
   | { type: "cvEndret"; cvTekst: string }
   | { type: "cvLimtInn"; cvTekst: string }
   | { type: "cvForlatt" }
-  | { type: "analyserTrykket" };
+  | { type: "analyserTrykket" }
+  | { type: "cvFilLeses"; navn: string }
+  | { type: "cvFilLest"; cvTekst: string }
+  | { type: "cvFilFeilet" }
+  | { type: "cvFilByttet" };
 
 export const startTilstand: OktTilstand = {
   okt: { bekreftetPersonvern: false, modus: null, leverandor: null },
-  innhold: { utkast: { cvTekst: "", annonse: "" } },
+  innhold: { utkast: { cvTekst: "", annonse: "" }, cvFil: null },
   kunngjoring: null,
 };
 
 const ANNONSE_FOR_LANG = "Annonsen er for lang. Maks 8\u00a0000 tegn.";
 const CV_FOR_LANG = "CV-teksten er for lang. Maks 15\u00a0000 tegn.";
+const LESER_CV = "Leser CV-en \u2026";
 
 export function fjernetTekst(antall: number): string {
   return antall === 1
@@ -92,6 +101,19 @@ function maskerCv(tilstand: OktTilstand, cvTekst: string): OktTilstand {
   return medCvTekst(tilstand, tekst, [antall > 0 ? fjernetTekst(antall) : null]);
 }
 
+function medCvFil(tilstand: OktTilstand, cvFil: CvFil | null): OktTilstand {
+  return { ...tilstand, innhold: { ...tilstand.innhold, cvFil } };
+}
+
+function erLeser(tilstand: OktTilstand): boolean {
+  return tilstand.innhold.cvFil?.tilstand === "leser";
+}
+
+function ferdigLest(tilstand: OktTilstand, ny: "lest" | "feilet"): CvFil | null {
+  const { cvFil } = tilstand.innhold;
+  return cvFil ? { ...cvFil, tilstand: ny } : null;
+}
+
 export function reducer(
   tilstand: OktTilstand,
   handling: OktHandling,
@@ -136,6 +158,25 @@ export function reducer(
     case "analyserTrykket":
       // Analysen kommer i story 1.6. Til da maskerer *Analyser* bare.
       return maskerCv(tilstand, tilstand.innhold.utkast.cvTekst);
+    case "cvFilLeses":
+      return {
+        ...medCvFil(tilstand, { navn: handling.navn, tilstand: "leser" }),
+        kunngjoring: kunngjor(tilstand.kunngjoring, [LESER_CV]),
+      };
+    // Innlest tekst maskeres som innliming (AD-13) og kuttes aldri. Et svar uten
+    // en fil som leses (for eksempel etter *Bytt fil*), endrer ingenting.
+    case "cvFilLest":
+      if (!erLeser(tilstand)) return tilstand;
+      return medCvFil(
+        maskerCv(tilstand, handling.cvTekst),
+        ferdigLest(tilstand, "lest"),
+      );
+    case "cvFilFeilet":
+      if (!erLeser(tilstand)) return tilstand;
+      return medCvFil(medCvTekst(tilstand, "", []), ferdigLest(tilstand, "feilet"));
+    // Tilbake til tilstand 1 uten tekst og filnavn.
+    case "cvFilByttet":
+      return medCvFil(medCvTekst(tilstand, "", []), null);
   }
 }
 
@@ -165,15 +206,24 @@ const ANNONSE_ARSAK: Record<AnnonseStatus, string | null> = {
   ok: null,
 };
 
-export function cvVurdering(cvTekst: string): {
+export function cvVurdering(
+  cvTekst: string,
+  cvFil: CvFil | null = null,
+): {
   status: CvStatus;
   antall: number;
   erKort: boolean;
 } {
   const antall = tegnAntall(cvTekst);
+  // Varselet om kort tekst gjelder 1–299 tegn. Et tomt felt gir varsel bare når
+  // teksten kommer fra en fil som er lest (FR-3).
+  const kanVarsle = antall > 0 || cvFil?.tilstand === "lest";
 
-  // Varselet om kort tekst gjelder 1–299 tegn, ikke et tomt felt (FR-3).
-  return { status: cvStatus(cvTekst), antall, erKort: antall > 0 && antall < CV_KORT };
+  return {
+    status: cvStatus(cvTekst),
+    antall,
+    erKort: kanVarsle && antall < CV_KORT,
+  };
 }
 
 // «For lang» vises med en gang. CV-teksten har ingen nedre grense.

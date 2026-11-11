@@ -13,14 +13,14 @@ const CV_ARSAK = "Last opp eller lim inn CV-en din.";
 const KRYSS_ARSAK = "Kryss av for personvern.";
 
 function medUtkast(annonse: string, cvTekst = "CV-tekst"): OktTilstand {
-  return { ...startTilstand, innhold: { utkast: { cvTekst, annonse } } };
+  return { ...startTilstand, innhold: { utkast: { cvTekst, annonse }, cvFil: null } };
 }
 
 describe("reducer", () => {
   it("AD-6: starter uten bekreftelse, status og tekst", () => {
     expect(startTilstand).toEqual({
       okt: { bekreftetPersonvern: false, modus: null, leverandor: null },
-      innhold: { utkast: { cvTekst: "", annonse: "" } },
+      innhold: { utkast: { cvTekst: "", annonse: "" }, cvFil: null },
       kunngjoring: null,
     });
   });

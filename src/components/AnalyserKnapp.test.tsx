@@ -16,7 +16,10 @@ function vis(tilstand: OktTilstand) {
 
 const KLAR: OktTilstand = {
   okt: { ...startTilstand.okt, bekreftetPersonvern: true },
-  innhold: { utkast: { cvTekst: "CV-tekst", annonse: "a".repeat(200) } },
+  innhold: {
+    utkast: { cvTekst: "CV-tekst", annonse: "a".repeat(200) },
+    cvFil: null,
+  },
   kunngjoring: null,
 };
 
@@ -39,7 +42,10 @@ describe("AnalyserKnapp", () => {
   it("FR-4: årsaken om CV står alltid før annonse og avkrysning", () => {
     const html = vis({
       ...startTilstand,
-      innhold: { utkast: { cvTekst: "", annonse: "a".repeat(8001) } },
+      innhold: {
+        utkast: { cvTekst: "", annonse: "a".repeat(8001) },
+        cvFil: null,
+      },
     });
 
     expect(html).toContain(
