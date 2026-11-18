@@ -1,12 +1,12 @@
 ---
 title: Addendum til PRD — AI CV & Job Application Assistant
 created: 2026-10-29
-updated: 2026-10-29
+updated: 2026-11-18
 ---
 
 # Addendum til PRD
 
-Dette er tekniske forslag og bakgrunn som ikke hører hjemme i PRD-en, men som arkitekturfasen (`bmad-architecture`) bør vurdere. Ingenting her er besluttet.
+Dette er tekniske forslag og bakgrunn som ikke hører hjemme i PRD-en, men som arkitekturfasen (`bmad-architecture`) bør vurdere. Ingenting her er besluttet i PRD-en. Arkitekturen (`ARCHITECTURE-SPINE.md`) gjelder foran forslagene her.
 
 ## A. Forslag til teknologi
 
@@ -27,7 +27,7 @@ Dette er tekniske forslag og bakgrunn som ikke hører hjemme i PRD-en, men som a
 ## C. Modul for språkmodellen (NFR-6)
 - Alle prompter og kall ligger i én modul, for eksempel `lib/llm/`, med én funksjon per resultatdel: `analyseGap`, `skrivSoknadsbrev`, `foreslaCvForbedringer` og `foreslaAts`.
 - Modulen har to implementasjoner av samme grensesnitt: en ekte klient og en mock-klient som leser lagrede svar fra `testdata/par-1-butikk-bank/demo-svar/`. Mock-klienten velges automatisk når nøkkelen mangler (demomodus) og i tester.
-- **Strukturert svar (JSON):** gap-analysen returnerer for eksempel `{ krav: [{ tekst, kategori, belegg, forklaring, raad }], nokkelord: [string] }`. Svaret valideres mot et skjema, for eksempel med zod. Ugyldig svar fører til FR-22.
+- **Strukturert svar (JSON):** gap-analysen returnerer for eksempel `{ krav: [{ tekst, kategori, belegg, forklaring, raad }], nokkelord: [{ tekst, kravIndeks }] }`, der `kravIndeks` peker på annonsekravet nøkkelordet hører til, eller er `null` (FR-11, AD-14). Svaret valideres mot et skjema, for eksempel med zod. Ugyldig svar fører til FR-22.
 - **Instrukser i prompten:**
   - Bruk bare fakta fra CV-teksten.
   - Hver påstand skal ha et belegg sitert ordrett.
@@ -35,6 +35,20 @@ Dette er tekniske forslag og bakgrunn som ikke hører hjemme i PRD-en, men som a
   - Svar på bokmål.
 - **Lav temperatur,** for eksempel 0–0,3.
 - **Grunnlag for kontrollen i kode (FR-9):** forskning (arXiv 2607.01457, preprint med syntetiske CV-er) fant at instrukser i prompten alene holder for sterke modeller ved lav temperatur. Med høyere temperatur eller svakere modeller trengs i tillegg deterministiske kontroller. Kontrollen i kode er billig forsikring.
+
+## D0. Normalisering for kontroll av belegg (FR-9)
+```
+normaliserBelegg(s) =
+  Unicode-normalisering (NFC), små bokstaver
+  fjern alt mellomrom og alle linjeskift
+  fjern listetegn (• ▪ ‣ ◦ *), bindestreker og tankestreker (- ‐ – —)
+  fjern anførselstegn og apostrofer (« » " “ ” „ ' ‘ ’)
+gyldig(belegg) = normaliserBelegg(belegg) ikke er tom og er en delstreng av normaliserBelegg(CV-tekst)
+```
+
+Hvorfor alle bindestreker fjernes og ikke bare den ved linjeskift (`[ANTAKELSE]` i FR-9): et sammensatt ord som «IT-brukerstøtte» kan bli delt etter bindestreken over to linjer i en PDF. Fjernes bare bindestreken før linjeskiftet, blir CV-teksten «itbrukerstøtte» mens belegget blir «it-brukerstøtte», og et riktig belegg avvises. Å fjerne alle bindestreker gjør kontrollen litt løsere («kunde-service» = «kundeservice»), men endrer ikke ordene eller rekkefølgen. Faglærers forslag (2026-11-12) var å fjerne bindestrek bare ved linjeskift.
+
+`normaliser` i `lib/kjerne` (story 1.6) fjerner i dag bare mellomrom og gjør om til små bokstaver. Den må utvides når kontrollen av belegg bygges (story 2.1). `erDemoeksempel` bruker samme funksjon og blir ikke påvirket på noen måte som betyr noe.
 
 ## D. Algoritme for treffprosent (FR-12)
 ```
@@ -62,7 +76,8 @@ Grovt overslag per full kjøring med fire genereringer: cirka 12 000 input-token
 - Mock under utvikling.
 - Forbruksgrense hos leverandøren.
 - Enkel rate-limit i minnet og/eller et dagstak på antall genereringer, uten IP-adresser (NFR-1, NFR-3). Forslaget om grense per IP med Vercel KV eller Upstash er forkastet av gruppen 2026-10-30, fordi IP-adresser og hash av dem er personopplysninger.
-- Merk: minnet i en serverløs funksjon på Vercel deles ikke mellom instanser og nullstilles ved kald start. En teller i minnet er derfor bare en myk grense, og forbruksgrensen hos leverandøren er det eneste sikre taket. Vurderes i arkitekturfasen.
+- Minnet i en serverløs funksjon på Vercel deles ikke mellom instanser og nullstilles ved kald start. En teller i minnet er derfor bare en myk grense, og forhåndsbetalt kreditt uten automatisk påfylling er det eneste sikre taket. Slik står det nå i NFR-3 og AD-9 (avklart av Sondre 2026-11-18).
+- Vurdert og forkastet 2026-11-18: en global dagsteller i Upstash eller Vercel KV (ekstra tjeneste, skurrer mot «ingen lagring»), en tilgangskode for ekte analyse (friksjon for sensor og medstudenter) og bare leverandørens grense uten teller (ingen fartsdemper).
 - Sjekk i arkitekturfasen om Vercel selv logger IP-adresser i plattformloggene, og om informasjonsteksten i FR-5 må nevne det.
 
 ## F. Vercel
