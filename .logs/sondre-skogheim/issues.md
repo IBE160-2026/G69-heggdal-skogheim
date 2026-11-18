@@ -7,6 +7,7 @@
 - [ ] 2026-11-05 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Avgjør med gruppen om masker også skal fange «010190-12345» og flere mellomrom (krever ny FR-6 og nye tester)
 - [ ] 2026-11-05 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Avgjør om CV- og annonsefeltet skal ha spellCheck={false} (Chromes utvidede stavekontroll kan sende teksten til Google)
 - [ ] 2026-11-08 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Godkjenn og flett Kevins PR-er for 1.4, 1.5 og 1.6 når de kommer, én om gangen
+- [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Story 1.5: Kevin legger inn test for linjer som fjernes nederst på siden i finnOppdeling (kodegjennomgang); Sondre tester PDF-en fra par 4 og en CV med én kolonne og datoer etter next build før fletting
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Kevin går gjennom PRD-endringene fra 2026-11-18 og bekrefter [ANTAKELSE] i FR-9 om at alle bindestreker fjernes
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Brukertesten i SM-10 (tre medstudenter utenfor gruppen) gjøres i story 2.8, før epic 3
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Legg merknaden om språk inn i EXPERIENCE.md når story 2.3 bygges

@@ -32,7 +32,15 @@ Sondre spurte først hva som var gjort og hva som var neste steg. Deretter ba ha
   - **Arkitekturen:** ingen endring, fordi AD-9, AD-11 og AD-14 stemmer allerede.
   - Committet lokalt i d0cd1c1.
 
+- **Push:** Sondre pushet `main` selv fra VS Code-terminalen (auto-modus blokkerte `git push` fra Claude, selv med regelen `Bash(git push:*)` i `.claude/settings.local.json`).
+- **Kodegjennomgang av story 1.5** (`bmad-code-review`, fire parallelle agenter, diff `main...origin/story-1.5-…`). Resultat: 0 som trenger beslutning, 1 rettelse, 2 utsatt, 13 avvist. Ingenting stopper flettingen.
+  - **Rettelse:** grenen der linjer som fjernes nederst på siden legges tilbake i kolonnene (`tilbake` i `finnOppdeling`), er ikke testet. Sondre valgte at Kevin legger inn testen, og fikk en ferdig beskjed han kan sende.
+  - **Utsatt:** begge sto allerede i `deferred-work.md`. Det ene er at en CV med én kolonne og datokolonne kan bli lest som to kolonner (middels, ikke bekreftet). Det andre er at de manuelle testene med NVDA, VoiceOver i Safari og worker-fila etter `next build` ikke er gjort.
+  - **Funnene er ikke skrevet i story-fila,** fordi den bare finnes på Kevins gren. Det er ikke committet noe på grenen hans.
+
 ### Åpne punkter
+- Kevin legger inn en test for linjer som fjernes nederst på siden i `finnOppdeling` (story 1.5) og oppdaterer designnotatene i spec-1-5 til regelen fra runde 2.
+- Før story 1.5 flettes, tester Sondre to ting etter `npm run build && npm start`: PDF-en fra par 4, og en CV med én kolonne og datoer til venstre.
 - Kevin går gjennom PRD-endringene fra 2026-11-18 og bekrefter `[ANTAKELSE]` i FR-9 om at alle bindestreker fjernes.
 - Brukertesten i SM-10 (tre medstudenter) gjøres i story 2.8, før epic 3.
 - Merknaden om språk («Laget for CV-er og annonser på norsk …») legges inn i EXPERIENCE.md når story 2.3 bygges.
