@@ -38,6 +38,7 @@ function vis(tilstand: OktTilstand) {
 const KLAR: OktTilstand = {
   okt: { ...startTilstand.okt, bekreftetPersonvern: true },
   innhold: {
+    ...startTilstand.innhold,
     utkast: { cvTekst: "CV-tekst", annonse: "a".repeat(200) },
     cvFil: null,
     demoVarsel: null,
@@ -65,6 +66,7 @@ describe("AnalyserKnapp", () => {
     const html = vis({
       ...startTilstand,
       innhold: {
+        ...startTilstand.innhold,
         utkast: { cvTekst: "", annonse: "a".repeat(8001) },
         cvFil: null,
         demoVarsel: null,
@@ -143,6 +145,10 @@ describe("AnalyserKnapp i demomodus", () => {
     return document.getElementById(DEMO_VARSEL_ID);
   }
 
+  function beskrivelse(alert: HTMLElement | null) {
+    return alert?.querySelector("[data-slot=alert-description]")?.textContent;
+  }
+
   function bareStatusKall() {
     for (const [url] of fetchMock.mock.calls) {
       expect(String(url)).not.toContain("/api/generer");
@@ -157,7 +163,7 @@ describe("AnalyserKnapp i demomodus", () => {
     fireEvent.click(analyser());
 
     const alert = varsel();
-    expect(alert?.textContent).toBe(VARSEL);
+    expect(beskrivelse(alert)).toBe(VARSEL);
     expect(alert?.getAttribute("data-slot")).toBe("alert");
     // Fokus flyttes hit, så varselet skal ikke også være en live-region.
     expect(alert?.hasAttribute("role")).toBe(false);
@@ -195,13 +201,31 @@ describe("AnalyserKnapp i demomodus", () => {
     expect(varsel()).toBeNull();
   });
 
-  it("FR-26: demoeksempelet gir ikke varselet", async () => {
+  it("FR-26: demoeksempelet gir ikke varselet, men én POST til gap", async () => {
     await monter(DEMO_CV.replace(/\n/g, "\r\n"), DEMO_ANNONSE);
 
-    fireEvent.click(analyser());
+    await act(async () => {
+      fireEvent.click(analyser());
+    });
 
     expect(varsel()).toBeNull();
-    bareStatusKall();
+    const gap = fetchMock.mock.calls.filter(
+      ([url]) => url === "/api/generer/gap",
+    );
+    expect(gap).toHaveLength(1);
+    expect(JSON.parse(String(gap[0][1].body)).demo).toBe(true);
+  });
+
+  it("FR-26: varselet har knappen Prøv med eksempel", async () => {
+    await monter("Kari Nordmann");
+
+    await act(async () => {
+      fireEvent.click(analyser());
+    });
+
+    expect(
+      varsel()?.querySelector("button")?.textContent,
+    ).toBe("Prøv med eksempel");
   });
 
   it("FR-26: ekte modus gir ikke varselet", async () => {
@@ -223,7 +247,7 @@ describe("AnalyserKnapp i demomodus", () => {
     expect(varsel()).toBeNull();
 
     fireEvent.click(analyser());
-    expect(varsel()?.textContent).toBe(VARSEL);
+    expect(beskrivelse(varsel())).toBe(VARSEL);
     bareStatusKall();
   });
 

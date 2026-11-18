@@ -4,6 +4,7 @@ import { Info } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 import { ANALYSER_ID } from "@/components/CvPanel";
+import { ProvEksempelKnapp } from "@/components/ProvEksempelKnapp";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useOkt } from "@/lib/okt/OktProvider";
@@ -25,8 +26,8 @@ export function AnalyserKnapp() {
     if (varselNr !== undefined) varsel.current?.focus();
   }, [varselNr]);
 
-  // Analysen kommer i Epic 2. Til da maskerer knappen, og i demomodus med egen CV
-  // vises varselet. Ingenting sendes.
+  // Knappen maskerer først. Demoeksempelet starter en kjøring, og i demomodus med egen
+  // CV vises varselet. Ekte generering med egen CV kommer i story 2.3.
   return (
     <div className="flex flex-col gap-2 lg:items-end">
       {demoVarsel ? (
@@ -43,6 +44,7 @@ export function AnalyserKnapp() {
             Full analyse av din egen CV krever en API-nøkkel. Prøv eksempelet
             for å se hvordan resultatet ser ut.
           </AlertDescription>
+          <ProvEksempelKnapp className="col-start-2 mt-2 justify-self-start" />
         </Alert>
       ) : null}
       <Button
