@@ -5,20 +5,26 @@ import { Annonsepanel } from "@/components/Annonsepanel";
 import { CvPanel } from "@/components/CvPanel";
 import { Personvernbekreftelse } from "@/components/Personvernbekreftelse";
 import { Personvernboks } from "@/components/Personvernboks";
+import { ProvEksempelKnapp } from "@/components/ProvEksempelKnapp";
 
-const INNHOLD = "mx-auto w-full max-w-content-max px-4";
+export const INNHOLD = "mx-auto w-full max-w-content-max px-4";
 
 export function Forberedelse() {
   return (
     <>
-      <header className={`${INNHOLD} pt-6`}>
-        <h1 className="text-page-title">
-          Se hva CV-en din dekker i en stillingsannonse
-        </h1>
-        <p className="mt-1.5 text-muted-foreground">
-          Last opp CV-en og lim inn annonsen. Du ser krav for krav hva du
-          dekker, og får et utkast til søknadsbrev.
-        </p>
+      <header
+        className={`${INNHOLD} flex flex-col gap-3 pt-6 sm:flex-row sm:items-start sm:justify-between`}
+      >
+        <div>
+          <h1 className="text-page-title">
+            Se hva CV-en din dekker i en stillingsannonse
+          </h1>
+          <p className="mt-1.5 text-muted-foreground">
+            Last opp CV-en og lim inn annonsen. Du ser krav for krav hva du
+            dekker, og får et utkast til søknadsbrev.
+          </p>
+        </div>
+        <ProvEksempelKnapp className="self-start" />
       </header>
       <main className={`${INNHOLD} flex flex-1 flex-col gap-5 pt-5 pb-8`}>
         <Personvernboks />

@@ -1,12 +1,15 @@
 // @vitest-environment jsdom
 import { act, cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { StrictMode } from "react";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { Demomodus } from "@/components/Demomodus";
 import { Personvernbekreftelse } from "@/components/Personvernbekreftelse";
 import { Personvernboks } from "@/components/Personvernboks";
+import type { GapAnalyse } from "@/lib/kontrakt/gap";
+import { apiMock, demoSvar, gapKall } from "@/testhjelp/gap";
 
-import { OktProvider } from "./OktProvider";
+import { OktProvider, useOkt } from "./OktProvider";
 
 const DEMO = {
   modus: "demo",
@@ -73,4 +76,124 @@ describe("OktProvider", () => {
       expect(screen.queryByRole("checkbox")).toBeNull();
     },
   );
+});
+
+describe("startGenerering", () => {
+  let svar: GapAnalyse;
+  let okt: ReturnType<typeof useOkt>;
+
+  beforeAll(async () => {
+    svar = await demoSvar();
+  });
+
+  function Lytter() {
+    okt = useOkt();
+    return null;
+  }
+
+  async function vent() {
+    await act(async () => {
+      await new Promise((ferdig) => setTimeout(ferdig));
+    });
+  }
+
+  function monterMed(mock: ReturnType<typeof apiMock>, streng = false) {
+    vi.stubGlobal("fetch", mock);
+    const tre = (
+      <OktProvider>
+        <Lytter />
+      </OktProvider>
+    );
+    render(streng ? <StrictMode>{tre}</StrictMode> : tre);
+  }
+
+  it("AD-6: StrictMode gir én fetch til gap", async () => {
+    const mock = apiMock(async () => Response.json(svar));
+    monterMed(mock, true);
+
+    act(() => okt.dispatch({ type: "eksempelValgt" }));
+    await vent();
+
+    expect(gapKall(mock)).toHaveLength(1);
+    expect(okt.tilstand.innhold.resultatdeler.gap?.status).toBe("ferdig");
+    expect(okt.tilstand.innhold.resultatdeler.gap?.generert).toEqual(svar);
+  });
+
+  it("AD-6: body er den maskerte kjøringen med demo: erEksempel", async () => {
+    const mock = apiMock(async () => Response.json(svar));
+    monterMed(mock);
+
+    act(() => okt.dispatch({ type: "eksempelValgt" }));
+    await vent();
+
+    const [, init] = gapKall(mock)[0];
+    const { kjoring } = okt.tilstand.innhold;
+    expect(JSON.parse(String(init?.body))).toEqual({
+      cvTekst: kjoring?.cvTekst,
+      annonse: kjoring?.annonse,
+      demo: true,
+    });
+  });
+
+  it("AD-6: startGenerering mens gap genereres, sender ikke på nytt", async () => {
+    let svarNa: (svar: Response) => void = () => {};
+    const mock = apiMock(
+      () => new Promise<Response>((ferdig) => (svarNa = ferdig)),
+    );
+    monterMed(mock);
+
+    act(() => okt.dispatch({ type: "eksempelValgt" }));
+    act(() => okt.startGenerering("gap"));
+    expect(gapKall(mock)).toHaveLength(1);
+
+    await act(async () => svarNa(Response.json(svar)));
+    await vent();
+    expect(okt.tilstand.innhold.resultatdeler.gap?.status).toBe("ferdig");
+  });
+
+  it("AD-6: Tilbake avbryter, og svaret forkastes", async () => {
+    let svarNa: (svar: Response) => void = () => {};
+    const mock = apiMock(
+      () => new Promise<Response>((ferdig) => (svarNa = ferdig)),
+    );
+    monterMed(mock);
+
+    act(() => okt.dispatch({ type: "eksempelValgt" }));
+    const [, init] = gapKall(mock)[0];
+    act(() => okt.dispatch({ type: "tilbakeTrykket" }));
+
+    expect(init?.signal?.aborted).toBe(true);
+    await act(async () => svarNa(Response.json(svar)));
+    await vent();
+    expect(okt.tilstand.innhold.resultatdeler.gap).toBeNull();
+  });
+
+  it("AD-6: ny kjøring etter Tilbake sender en ny request", async () => {
+    const mock = apiMock(async () => Response.json(svar));
+    monterMed(mock);
+
+    act(() => okt.dispatch({ type: "eksempelValgt" }));
+    await vent();
+    act(() => okt.dispatch({ type: "tilbakeTrykket" }));
+    act(() => okt.dispatch({ type: "eksempelValgt" }));
+    await vent();
+
+    expect(gapKall(mock)).toHaveLength(2);
+    expect(okt.tilstand.innhold.resultatdeler.gap?.status).toBe("ferdig");
+  });
+
+  it("AD-8: feil fra API-et gir gap feil med feilkoden", async () => {
+    const mock = apiMock(async () =>
+      Response.json({ feil: { kode: "llm_feil" } }, { status: 502 }),
+    );
+    monterMed(mock);
+
+    act(() => okt.dispatch({ type: "eksempelValgt" }));
+    await vent();
+
+    expect(okt.tilstand.innhold.resultatdeler.gap).toMatchObject({
+      status: "feil",
+      feilkode: "llm_feil",
+    });
+  });
 });

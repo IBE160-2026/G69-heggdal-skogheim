@@ -58,3 +58,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-1-kontrollert-gap-analyse-for-demoeksempelet-gjennom-api-et.md`
   summary: Duplicate or empty nøkkelord from the model are each counted in `treffprosent`; add a dedupe rule in 2.3.
   evidence: `finnNokkelord` maps one-to-one; only reachable with the real adapter.
+
+## Deferred from: planning of story 2.2 (2026-11-18)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-2-prov-med-eksempel-viser-gap-analysen.md`
+  summary: Manual test of the result view and the "Prøv med eksempel" dialog with NVDA and VoiceOver (UX-DR27) is moved to story 5.2.
+  evidence: Sondre chose this 2026-11-18, as for 1.5 and 1.6. Keyboard, 320 px and 200 % zoom are tested before merge.

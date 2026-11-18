@@ -59,7 +59,10 @@ describe("Forberedelse", () => {
     expect(html).toContain("max-w-content-max");
   });
 
-  it("FR-1: Prøv med eksempel er ikke bygget ennå", () => {
-    expect(html).not.toContain("Prøv med eksempel");
+  it("FR-25: Prøv med eksempel står i overskriften, før main", () => {
+    const knapp = html.indexOf(">Prøv med eksempel</button>");
+
+    expect(knapp).toBeGreaterThan(html.indexOf("<header"));
+    expect(knapp).toBeLessThan(html.indexOf("<main"));
   });
 });

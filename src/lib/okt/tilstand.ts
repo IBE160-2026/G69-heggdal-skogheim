@@ -1,7 +1,14 @@
 import { erDemoeksempel } from "@/lib/kjerne/demo";
 import { annonseStatus, cvStatus, tegnAntall } from "@/lib/kjerne/grenser";
 import type { AnnonseStatus, CvStatus } from "@/lib/kjerne/grenser";
-import { FODSELSNUMMER_FJERNET, maskerMedAntall } from "@/lib/kjerne/masker";
+import {
+  FODSELSNUMMER_FJERNET,
+  masker,
+  maskerMedAntall,
+} from "@/lib/kjerne/masker";
+import { DEMO_ANNONSE, DEMO_CV } from "@/lib/kontrakt/demo";
+import type { Feilkode } from "@/lib/kontrakt/feil";
+import type { GapAnalyse } from "@/lib/kontrakt/gap";
 import { CV_KORT } from "@/lib/kontrakt/grenser";
 import type {
   LeverandorInfo,
@@ -19,6 +26,29 @@ export type CvFil = { navn: string; tilstand: "leser" | "lest" | "feilet" };
 // trykk, så fokus flyttes til varselet igjen.
 export type DemoVarsel = { nr: number };
 
+// AD-6: kjøringen settes av *Analyser* eller *Prøv med eksempel*. `cvTekst` er maskert.
+export type Kjoring = {
+  id: number;
+  cvTekst: string;
+  annonse: string;
+  erEksempel: boolean;
+};
+
+export type GenereringStatus = "venter" | "genererer" | "feil" | "ferdig";
+
+// AD-6: én resultatdel. `redigert` er `null` eller har samme form som `generert`.
+export type ResultatdelTilstand<T> = {
+  status: GenereringStatus;
+  feilkode: Feilkode | null;
+  generert: T | null;
+  redigert: T | null;
+  gapVersjon: number;
+};
+
+// Bare gap-analysen er bygget. Brev, CV og ATS kommer i epic 3 og 4.
+export type Resultatdeler = { gap: ResultatdelTilstand<GapAnalyse> | null };
+export type GenerertResultatdel = keyof Resultatdeler;
+
 export type OktTilstand = {
   okt: {
     bekreftetPersonvern: boolean;
@@ -29,6 +59,10 @@ export type OktTilstand = {
     utkast: { cvTekst: string; annonse: string };
     cvFil: CvFil | null;
     demoVarsel: DemoVarsel | null;
+    kjoring: Kjoring | null;
+    resultatdeler: Resultatdeler;
+    // Øker for hver gap-generering og nullstilles aldri av *Tilbake*.
+    gapVersjon: number;
   };
   kunngjoring: Kunngjoring | null;
 };
@@ -44,7 +78,29 @@ export type OktHandling =
   | { type: "cvFilLeses"; navn: string }
   | { type: "cvFilLest"; cvTekst: string }
   | { type: "cvFilFeilet" }
-  | { type: "cvFilByttet" };
+  | { type: "cvFilByttet" }
+  | { type: "eksempelValgt" }
+  | { type: "tilbakeTrykket" }
+  | {
+      type: "genereringStartet";
+      resultatdel: GenerertResultatdel;
+      kjoringId: number;
+      gapVersjon: number;
+    }
+  | {
+      type: "genereringFerdig";
+      resultatdel: GenerertResultatdel;
+      kjoringId: number;
+      gapVersjon: number;
+      data: GapAnalyse;
+    }
+  | {
+      type: "genereringFeilet";
+      resultatdel: GenerertResultatdel;
+      kjoringId: number;
+      gapVersjon: number;
+      feilkode: Feilkode;
+    };
 
 export const startTilstand: OktTilstand = {
   okt: { bekreftetPersonvern: false, modus: null, leverandor: null },
@@ -52,9 +108,19 @@ export const startTilstand: OktTilstand = {
     utkast: { cvTekst: "", annonse: "" },
     cvFil: null,
     demoVarsel: null,
+    kjoring: null,
+    resultatdeler: { gap: null },
+    gapVersjon: 0,
   },
   kunngjoring: null,
 };
+
+export const ANALYSERER = "Analyserer. Dette tar inntil 30 sekunder.";
+
+export function gapKlarTekst(gap: GapAnalyse): string {
+  const oppfylt = gap.krav.filter((krav) => krav.kategori === "oppfylt").length;
+  return `Gap-analysen er klar. ${oppfylt} av ${gap.krav.length} krav er oppfylt.`;
+}
 
 const ANNONSE_FOR_LANG = "Annonsen er for lang. Maks 8\u00a0000 tegn.";
 const CV_FOR_LANG = "CV-teksten er for lang. Maks 15\u00a0000 tegn.";
@@ -117,9 +183,59 @@ function utenDemoVarsel(tilstand: OktTilstand): OktTilstand {
   return { ...tilstand, innhold: { ...tilstand.innhold, demoVarsel: null } };
 }
 
+// AD-6: ny kjøring fra (maskert) tekst. Alle resultatdeler nullstilles, og gap venter
+// på at `startGenerering` sender den. `gapVersjon` øker for hver kjøring som sendes og
+// nullstilles aldri, så id-en er ny for hver kjøring som har sendt noe.
+function medKjoring(
+  tilstand: OktTilstand,
+  cvTekst: string,
+  annonse: string,
+  erEksempel: boolean,
+): OktTilstand {
+  return {
+    ...tilstand,
+    innhold: {
+      ...tilstand.innhold,
+      demoVarsel: null,
+      kjoring: {
+        id: tilstand.innhold.gapVersjon + 1,
+        cvTekst,
+        annonse,
+        erEksempel,
+      },
+      resultatdeler: {
+        gap: {
+          status: "venter",
+          feilkode: null,
+          generert: null,
+          redigert: null,
+          gapVersjon: tilstand.innhold.gapVersjon,
+        },
+      },
+    },
+  };
+}
+
+// *Prøv med eksempel* (FR-25): demoeksempelet fylles inn, og kjøringen starter uten
+// avkrysning for personvern og i begge modi. Valgt fil og demovarsel fjernes.
+function eksempel(tilstand: OktTilstand): OktTilstand {
+  const cvTekst = masker(DEMO_CV);
+  const utfylt: OktTilstand = {
+    ...tilstand,
+    innhold: {
+      ...tilstand.innhold,
+      utkast: { cvTekst, annonse: DEMO_ANNONSE },
+      cvFil: null,
+    },
+  };
+
+  return medKjoring(utfylt, cvTekst, DEMO_ANNONSE, true);
+}
+
 // *Analyser* maskerer først. Ble et nytt fødselsnummer maskert, eller er knappen
-// deaktivert, skjer ingenting mer. Ellers gir egen CV i demomodus varselet (FR-26).
-// Ukjent modus regnes som demo. Analysen selv kommer i Epic 2.
+// deaktivert, skjer ingenting mer. Demoeksempelet starter en kjøring. Ellers gir egen
+// CV i demomodus varselet (FR-26). Ukjent modus regnes som demo. Ekte generering med
+// egen CV kommer i story 2.3.
 function analyser(tilstand: OktTilstand): OktTilstand {
   const maskert = maskerCv(tilstand, tilstand.innhold.utkast.cvTekst);
   // Teksten endres bare når et nytt fødselsnummer ble maskert.
@@ -128,9 +244,10 @@ function analyser(tilstand: OktTilstand): OktTilstand {
   if (nyttNummer || arsakerTilAnalyse(maskert).length > 0) return maskert;
 
   const { cvTekst, annonse } = maskert.innhold.utkast;
-  if (maskert.okt.modus === "ekte" || erDemoeksempel(cvTekst, annonse)) {
-    return maskert;
+  if (erDemoeksempel(cvTekst, annonse)) {
+    return medKjoring(maskert, cvTekst, annonse, true);
   }
+  if (maskert.okt.modus === "ekte") return maskert;
 
   return {
     ...maskert,
@@ -138,6 +255,35 @@ function analyser(tilstand: OktTilstand): OktTilstand {
       ...maskert.innhold,
       demoVarsel: { nr: (maskert.innhold.demoVarsel?.nr ?? 0) + 1 },
     },
+  };
+}
+
+// AD-6: svar for en kjøring eller gap-versjon som ikke lenger gjelder, forkastes.
+function gjelder(
+  tilstand: OktTilstand,
+  handling: { kjoringId: number; gapVersjon: number },
+): boolean {
+  const { kjoring, resultatdeler } = tilstand.innhold;
+  return (
+    kjoring?.id === handling.kjoringId &&
+    resultatdeler.gap?.status === "genererer" &&
+    resultatdeler.gap.gapVersjon === handling.gapVersjon
+  );
+}
+
+function medGap(
+  tilstand: OktTilstand,
+  gap: ResultatdelTilstand<GapAnalyse>,
+  tekst: string | null,
+): OktTilstand {
+  return {
+    ...tilstand,
+    innhold: {
+      ...tilstand.innhold,
+      resultatdeler: { ...tilstand.innhold.resultatdeler, gap },
+      gapVersjon: Math.max(tilstand.innhold.gapVersjon, gap.gapVersjon),
+    },
+    kunngjoring: kunngjor(tilstand.kunngjoring, [tekst]),
   };
 }
 
@@ -227,6 +373,68 @@ export function reducer(
     // Tilbake til tilstand 1 uten tekst og filnavn.
     case "cvFilByttet":
       return medCvFil(medCvTekst(utenDemoVarsel(tilstand), "", []), null);
+    case "eksempelValgt":
+      return eksempel(tilstand);
+    // Midlertidig til story 2.7: tilbake til forberedelsen med teksten beholdt.
+    case "tilbakeTrykket":
+      return {
+        ...tilstand,
+        innhold: {
+          ...tilstand.innhold,
+          kjoring: null,
+          resultatdeler: { gap: null },
+        },
+        // Meldingen om at analysen pågår, gjelder ikke lenger.
+        kunngjoring: null,
+      };
+    case "genereringStartet": {
+      const { kjoring, resultatdeler } = tilstand.innhold;
+      if (kjoring?.id !== handling.kjoringId || !resultatdeler.gap) {
+        return tilstand;
+      }
+      return medGap(
+        tilstand,
+        {
+          status: "genererer",
+          feilkode: null,
+          generert: null,
+          redigert: null,
+          gapVersjon: handling.gapVersjon,
+        },
+        ANALYSERER,
+      );
+    }
+    case "genereringFerdig":
+      if (!gjelder(tilstand, handling)) return tilstand;
+      return medGap(
+        tilstand,
+        {
+          status: "ferdig",
+          feilkode: null,
+          generert: handling.data,
+          redigert: null,
+          gapVersjon: handling.gapVersjon,
+        },
+        gapKlarTekst(handling.data),
+      );
+    case "genereringFeilet":
+      if (!gjelder(tilstand, handling)) return tilstand;
+      // Feilen vises med role="alert" i fanen, ikke i live-regionen, og meldingen om
+      // at analysen pågår, fjernes.
+      return {
+        ...medGap(
+          tilstand,
+          {
+            status: "feil",
+            feilkode: handling.feilkode,
+            generert: null,
+            redigert: null,
+            gapVersjon: handling.gapVersjon,
+          },
+          null,
+        ),
+        kunngjoring: null,
+      };
   }
 }
 
