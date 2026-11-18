@@ -6,7 +6,10 @@
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Kevin går gjennom PRD-endringene fra 2026-11-18 og bekrefter [ANTAKELSE] i FR-9 om at alle bindestreker fjernes
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Brukertesten i SM-10 (tre medstudenter utenfor gruppen) gjøres i story 2.8, før epic 3
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Legg merknaden om språk inn i EXPERIENCE.md når story 2.3 bygges
-- [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Etter at 1.6 er satt til done: kjør de to manuelle testene for 1.6 (demoteksten fra par 1 gir ikke varsel, fødselsnummer gir to trykk, også i Safari) senest i story 2.2, og legg inn testen for statusHentet med demo i story 2.1
+- [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Etter at 1.6 er satt til done: kjør de to manuelle testene for 1.6 (demoteksten fra par 1 gir ikke varsel, fødselsnummer gir to trykk, også i Safari) senest i story 2.2, (testen for statusHentet med demo er lagt inn i story 2.1, 3016b7b)
+- [ ] 2026-11-18 [story-2-1-gap-analyse-api](985-2026-11-18-19-15-43-story-2-1-gap-analyse-api.md) — Kevin vurderer minstelengde eller hele ord for belegg i FR-9 (korte belegg som «og» godtas etter D0), sammen med bindestrekregelen
+- [ ] 2026-11-18 [story-2-1-gap-analyse-api](985-2026-11-18-19-15-43-story-2-1-gap-analyse-api.md) — Les tonen i råd- og forklaringstekstene i src/lib/llm/demo-svar/gap.json
+- [ ] 2026-11-18 [story-2-1-gap-analyse-api](985-2026-11-18-19-15-43-story-2-1-gap-analyse-api.md) — Story 2.3: ta de tre utsatte punktene fra 2.1 i deferred-work.md (AbortSignal i porten, grenser på gapSvar, duplikate nøkkelord)
 
 ## Løst
 
