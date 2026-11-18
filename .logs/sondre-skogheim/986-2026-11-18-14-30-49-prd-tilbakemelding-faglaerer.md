@@ -38,7 +38,18 @@ Sondre spurte først hva som var gjort og hva som var neste steg. Deretter ba ha
   - **Utsatt:** begge sto allerede i `deferred-work.md`. Det ene er at en CV med én kolonne og datokolonne kan bli lest som to kolonner (middels, ikke bekreftet). Det andre er at de manuelle testene med NVDA, VoiceOver i Safari og worker-fila etter `next build` ikke er gjort.
   - **Funnene er ikke skrevet i story-fila,** fordi den bare finnes på Kevins gren. Det er ikke committet noe på grenen hans.
 
+- **Sondres test av story 1.5** etter `npm run build` og `npm start`: PDF-en fra par 4 leses kolonne for kolonne, og `ida-test.pdf` (par 1 lagret som PDF fra Word, én kolonne) har datoene på samme linje som stillingene. Begge er bestått. Det bekrefter også at PDF-workeren virker etter bygget. Next.js tilbød 16.4.4 → 16.4.6 (sikkerhet), men Sondre hoppet over det for ikke å endre Kevins gren. `npm ci` meldte 23 sårbarheter (15 high).
+- **Kodegjennomgang av story 1.6** med fire agenter, på diffen fra tuppen av 1.5 til 1.6: 0 som trenger beslutning, 1 rettelse, 3 utsatt og 14 avvist. Ingen AC-er er brutt.
+  - **Rettelse:** test for at `statusHentet` med `demo` beholder `demoVarsel`. Den tar Kevin.
+  - **Utsatt:**
+    - Turbopack-regelen for `?raw` (demotekstene) er ikke verifisert automatisk i bygget.
+    - I Safari kan blur maskere fødselsnummeret før klikket, så det første trykket viser varselet med en gang.
+    - Dokumentene var ute av takt med koden. Det er rettet på `main`: AD-6 har fått `demoVarsel`, og `epics.md` sier at `kjoring` kommer i epic 2. Endringen er logget i arkitekturens memlogg.
+
 ### Åpne punkter
+- Kevin legger inn en test for at `statusHentet` med `demo` beholder `demoVarsel` (story 1.6).
+- Sondre tester story 1.6 etter `next build`: egen CV gir varsel, demoteksten fra par 1 limt inn gir ikke varsel (`?raw`-regelen), og fødselsnummer med to trykk. Gjør gjerne fødselsnummertesten i Safari også.
+- Next.js 16.4.4 → 16.4.6 (sikkerhetsoppdatering) og ny vurdering av `npm audit` (23 sårbarheter, 15 high) på en egen gren etter at 1.5 og 1.6 er flettet.
 - Kevin legger inn en test for linjer som fjernes nederst på siden i `finnOppdeling` (story 1.5) og oppdaterer designnotatene i spec-1-5 til regelen fra runde 2.
 - Før story 1.5 flettes, tester Sondre to ting etter `npm run build && npm start`: PDF-en fra par 4, og en CV med én kolonne og datoer til venstre.
 - Kevin går gjennom PRD-endringene fra 2026-11-18 og bekrefter `[ANTAKELSE]` i FR-9 om at alle bindestreker fjernes.
