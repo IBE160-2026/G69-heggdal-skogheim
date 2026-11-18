@@ -25,9 +25,14 @@ Sondre spurte først hva som var gjort og hva som var neste steg. Deretter ba ha
 - **`testdata/sjekkliste.md`:** nytt punkt for FR-17.
 - **`.memlog.md`:** 19 nye oppføringer. Den gjelder også FR-6-endringen fra 2026-11-09, som ble registrert i ettertid.
 - **Finalize:** Konsistenssjekken med grep gikk gjennom uten funn. Det ble ikke kjørt en ny rubrikkrunde, og det er ingen eksterne overleveringer.
-- PRD-endringene er ikke committet (bare denne loggen).
+- PRD-endringene er committet lokalt i 49b6b40. Push til `main` ble stoppet av sikkerhetsregelen i Claude Code, så Sondre pusher selv.
+- **Senere samme dag, `bmad-correct-course` (batch, godkjent av Sondre):** [sprint-change-proposal-2026-11-18.md](../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-18.md).
+  - **`epics.md`:** kravoversikten for FR-2, FR-4, FR-9, FR-11, FR-17, FR-18, FR-26 og NFR-3 er oppdatert. Det er nye AC-er i story 2.1 (normaliser og FR-9-tester, `kravIndeks` i `gap.json`), 2.3 (nøkkelord knyttet til krav, og merknad om språk), 2.5 (kreditt brukt opp), 4.2 (`kravIndeks: null` og par 3) og 5.1 (regelen i SM-2). Ny story 2.8 *Brukertest med medstudenter* (SM-10) står før epic 3.
+  - **`sprint-status.yaml`:** `2-8-brukertest-med-medstudenter: backlog`.
+  - **Arkitekturen:** ingen endring, fordi AD-9, AD-11 og AD-14 stemmer allerede.
+  - Committet lokalt i d0cd1c1.
 
 ### Åpne punkter
 - Kevin går gjennom PRD-endringene fra 2026-11-18 og bekrefter `[ANTAKELSE]` i FR-9 om at alle bindestreker fjernes.
-- `epics.md` må oppdateres etter PRD-endringene: FR-9 med AC i story 2.1, og FR-11 og FR-17. `normaliser` i `lib/kjerne` utvides i story 2.1.
-- Brukertesten i SM-10 (tre medstudenter) gjøres før innlevering, helst før søknadsbrevet bygges.
+- Brukertesten i SM-10 (tre medstudenter) gjøres i story 2.8, før epic 3.
+- Merknaden om språk («Laget for CV-er og annonser på norsk …») legges inn i EXPERIENCE.md når story 2.3 bygges.
