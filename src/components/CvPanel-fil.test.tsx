@@ -1,5 +1,7 @@
 // @vitest-environment jsdom
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
 import {
   act,
@@ -12,6 +14,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { CV_FIL_MAKS } from "@/lib/kontrakt/grenser";
 import { OktProvider } from "@/lib/okt/OktProvider";
+import { pdfUtenTekst } from "@/testhjelp/pdf";
+
+// Uten mock prøver jsdom å laste den ekte pdfjs. Legacy-builden kjører i testen,
+// med workeren fra node_modules som en file-URL.
+vi.mock("@/lib/okt/pdfjs", () => ({
+  hentGetDocument: async () => {
+    const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+    pdfjs.GlobalWorkerOptions.workerSrc = pathToFileURL(
+      resolve("node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs"),
+    ).href;
+    return pdfjs.getDocument;
+  },
+}));
 
 import { AnalyserKnapp } from "./AnalyserKnapp";
 import { CvPanel } from "./CvPanel";
@@ -19,12 +34,13 @@ import { Kunngjoring } from "./Kunngjoring";
 
 const DOCX = new Uint8Array(readFileSync("testdata/par-1-butikk-bank/cv.docx"));
 const TXT = readFileSync("testdata/par-1-butikk-bank/cv.txt", "utf8");
+const PDF = new Uint8Array(
+  readFileSync("testdata/par-4-tokolonne-hotell/cv.pdf"),
+);
 const FJERNET = "[fødselsnummer fjernet]";
 const EN_FJERNET = "1 fødselsnummer er fjernet fra CV-teksten.";
 const FIL_AVVIST =
-  "Filen kan ikke brukes. Velg en DOCX- eller TXT-fil på maks 5 MB.";
-const PDF_AVVIST =
-  "PDF-filer kan ikke leses ennå. Velg en DOCX- eller TXT-fil, eller lim inn CV-teksten.";
+  "Filen kan ikke brukes. Velg en PDF-, DOCX- eller TXT-fil på maks 5 MB.";
 const LESEFEIL = "Klarte ikke å lese filen. Lim inn CV-teksten i stedet.";
 const KORT =
   "Fant nesten ikke tekst i filen. Den kan være skannet eller tom. Lim inn teksten selv i feltet under.";
@@ -158,6 +174,38 @@ describe("CvPanel, opplasting", () => {
     expect(document.activeElement).toBe(felt);
   });
 
+  it("FR-1: cv.pdf med to kolonner gir «Leser CV-en …», så kontrollsteget med fokus", async () => {
+    monter();
+
+    velg(fil(PDF, "cv.pdf"));
+
+    expect(screen.getByText("Leser CV-en …", { selector: "section p" })).toBeTruthy();
+    const felt = await kontrollFelt();
+    expect(felt.value).toContain("SPRÅK");
+    expect(felt.value).toContain("PROFIL");
+    expect(felt.value.indexOf("SPRÅK")).toBeLessThan(felt.value.indexOf("PROFIL"));
+    expect(felt.value).toContain("Reiselivsstudent som trives");
+    expect(screen.getByText("cv.pdf")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Bytt fil" })).toBeTruthy();
+    expect(document.activeElement).toBe(felt);
+  });
+
+  it("FR-1: CV.PDF med dra og slipp gir kontrollsteget", async () => {
+    monter();
+
+    slipp(fil(PDF, "CV.PDF"));
+
+    expect(screen.getByText("Leser CV-en …", { selector: "section p" })).toBeTruthy();
+    const felt = await kontrollFelt();
+    expect(felt.value).toContain("MINA FIKTIVSEN");
+    expect(felt.value).toContain("SPRÅK");
+    expect(felt.value).toContain("PROFIL");
+    expect(felt.value.indexOf("SPRÅK")).toBeLessThan(felt.value.indexOf("PROFIL"));
+    expect(screen.getByText("CV.PDF")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Bytt fil" })).toBeTruthy();
+    expect(document.activeElement).toBe(felt);
+  });
+
   it("FR-6: fødselsnummer i en TXT-fil maskeres, med linje og live-melding", async () => {
     monter();
 
@@ -195,10 +243,10 @@ describe("CvPanel, opplasting", () => {
 describe("CvPanel, avviste filer", () => {
   it.each([
     ["for stor", () => storFil("cv.txt"), FIL_AVVIST],
+    ["PDF for stor", () => storFil("cv.pdf"), FIL_AVVIST],
     ["odt", () => fil("x", "cv.odt"), FIL_AVVIST],
     ["doc", () => fil("x", "cv.doc"), FIL_AVVIST],
     ["uten endelse", () => fil("x", "cv"), FIL_AVVIST],
-    ["pdf", () => fil("%PDF", "cv.pdf"), PDF_AVVIST],
   ])("FR-1: %s avvises med meldingen under feltet", (_, lag, melding) => {
     monter();
     const ny = lag();
@@ -300,6 +348,7 @@ describe("CvPanel, filer som ikke kan leses", () => {
 
   it.each([
     ["ødelagt DOCX", () => fil(new Uint8Array(256).fill(7), "cv.docx")],
+    ["ødelagt PDF", () => fil(new Uint8Array(256).fill(7), "cv.pdf")],
     ["TXT i Windows-1252", () => fil(new Uint8Array([0x42, 0xe6, 0x72]), "cv.txt")],
     [
       "lesefeil i nettleseren",
@@ -332,6 +381,23 @@ describe("CvPanel, filer som ikke kan leses", () => {
     expect(screen.getByText(KORT)).toBeTruthy();
     expect(screen.queryByText(LESEFEIL)).toBeNull();
     expect(document.activeElement).toBe(felt);
+  });
+
+  it("FR-3: en skannet PDF uten tekstlag gir tomt felt med fokus og varsel, og tekst kan skrives inn", async () => {
+    monter();
+
+    velg(fil(pdfUtenTekst(), "cv.pdf"));
+
+    const felt = await kontrollFelt();
+    expect(felt.value).toBe("");
+    expect(screen.getByText("cv.pdf")).toBeTruthy();
+    expect(screen.getByText(KORT)).toBeTruthy();
+    expect(screen.queryByText(LESEFEIL)).toBeNull();
+    expect(document.activeElement).toBe(felt);
+
+    fireEvent.change(felt, { target: { value: "Ola Nordmann" } });
+
+    expect(felt.value).toBe("Ola Nordmann");
   });
 });
 

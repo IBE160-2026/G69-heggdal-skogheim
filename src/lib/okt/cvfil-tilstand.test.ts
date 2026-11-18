@@ -95,6 +95,15 @@ describe("cvVurdering med fil", () => {
     );
   });
 
+  it("FR-3: en lest PDF uten tekst gir varsel", () => {
+    const tom = reducer(leser("cv.pdf"), { type: "cvFilLest", cvTekst: "" });
+
+    expect(tom.innhold.cvFil).toEqual({ navn: "cv.pdf", tilstand: "lest" });
+    expect(cvVurdering(tom.innhold.utkast.cvTekst, tom.innhold.cvFil).erKort).toBe(
+      true,
+    );
+  });
+
   it.each([
     ["uten fil", null],
     ["med feilet fil", { navn: "cv.txt", tilstand: "feilet" } as const],
