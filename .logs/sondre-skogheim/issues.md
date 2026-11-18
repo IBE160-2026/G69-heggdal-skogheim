@@ -3,9 +3,6 @@
 ## Åpne
 
 - [ ] 2026-10-29 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Valgfritt: full språkvask med bmad-review (structure, prose) på prd.md og addendum.md
-- [ ] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Installer Node.js 24 LTS (Sondre og Kevin) før koding
-- [ ] 2026-11-05 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Avgjør med gruppen om masker også skal fange «010190-12345» og flere mellomrom (krever ny FR-6 og nye tester)
-- [ ] 2026-11-05 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Avgjør om CV- og annonsefeltet skal ha spellCheck={false} (Chromes utvidede stavekontroll kan sende teksten til Google)
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Kevin går gjennom PRD-endringene fra 2026-11-18 og bekrefter [ANTAKELSE] i FR-9 om at alle bindestreker fjernes
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Brukertesten i SM-10 (tre medstudenter utenfor gruppen) gjøres i story 2.8, før epic 3
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Legg merknaden om språk inn i EXPERIENCE.md når story 2.3 bygges
@@ -13,6 +10,9 @@
 
 ## Løst
 
+- [x] 2026-11-03 [arkitektur](993-2026-11-03-13-03-39-arkitektur.md) — Installer Node.js 24 LTS (Sondre og Kevin) før koding (løst 2026-11-18: Node 24.14.1 er installert hos Sondre; oppdatering til 24.15+ er valgfri)
+- [x] 2026-11-05 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Avgjør med gruppen om masker også skal fange «010190-12345» og flere mellomrom (krever ny FR-6 og nye tester) (løst 2026-11-10: FR-6 utvidet og masker rettet i f42bf1c, PR #4)
+- [x] 2026-11-05 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Avgjør om CV- og annonsefeltet skal ha spellCheck={false} (Chromes utvidede stavekontroll kan sende teksten til Google) (løst 2026-11-10: spellCheck={false} på CV- og annonsefeltet i f42bf1c, PR #4)
 - [x] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Åpne og flett PR-en for vedlikehold-next-16-4-6-audit-ci når CI er grønn (løst 2026-11-18: PR #9 flettet av Sondre, CI grønn med @v5)
 - [x] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Etter at 1.5 og 1.6 er flettet: Next.js 16.4.4 → 16.4.6 (sikkerhet) og ny vurdering av npm audit (23 sårbarheter, 15 high) på en egen gren (løst 2026-11-18: grenen vedlikehold-next-16-4-6-audit-ci, 8132d34. 22 funn i utviklingsverktøy uten rettet versjon gjenstår, til ny vurdering i 5.2)
 - [x] 2026-11-08 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Godkjenn og flett Kevins PR-er for 1.4, 1.5 og 1.6 når de kommer, én om gangen (løst 2026-11-18: 1.5 flettet i #6/#7 og 1.6 i #8, og kommentarene fra gjennomgangen ligger på #6 og #8)
