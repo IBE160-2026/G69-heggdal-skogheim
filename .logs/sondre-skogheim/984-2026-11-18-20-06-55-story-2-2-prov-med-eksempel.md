@@ -27,6 +27,7 @@ Bygge story 2.2 med bmad-build: *Prøv med eksempel* skal fylle inn demoeksempel
 - **Kontrollene:** lint, typecheck, 588 tester og build er grønne.
 - **Gjennomgangen:** 16 funn. 5 er rettet og 11 avvist, og ingenting er utsatt. Alle står i Review Triage Log i story-fila.
 - **Sprint-status:** 2-2 står som `review`.
+- **Etterpå:** PR #12 er flettet, og 2-2 står som `done` (`e2985f7`). Sondre testet tastatur, 320 px og 200 % zoom i forhåndsvisningen.
 
 ### Åpne punkter
-- Test 2.2 i nettleseren før fletting: tastatur alene, 320 px bredde og 200 % tekstzoom. Testen med NVDA og VoiceOver er flyttet til 5.2.
+- Ingen. Testen med NVDA og VoiceOver er flyttet til 5.2 (deferred-work.md).
