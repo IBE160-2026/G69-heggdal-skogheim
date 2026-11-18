@@ -50,6 +50,31 @@ describe("kontrollerKrav", () => {
     expect(godtatt("", PAR_1)).toBe(false);
   });
 
+  it("FR-9: et belegg under fire tegn avvises selv om det står i CV-en", () => {
+    expect(PAR_1).toMatch(/\bog\b/);
+    expect(godtatt("og", PAR_1)).toBe(false);
+    expect(godtatt("med", PAR_1)).toBe(false);
+  });
+
+  it("FR-9: et belegg må begynne og slutte på en ordgrense", () => {
+    // «oppgjør» står bare inne i «dagsoppgjør», og «Kassasystem og dags» slutter midt i et ord.
+    expect(godtatt("oppgjør", PAR_4)).toBe(false);
+    expect(godtatt("Kassasystem og dags", PAR_4)).toBe(false);
+    expect(godtatt("asystem og dagsoppgjør", PAR_4)).toBe(false);
+    expect(godtatt("hjalp kunder", "Vi hjalp kunder")).toBe(true);
+  });
+
+  it("FR-9: et kort belegg som er et helt ord, godtas", () => {
+    // «Excel» står mellom komma i «(Word, Excel, PowerPoint)».
+    expect(godtatt("Excel", PAR_1)).toBe(true);
+    expect(godtatt("Kasserer", PAR_1)).toBe(true);
+  });
+
+  it("FR-9: en bindestrek i CV-en er en ordgrense", () => {
+    expect(godtatt("brukerstøtte", "Erfaring med IT-brukerstøtte")).toBe(true);
+    expect(godtatt("IT-bruker-\nstøtte", "Erfaring med IT-brukerstøtte")).toBe(true);
+  });
+
   it.each(["oppfylt", "delvis"] as const)(
     "FR-9: %s uten gyldig belegg blir mangler med nedgradert og uten forklaring",
     (kategori) => {

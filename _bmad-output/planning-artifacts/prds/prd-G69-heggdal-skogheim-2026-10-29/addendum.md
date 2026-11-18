@@ -43,12 +43,19 @@ normaliserBelegg(s) =
   fjern alt mellomrom og alle linjeskift
   fjern listetegn (• ▪ ‣ ◦ *), bindestreker og tankestreker (- ‐ – —)
   fjern anførselstegn og apostrofer (« » " “ ” „ ' ‘ ’)
-gyldig(belegg) = normaliserBelegg(belegg) ikke er tom og er en delstreng av normaliserBelegg(CV-tekst)
+gyldig(belegg) =
+  n = normaliserBelegg(belegg)
+  n har minst 4 tegn, og
+  n er en delstreng av normaliserBelegg(CV-tekst) som begynner og slutter på en ordgrense i CV-teksten
+ordgrense mellom to tegn i CV-teksten = normaliseringen fjernet noe mellom dem,
+  eller ett av dem er ikke en bokstav eller et tall
 ```
 
-Hvorfor alle bindestreker fjernes og ikke bare den ved linjeskift (`[ANTAKELSE]` i FR-9): et sammensatt ord som «IT-brukerstøtte» kan bli delt etter bindestreken over to linjer i en PDF. Fjernes bare bindestreken før linjeskiftet, blir CV-teksten «itbrukerstøtte» mens belegget blir «it-brukerstøtte», og et riktig belegg avvises. Å fjerne alle bindestreker gjør kontrollen litt løsere («kunde-service» = «kundeservice»), men endrer ikke ordene eller rekkefølgen. Faglærers forslag (2026-11-12) var å fjerne bindestrek bare ved linjeskift.
+Hvorfor ordgrenser og minst 4 tegn (Sondre, 2026-11-18, etter gjennomgangen av story 2.1): når mellomrom fjernes, blir CV-teksten én lang streng, og et belegg som «og» eller «oppgjør» ville ellers fått treff midt i et ord. Ordgrensene stopper biter av ord, og minstelengden stopper småord. Et kort fagord som står alene, som «Excel», godtas fortsatt. Forkastet: bare minstelengde (15 tegn ville avvist «Excel», og biter av ord ville fortsatt få treff).
 
-`normaliser` i `lib/kjerne` (story 1.6) fjerner i dag bare mellomrom og gjør om til små bokstaver. Den må utvides når kontrollen av belegg bygges (story 2.1). `erDemoeksempel` bruker samme funksjon og blir ikke påvirket på noen måte som betyr noe.
+Hvorfor alle bindestreker fjernes og ikke bare den ved linjeskift (besluttet av Sondre 2026-11-18): et sammensatt ord som «IT-brukerstøtte» kan bli delt etter bindestreken over to linjer i en PDF. Fjernes bare bindestreken før linjeskiftet, blir CV-teksten «itbrukerstøtte» mens belegget blir «it-brukerstøtte», og et riktig belegg avvises. Å fjerne alle bindestreker gjør kontrollen litt løsere («kunde-service» = «kundeservice»), men endrer ikke ordene eller rekkefølgen. Faglærers forslag (2026-11-12) var å fjerne bindestrek bare ved linjeskift.
+
+`normaliser` i `lib/kjerne/demo.ts` gjør normaliseringen over, og `erDemoeksempel` bruker samme funksjon (story 2.1). Ordgrensene og minstelengden gjelder bare kontrollen av belegg (`kontrollerKrav` i `lib/kjerne/belegg.ts`).
 
 ## D. Algoritme for treffprosent (FR-12)
 ```

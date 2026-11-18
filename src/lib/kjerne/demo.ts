@@ -4,8 +4,12 @@ import { masker } from "./masker";
 
 // FR-9 (addendum D0): store og små bokstaver, mellomrom, linjeskift, listetegn,
 // bindestreker, tankestreker, anførselstegn og apostrofer regnes ikke med.
-// [ANTAKELSE] Alle bindestreker fjernes, ikke bare den ved linjeskift.
+// Alle bindestreker fjernes, ikke bare den ved linjeskift (besluttet av Sondre 2026-11-18).
 const IKKE_MED = /[\s•▪‣◦*\-‐–—«»"“”„'‘’]+/gu;
+
+// Ett tegn som normaliseringen fjerner (samme tegn som over). Brukes av kontrollen
+// av belegg (FR-9) for å finne ordgrenser.
+export const ER_IKKE_MED = /^[\s•▪‣◦*\-‐–—«»"“”„'‘’]$/u;
 
 export function normaliser(tekst: string): string {
   return tekst.normalize("NFC").toLowerCase().replace(IKKE_MED, "");

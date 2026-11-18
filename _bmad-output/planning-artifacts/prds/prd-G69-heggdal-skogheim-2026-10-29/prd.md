@@ -180,11 +180,13 @@ Systemet kontrollerer at hvert belegg finnes ordrett i CV-teksten. Mangler beleg
 - store og små bokstaver
 - mellomrom og linjeskift
 - listetegn (for eksempel •, ▪ og *)
-- bindestreker og tankestreker (-, –, —), også bindestrek ved orddeling på slutten av en linje `[ANTAKELSE: alle bindestreker fjernes, ikke bare den ved linjeskift, slik at «IT-brukerstøtte» delt over to linjer også godtas. Gruppen bekrefter]`
+- bindestreker og tankestreker (-, –, —), også bindestrek ved orddeling på slutten av en linje. Alle bindestreker fjernes, ikke bare den ved linjeskift, slik at «IT-brukerstøtte» delt over to linjer også godtas.
 - anførselstegn og apostrofer (for eksempel « », " ", ' og ’)
 
+I tillegg må belegget begynne og slutte på en ordgrense i CV-teksten, og det må ha minst 4 tegn etter normalisering. Et belegg kan altså ikke være en bit av et ord (som «oppgjør» i «dagsoppgjør») eller et småord som «og». Et kort fagord som står alene, for eksempel «Excel», godtas. Algoritmen står i addendum D0.
+
 Konsekvenser som kan testes:
-- Enhetstester dekker disse tilfellene: belegg som finnes (godtas), belegg som er litt omskrevet (avvises), belegg med andre linjeskift (godtas), belegg med orddeling over linjeskift (godtas) og belegg med andre anførselstegn (godtas).
+- Enhetstester dekker disse tilfellene: belegg som finnes (godtas), belegg som er litt omskrevet (avvises), belegg med andre linjeskift (godtas), belegg med orddeling over linjeskift (godtas) og belegg med andre anførselstegn (godtas). De dekker også belegg under 4 tegn (avvises) og belegg som begynner eller slutter midt i et ord (avvises).
 - En enhetstest bekrefter at et belegg som siterer en linje fra `testdata/par-4-tokolonne-hotell/cv.txt` uten listetegnet, for eksempel «Kassasystem og dagsoppgjør», godtas, mens det samme belegget med ett ord byttet ut avvises.
 - En enhetstest bekrefter at både et **Oppfylt**- og et **Delvis oppfylt**-annonsekrav uten gyldig belegg blir **Mangler**.
 
@@ -476,7 +478,7 @@ Alle er bekreftet av Sondre og Kevin, med mindre noe annet står. Begrunnelsene 
 - **FR-5:** Brukeren krysser av for at personverninformasjonen er forstått før første analyse i økten.
 - **FR-6:** Fødselsnummer er 11 sifre med gyldig dato og med skilletegnene i FR-6. Kontonumre maskeres ikke.
 - **FR-8:** Egenvurdering gir **Delvis oppfylt**. Annonsekrav som ikke er dokumentert i CV-en, er alltid **Mangler**. Høyst ett annonsekrav per testpar kan ligge under fasiten.
-- **FR-9:** Uten gyldig belegg blir annonsekravet **Mangler**. Normaliseringen tåler listetegn, orddeling og anførselstegn (avklart av Sondre 2026-11-18; at alle bindestreker fjernes, er `[ANTAKELSE]`).
+- **FR-9:** Uten gyldig belegg blir annonsekravet **Mangler**. Normaliseringen tåler listetegn, orddeling og anførselstegn, og alle bindestreker fjernes. Belegget må følge ordgrensene i CV-teksten og ha minst 4 tegn (besluttet av Sondre 2026-11-18).
 - **FR-11 og FR-17:** Hvert nøkkelord knyttes til ett annonsekrav eller ingen. Bare nøkkelord knyttet til **Oppfylt** eller **Delvis oppfylt** foreslås (avklart av Sondre 2026-11-18, som AD-14).
 - **FR-12:** Matcheregelen med prefiks for norske bøyninger og sammensatte ord. Kjente svakheter står i `testdata/README.md` og addendum D.
 - **FR-14:** Plassholdere for navn og kontaktinformasjon. Brevet er ikke generisk og høres ikke ut som en språkmodell.
@@ -502,3 +504,4 @@ Alle er bekreftet av Sondre og Kevin, med mindre noe annet står. Begrunnelsene 
 - **2026-10-30, UX:** Knappen *Endre CV-tekst* (FR-3), og låste kategorier, belegg, treffprosent og nøkkelord (FR-18).
 - **2026-11-09:** FR-6 utvidet med bindestrek, tankestrek og flere mellomrom etter gjennomgangen av story 1.3.
 - **2026-11-18, faglærers tilbakemelding:** Normalisering og nye tester i FR-9. Koblingen mellom nøkkelord og annonsekrav i FR-11 og FR-17 (faglærers «minst ett krav» ble forkastet for «ett eller ingen», som i arkitekturen). Ny SM-10 og regel for omkjøring i SM-2. Ordlisten skiller annonsekrav og PRD-krav, og har fått gap-analyse og tvilsregelen. FR-2 er formulert som dataminimering. Tekst på engelsk er avklart (FR-4). §10.1 peker på AD-11 med EU-preferanse. NFR-3 skiller hardt og mykt tak. Historikken er flyttet hit fra statusfeltet, §10 og §11.
+- **2026-11-18, etter gjennomgangen av story 2.1:** FR-9 krever i tillegg ordgrenser og minst 4 tegn i belegget, og at alle bindestreker fjernes, er ikke lenger en antakelse (Sondre). Faglærers forslag om å fjerne bindestrek bare ved linjeskift ble forkastet.
