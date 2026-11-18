@@ -31,3 +31,15 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-6-analyser-med-egen-cv-i-demomodus.md`
   summary: Make the focus tests in `src/components/CvPanel-fil.test.tsx` wait for focus with `waitFor`, so they do not fail now and then in the full test run.
   evidence: During story 1.6, 2 of 6 full `npm test` runs failed on `expect(document.activeElement).toBe(felt)`. One time it was «FR-3: tom fil (0 byte)», the other «FR-22: lesefeil i nettleseren». Each passed 5 of 5 alone. `findByLabelText` resolves when the field appears, before the focus effect has run. The tests come from story 1.4, and the flakiness can break CI.
+
+## Deferred from: godkjenning av story 1.5 og 1.6 (2026-11-18)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-5-laste-opp-cv-som-pdf-ogsaa-med-to-kolonner.md` og `spec-1-6-analyser-med-egen-cv-i-demomodus.md`
+  summary: Manuell test med NVDA og VoiceOver i Safari av PDF-opplasting (1.5) og demovarselet (1.6) flyttes til story 5.2.
+  evidence: Sondre godkjente 1.5 og 1.6 som `done` 2026-11-18 uten disse testene. Tastatur og produksjonsbygg er testet for 1.5 (par 4 og en PDF med én kolonne).
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-6-analyser-med-egen-cv-i-demomodus.md`
+  summary: Manuell test etter `next build` av to tilfeller i 1.6 er ikke kjørt: (1) demoteksten fra par 1 uendret gir ikke varsel (sjekker Turbopack-regelen for `?raw` i produksjon), (2) et nytt fødselsnummer gir maskering på første trykk og varsel først på andre (også i Safari).
+  evidence: Sondre testet bare at egen CV gir varsel. Kjør de to testene ved første anledning i epic 2, senest i story 2.2 (*Prøv med eksempel* bruker `erDemoeksempel`).
+- source_spec: `_bmad-output/implementation-artifacts/spec-1-6-analyser-med-egen-cv-i-demomodus.md`
+  summary: Test i `demovarsel-tilstand.test.ts` for at `statusHentet` med `modus: "demo"` beholder `demoVarsel` (funn fra kodegjennomgangen, ikke med i #8). Tas i story 2.1.
+  evidence: Bare tilfellet `ekte` er testet. Fjernes betingelsen i `statusHentet`, er alle testene fortsatt grønne.

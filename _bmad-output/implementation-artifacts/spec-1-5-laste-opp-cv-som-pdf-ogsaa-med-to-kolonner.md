@@ -2,7 +2,7 @@
 title: 'Story 1.5: Laste opp CV som PDF, også med to kolonner'
 type: 'feature'
 created: '2026-11-07'
-status: 'review'
+status: 'done'
 baseline_commit: 'ffe149f26ff1f0dc8f6aa07660823811dabb927a'
 route: 'dispatch'
 review_loop_iteration: 1
