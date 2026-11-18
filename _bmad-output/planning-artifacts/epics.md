@@ -343,7 +343,7 @@ Som sensor uten API-nøkkel,
 vil jeg få en forklaring når jeg trykker *Analyser* på min egen CV,
 slik at jeg forstår hvorfor og hva jeg kan gjøre i stedet.
 
-**Realiserer:** FR-26, AD-6 (`kjoring`), AD-13, `DEMO_CV`, `DEMO_ANNONSE`, `erDemoeksempel`, UX-DR22, UX-DR24
+**Realiserer:** FR-26, AD-6 (`demoVarsel`; `kjoring` innføres i epic 2, der den brukes), AD-13, `DEMO_CV`, `DEMO_ANNONSE`, `erDemoeksempel`, UX-DR22, UX-DR24
 
 **Akseptansekriterier:**
 
