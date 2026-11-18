@@ -8,6 +8,8 @@
 - [ ] 2026-11-05 [story-1-4-opplasting-docx-txt](998-2026-11-05-12-16-14-story-1-4-opplasting-docx-txt.md) — Lag PR for 1.4 først når PR-en for 1.3 er merget, og rebaser 1.4 på `main`
 - [ ] 2026-11-07 [story-1-5-pdf-to-kolonner](997-2026-11-07-23-19-12-story-1-5-pdf-to-kolonner.md) — Lag PR for 1.5 først når PR-ene for 1.3 og 1.4 er merget, og rebaser 1.5 på `main`
 - [ ] 2026-11-07 [story-1-5-pdf-to-kolonner](997-2026-11-07-23-19-12-story-1-5-pdf-to-kolonner.md) — Test story 1.5 med NVDA og VoiceOver i Safari (også en sjekk av pdfjs 6 i Safari), og sett 1.5 til `done`, eller avgjør med gruppen om testene kan sløyfes
+- [ ] 2026-11-18 [story-1-5-pdf-to-kolonner](997-2026-11-07-23-19-12-story-1-5-pdf-to-kolonner.md) — Next.js 16.4.4 varsles som sårbar under `next build`. Vurder oppgradering i en egen endring
+- [ ] 2026-11-18 [story-1-5-pdf-to-kolonner](997-2026-11-07-23-19-12-story-1-5-pdf-to-kolonner.md) — Rett statusavviket i story 1.6: spec-en står som `done` og sprint-status som `review`, mens NVDA og VoiceOver i Safari gjenstår
 
 ## Løst
 
