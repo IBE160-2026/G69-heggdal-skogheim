@@ -54,9 +54,13 @@ Sondre spurte først hva som var gjort og hva som var neste steg. Deretter ba ha
 
 - **Story 1.6 er flettet** (PR #8, flettet av Sondre, med `main` flettet inn i 767b2d7). CI er grønn på `main`. Testen for `statusHentet` med `demo` var ikke med. Kommentaren fra gjennomgangen, oppdatert med denne statusen, er lagt på [PR #8](https://github.com/IBE160-2026/G69-heggdal-skogheim/pull/8#issuecomment-6982523841). Sondre testet ikke 1.6 manuelt før flettingen. Sprint-status: 1.5 og 1.6 står i `review`.
 
+- **Sondres test av story 1.6 på `main`** etter `npm run build` og `npm start`: egen CV (par 1 med to fødselsnumre lagt til) ga varselet over *Analyser*, maskeringen viste «2 fødselsnumre er fjernet», og et nytt trykk lot varselet stå. Demoteksten uten varsel og fødselsnummer med to trykk ble ikke testet. Underveis avbrøt Ctrl+C en `npm ci`, så `next` manglet, og ny `npm ci` løste det. `npm npm audit fix --force` kjørte ikke, fordi det var en skrivefeil.
+- **Story 1.5 og 1.6 er satt til `done`, og epic 1 er ferdig** (godkjent av Sondre). NVDA og VoiceOver, de to manuelle testene for 1.6 og testen for `statusHentet` med `demo` er ført i `deferred-work.md`.
+
 ### Åpne punkter
-- Testen for at `statusHentet` med `demo` beholder `demoVarsel` mangler fortsatt (1.6). Den kan tas i story 2.1 eller som en egen liten PR.
-- Sondre tester story 1.6 på `main` etter `next build`: egen CV gir varsel, demoteksten fra par 1 limt inn gir ikke varsel (`?raw`-regelen), og fødselsnummer med to trykk. Gjør gjerne fødselsnummertesten i Safari også.
+- Kjør de to manuelle testene for 1.6 etter `next build`: demoteksten fra par 1 uendret skal ikke gi varsel (`?raw`), og et fødselsnummer skal gi to trykk (også i Safari). Senest i story 2.2.
+- Testen for at `statusHentet` med `demo` beholder `demoVarsel` tas i story 2.1.
+- Retrospektiv for epic 1 (valgfri).
 - Next.js 16.4.4 → 16.4.6 (sikkerhetsoppdatering) og ny vurdering av `npm audit` (23 sårbarheter, 15 high) på en egen gren etter at 1.5 og 1.6 er flettet.
 - Kevin legger inn en test for linjer som fjernes nederst på siden i `finnOppdeling` (story 1.5) og oppdaterer designnotatene i spec-1-5 til regelen fra runde 2.
 - Før story 1.5 flettes, tester Sondre to ting etter `npm run build && npm start`: PDF-en fra par 4, og en CV med én kolonne og datoer til venstre.
