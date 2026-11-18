@@ -139,6 +139,7 @@ flowchart LR
   - `kjoring: { id, cvTekst, annonse, erEksempel }`, satt av *Analyser* fra `utkast`. `cvTekst` er maskert.
   - `resultatdeler`: per `resultatdel` `{ status: 'venter' | 'genererer' | 'feil' | 'ferdig', feilkode, generert, redigert, gapVersjon }`. `redigert` er `null` eller har samme form som `generert`. En resultatdel er redigert når `redigert !== null`, og visning og kopiering bruker `redigert ?? generert`.
   - `gapVersjon`, som øker for hver gap-generering
+  - `demoVarsel: { nr } | null`, varselet fra FR-26. *Analyser* setter det i demomodus (også når `modus` er ukjent) med egen CV, og `nr` øker for hvert trykk, så fokus flyttes til varselet igjen. Det fjernes når CV-teksten, annonsen eller filen endres, og når statusen sier `ekte`. Innført i story 1.6, før `kjoring` finnes.
 
   **Genereringer:**
   - Bare `startGenerering(resultatdel)` i `lib/okt` sender requester. Den har en vakt mot dobbeltstart og en egen `AbortController`. Fanekomponenter starter aldri en fetch selv.

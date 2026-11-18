@@ -4,15 +4,17 @@
 
 - [ ] 2026-11-05 [story-1-3-cv-innlesing](999-2026-11-05-11-36-42-story-1-3-cv-innlesing.md) — Story 1.6 må sjekke maskering ved klikk på *Analyser* i Safari
 - [ ] 2026-11-05 [story-1-4-opplasting-docx-txt](998-2026-11-05-12-16-14-story-1-4-opplasting-docx-txt.md) — Lag PR for 1.4 først når PR-en for 1.3 er merget, og rebaser 1.4 på `main`
-- [ ] 2026-11-07 [story-1-5-pdf-to-kolonner](997-2026-11-07-23-19-12-story-1-5-pdf-to-kolonner.md) — Lag PR for 1.5 først når PR-ene for 1.3 og 1.4 er merget, og rebaser 1.5 på `main`
 - [ ] 2026-11-07 [story-1-5-pdf-to-kolonner](997-2026-11-07-23-19-12-story-1-5-pdf-to-kolonner.md) — Test story 1.5 med NVDA og VoiceOver i Safari (også en sjekk av pdfjs 6 i Safari), og sett 1.5 til `done`, eller avgjør med gruppen om testene kan sløyfes
 - [ ] 2026-11-07 [story-1-6-demovarsel](996-2026-11-07-23-50-49-story-1-6-demovarsel.md) — NVDA og VoiceOver i Safari for 1.6: bekreft at varselet uten `role="alert"` leses opp når det får fokus, og sjekk maskeringen ved klikk på *Analyser* i Safari
 - [ ] 2026-11-07 [story-1-6-demovarsel](996-2026-11-07-23-50-49-story-1-6-demovarsel.md) — Story 2.1/2.2: *Analyser* på demoeksempelet gir ingen tilbakemelding før `kjoring` og *Prøv med eksempel* finnes
 - [ ] 2026-11-07 [story-1-6-demovarsel](996-2026-11-07-23-50-49-story-1-6-demovarsel.md) — Lag PR for 1.6 først når PR-ene for 1.3, 1.4 og 1.5 er merget, og rebaser 1.6 på `main`
 - [ ] 2026-11-09 [story-1-3-oppfolging-fnr-stavekontroll](995-2026-11-09-00-34-47-story-1-3-oppfolging-fnr-stavekontroll.md) — Lag PR for `story-1.3-oppfolging-fnr-stavekontroll` mot `main` før PR-en for 1.4, og vurder merge av `main` i stedet for rebase av 1.4–1.6
+- [ ] 2026-11-18 [story-1-5-pdf-to-kolonner](997-2026-11-07-23-19-12-story-1-5-pdf-to-kolonner.md) — Next.js 16.4.4 varsles som sårbar under `next build`, og builden kan stoppe i GitHub CI. Vurder oppgradering i en egen endring
 
 ## Løst
 
+- [x] 2026-11-18 [story-1-5-pdf-to-kolonner](997-2026-11-07-23-19-12-story-1-5-pdf-to-kolonner.md) — Rett statusavviket i story 1.6: spec-en står som `done` og sprint-status som `review`, mens NVDA og VoiceOver i Safari gjenstår (løst 2026-11-18: spec-en for 1.6 er satt til `review`)
+- [x] 2026-11-07 [story-1-5-pdf-to-kolonner](997-2026-11-07-23-19-12-story-1-5-pdf-to-kolonner.md) — Lag PR for 1.5 først når PR-ene for 1.3 og 1.4 er merget, og rebaser 1.5 på `main` (løst 2026-11-18: `main` er merget inn i stedet for rebase, og Kevin har opprettet PR-en)
 - [x] 2026-11-05 [story-1-3-cv-innlesing](999-2026-11-05-11-36-42-story-1-3-cv-innlesing.md) — Avgjør med gruppen om `masker` også skal fange «010190-12345» og flere mellomrom (endrer FR-6 og testene) (løst 2026-11-09: 1–3 mellomrom, eller bindestrek eller tankestrek med høyst ett mellomrom på hver side, FR-6 og tester oppdatert, se [story-1-3-oppfolging-fnr-stavekontroll](995-2026-11-09-00-34-47-story-1-3-oppfolging-fnr-stavekontroll.md))
 - [x] 2026-11-05 [story-1-3-cv-innlesing](999-2026-11-05-11-36-42-story-1-3-cv-innlesing.md) — Avgjør om CV-feltet og annonsefeltet skal ha `spellCheck={false}` (løst 2026-11-09: lagt på begge feltene med test, se [story-1-3-oppfolging-fnr-stavekontroll](995-2026-11-09-00-34-47-story-1-3-oppfolging-fnr-stavekontroll.md))
 - [x] 2026-11-07 [story-1-6-demovarsel](996-2026-11-07-23-50-49-story-1-6-demovarsel.md) — Rett fokustestene i `CvPanel-fil.test.tsx` som feiler av og til i hele testkjøringen (`waitFor`), så CI ikke feiler tilfeldig (løst 2026-11-08: `kontrollFeltMedFokus()` med `waitFor` i de sju testene, 10 av 10 fulle kjøringer bestått)

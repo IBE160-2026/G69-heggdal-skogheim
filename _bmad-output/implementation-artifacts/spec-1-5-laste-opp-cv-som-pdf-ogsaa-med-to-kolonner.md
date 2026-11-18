@@ -2,7 +2,7 @@
 title: 'Story 1.5: Laste opp CV som PDF, også med to kolonner'
 type: 'feature'
 created: '2026-11-07'
-status: 'done'
+status: 'review'
 baseline_commit: 'ffe149f26ff1f0dc8f6aa07660823811dabb927a'
 route: 'dispatch'
 review_loop_iteration: 1
@@ -111,6 +111,7 @@ context:
 ## Spec Change Log
 
 - **2026-11-07, runde 1 → 2 (intent_gap, Kevin valgte «Håndter toppteksten»).** Utløst av: en topptekst over hele bredden som krysser kolonnegrensen, ga én kolonne og flettede kolonner under. Endret: beslutning, grenseregel og ny rad i matrisen i den låste delen (med Kevins godkjenning), Design Notes (regelen for topptekst og bunntekst, begrensningen er fjernet), Code Map med de sju rettingene fra gjennomgangen (tester for `pdfjs.ts`, tomme sider, venstre kant, parametre til `getDocument`, buffer-kopi, `toContain` før `indexOf`, `.then().catch()` i `pdfjs.ts`). Unngått: CV-er med sentrert navn eller kontaktlinje over to kolonner som leses flettet. KEEP: alt annet fra runde 1 virket og skal bygges likt. Det gjelder de egne små typene i `pdf.ts` (`Tekstbit`, `GetDocument`), `view` for sidebredde og venstre kant, `hypot(transform[2], transform[3])` som tekststørrelse, at tomme sider hoppes over, at `destroy()` kalles i `finally`, at `hentGetDocument` husker løftet, `pdfUtenTekst()` bygget i testen, mocken i `CvPanel-fil.test.tsx` med legacy-workeren som `file:`-URL, ESLint-mønsteret `^pdfjs-dist(/|$)` for components og app med tester, og sjekken etter bygget (worker i `.next/static/media`, pdfjs i en egen chunk på cirka 447 kB).
+- **2026-11-18, etter Sondres gjennomgang.** Design Notes er oppdatert fra regelen i runde 1 til den gjeldende regelen fra runde 2, der bare fjernede linjer som krysser grensen, blir topptekst eller bunntekst. Ny test i `innlesing.test.ts` dekker en skillelinje som tredje nederste linje. Status er rettet fra `done` til `review`, fordi NVDA og VoiceOver i Safari ikke er testet. Koden i `pdf.ts` er ikke endret.
 
 ## Review Triage Log
 
@@ -154,7 +155,7 @@ context:
 
 Undersøkt med pdfjs-dist 6.5.438 på `par-4/cv.pdf` (595 × 842 pt). Venstre kolonne slutter ved x ≈ 185 (navnet), og høyre starter ved 225. Elementer med bare `" "` går over grensen, så de må holdes utenfor søket. Navnefeltet ligger øverst i venstre kolonne og havner derfor først. En prøve av regelen under ga grensen 185–225, ingen manglende linjer, ingen blandede linjer og samme tekst som `cv.txt` uten mellomrom.
 
-Regel: Elementer med omtrent lik y (±2 pt) blir én linje, sortert etter x. Kolonnegrensen er det bredeste x-intervallet mellom 20 og 80 % av sidebredden som ingen elementer med tekst dekker. Det må være minst 12 pt bredt, og det må finnes tekst på begge sider. Søket gjøres først med alle linjene. Finnes ingen grense, prøves det med k linjer fjernet øverst og m nederst, med minst mulig k + m først (ved lik sum: færre nederst), og k + m kan være høyst en fjerdedel av linjene på siden. De fjernede linjene øverst blir toppteksten og skrives først, de nederst blir bunnteksten og skrives sist, begge som én kolonne. Uten grense etter dette sorteres hele siden som én kolonne.
+Regel: Elementer med omtrent lik y (±2 pt) blir én linje, sortert etter x. Kolonnegrensen er det bredeste x-intervallet mellom 20 og 80 % av sidebredden som ingen elementer med tekst dekker. Det må være minst 12 pt bredt, og det må finnes tekst på begge sider. Søket gjøres først med alle linjene. Finnes ingen grense, prøves det med k linjer fjernet øverst og m nederst, med minst mulig k + m først (ved lik sum: færre nederst), og k + m kan være høyst en fjerdedel av linjene på siden. Bare fjernede linjer som krysser grensen, blir topptekst eller bunntekst. De øverste skrives først og de nederste sist, begge som én kolonne. Fjernede linjer som ikke krysser grensen, legges tilbake i kolonnene. En skillelinje over hele bredden som står mellom radene nær toppen eller bunnen, skrives derfor først eller sist, og radene på den andre siden av linjen leses med kolonnene. Uten grense etter dette sorteres hele siden som én kolonne.
 
 Eksempel (A4, 595 pt): «KARI NORDMANN» sentrert ved x 220–375, en kontaktlinje 40–555, så venstre kolonne 40–180 og høyre 225–555, og «Referanser oppgis på forespørsel» 40–555 nederst. Uten de to øverste og den nederste linjen er grensen 180–225. Utdata: navnet, kontaktlinjen, venstre kolonne, høyre kolonne, bunnlinjen.
 

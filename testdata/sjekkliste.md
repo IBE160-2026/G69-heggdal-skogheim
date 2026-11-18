@@ -40,6 +40,7 @@ Brukes for hvert par i testsettet. Alle punktene må være oppfylt for at paret 
 - [ ] Forslagene omformulerer eller fremhever eksisterende innhold, de legger ikke til nytt.
 - [ ] ATS-forslagene er konkrete (f.eks. «bruk annonsens ordlyd "kundebehandling" i stedet for "jobbet i kassa"»), ikke generelle råd.
 - [ ] Hvert CV- og ATS-forslag har én setning om hvorfor, knyttet til et krav eller nøkkelord i annonsen (FR-16, FR-17).
+- [ ] ATS-forslagene foreslår ingen nøkkelord som hører til et krav med «Mangler» eller ikke hører til noe krav. For par 3 betyr det verken «Tripletex» eller «Visma» (FR-17).
 
 ## Robusthet (sjekkes én gang per versjon, ikke per par)
 

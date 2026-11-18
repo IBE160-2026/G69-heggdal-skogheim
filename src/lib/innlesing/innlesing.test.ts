@@ -392,6 +392,35 @@ describe("ordneSide", () => {
     ]);
   });
 
+  it("FR-2: bare linjer som krysser grensen, blir bunntekst, og radene under leses med kolonnene", () => {
+    // Linje 1–9 er vanlige rader med to kolonner, linje 10 en skillelinje over hele
+    // bredden og linje 11–12 nye rader. Bare skillelinjen er bunntekst.
+    const rad = (i: number, y: number) => [
+      bit(`V${i}`, 40, y, 140),
+      bit(`H${i}`, 225, y, 330),
+    ];
+    const tekst = ordneSide(
+      [
+        ...Array.from({ length: 9 }, (_, i) => rad(i + 1, 800 - i * 20)).flat(),
+        bit("————————", 40, 620, 515),
+        ...rad(10, 600),
+        ...rad(11, 580),
+      ],
+      595,
+    );
+    const linjer = tekst.split("\n");
+
+    expect(linjer).toHaveLength(23);
+    for (const linje of linjer) {
+      expect(/V\d/.test(linje) && /H\d/.test(linje), linje).toBe(false);
+    }
+    expect(linjer).toEqual([
+      ...Array.from({ length: 11 }, (_, i) => `V${i + 1}`),
+      ...Array.from({ length: 11 }, (_, i) => `H${i + 1}`),
+      "————————",
+    ]);
+  });
+
   it("FR-2: høyst en fjerdedel av linjene kan være topp- og bunntekst", () => {
     // Tre linjer gir null linjer å fjerne, så siden leses som én kolonne.
     const tekst = ordneSide(

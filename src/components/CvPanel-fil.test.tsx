@@ -11,10 +11,19 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 import { CV_FIL_MAKS } from "@/lib/kontrakt/grenser";
 import { OktProvider } from "@/lib/okt/OktProvider";
+import { hentGetDocument } from "@/lib/okt/pdfjs";
 import { pdfUtenTekst } from "@/testhjelp/pdf";
 
 // Uten mock prøver jsdom å laste den ekte pdfjs. Legacy-builden kjører i testen,
@@ -47,6 +56,17 @@ const KORT =
   "Fant nesten ikke tekst i filen. Den kan være skannet eller tom. Lim inn teksten selv i feltet under.";
 
 let fetchMock: ReturnType<typeof vi.fn>;
+
+// Den første PDF-en laster hele pdfjs og workeren. Det gjøres her, så ventetiden i
+// testene måler panelet og ikke modullastingen, også på en treg CI-maskin.
+beforeAll(async () => {
+  const getDocument = await hentGetDocument();
+  const oppgave = getDocument({ data: PDF.slice(), isEvalSupported: false });
+  const dokument = await oppgave.promise;
+  const side = await dokument.getPage(1);
+  await side.getTextContent();
+  await oppgave.destroy();
+}, 60_000);
 
 beforeEach(() => {
   // Status holdes ventende, så bare handlingene i testen endrer tilstanden.
