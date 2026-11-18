@@ -46,7 +46,14 @@ Sondre spurte først hva som var gjort og hva som var neste steg. Deretter ba ha
     - I Safari kan blur maskere fødselsnummeret før klikket, så det første trykket viser varselet med en gang.
     - Dokumentene var ute av takt med koden. Det er rettet på `main`: AD-6 har fått `demoVarsel`, og `epics.md` sier at `kjoring` kommer i epic 2. Endringen er logget i arkitekturens memlogg.
 
+- **CI på story 1.5** feilet på `findByLabelText("CV-tekst")`, som venter 1 s, fordi pdfjs ble lastet kaldt på en treg GitHub-maskin. Lokalt, i en egen arbeidsmappe på `b0f27f9`, besto alle 393 testene, og den første PDF-testen brukte 260 ms. Kevin rettet det i #7 (4bc9953): pdfjs og workeren lastes nå i `beforeAll`.
+- **Story 1.5 er flettet** (PR #6 og #7, flettet av Sondre). Kevin rettet også testen for bunnteksten, designnotatene og statusen i spec-1-5 (319764d). Sprint-status på `main` sier `1-5: review` til NVDA og VoiceOver er testet.
+- **Kommentar fra gjennomgangen av 1.5** er lagt på PR #6 med `gh`: https://github.com/IBE160-2026/G69-heggdal-skogheim/pull/6#issuecomment-6982292680. GitHub CLI finnes i `C:\Program Files\GitHub CLI\gh.exe`, men ikke i PATH.
+- **Det finnes ingen PR for 1.6 ennå.** Utkastet til kommentaren ligger i [vedlegg/pr-kommentar-story-1-6.md](vedlegg/pr-kommentar-story-1-6.md) og legges på PR-en når Kevin åpner den.
+- **IP-adresser i Vercel:** sjekket i story 1.1 (2026-11-04, se 990). Det var ingen IP i Runtime Logs eller i den synlige delen av Request Logs. Nederste del av panelet, CDN Requests og Firewall er ikke sjekket, og story 5.2 kontrollerer dette på nytt.
+
 ### Åpne punkter
+- Når Kevin åpner PR for 1.6: legg inn kommentaren fra `vedlegg/pr-kommentar-story-1-6.md`. Grenen må få `main` flettet inn.
 - Kevin legger inn en test for at `statusHentet` med `demo` beholder `demoVarsel` (story 1.6).
 - Sondre tester story 1.6 etter `next build`: egen CV gir varsel, demoteksten fra par 1 limt inn gir ikke varsel (`?raw`-regelen), og fødselsnummer med to trykk. Gjør gjerne fødselsnummertesten i Safari også.
 - Next.js 16.4.4 → 16.4.6 (sikkerhetsoppdatering) og ny vurdering av `npm audit` (23 sårbarheter, 15 high) på en egen gren etter at 1.5 og 1.6 er flettet.
