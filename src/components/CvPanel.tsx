@@ -3,6 +3,7 @@
 import { LoaderCircle, TriangleAlert } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import { SpraakMerknad } from "@/components/SpraakMerknad";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -133,6 +134,7 @@ export function CvPanel() {
         <h2 id="cv-tittel" className="text-section-title">
           CV
         </h2>
+        <SpraakMerknad />
         <div
           className={`mt-3 rounded-lg border-2 border-dashed px-4 py-6 text-center ${
             drar ? "border-primary bg-muted" : "border-input"
@@ -242,6 +244,7 @@ export function CvPanel() {
       <h2 id="cv-tittel" className="text-section-title">
         Kontroller CV-teksten
       </h2>
+      <SpraakMerknad />
       {cvFil && filFerdig ? (
         <div className="mt-1 flex flex-wrap items-center gap-x-3">
           <span className="min-w-0 text-sm break-all">{cvFil.navn}</span>

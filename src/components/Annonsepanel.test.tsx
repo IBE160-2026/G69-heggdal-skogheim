@@ -57,6 +57,12 @@ afterEach(() => {
 });
 
 describe("Annonsepanel, markup", () => {
+  it("FR-4: merknaden om språk står rett under overskriften", () => {
+    expect(vis("")).toContain(
+      ">Stillingsannonse</h2><p class=\"mt-1 text-label text-muted-foreground\">Laget for CV-er og annonser på norsk. Resultatet er alltid på bokmål.</p>",
+    );
+  });
+
   it("FR-4: har overskrift, etikett, hjelpetekst og teller", () => {
     const html = vis("");
 

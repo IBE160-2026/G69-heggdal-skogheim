@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { SpraakMerknad } from "@/components/SpraakMerknad";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useOkt } from "@/lib/okt/OktProvider";
@@ -32,6 +33,7 @@ export function Annonsepanel() {
       <h2 id="annonse-tittel" className="text-section-title">
         Stillingsannonse
       </h2>
+      <SpraakMerknad />
       <Label htmlFor="annonse" className="mt-3 block text-label">
         Annonse
       </Label>

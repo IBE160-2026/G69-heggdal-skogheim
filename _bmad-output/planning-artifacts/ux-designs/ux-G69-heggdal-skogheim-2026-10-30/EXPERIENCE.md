@@ -56,6 +56,7 @@ Merkevarestemmen står i `DESIGN.md` (Brand & Style). Her er reglene for mikrote
 - Kategoriene heter alltid **Oppfylt**, **Delvis oppfylt** og **Mangler**, aldri «Match», «Svak» eller lignende.
 - Den eksterne tjenesten heter «språkmodellen», ikke «KI-en» (PRD §3).
 - Appen omtaler ikke seg selv som «vi» eller «jeg». Meldinger skrives uten subjekt der det går: «Fant nesten ikke tekst i filen.»
+- Under overskriften i både CV-panelet og annonsepanelet står merknaden «Laget for CV-er og annonser på norsk. Resultatet er alltid på bokmål.» Andre språk avvises ikke (FR-4).
 
 | Gjør | Ikke gjør |
 |---|---|

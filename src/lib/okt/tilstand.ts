@@ -233,9 +233,9 @@ function eksempel(tilstand: OktTilstand): OktTilstand {
 }
 
 // *Analyser* maskerer først. Ble et nytt fødselsnummer maskert, eller er knappen
-// deaktivert, skjer ingenting mer. Demoeksempelet starter en kjøring. Ellers gir egen
-// CV i demomodus varselet (FR-26). Ukjent modus regnes som demo. Ekte generering med
-// egen CV kommer i story 2.3.
+// deaktivert, skjer ingenting mer. Demoeksempelet starter en kjøring. Egen CV starter
+// en kjøring i ekte modus (FR-7) og gir varselet i demomodus (FR-26). Ukjent modus
+// regnes som demo.
 function analyser(tilstand: OktTilstand): OktTilstand {
   const maskert = maskerCv(tilstand, tilstand.innhold.utkast.cvTekst);
   // Teksten endres bare når et nytt fødselsnummer ble maskert.
@@ -247,7 +247,9 @@ function analyser(tilstand: OktTilstand): OktTilstand {
   if (erDemoeksempel(cvTekst, annonse)) {
     return medKjoring(maskert, cvTekst, annonse, true);
   }
-  if (maskert.okt.modus === "ekte") return maskert;
+  if (maskert.okt.modus === "ekte") {
+    return medKjoring(maskert, cvTekst, annonse, false);
+  }
 
   return {
     ...maskert,

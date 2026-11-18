@@ -17,7 +17,9 @@ export async function POST(
     body = undefined;
   }
 
-  const { status, json } = await generer(resultatdel, body, process.env);
+  const { status, json } = await generer(resultatdel, body, process.env, {
+    signal: request.signal,
+  });
 
   return Response.json(json, { status });
 }

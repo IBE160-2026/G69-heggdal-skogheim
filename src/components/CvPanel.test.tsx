@@ -76,6 +76,19 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
+const MERKNAD =
+  '<p class="mt-1 text-label text-muted-foreground">Laget for CV-er og annonser på norsk. Resultatet er alltid på bokmål.</p>';
+
+describe("CvPanel, merknad om språk", () => {
+  it("FR-4: står rett under overskriften i tilstand 1", () => {
+    expect(vis()).toContain(`>CV</h2>${MERKNAD}`);
+  });
+
+  it("FR-4: står rett under overskriften i tilstand 2", () => {
+    expect(vis("Kari Nordmann")).toContain(`>Kontroller CV-teksten</h2>${MERKNAD}`);
+  });
+});
+
 describe("CvPanel, tilstand 1", () => {
   it("FR-1: har overskrift og opplastingsfelt", () => {
     const html = vis();

@@ -228,14 +228,24 @@ describe("AnalyserKnapp i demomodus", () => {
     ).toBe("Prøv med eksempel");
   });
 
-  it("FR-26: ekte modus gir ikke varselet", async () => {
+  it("FR-7: ekte modus gir ikke varselet, men sender gap-analysen med egen CV", async () => {
     modus = "ekte";
     await monter("Kari Nordmann");
 
-    fireEvent.click(analyser());
+    await act(async () => {
+      fireEvent.click(analyser());
+    });
 
     expect(varsel()).toBeNull();
-    bareStatusKall();
+    const generer = fetchMock.mock.calls.filter(([url]) => url !== "/api/status");
+    expect(generer).toHaveLength(1);
+    const [url, init] = generer[0] as [string, RequestInit];
+    expect(url).toBe("/api/generer/gap");
+    expect(JSON.parse(String(init.body))).toEqual({
+      cvTekst: "Kari Nordmann",
+      annonse: "a".repeat(200),
+      demo: false,
+    });
   });
 
   it("FR-6: nytt fødselsnummer maskeres først, og andre trykk gir varselet", async () => {

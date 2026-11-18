@@ -1,33 +1,18 @@
 import "server-only";
 
 import type { StatusSvar } from "@/lib/kontrakt/status";
+import { type Leverandor, nokkel, velgLeverandor } from "@/lib/llm/leverandor";
 
-const LEVERANDORER = new Map([
-  [
-    "mistral",
-    {
-      nokkelVariabel: "MISTRAL_API_KEY",
-      info: { navn: "Mistral AI", land: "Frankrike", tredjeland: false },
-    },
-  ],
-  [
-    "openai",
-    {
-      nokkelVariabel: "OPENAI_API_KEY",
-      info: { navn: "OpenAI", land: "USA", tredjeland: true },
-    },
-  ],
-]);
-
-const STANDARD_LEVERANDOR = LEVERANDORER.get("mistral")!;
+const LEVERANDORER: Record<Leverandor, StatusSvar["leverandor"]> = {
+  mistral: { navn: "Mistral AI", land: "Frankrike", tredjeland: false },
+  openai: { navn: "OpenAI", land: "USA", tredjeland: true },
+};
 
 export function lagStatus(env: Record<string, string | undefined>): StatusSvar {
-  const leverandor =
-    LEVERANDORER.get(env.LLM_LEVERANDOR?.trim().toLowerCase() ?? "") ?? STANDARD_LEVERANDOR;
-  const harNokkel = Boolean(env[leverandor.nokkelVariabel]?.trim());
+  const leverandor = velgLeverandor(env);
 
   return {
-    modus: harNokkel ? "ekte" : "demo",
-    leverandor: leverandor.info,
+    modus: nokkel(env, leverandor) ? "ekte" : "demo",
+    leverandor: LEVERANDORER[leverandor],
   };
 }
