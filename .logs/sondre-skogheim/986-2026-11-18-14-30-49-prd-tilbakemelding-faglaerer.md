@@ -50,7 +50,7 @@ Sondre spurte først hva som var gjort og hva som var neste steg. Deretter ba ha
 - **Story 1.5 er flettet** (PR #6 og #7, flettet av Sondre). Kevin rettet også testen for bunnteksten, designnotatene og statusen i spec-1-5 (319764d). Sprint-status på `main` sier `1-5: review` til NVDA og VoiceOver er testet.
 - **Kommentar fra gjennomgangen av 1.5** er lagt på PR #6 med `gh`: https://github.com/IBE160-2026/G69-heggdal-skogheim/pull/6#issuecomment-6982292680. GitHub CLI finnes i `C:\Program Files\GitHub CLI\gh.exe`, men ikke i PATH.
 - **Det finnes ingen PR for 1.6 ennå.** Utkastet til kommentaren ligger i [vedlegg/pr-kommentar-story-1-6.md](vedlegg/pr-kommentar-story-1-6.md) og legges på PR-en når Kevin åpner den.
-- **IP-adresser i Vercel:** sjekket i story 1.1 (2026-11-04, se 990). Det var ingen IP i Runtime Logs eller i den synlige delen av Request Logs. Nederste del av panelet, CDN Requests og Firewall er ikke sjekket, og story 5.2 kontrollerer dette på nytt.
+- **IP-adresser i Vercel:** sjekket i story 1.1 (2026-11-04, se 990). Det var ingen IP i Runtime Logs eller i den synlige delen av Request Logs. Nederste del av panelet, CDN Requests og Firewall var ikke sjekket. **Sjekket på nytt 2026-11-18 av Sondre:** detaljpanelet for `/api/status` viser forespørsels-ID, sti, vert, User Agent, Referer, mottaksregion (`sfo1`), Firewall «Allowed», rutet til `arn1`, funksjonskall og deploy-informasjon, men ingen IP-adresse. Det gjelder også i Firewall-raden og nederst i panelet. Personvernteksten (FR-5) trenger derfor ikke nevne IP-logging fra Vercel. Story 5.2 kontrollerer dette på nytt før innlevering.
 
 ### Åpne punkter
 - Når Kevin åpner PR for 1.6: legg inn kommentaren fra `vedlegg/pr-kommentar-story-1-6.md`. Grenen må få `main` flettet inn.
