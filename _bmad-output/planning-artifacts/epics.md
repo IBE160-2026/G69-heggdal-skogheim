@@ -16,30 +16,30 @@ inputDocuments:
 
 ## Oversikt
 
-Dette dokumentet deler kravene i PRD-en, UX-spesifikasjonen (DESIGN.md og EXPERIENCE.md) og arkitekturspinen inn i epics og stories som kan implementeres. Ordene i PRD §3 brukes uten synonymer. Hver story viser til FR-, NFR-, AD- og UX-DR-ID-ene den realiserer (NFR-10).
+Dette dokumentet deler kravene i PRD-en, UX-spesifikasjonen (DESIGN.md og EXPERIENCE.md) og arkitekturspinen inn i epics og stories som kan implementeres. Ordene i PRD §3 brukes uten synonymer. «Krav» i stories betyr annonsekrav (PRD §3), og koden bruker `krav`. Mikrotekst i grensesnittet, som «Du dekker X av Y krav», er uendret. Hver story viser til FR-, NFR-, AD- og UX-DR-ID-ene den realiserer (NFR-10).
 
 ## Kravoversikt
 
 ### Funksjonelle krav
 
 FR-1: Brukeren kan laste opp en CV-fil (PDF, DOCX eller TXT) på maks 5 MB. Andre formater og større filer avvises før innlesing, med en norsk melding om tillatte formater og størrelse. Brukeren kan i stedet lime CV-teksten inn i kontrollsteget.
-FR-2: Systemet leser ut CV-teksten. Ved to kolonner leses hver kolonne ferdig før neste. For par 4 finnes alle linjene i `cv.txt`, ingen linje blander kolonner, og «SPRÅK» og «KURS» kommer før «PROFIL». DOCX og TXT gir `cv.txt` (mellomrom og linjeskift regnes ikke med). Bare CV-teksten sendes til serveren, og først når brukeren trykker *Analyser*.
+FR-2: Systemet leser ut CV-teksten. Ved to kolonner leses hver kolonne ferdig før neste. For par 4 finnes alle linjene i `cv.txt`, ingen linje blander kolonner, og «SPRÅK» og «KURS» kommer før «PROFIL». DOCX og TXT gir `cv.txt` (mellomrom og linjeskift regnes ikke med). Dataminimering: ingenting fra CV-en forlater brukerens enhet før *Analyser*, og da bare CV-teksten fra kontrollsteget. Selve filen, bilder og metadata sendes ikke.
 FR-3: Kontrollsteg: CV-teksten vises i et redigerbart felt, og analysen bruker teksten slik den står da. Under 300 tegn vises en advarsel om skannet eller tom fil, med forslag om å lime inn teksten. Ingen OCR. Etter en analyse kan brukeren gå tilbake med *Endre CV-tekst*, og CV-teksten og annonsen beholdes. *Analyser* starter en ny kjøring som erstatter alle resultatdelene, med en advarsel og bekreftelse hvis noe er redigert.
-FR-4: Annonsen limes inn i et tekstfelt. Annonsen må være 200–8 000 tegn og CV-teksten maks 15 000 tegn. Utenfor grensene vises en norsk melding, og *Analyser* er deaktivert. Grensene håndheves også på serveren.
+FR-4: Annonsen limes inn i et tekstfelt. Annonsen må være 200–8 000 tegn og CV-teksten maks 15 000 tegn. Utenfor grensene vises en norsk melding, og *Analyser* er deaktivert. Grensene håndheves også på serveren. Ved feltene står det at verktøyet er laget for CV-er og annonser på norsk. Tekst på andre språk avvises ikke, og resultatene er alltid på bokmål.
 FR-5: Informasjon om personvern over feltene: CV-teksten sendes til en ekstern språkmodell (leverandør og land), ingenting lagres etter økten, og brukeren bør fjerne fødselsnummer, adresse, bilde og helseopplysninger. Brukeren må krysse av før første analyse i økten, og avkrysningen gjelder resten av økten.
 FR-6: Fødselsnumre (11 sifre der de seks første er en gyldig dato DDMMÅÅ, og der det mellom de seks første og de fem siste kan stå ingenting, 1–3 mellomrom, eller én bindestrek eller tankestrek med høyst ett mellomrom på hver side) erstattes med `[fødselsnummer fjernet]` før sending, og det vises i kontrollsteget. Enhetstest: «01019012345», «010190 12345», «010190  12345» og «010190-12345» maskeres. Telefonnumre, årstall, kontonumre og «12345678903» maskeres ikke.
 FR-7: Systemet henter ut alle krav i annonsen, både krav og ønsker, og viser dem i en liste. Hvert krav i fasiten er med (vurderes manuelt med sjekklisten).
 FR-8: Hvert krav får én kategori: **Oppfylt** (direkte dekning, belegg vises), **Delvis oppfylt** (overførbar erfaring eller egenvurdering, belegg og én setning om hvorfor) eller **Mangler** (ikke dokumentert i CV-teksten). Ved tvil velges den svakeste. Ingen krav over fasit, Mangler i fasiten er alltid Mangler, og høyst ett krav per testpar ligger under fasiten.
-FR-9: Hvert belegg kontrolleres ordrett mot CV-teksten (store og små bokstaver, mellomrom og linjeskift regnes ikke med). Mangler belegget, blir kravet **Mangler** og merkes «nedgradert: fant ikke belegg i CV-en», og belegget vises ikke. Enhetstester: belegg som finnes, belegg som er omskrevet (avvises), belegg med andre linjeskift (godtas), og Oppfylt og Delvis oppfylt uten belegg blir Mangler.
+FR-9: Hvert belegg kontrolleres ordrett mot CV-teksten etter normalisering. Disse forskjellene regnes ikke med: store og små bokstaver, mellomrom, linjeskift, listetegn, bindestreker og tankestreker (også orddeling), og anførselstegn og apostrofer (addendum D0; at alle bindestreker fjernes, er `[ANTAKELSE]`). Mangler belegget, blir kravet **Mangler** og merkes «nedgradert: fant ikke belegg i CV-en», og belegget vises ikke. Enhetstestene dekker belegg som finnes (godtas), belegg som er omskrevet (avvises), andre linjeskift, orddeling og andre anførselstegn (godtas), en linje fra par 4 uten listetegn (godtas) og den samme linjen med ett ord byttet (avvises), og Oppfylt og Delvis oppfylt uten belegg (blir Mangler).
 FR-10: Hvert krav med **Mangler** får et ærlig råd, for eksempel vilje til å lære eller beslektet erfaring, og råd om å legge erfaringen inn i CV-teksten via kontrollsteget. Ingen råd foreslår å påstå kvalifikasjonen.
-FR-11: Systemet henter ut nøkkelordene fra annonsen. Minst 80 % av de forventede nøkkelordene i fasiten er med.
+FR-11: Systemet henter ut nøkkelordene fra annonsen og knytter hvert nøkkelord til ett krav eller ingen (`kravIndeks`), i samme generering. Minst 80 % av de forventede nøkkelordene i fasiten er med. Koblingen påvirker ikke treffprosenten.
 FR-12: Treffprosenten regnes ut deterministisk. Matcheregel: små bokstaver, tegnsetting og bindestrek byttes med mellomrom, teksten deles i ord, og et nøkkelord er funnet når et ord i CV-teksten begynner med det. Et nøkkelord med flere ord er funnet når alle ordene finnes. Prosenten er antall funnet delt på antall nøkkelord, rundet til nærmeste hele prosent. Enhetstester gir treffprosenten i hver fasit (22 %, 11 %, 8 %, 33 %). Prosenten som vises, er lik den koden regner ut.
 FR-13: Ved treffprosenten står det at den er veiledende og ikke en ATS-score, og at nøkkelord bare bør legges til når CV-en har dekning for dem.
 FR-14: Søknadsbrev på bokmål, 250–400 ord. Det nevner minst tre krav og minst to erfaringer, har riktig stilling og arbeidsgiver, og har plassholdere for navn og kontaktinformasjon. Det er ikke generisk og ikke KI-aktig: sammenhengende tekst uten punktlister og uten tomme fraser.
 FR-15: Brevet presenterer bare Oppfylt og Delvis oppfylt som kvalifikasjoner. Mangler kan bare nevnes som motivasjon for å lære. Listen «Bygger på» viser beleggene, som kontrolleres som i FR-9, og belegg uten treff fjernes og merkes. Ingen forbudte påstander i kjøringene i SM-2.
 FR-16: CV-forbedringer: konkrete forslag til omformulering, rekkefølge eller presisering. Hvert forslag har belegg som kontrolleres som i FR-9, og én setning om hvorfor, knyttet til et krav eller nøkkelord. Ingenting nytt legges til.
-FR-17: ATS-forslag om format, overskrifter og ordvalg. Et nøkkelord som ikke er funnet, foreslås bare når det hører til et krav med Oppfylt eller Delvis oppfylt. Hvert forslag er konkret og har én setning om hvorfor.
-FR-18: All tekst i resultatdelene kan redigeres, og endringene står til økten avsluttes. Fanene er uavhengige, og treffprosenten endres ikke av redigering. Kategorier, belegg, treffprosent og nøkkelord er låst. Genereringer bygger på den originale CV-teksten (etter kontrollsteget) og annonsen, og brev, CV og ATS bruker i tillegg den uredigerte gap-analysen.
+FR-17: ATS-forslag om format, overskrifter og ordvalg. Et nøkkelord som ikke er funnet, foreslås bare når det er knyttet til et krav med Oppfylt eller Delvis oppfylt etter FR-9. Nøkkelord uten krav foreslås ikke. For par 3 foreslås verken «Tripletex» eller «Visma». Hvert forslag er konkret og har én setning om hvorfor.
+FR-18: All tekst i resultatdelene kan redigeres, og endringene står til økten avsluttes. Fanene er uavhengige, og treffprosenten endres ikke av redigering. Kategorier, belegg, treffprosent og nøkkelord er låst. Genereringer bygger på den originale CV-teksten (etter kontrollsteget) og annonsen, og brev, CV og ATS bruker i tillegg den uredigerte gap-analysen, med kategoriene og koblingen mellom nøkkelord og krav.
 FR-19: Brukeren kan generere én resultatdel på nytt. Er den redigert, kommer en advarsel og bekreftelse, og andre faner berøres ikke. Genereres gap-analysen på nytt, merkes de andre resultatdelene «basert på forrige analyse», med tilbud om å generere dem på nytt.
 FR-20: Hver resultatdel har en *Kopier*-knapp som kopierer innholdet slik det står etter redigering.
 FR-21: *Ny analyse* tømmer CV-teksten, annonsen og alle resultatdelene etter bekreftelse. Økten fortsetter, og avkrysningen i FR-5 gjelder fortsatt.
@@ -47,14 +47,14 @@ FR-22: Norske feilmeldinger som sier hva som skjedde og hva brukeren kan gjøre,
 FR-23: Mangler API-nøkkelen, starter appen i demomodus med et banner.
 FR-24: I demomodus vises alle fire resultatdelene for demoeksempelet fra lagrede svar. Treffprosenten regnes i kode, og redigering og kopiering virker. Ny generering viser det lagrede svaret uten kall til språkmodellen.
 FR-25: *Prøv med eksempel* finnes også med nøkkel og bruker de lagrede svarene uten kall til språkmodellen.
-FR-26: Egen CV i demomodus: innlesing og kontrollsteg virker. *Analyser* forklarer at full analyse krever nøkkel, og tilbyr demoeksempelet.
+FR-26: Egen CV i demomodus: innlesing og kontrollsteg virker. *Analyser* forklarer at analyse av egen CV krever nøkkel, og tilbyr demoeksempelet.
 FR-27: Ingen resultatdel inneholder kvalifikasjoner, ferdigheter, utdanning, arbeidsgivere, årstall eller tall som ikke står i CV-teksten, med mindre de er presentert som noe brukeren mangler eller kan lære.
 
 ### Ikke-funksjonelle krav
 
 NFR-1 Personvern og lagring: Ingenting fra økten skrives til database, disk eller nettleserlagring. CV-tekst, annonse, prompter og resultater logges ikke, bare metadata. Ingen IP-adresser eller hash av dem. Test: kodegjennomgang og søk i loggen etter tekst fra testparene.
 NFR-2 Hemmeligheter: API-nøkkelen finnes bare som miljøvariabel på serveren. Repoet har `.env.example` og bare fiktive testdata. Nøkkelen finnes ikke i bundle eller Git-historikk. CV-filer er bare tillatt under `testdata/`.
-NFR-3 Kostnad og misbruk: En full kjøring er fire genereringer, og nye genereringer telles. Mål: 1 kr eller mindre per kjøring. Forbruksgrense hos leverandøren (semesterbudsjett 200 kr) er det harde taket. Rate-limit i minnet og dagstak uten IP. Når en grense er nådd, gjelder FR-22.
+NFR-3 Kostnad og misbruk: En full kjøring er fire genereringer, og nye genereringer telles. Mål: 1 kr eller mindre per kjøring. Det harde taket er forhåndsbetalt kreditt hos leverandøren, uten automatisk påfylling og under 200 kr. Telleren i minnet (AD-9) er en myk grense, fordi den ikke deles mellom serverinstanser. Den bruker ingen IP-adresser. Når en grense er nådd, gjelder FR-22. *Prøv med eksempel* virker også når kreditten er brukt opp.
 NFR-4 Ytelse: Gap-analysen er ferdig innen 30 s for alle testpar. Brukeren ser at noe skjer innen 2 s. Ingen forespørsel er over 4,5 MB.
 NFR-5 Språk: Grensesnitt og innhold fra språkmodellen er på naturlig bokmål, uten svenske eller danske ord og uten direkte oversatt engelsk.
 NFR-6 Testbarhet: Alle prompter og kall ligger i én modul, og demosvarene er mock i testene. Enhetstester for FR-6, FR-9 og FR-12. Automatiske uttrekkstester for par 1 (DOCX) og par 4 (PDF). Én flyttest for demoeksempelet med mock. Testene kjører uten nøkkel.
@@ -152,7 +152,7 @@ Appen er publisert og kan startes med tre kommandoer. Brukeren kan laste opp ell
 
 ### Epic 2: Brukeren ser ærlig hva CV-en dekker
 Brukeren trykker *Analyser* og får gap-analysen: hvert krav med Oppfylt, Delvis oppfylt eller Mangler, belegg kontrollert i kode, ærlige råd og treffprosent. Resultatet kan redigeres, kopieres og genereres på nytt, og brukeren kan gå tilbake med *Endre CV-tekst* eller starte på nytt med *Ny analyse*. Feil vises på norsk med *Prøv igjen*. *Prøv med eksempel* viser Idas gap-analyse uten nøkkel. Leverandøren velges ved måling (AD-11).
-**FR som dekkes:** FR-3 (tilbake og ny kjøring), FR-7, FR-8, FR-9, FR-10, FR-11, FR-12, FR-13, FR-18, FR-19, FR-20, FR-21, FR-22, FR-24 (gap), FR-25, FR-27 (gap)
+**FR som dekkes:** FR-3 (tilbake og ny kjøring), FR-7, FR-8, FR-9, FR-10, FR-11, FR-12, FR-13, FR-18, FR-19, FR-20, FR-21, FR-22, FR-24 (gap), FR-25, FR-27 (gap). I tillegg SM-10 (story 2.8)
 
 ### Epic 3: Brukeren får et søknadsbrev som bare bygger på CV-en
 Fanen *Søknadsbrev* genererer et nøkternt brev på 250–400 ord med listen *Bygger på*. Belegg uten treff fjernes, og brevet kan redigeres, kopieres og genereres på nytt, også i demomodus.
@@ -164,7 +164,7 @@ Fanene *CV-forbedringer* og *ATS-forslag* gir få, konkrete forslag med belegg o
 
 ### Epic 5: Sensor kan verifisere at løsningen holder det den lover
 Testsettet kjøres tre ganger per testpar mot den valgte leverandøren. Robusthet og tilgjengelighet testes på tvers av flatene, hvert krav verifiseres som i SM-9, og en medstudent starter appen fra README-en.
-**FR som dekkes:** ingen nye. Verifiserer FR-1 til FR-27 og NFR-1 til NFR-10 (SM-1 til SM-9).
+**FR som dekkes:** ingen nye. Verifiserer FR-1 til FR-27 og NFR-1 til NFR-10 (SM-1 til SM-9). SM-10 verifiseres i story 2.8.
 
 ## Epic 1: Brukeren kan forberede en analyse trygt
 
@@ -371,7 +371,7 @@ Som sensor,
 vil jeg at gap-analysen for demoeksempelet går gjennom de samme kontrollene i kode som en ekte analyse,
 slik at demomodus viser hvordan appen faktisk sikrer ærligheten.
 
-**Realiserer:** FR-9, FR-12, FR-24 (gap), NFR-1, NFR-6, NFR-9, AD-3 (port og mock), AD-4, AD-5, AD-8, AD-10, AD-13, AD-14
+**Realiserer:** FR-9, FR-11 (`kravIndeks` i demosvaret), FR-12, FR-24 (gap), NFR-1, NFR-6, NFR-9, AD-3 (port og mock), AD-4, AD-5, AD-8, AD-10, AD-13, AD-14, addendum D0
 
 **Akseptansekriterier:**
 
@@ -379,9 +379,12 @@ slik at demomodus viser hvordan appen faktisk sikrer ærligheten.
 **Når** de delte formene defineres
 **Så** finnes `Kategori`, `Belegg`, `Krav` (med `nedgradert`), `Nokkelord` (`tekst`, `kravIndeks`, `funnet`), `GapAnalyse` (med `stilling` og `arbeidsgiver`), `GapGrunnlag`, feilkode-enumen med HTTP-status, og tellerne `fjernetBelegg` og `fjernetForslag`, som zod-skjemaer med avledede typer
 
-**Gitt** `kontrollerKrav` i `lib/kjerne`
+**Gitt** `normaliser` og `kontrollerKrav` i `lib/kjerne`
 **Når** enhetstestene kjører
-**Så** godtas et belegg som finnes, også med andre linjeskift og store eller små bokstaver, et belegg som er litt omskrevet avvises, og et Oppfylt- eller Delvis oppfylt-krav uten gyldig belegg (også med tom liste) blir `mangler` med `nedgradert: true`. Belegg som ikke ble funnet, er fjernet (FR-9)
+**Så** utvides `normaliser` fra story 1.6 med normaliseringen i addendum D0: listetegn, bindestreker og tankestreker, og anførselstegn og apostrofer fjernes i tillegg til mellomrom og linjeskift. Testene for `erDemoeksempel` er fortsatt grønne
+**Og** et belegg som finnes, godtas, også med andre linjeskift, store eller små bokstaver, orddeling med bindestrek over linjeskift og andre anførselstegn. Et belegg som er litt omskrevet, avvises
+**Og** «Kassasystem og dagsoppgjør» fra `testdata/par-4-tokolonne-hotell/cv.txt` (der linjen starter med «- ») godtas, mens det samme belegget med ett ord byttet avvises
+**Og** et Oppfylt- eller Delvis oppfylt-krav uten gyldig belegg (også med tom liste) blir `mangler` med `nedgradert: true`. Belegg som ikke ble funnet, er fjernet (FR-9). Testnavnene starter med `FR-9:`
 
 **Gitt** `treffprosent` i `lib/kjerne`
 **Når** enhetstestene kjører med nøkkelordene fra hver `testdata/*/fasit.md` mot `cv.txt`
@@ -389,7 +392,7 @@ slik at demomodus viser hvordan appen faktisk sikrer ærligheten.
 
 **Gitt** `LlmKlient` og mock-adapteren, som importerer `lib/llm/demo-svar/gap.json` statisk
 **Når** `demo-svar/gap.json` lages for testpar 1
-**Så** er det et rått modellsvar som følger fasiten for par 1 (seks krav med riktig kategori og ordrette belegg fra `cv.txt`, og de ni nøkkelordene), og en test validerer filen mot skjemaet
+**Så** er det et rått modellsvar som følger fasiten for par 1 (seks krav med riktig kategori og ordrette belegg fra `cv.txt`, og de ni nøkkelordene, hvert med `kravIndeks` til kravet det hører til eller `null` (FR-11)), og en test validerer filen mot skjemaet
 
 **Gitt** `POST /api/generer/gap` med `DEMO_CV` og `DEMO_ANNONSE`
 **Når** ruten kalles i demomodus eller med `demo: true`
@@ -442,18 +445,23 @@ Som jobbsøker,
 vil jeg trykke *Analyser* på min egen CV og annonse og få en gap-analyse,
 slik at jeg ser hvilke krav jeg dekker, delvis dekker og mangler.
 
-**Realiserer:** FR-7, FR-8, FR-9, FR-10, FR-11, FR-27 (gap), NFR-3, NFR-4, NFR-5, NFR-9, AD-3, AD-4, AD-5, AD-9, AD-11 (forberedelse)
+**Realiserer:** FR-4 (merknad om språk), FR-7, FR-8, FR-9, FR-10, FR-11, FR-27 (gap), NFR-3, NFR-4, NFR-5, NFR-9, AD-3, AD-4, AD-5, AD-9, AD-11 (forberedelse)
 
 **Akseptansekriterier:**
 
 **Gitt** adapterne for Mistral og OpenAI i `lib/llm`
 **Når** `analyseGap` kalles
 **Så** brukes `generateText` med `Output.object(gapSkjema)`, `instructions`, `maxRetries: 0`, `AbortSignal.timeout(45000)` og temperatur 0–0,3, Mistral med `strictJsonSchema: true`, og adapteren velges med `LLM_LEVERANDOR` og `LLM_MODELL`
-**Og** prompten ligger i `lib/llm/prompter/`, avgrenser CV-teksten og annonsen som data, sier at instrukser i dem skal ignoreres, og krever at hvert belegg er sitert ordrett, at ved tvil velges svakeste kategori, at kvalifikasjoner aldri fylles inn, og at svaret er på bokmål
+**Og** prompten ligger i `lib/llm/prompter/`, avgrenser CV-teksten og annonsen som data, sier at instrukser i dem skal ignoreres, og krever at hvert belegg er sitert ordrett, at ved tvil velges svakeste kategori, at kvalifikasjoner aldri fylles inn, at hvert nøkkelord knyttes til kravet det hører til, eller til ingen (`kravIndeks`), og at svaret er på bokmål
 
 **Gitt** ekte modus, egen CV-tekst, gyldig annonse og avkrysning
 **Når** brukeren trykker *Analyser*
 **Så** settes `kjoring` med den maskerte CV-teksten, resultatsiden åpnes, og gap-analysen genereres gjennom pipelinen. Svaret vises som i story 2.2
+
+**Gitt** forberedelsessiden
+**Når** CV-panelet og annonsepanelet vises
+**Så** står det under overskriften i begge panelene: «Laget for CV-er og annonser på norsk. Resultatet er alltid på bokmål.» Tekst på andre språk avvises ikke (FR-4)
+**Og** mikroteksten legges også inn i EXPERIENCE.md
 
 **Gitt** rate-limit i `lib/pipeline`
 **Når** grensen per minutt eller per døgn er nådd i en serverinstans
@@ -514,6 +522,11 @@ slik at jeg ikke mister teksten min.
 **Gitt** `grense_naadd`
 **Når** feilen vises
 **Så** står «Appen har nådd grensen for bruk akkurat nå. Prøv igjen senere, eller bruk *Prøv med eksempel*.», uten *Prøv igjen*-knapp
+
+**Gitt** at den forhåndsbetalte kreditten hos leverandøren er brukt opp
+**Når** brukeren analyserer en egen CV
+**Så** gir feilen fra leverandøren `llm_feil` med meldingen fra tabellen, uten krasj og uten tap av tekst
+**Og** *Prøv med eksempel* virker fortsatt, fordi den ikke kaller språkmodellen (NFR-3)
 
 **Gitt** mock-klienten
 **Når** testene fremkaller hvert feiltilfelle i FR-22 (for API-feilene med mock, for filfeilene med filer fra testsettet)
@@ -579,6 +592,25 @@ slik at jeg kan forbedre CV-teksten uten å miste kontrollen.
 **Gitt** resultatsiden
 **Når** brukeren trykker *Ny analyse* og bekrefter «Tømme alt?»
 **Så** tømmes `innhold` (CV-tekst, annonse og alle resultatdeler), `okt.bekreftetPersonvern` beholdes, og fokus går til opplastingsknappen (FR-21)
+
+### Story 2.8: Brukertest med medstudenter
+
+Som gruppe,
+vil vi se at medstudenter faktisk får verdi av gap-analysen med sin egen CV,
+slik at vi vet om høydepunktet i UJ-1 holder før søknadsbrevet bygges.
+
+**Realiserer:** SM-10, UJ-1, NFR-10
+
+**Akseptansekriterier:**
+
+**Gitt** story 2.3 og 2.4 (ekte gap-analyse med den valgte leverandøren i produksjon)
+**Når** tre medstudenter utenfor gruppen bruker appen med egen CV-tekst og annonsen fra testpar 1
+**Så** svarer de på spørsmålet «Fant du en erfaring du ikke hadde tenkt på som relevant?», og minst to svarer ja (SM-10)
+**Og** svarene og eventuelle observasjoner noteres i sesjonsloggen uten CV-tekst eller navn
+
+**Gitt** færre enn to ja-svar
+**Når** resultatet er notert
+**Så** vurderer gruppen endringer i prompten eller i visningen før epic 3, og vurderingen noteres i sesjonsloggen
 
 ## Epic 3: Brukeren får et søknadsbrev som bare bygger på CV-en
 
@@ -717,8 +749,8 @@ slik at CV-en blir lettere å lese for et ATS-system, uten at jeg legger til ord
 
 **Gitt** `POST /api/generer/ats` med `GapGrunnlag` (nøkkelord med `kravIndeks`)
 **Når** svaret er generert
-**Så** fjernes forslag som legger til et nøkkelord som ikke er funnet, med mindre nøkkelordet hører til et krav med Oppfylt eller Delvis oppfylt etter `kontrollerKrav`. Forslagene telles i `fjernetForslag`
-**Og** en enhetstest viser at et nøkkelord knyttet til et krav med Mangler aldri foreslås (FR-17)
+**Så** fjernes forslag som legger til et nøkkelord som ikke er funnet, med mindre nøkkelordet er knyttet til et krav (`kravIndeks`) med Oppfylt eller Delvis oppfylt etter `kontrollerKrav`. Nøkkelord med `kravIndeks: null` foreslås ikke. Forslagene telles i `fjernetForslag`
+**Og** en enhetstest viser at et nøkkelord knyttet til et krav med Mangler, og et nøkkelord med `kravIndeks: null`, aldri foreslås (FR-17)
 
 **Gitt** `foreslaAts` og prompten i `lib/llm/prompter/`
 **Når** forslagene genereres
@@ -731,6 +763,7 @@ slik at CV-en blir lettere å lese for et ATS-system, uten at jeg legger til ord
 **Gitt** `npm run testsett` utvidet med ATS-forslag
 **Når** det kjøres tre ganger per testpar
 **Så** består forslagene ATS-delen og punktet «Gjennomgående» i sjekklisten, uten forbudte påstander, og resultatet noteres i sesjonsloggen
+**Og** for testpar 3 foreslås verken «Tripletex» eller «Visma» i noen av kjøringene (FR-17)
 
 ## Epic 5: Sensor kan verifisere at løsningen holder det den lover
 
@@ -750,6 +783,10 @@ slik at jeg kan stole på at appen ikke dikter opp.
 **Når** `npm run testsett` kjøres tre ganger per testpar mot den valgte leverandøren
 **Så** er alle punktene i sjekklisten bestått for alle fire testparene (SM-1), ingen forbudte påstander forekommer i noen resultatdel (SM-2), ingen krav har høyere kategori enn i fasiten, Mangler er alltid Mangler (SM-3), og minst 80 % av de forventede nøkkelordene er hentet ut (SM-4)
 **Og** gap-analysen er ferdig innen 30 s for hvert testpar (NFR-4)
+
+**Gitt** at én av de tre kjøringene for et testpar feiler
+**Når** feilen er funnet
+**Så** rettes prompten, alle tre kjøringene for testparet kjøres på nytt, og resten av testsettet kjøres på nytt fordi prompten er endret (SM-2, SM-1)
 
 **Gitt** de loggførte tokenene fra kjøringene
 **Når** kostnaden regnes ut med leverandørens pris
