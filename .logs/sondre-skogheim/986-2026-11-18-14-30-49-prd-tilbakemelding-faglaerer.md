@@ -52,10 +52,11 @@ Sondre spurte først hva som var gjort og hva som var neste steg. Deretter ba ha
 - **Det finnes ingen PR for 1.6 ennå.** Utkastet til kommentaren ligger i [vedlegg/pr-kommentar-story-1-6.md](vedlegg/pr-kommentar-story-1-6.md) og legges på PR-en når Kevin åpner den.
 - **IP-adresser i Vercel:** sjekket i story 1.1 (2026-11-04, se 990). Det var ingen IP i Runtime Logs eller i den synlige delen av Request Logs. Nederste del av panelet, CDN Requests og Firewall var ikke sjekket. **Sjekket på nytt 2026-11-18 av Sondre:** detaljpanelet for `/api/status` viser forespørsels-ID, sti, vert, User Agent, Referer, mottaksregion (`sfo1`), Firewall «Allowed», rutet til `arn1`, funksjonskall og deploy-informasjon, men ingen IP-adresse. Det gjelder også i Firewall-raden og nederst i panelet. Personvernteksten (FR-5) trenger derfor ikke nevne IP-logging fra Vercel. Story 5.2 kontrollerer dette på nytt før innlevering.
 
+- **Story 1.6 er flettet** (PR #8, flettet av Sondre, med `main` flettet inn i 767b2d7). CI er grønn på `main`. Testen for `statusHentet` med `demo` var ikke med. Kommentaren fra gjennomgangen, oppdatert med denne statusen, er lagt på [PR #8](https://github.com/IBE160-2026/G69-heggdal-skogheim/pull/8#issuecomment-6982523841). Sondre testet ikke 1.6 manuelt før flettingen. Sprint-status: 1.5 og 1.6 står i `review`.
+
 ### Åpne punkter
-- Når Kevin åpner PR for 1.6: legg inn kommentaren fra `vedlegg/pr-kommentar-story-1-6.md`. Grenen må få `main` flettet inn.
-- Kevin legger inn en test for at `statusHentet` med `demo` beholder `demoVarsel` (story 1.6).
-- Sondre tester story 1.6 etter `next build`: egen CV gir varsel, demoteksten fra par 1 limt inn gir ikke varsel (`?raw`-regelen), og fødselsnummer med to trykk. Gjør gjerne fødselsnummertesten i Safari også.
+- Testen for at `statusHentet` med `demo` beholder `demoVarsel` mangler fortsatt (1.6). Den kan tas i story 2.1 eller som en egen liten PR.
+- Sondre tester story 1.6 på `main` etter `next build`: egen CV gir varsel, demoteksten fra par 1 limt inn gir ikke varsel (`?raw`-regelen), og fødselsnummer med to trykk. Gjør gjerne fødselsnummertesten i Safari også.
 - Next.js 16.4.4 → 16.4.6 (sikkerhetsoppdatering) og ny vurdering av `npm audit` (23 sårbarheter, 15 high) på en egen gren etter at 1.5 og 1.6 er flettet.
 - Kevin legger inn en test for linjer som fjernes nederst på siden i `finnOppdeling` (story 1.5) og oppdaterer designnotatene i spec-1-5 til regelen fra runde 2.
 - Før story 1.5 flettes, tester Sondre to ting etter `npm run build && npm start`: PDF-en fra par 4, og en CV med én kolonne og datoer til venstre.
