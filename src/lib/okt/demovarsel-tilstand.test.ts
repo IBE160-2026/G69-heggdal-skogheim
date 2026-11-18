@@ -66,6 +66,21 @@ describe("analyserTrykket i demomodus", () => {
     expect(neste.innhold.demoVarsel).toBeNull();
   });
 
+  it("FR-26: varsel gitt med ukjent modus blir stående når statusen sier demo", () => {
+    const medVarsel = trykk(klar(EGEN_CV, ANNONSE, null));
+
+    const neste = reducer(medVarsel, {
+      type: "statusHentet",
+      status: {
+        modus: "demo",
+        leverandor: { navn: "Mistral AI", land: "Frankrike", tredjeland: false },
+      },
+    });
+
+    expect(neste.okt.modus).toBe("demo");
+    expect(neste.innhold.demoVarsel).toEqual({ nr: 1 });
+  });
+
   it("FR-26: ekte modus gir ikke varselet", () => {
     expect(trykk(klar(EGEN_CV, ANNONSE, "ekte")).innhold.demoVarsel).toBeNull();
   });

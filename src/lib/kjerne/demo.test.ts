@@ -34,6 +34,27 @@ describe("normaliser", () => {
   });
 });
 
+describe("normaliser for belegg", () => {
+  it("FR-9: fjerner listetegn", () => {
+    expect(normaliser("• a ▪ b ‣ c ◦ d * e")).toBe("abcde");
+  });
+
+  it("FR-9: fjerner alle bindestreker og tankestreker [ANTAKELSE]", () => {
+    expect(normaliser("IT-bruker‐støtte – a — b")).toBe("itbrukerstøtteab");
+    expect(normaliser("IT-\nbrukerstøtte")).toBe(normaliser("ITbrukerstøtte"));
+  });
+
+  it("FR-9: fjerner anførselstegn og apostrofer", () => {
+    expect(normaliser(`«a» "b" “c” „d“ 'e' ‘f’`)).toBe("abcdef");
+  });
+
+  it("FR-9: beholder annen tegnsetting", () => {
+    expect(normaliser("Word, Excel (grunnleggende).")).toBe(
+      "word,excel(grunnleggende).",
+    );
+  });
+});
+
 describe("erDemoeksempel", () => {
   it("FR-26: demoteksten er demoeksempelet", () => {
     expect(erDemoeksempel(DEMO_CV, DEMO_ANNONSE)).toBe(true);

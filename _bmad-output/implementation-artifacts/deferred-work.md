@@ -43,3 +43,18 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-6-analyser-med-egen-cv-i-demomodus.md`
   summary: Test i `demovarsel-tilstand.test.ts` for at `statusHentet` med `modus: "demo"` beholder `demoVarsel` (funn fra kodegjennomgangen, ikke med i #8). Tas i story 2.1.
   evidence: Bare tilfellet `ekte` er testet. Fjernes betingelsen i `statusHentet`, er alle testene fortsatt grønne.
+
+## Deferred from: code review of story 2.1 (2026-11-18)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-1-kontrollert-gap-analyse-for-demoeksempelet-gjennom-api-et.md`
+  summary: Very short or cross-word belegg (e.g. "og", "Excel") pass FR-9 because addendum D0 removes whitespace and matches substrings; consider a minimum length or word-boundary rule.
+  evidence: `kontrollerKrav` accepts any non-empty normalised substring of the CV. Decide with Kevin together with the hyphen [ANTAKELSE].
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-1-kontrollert-gap-analyse-for-demoeksempelet-gjennom-api-et.md`
+  summary: Give `LlmKlient.analyseGap` an AbortSignal or deadline in story 2.3 so a hanging adapter returns 504 `llm_tidsavbrudd` before the 60 s platform kill.
+  evidence: The port has no signal today; only the placeholder exists, so it is not reachable until 2.3.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-1-kontrollert-gap-analyse-for-demoeksempelet-gjennom-api-et.md`
+  summary: `gapSvar`/`gapAnalyse` have no size limits while `gapGrunnlag` caps 30 krav, 10 belegg, 40 nøkkelord; decide truncate vs reject in 2.3.
+  evidence: A real model answer over the limits would be shown, then rejected with 400 when sent back for brev/cv/ats (epic 3–4).
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-1-kontrollert-gap-analyse-for-demoeksempelet-gjennom-api-et.md`
+  summary: Duplicate or empty nøkkelord from the model are each counted in `treffprosent`; add a dedupe rule in 2.3.
+  evidence: `finnNokkelord` maps one-to-one; only reachable with the real adapter.

@@ -17,6 +17,8 @@ async function erBlokkert(importSti: string, filePath: string) {
 describe("importgrenser", () => {
   it.each([
     ["@/lib/pipeline", "src/components/X.tsx"],
+    ["@/lib/llm", "src/components/X.tsx"],
+    ["@/lib/llm/mock", "src/components/X.tsx"],
     ["@/lib/pipeline", "src/app/page.tsx"],
     ["@/lib/kjerne/grenser", "src/components/X.tsx"],
     ["@/lib/kjerne/masker", "src/components/X.tsx"],

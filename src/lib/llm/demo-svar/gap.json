@@ -1,0 +1,61 @@
+{
+  "stilling": "Sommervikar – kundebehandler",
+  "arbeidsgiver": "Sparebanken Testvik",
+  "krav": [
+    {
+      "tekst": "Kundeorientert og trives med å hjelpe andre",
+      "kategori": "oppfylt",
+      "belegg": ["Hjalp kunder med å finne varer og svarte på spørsmål"]
+    },
+    {
+      "tekst": "Gode digitale ferdigheter",
+      "kategori": "delvis",
+      "belegg": [
+        "Microsoft Office (Word, Excel, PowerPoint) – grunnleggende",
+        "Førte oversikt over medlemskontingent i et regneark"
+      ],
+      "forklaring": "Du bruker Office og regneark, men CV-en nevner ikke nettbank, mobilbank eller kundesystemer."
+    },
+    {
+      "tekst": "Erfaring med kontanthåndtering",
+      "kategori": "oppfylt",
+      "belegg": [
+        "Betjente kasse og tok imot kontanter og kortbetaling",
+        "Talte opp kontanter etter kiosksalg på kampdager"
+      ]
+    },
+    {
+      "tekst": "Nøyaktig og pålitelig",
+      "kategori": "delvis",
+      "belegg": [
+        "Pålitelig og vant til å holde orden på penger og oppgaver",
+        "Kasserer, Molde Testballklubb (frivillig)"
+      ],
+      "forklaring": "Vervet som kasserer støtter det, men nøyaktig og pålitelig er en egenvurdering i profilen."
+    },
+    {
+      "tekst": "Studerer økonomi eller tilsvarende",
+      "kategori": "oppfylt",
+      "belegg": [
+        "Bachelor i økonomi og administrasjon, Høgskolen i Molde (pågår)"
+      ]
+    },
+    {
+      "tekst": "Autorisasjon som finansiell rådgiver (AFR)",
+      "kategori": "mangler",
+      "belegg": [],
+      "raad": "CV-en nevner ikke AFR, og annonsen sier at det er en fordel. Du kan skrive at du er villig til å lære. Har du beslektet erfaring, kan du legge den inn via kontrollsteget."
+    }
+  ],
+  "nokkelord": [
+    { "tekst": "kundeorientert", "kravIndeks": 0 },
+    { "tekst": "kundeservice", "kravIndeks": 0 },
+    { "tekst": "digitale ferdigheter", "kravIndeks": 1 },
+    { "tekst": "nettbank", "kravIndeks": 1 },
+    { "tekst": "mobilbank", "kravIndeks": 1 },
+    { "tekst": "kontanthåndtering", "kravIndeks": 2 },
+    { "tekst": "nøyaktig", "kravIndeks": 3 },
+    { "tekst": "pålitelig", "kravIndeks": 3 },
+    { "tekst": "økonomi", "kravIndeks": 4 }
+  ]
+}
