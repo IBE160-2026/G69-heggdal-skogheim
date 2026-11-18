@@ -62,9 +62,9 @@ Sondre spurte først hva som var gjort og hva som var neste steg. Deretter ba ha
   - **`npm audit`:** etter oppgraderingen gjenstår 22 funn (7 moderate, 15 high). Alle er picomatch- og minimatch-kjeder i utviklingsverktøy uten rettet versjon. Forslagene fra `--force` er nedgraderinger.
   - **Lokale kontroller:** lint, typecheck, 433 tester og `next build` er grønne.
   - **Bygget:** PDF-workeren ligger i `.next/static/media`, og demo-CV-en og demoannonsen (`?raw`) ligger som tekst i klientchunken. Turbopack-regelen virker altså i produksjonsbygget.
+- **PR #9** ble opprettet med `gh` og flettet av Sondre (auto-modus stoppet `gh pr merge`), med CI grønn på `actions/*@v5`. `main` har nå Next.js 16.4.6.
 
 ### Åpne punkter
-- Åpne og flett PR-en for `vedlikehold-next-16-4-6-audit-ci` når CI er grønn.
 - Kjør de to manuelle testene for 1.6 etter `next build`: demoteksten fra par 1 uendret skal ikke gi varsel (`?raw`), og et fødselsnummer skal gi to trykk (også i Safari). Senest i story 2.2.
 - Testen for at `statusHentet` med `demo` beholder `demoVarsel` tas i story 2.1.
 - Retrospektiv for epic 1 (valgfri).
