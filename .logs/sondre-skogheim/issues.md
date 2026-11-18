@@ -4,12 +4,16 @@
 
 - [ ] 2026-10-29 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Valgfritt: full språkvask med bmad-review (structure, prose) på prd.md og addendum.md
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Brukertesten i SM-10 (tre medstudenter utenfor gruppen) gjøres i story 2.8, før epic 3
-- [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Legg merknaden om språk inn i EXPERIENCE.md når story 2.3 bygges
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Etter at 1.6 er satt til done: kjør de to manuelle testene for 1.6 (demoteksten fra par 1 gir ikke varsel, fødselsnummer gir to trykk, også i Safari) senest i story 2.2, (testen for statusHentet med demo er lagt inn i story 2.1, 3016b7b)
 - [ ] 2026-11-18 [story-2-1-gap-analyse-api](985-2026-11-18-19-15-43-story-2-1-gap-analyse-api.md) — Les tonen i råd- og forklaringstekstene i src/lib/llm/demo-svar/gap.json
-- [ ] 2026-11-18 [story-2-1-gap-analyse-api](985-2026-11-18-19-15-43-story-2-1-gap-analyse-api.md) — Story 2.3: ta de tre utsatte punktene fra 2.1 i deferred-work.md (AbortSignal i porten, grenser på gapSvar, duplikate nøkkelord)
+- [ ] 2026-11-18 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Manuell test av 2.3 med API-nøkkel (par 2 på bokmål innen 30 s, par 1 med annonse-med-instruks.txt uten AFR/bankerfaring), senest i 2.4
+- [ ] 2026-11-18 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Sondre og Kevin avgjør betalt plan hos Mistral/OpenAI (kreditt under 200 kr) før 2.4, ellers blir produksjonen i demomodus
+- [ ] 2026-11-18 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Story 2.4: maxOutputTokens og at gpt-5-mini ignorerer temperaturen (deferred-work.md)
 
 ## Løst
+
+- [x] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Legg merknaden om språk inn i EXPERIENCE.md når story 2.3 bygges (løst 2026-11-18: språkmerknaden i panelene og EXPERIENCE.md, e1a6247)
+- [x] 2026-11-18 [story-2-1-gap-analyse-api](985-2026-11-18-19-15-43-story-2-1-gap-analyse-api.md) — Story 2.3: ta de tre utsatte punktene fra 2.1 i deferred-work.md (AbortSignal i porten, grenser på gapSvar, duplikate nøkkelord) (løst 2026-11-18: AbortSignal, grenser og deduplisering i e1a6247)
 
 - [x] 2026-11-18 [story-2-2-prov-med-eksempel](984-2026-11-18-20-06-55-story-2-2-prov-med-eksempel.md) — Test 2.2 i nettleseren før fletting: tastatur alene, 320 px og 200 % tekstzoom (NVDA/VoiceOver flyttet til 5.2) (løst 2026-11-18: Sondre testet i forhåndsvisningen, PR #12 flettet)
 
