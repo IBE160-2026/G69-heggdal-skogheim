@@ -57,7 +57,14 @@ Sondre spurte først hva som var gjort og hva som var neste steg. Deretter ba ha
 - **Sondres test av story 1.6 på `main`** etter `npm run build` og `npm start`: egen CV (par 1 med to fødselsnumre lagt til) ga varselet over *Analyser*, maskeringen viste «2 fødselsnumre er fjernet», og et nytt trykk lot varselet stå. Demoteksten uten varsel og fødselsnummer med to trykk ble ikke testet. Underveis avbrøt Ctrl+C en `npm ci`, så `next` manglet, og ny `npm ci` løste det. `npm npm audit fix --force` kjørte ikke, fordi det var en skrivefeil.
 - **Story 1.5 og 1.6 er satt til `done`, og epic 1 er ferdig** (godkjent av Sondre). NVDA og VoiceOver, de to manuelle testene for 1.6 og testen for `statusHentet` med `demo` er ført i `deferred-work.md`.
 
+- **Vedlikeholdsgren `vedlikehold-next-16-4-6-audit-ci`** (8132d34, pushet):
+  - **Endringer:** `next` og `eslint-config-next` 16.4.4 → 16.4.6, med minimal endring i lockfila (108 linjer). `npm audit fix` uten `--force` ga over 500 endrede linjer og flere funn i «high», og ble forkastet. Videre `actions/checkout` og `actions/setup-node` @v4 → @v5. Versjonen er oppdatert i spinen og i stack-linjen i `epics.md`, og logget i arkitekturens memlogg.
+  - **`npm audit`:** etter oppgraderingen gjenstår 22 funn (7 moderate, 15 high). Alle er picomatch- og minimatch-kjeder i utviklingsverktøy uten rettet versjon. Forslagene fra `--force` er nedgraderinger.
+  - **Lokale kontroller:** lint, typecheck, 433 tester og `next build` er grønne.
+  - **Bygget:** PDF-workeren ligger i `.next/static/media`, og demo-CV-en og demoannonsen (`?raw`) ligger som tekst i klientchunken. Turbopack-regelen virker altså i produksjonsbygget.
+
 ### Åpne punkter
+- Åpne og flett PR-en for `vedlikehold-next-16-4-6-audit-ci` når CI er grønn.
 - Kjør de to manuelle testene for 1.6 etter `next build`: demoteksten fra par 1 uendret skal ikke gi varsel (`?raw`), og et fødselsnummer skal gi to trykk (også i Safari). Senest i story 2.2.
 - Testen for at `statusHentet` med `demo` beholder `demoVarsel` tas i story 2.1.
 - Retrospektiv for epic 1 (valgfri).

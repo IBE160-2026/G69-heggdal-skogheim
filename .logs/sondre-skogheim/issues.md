@@ -10,10 +10,11 @@
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Brukertesten i SM-10 (tre medstudenter utenfor gruppen) gjøres i story 2.8, før epic 3
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Legg merknaden om språk inn i EXPERIENCE.md når story 2.3 bygges
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Etter at 1.6 er satt til done: kjør de to manuelle testene for 1.6 (demoteksten fra par 1 gir ikke varsel, fødselsnummer gir to trykk, også i Safari) senest i story 2.2, og legg inn testen for statusHentet med demo i story 2.1
-- [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Etter at 1.5 og 1.6 er flettet: Next.js 16.4.4 → 16.4.6 (sikkerhet) og ny vurdering av npm audit (23 sårbarheter, 15 high) på en egen gren
+- [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Åpne og flett PR-en for vedlikehold-next-16-4-6-audit-ci når CI er grønn
 
 ## Løst
 
+- [x] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Etter at 1.5 og 1.6 er flettet: Next.js 16.4.4 → 16.4.6 (sikkerhet) og ny vurdering av npm audit (23 sårbarheter, 15 high) på en egen gren (løst 2026-11-18: grenen vedlikehold-next-16-4-6-audit-ci, 8132d34. 22 funn i utviklingsverktøy uten rettet versjon gjenstår, til ny vurdering i 5.2)
 - [x] 2026-11-08 [story-1-3-cv-innlesing-kevin](987-2026-11-05-10-12-47-story-1-3-cv-innlesing-kevin.md) — Godkjenn og flett Kevins PR-er for 1.4, 1.5 og 1.6 når de kommer, én om gangen (løst 2026-11-18: 1.5 flettet i #6/#7 og 1.6 i #8, og kommentarene fra gjennomgangen ligger på #6 og #8)
 - [x] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Legg kommentaren fra gjennomgangen av 1.6 (vedlegg/pr-kommentar-story-1-6.md) på PR-en når Kevin åpner den, og be ham flette main inn i grenen (løst 2026-11-18: 1.5 flettet i #6/#7 og 1.6 i #8, og kommentarene fra gjennomgangen ligger på #6 og #8)
 - [x] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Story 1.5: Kevin legger inn test for linjer som fjernes nederst på siden i finnOppdeling (kodegjennomgang); Sondres egen test etter next build er bestått 2026-11-18 (løst 2026-11-18: testen i 319764d, CI-fiks i #7, 1.5 flettet i PR #6 og #7)

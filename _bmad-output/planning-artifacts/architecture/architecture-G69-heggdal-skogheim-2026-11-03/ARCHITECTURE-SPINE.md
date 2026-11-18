@@ -257,7 +257,7 @@ flowchart LR
 | Navn | Versjon |
 | --- | --- |
 | Node.js (LTS) | 24.x |
-| Next.js (App Router) | 16.4.4 |
+| Next.js (App Router) | 16.4.6 (startet på 16.4.4, oppgradert 2026-11-18 for sikkerhetsfiks) |
 | React | 19.3.1 |
 | TypeScript | 5.9.3 |
 | Tailwind CSS | 4.3.4 |
