@@ -2,7 +2,7 @@
 title: 'Story 1.6: Analyser med egen CV i demomodus'
 type: 'feature'
 created: '2026-11-07'
-status: 'done'
+status: 'review'
 baseline_commit: '015dd3f46d6d21e25ef3729370035d78b6b061fd'
 route: 'dispatch'
 review_loop_iteration: 0
