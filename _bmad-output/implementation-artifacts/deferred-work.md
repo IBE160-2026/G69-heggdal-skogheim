@@ -52,15 +52,27 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-1-kontrollert-gap-analyse-for-demoeksempelet-gjennom-api-et.md`
   summary: Give `LlmKlient.analyseGap` an AbortSignal or deadline in story 2.3 so a hanging adapter returns 504 `llm_tidsavbrudd` before the 60 s platform kill.
   evidence: The port has no signal today; only the placeholder exists, so it is not reachable until 2.3.
+  status: Lukket i story 2.3. `GapInndata` har `signal`, og pipelinen kombinerer `request.signal` med `AbortSignal.timeout(45000)`. Et avbrudd gir 504 `llm_tidsavbrudd`.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-1-kontrollert-gap-analyse-for-demoeksempelet-gjennom-api-et.md`
   summary: `gapSvar`/`gapAnalyse` have no size limits while `gapGrunnlag` caps 30 krav, 10 belegg, 40 nøkkelord; decide truncate vs reject in 2.3.
   evidence: A real model answer over the limits would be shown, then rejected with 400 when sent back for brev/cv/ats (epic 3–4).
+  status: Lukket i story 2.3. Et svar over `GRUNNLAG_GRENSER` avvises i pipelinen med 502 `ugyldig_svar` i stedet for å kuttes.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-1-kontrollert-gap-analyse-for-demoeksempelet-gjennom-api-et.md`
   summary: Duplicate or empty nøkkelord from the model are each counted in `treffprosent`; add a dedupe rule in 2.3.
   evidence: `finnNokkelord` maps one-to-one; only reachable with the real adapter.
+  status: Lukket i story 2.3. Pipelinen fjerner duplikater (nøkkel `ord(tekst).join(" ")`, første beholdes) og tomme nøkkelord før `finnNokkelord`.
 
 ## Deferred from: planning of story 2.2 (2026-11-18)
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-2-prov-med-eksempel-viser-gap-analysen.md`
   summary: Manual test of the result view and the "Prøv med eksempel" dialog with NVDA and VoiceOver (UX-DR27) is moved to story 5.2.
   evidence: Sondre chose this 2026-11-18, as for 1.5 and 1.6. Keyboard, 320 px and 200 % zoom are tested before merge.
+
+## Deferred from: code review of story 2.3 (2026-11-18)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-ekte-gap-analyse-med-spraakmodellen.md`
+  summary: Set `maxOutputTokens` (and consider caps on free-text lengths) in the adapters once the model is chosen in story 2.4.
+  evidence: Without a cap a runaway answer is billed until the 45 s timeout; reasoning models count reasoning tokens as output, so the right cap depends on the measured model.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-3-ekte-gap-analyse-med-spraakmodellen.md`
+  summary: The default OpenAI model `gpt-5-mini` is a reasoning model and ignores `temperature`, so AD-3's 0–0.3 does not hold for OpenAI; settle the model (or record the exception) in story 2.4.
+  evidence: AI SDK drops the setting with a warning; the adapter test only checks that the value is passed.

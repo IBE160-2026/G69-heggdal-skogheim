@@ -1,8 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { DEMO_ANNONSE, DEMO_CV } from "@/lib/kontrakt/demo";
+import { generer } from "@/lib/pipeline/generer";
 
 import { dynamic, maxDuration, POST } from "./route";
+
+vi.mock("@/lib/pipeline/generer", async (original) => {
+  const ekte = await original<typeof import("@/lib/pipeline/generer")>();
+  return { ...ekte, generer: vi.fn(ekte.generer) };
+});
 
 beforeEach(() => {
   vi.stubEnv("LLM_LEVERANDOR", "");
@@ -64,6 +70,18 @@ describe("POST /api/generer/[resultatdel]", () => {
     await expect(svar.json()).resolves.toEqual({
       feil: { kode: "ugyldig_inndata" },
     });
+  });
+
+  it("AD-8: request.signal sendes videre til pipelinen", async () => {
+    const request = new Request("http://localhost/api/generer/gap", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ cvTekst: DEMO_CV, annonse: DEMO_ANNONSE }),
+    });
+
+    await POST(request, { params: Promise.resolve({ resultatdel: "gap" }) });
+
+    expect(vi.mocked(generer).mock.calls.at(-1)?.[3]?.signal).toBe(request.signal);
   });
 
   it("AD-5: brev gir 400 ugyldig_inndata", async () => {

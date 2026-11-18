@@ -6,7 +6,6 @@ import { normaliser } from "@/lib/kjerne/demo";
 import { gapSvar } from "@/lib/kontrakt/gap";
 
 import gapJson from "./demo-svar/gap.json";
-import { ekteKlient } from "./klient";
 import { mockKlient } from "./mock";
 
 const PAR_1 = "testdata/par-1-butikk-bank";
@@ -96,17 +95,12 @@ describe("demosvaret for gap", () => {
 
 describe("klientene", () => {
   it("AD-3: mock-klienten gir en kopi av demosvaret", async () => {
-    const forste = await mockKlient.analyseGap({ cvTekst: CV, annonse: "" });
-    const andre = await mockKlient.analyseGap({ cvTekst: CV, annonse: "" });
+    const inndata = { cvTekst: CV, annonse: "", signal: new AbortController().signal };
+    const forste = await mockKlient.analyseGap(inndata);
+    const andre = await mockKlient.analyseGap(inndata);
 
     expect(forste.svar).toEqual(gapJson);
     expect(forste.svar).not.toBe(andre.svar);
     expect(forste).toMatchObject({ inputTokens: 0, outputTokens: 0 });
-  });
-
-  it("AD-3: den ekte klienten er en plassholder som kaster", async () => {
-    await expect(
-      ekteKlient.analyseGap({ cvTekst: CV, annonse: "" }),
-    ).rejects.toThrow();
   });
 });

@@ -7,7 +7,8 @@ import { gapAnalyse } from "@/lib/kontrakt/gap";
 import type { LlmKlient } from "@/lib/llm/klient";
 import { mockKlient } from "@/lib/llm/mock";
 
-import { generer, type Klienter } from "./generer";
+import { generer, type Klienter, LLM_TIDSGRENSE_MS } from "./generer";
+import { nullstill } from "./grense";
 
 const DEMO_ENV = {};
 const EKTE_ENV = { MISTRAL_API_KEY: "x" };
@@ -17,12 +18,22 @@ const FORVENTEDE_KATEGORIER = ["oppfylt", "delvis", "oppfylt", "delvis", "oppfyl
 
 let logg: MockInstance<typeof console.log>;
 
+// Ingen test når nettet. Et kall til den ekte adapteren uten injisert klient
+// stopper her.
+const nettverk = vi.fn<typeof fetch>(async () => {
+  throw new TypeError("fetch failed");
+});
+
 beforeEach(() => {
   logg = vi.spyOn(console, "log").mockImplementation(() => {});
+  vi.stubGlobal("fetch", nettverk);
+  nullstill();
 });
 
 afterEach(() => {
   vi.restoreAllMocks();
+  vi.unstubAllGlobals();
+  nettverk.mockClear();
 });
 
 function klientMed(svar: unknown, kast?: Error): LlmKlient {
@@ -48,7 +59,7 @@ describe("generer for gap", () => {
     ["ekte modus", EKTE_ENV],
   ])("FR-26: demoeksempelet i %s gir kontrollert gap-analyse med treffprosent 22", async (_navn, env) => {
     const k = klienter();
-    const svar = await generer("gap", { cvTekst: DEMO_CV, annonse: DEMO_ANNONSE }, env, k);
+    const svar = await generer("gap", { cvTekst: DEMO_CV, annonse: DEMO_ANNONSE }, env, { klienter: k });
 
     expect(svar.status).toBe(200);
     const analyse = gapAnalyse.parse(svar.json);
@@ -84,7 +95,7 @@ describe("generer for gap", () => {
       "gap",
       { cvTekst: DEMO_CV, annonse: DEMO_ANNONSE, demo: true },
       EKTE_ENV,
-      k,
+      { klienter: k },
     );
 
     expect(svar.status).toBe(200);
@@ -94,7 +105,7 @@ describe("generer for gap", () => {
 
   it("FR-24: egen CV i demomodus gir demo_krever_nokkel uten mock-svar", async () => {
     const k = klienter();
-    const svar = await generer("gap", { cvTekst: EGEN_CV, annonse: ANNONSE_2 }, DEMO_ENV, k);
+    const svar = await generer("gap", { cvTekst: EGEN_CV, annonse: ANNONSE_2 }, DEMO_ENV, { klienter: k });
 
     expect(svar).toEqual({ status: 403, json: { feil: { kode: "demo_krever_nokkel" } } });
     expect(k.mock.analyseGap).not.toHaveBeenCalled();
@@ -106,7 +117,7 @@ describe("generer for gap", () => {
       "gap",
       { cvTekst: EGEN_CV, annonse: ANNONSE_2, demo: true },
       EKTE_ENV,
-      k,
+      { klienter: k },
     );
 
     expect(svar).toEqual({ status: 400, json: { feil: { kode: "ugyldig_inndata" } } });
@@ -114,9 +125,12 @@ describe("generer for gap", () => {
     expect(k.ekte.analyseGap).not.toHaveBeenCalled();
   });
 
-  it("AD-3: egen CV i ekte modus gir llm_feil med plassholderen", async () => {
+  it("AD-3: uten injiserte klienter går egen CV i ekte modus til den ekte adapteren", async () => {
     const svar = await generer("gap", { cvTekst: EGEN_CV, annonse: ANNONSE_2 }, EKTE_ENV);
 
+    // fetch er stubbet og feiler, så adapteren gir llm_feil uten nettverkskall.
+    expect(nettverk).toHaveBeenCalledTimes(1);
+    expect(String(nettverk.mock.calls[0]?.[0] ?? "")).toContain("mistral");
     expect(svar).toEqual({ status: 502, json: { feil: { kode: "llm_feil" } } });
   });
 
@@ -139,7 +153,7 @@ describe("generer for gap", () => {
       "gap",
       { cvTekst: `${EGEN_CV}\n01019012345`, annonse: ANNONSE_2 },
       EKTE_ENV,
-      klienter(ekte),
+      { klienter: klienter(ekte) },
     );
 
     expect(vi.mocked(ekte.analyseGap).mock.calls[0][0].cvTekst).toBe(
@@ -164,7 +178,7 @@ describe("generer for gap", () => {
       "gap",
       { cvTekst: EGEN_CV, annonse: ANNONSE_2 },
       EKTE_ENV,
-      klienter(klientMed({ krav: "ikke en liste" })),
+      { klienter: klienter(klientMed({ krav: "ikke en liste" })) },
     );
 
     expect(svar).toEqual({ status: 502, json: { feil: { kode: "ugyldig_svar" } } });
@@ -177,7 +191,7 @@ describe("generer for gap", () => {
       "gap",
       { cvTekst: EGEN_CV, annonse: ANNONSE_2 },
       EKTE_ENV,
-      klienter(klientMed(null, feil)),
+      { klienter: klienter(klientMed(null, feil)) },
     );
 
     expect(svar).toEqual({ status: 504, json: { feil: { kode: "llm_tidsavbrudd" } } });
@@ -188,7 +202,7 @@ describe("generer for gap", () => {
     ["annonse over 8 000 tegn", { cvTekst: EGEN_CV, annonse: "a".repeat(8_001) }],
   ])("FR-4: %s gir for_lang_tekst", async (_navn, body) => {
     const k = klienter();
-    const svar = await generer("gap", body, EKTE_ENV, k);
+    const svar = await generer("gap", body, EKTE_ENV, { klienter: k });
 
     expect(svar).toEqual({ status: 413, json: { feil: { kode: "for_lang_tekst" } } });
     expect(k.ekte.analyseGap).not.toHaveBeenCalled();
@@ -199,7 +213,7 @@ describe("generer for gap", () => {
     ["tom annonse", { cvTekst: EGEN_CV, annonse: "  " }],
     ["tom CV", { cvTekst: " \n ", annonse: ANNONSE_2 }],
   ])("FR-4: %s gir for_kort_tekst", async (_navn, body) => {
-    const svar = await generer("gap", body, EKTE_ENV, klienter());
+    const svar = await generer("gap", body, EKTE_ENV, { klienter: klienter() });
 
     expect(svar).toEqual({ status: 400, json: { feil: { kode: "for_kort_tekst" } } });
   });
@@ -210,7 +224,7 @@ describe("generer for gap", () => {
     ["manglende annonse", { cvTekst: EGEN_CV }],
     ["demo som tekst", { cvTekst: DEMO_CV, annonse: DEMO_ANNONSE, demo: "ja" }],
   ])("NFR-9: %s gir ugyldig_inndata", async (_navn, body) => {
-    const svar = await generer("gap", body, DEMO_ENV, klienter());
+    const svar = await generer("gap", body, DEMO_ENV, { klienter: klienter() });
 
     expect(svar).toEqual({ status: 400, json: { feil: { kode: "ugyldig_inndata" } } });
   });
@@ -224,7 +238,7 @@ describe("generer for andre resultatdeler", () => {
         resultatdel,
         { cvTekst: DEMO_CV, annonse: DEMO_ANNONSE },
         DEMO_ENV,
-        klienter(),
+        { klienter: klienter() },
       );
 
       expect(svar).toEqual({ status: 400, json: { feil: { kode: "ugyldig_inndata" } } });
@@ -292,6 +306,241 @@ describe("logglinjen", () => {
     expect(linjer.filter((linje) => logget.includes(linje))).toEqual([]);
     for (const ord of ["ida", "testesen", "fjordkroken", "sparebanken", "kunde"]) {
       expect(logget).not.toContain(ord);
+    }
+  });
+});
+
+const GYLDIG_SVAR = {
+  stilling: "IT-brukerstøtte",
+  arbeidsgiver: "Testvik kommune",
+  krav: [{ tekst: "Windows", kategori: "oppfylt", belegg: ["Windows og Linux"] }],
+  nokkelord: [{ tekst: "Windows", kravIndeks: 0 }],
+};
+
+function egenCv(env: Record<string, string> = EKTE_ENV, valg = {}) {
+  return generer("gap", { cvTekst: EGEN_CV, annonse: ANNONSE_2 }, env, valg);
+}
+
+describe("rate-limit (steg D)", () => {
+  it("AD-9: 11. ekte generering samme minutt gir 429 grense_naadd før adapteren", async () => {
+    const ekte = klientMed(GYLDIG_SVAR);
+    const k = klienter(ekte);
+
+    for (let i = 0; i < 10; i++) {
+      expect((await egenCv(EKTE_ENV, { klienter: k })).status).toBe(200);
+    }
+    const svar = await egenCv(EKTE_ENV, { klienter: k });
+
+    expect(svar).toEqual({ status: 429, json: { feil: { kode: "grense_naadd" } } });
+    expect(ekte.analyseGap).toHaveBeenCalledTimes(10);
+    expect(logglinjer().at(-1)).toMatchObject({ status: 429, feilkode: "grense_naadd" });
+  });
+
+  it("AD-9: en generering som feiler, telles også", async () => {
+    const env = { ...EKTE_ENV, GRENSE_PER_MINUTT: "2" };
+    const k = klienter(klientMed({ krav: "ikke en liste" }));
+
+    expect((await egenCv(env, { klienter: k })).status).toBe(502);
+    expect((await egenCv(env, { klienter: k })).status).toBe(502);
+    expect((await egenCv(env, { klienter: k })).status).toBe(429);
+  });
+
+  it("AD-9: demoeksempelet telles ikke og stoppes ikke av grensen", async () => {
+    const env = { ...EKTE_ENV, GRENSE_PER_MINUTT: "1" };
+    const k = klienter(klientMed(GYLDIG_SVAR));
+
+    for (let i = 0; i < 3; i++) {
+      const svar = await generer("gap", { cvTekst: DEMO_CV, annonse: DEMO_ANNONSE }, env, {
+        klienter: k,
+      });
+      expect(svar.status).toBe(200);
+    }
+    expect((await egenCv(env, { klienter: k })).status).toBe(200);
+    expect((await egenCv(env, { klienter: k })).status).toBe(429);
+    expect(
+      (await generer("gap", { cvTekst: DEMO_CV, annonse: DEMO_ANNONSE }, env, { klienter: k }))
+        .status,
+    ).toBe(200);
+  });
+
+  it("AD-9: egen CV i demomodus telles ikke", async () => {
+    const env = { GRENSE_PER_MINUTT: "1" };
+    await egenCv(env, { klienter: klienter() });
+    await egenCv(env, { klienter: klienter() });
+
+    expect(
+      (await egenCv({ ...EKTE_ENV, GRENSE_PER_MINUTT: "1" }, { klienter: klienter(klientMed(GYLDIG_SVAR)) }))
+        .status,
+    ).toBe(200);
+  });
+});
+
+describe("signal og tidsavbrudd", () => {
+  it("AD-8: adapteren får et signal med tidsgrensen på 45 s", async () => {
+    const timeout = vi.spyOn(AbortSignal, "timeout");
+    const ekte = klientMed(GYLDIG_SVAR);
+    await egenCv(EKTE_ENV, { klienter: klienter(ekte) });
+
+    expect(LLM_TIDSGRENSE_MS).toBe(45_000);
+    expect(timeout).toHaveBeenCalledWith(45_000);
+    const { signal } = vi.mocked(ekte.analyseGap).mock.calls[0][0];
+    expect(signal).toBeInstanceOf(AbortSignal);
+    expect(signal.aborted).toBe(false);
+  });
+
+  it("AD-8: når tidsgrensen går ut, gir det 504 llm_tidsavbrudd", async () => {
+    const tidsgrense = new AbortController();
+    vi.spyOn(AbortSignal, "timeout").mockReturnValue(tidsgrense.signal);
+    const ekte: LlmKlient = {
+      analyseGap: vi.fn<LlmKlient["analyseGap"]>(
+        ({ signal }) =>
+          new Promise((_, avvis) => {
+            // Adapteren pakker inn feilen, men signalet avgjør.
+            signal.addEventListener("abort", () => avvis(new Error("innpakket")));
+          }),
+      ),
+    };
+
+    const svar = egenCv(EKTE_ENV, { klienter: klienter(ekte) });
+    tidsgrense.abort(new DOMException("tidsavbrudd", "TimeoutError"));
+
+    expect(await svar).toEqual({ status: 504, json: { feil: { kode: "llm_tidsavbrudd" } } });
+  });
+
+  it("AD-9: en request som allerede er avbrutt, gir llm_tidsavbrudd uten å telles", async () => {
+    const env = { ...EKTE_ENV, GRENSE_PER_MINUTT: "1" };
+    const ekte = klientMed(GYLDIG_SVAR);
+    const request = new AbortController();
+    request.abort();
+
+    const avbrutt = await egenCv(env, { klienter: klienter(ekte), signal: request.signal });
+
+    expect(avbrutt).toEqual({ status: 504, json: { feil: { kode: "llm_tidsavbrudd" } } });
+    expect(ekte.analyseGap).not.toHaveBeenCalled();
+    expect((await egenCv(env, { klienter: klienter(ekte) })).status).toBe(200);
+  });
+
+  it("AD-8: avbrutt request.signal når adapteren og gir llm_tidsavbrudd", async () => {
+    const request = new AbortController();
+    const ekte: LlmKlient = {
+      analyseGap: vi.fn<LlmKlient["analyseGap"]>(
+        ({ signal }) =>
+          new Promise((_, avvis) => {
+            signal.addEventListener("abort", () => avvis(signal.reason));
+          }),
+      ),
+    };
+
+    const svar = egenCv(EKTE_ENV, { klienter: klienter(ekte), signal: request.signal });
+    request.abort();
+
+    expect(await svar).toEqual({ status: 504, json: { feil: { kode: "llm_tidsavbrudd" } } });
+  });
+});
+
+describe("grenser på svaret", () => {
+  const krav = (n: number, belegg: string[] = []) =>
+    Array.from({ length: n }, (_, i) => ({
+      tekst: `Krav ${i}`,
+      kategori: "mangler",
+      belegg,
+      raad: "Råd",
+    }));
+  const nokkelord = (n: number) =>
+    Array.from({ length: n }, (_, i) => ({ tekst: `ord${i}`, kravIndeks: null }));
+
+  it.each([
+    ["31 krav", { krav: krav(31), nokkelord: [] }],
+    ["11 belegg på ett krav", { krav: krav(1, Array(11).fill("Windows")), nokkelord: [] }],
+    ["41 nøkkelord", { krav: krav(1), nokkelord: nokkelord(41) }],
+    ["krav over 300 tegn", { krav: [{ ...krav(1)[0], tekst: "a".repeat(301) }], nokkelord: [] }],
+    ["belegg over 500 tegn", { krav: krav(1, ["a".repeat(501)]), nokkelord: [] }],
+    [
+      "nøkkelord over 100 tegn",
+      { krav: krav(1), nokkelord: [{ tekst: "a".repeat(101), kravIndeks: null }] },
+    ],
+  ])("AD-4: %s gir 502 ugyldig_svar", async (_navn, del) => {
+    const svar = await egenCv(EKTE_ENV, {
+      klienter: klienter(klientMed({ stilling: "", arbeidsgiver: "", ...del })),
+    });
+
+    expect(svar).toEqual({ status: 502, json: { feil: { kode: "ugyldig_svar" } } });
+  });
+
+  it("FR-12: grensen på 40 nøkkelord gjelder etter dedupliseringen", async () => {
+    const svar = await egenCv(EKTE_ENV, {
+      klienter: klienter(
+        klientMed({
+          stilling: "",
+          arbeidsgiver: "",
+          krav: krav(1),
+          nokkelord: [...nokkelord(40), { tekst: "ORD0", kravIndeks: null }],
+        }),
+      ),
+    });
+
+    expect(svar.status).toBe(200);
+    expect(gapAnalyse.parse(svar.json).nokkelord).toHaveLength(40);
+  });
+
+  it("AD-4: svar akkurat på grensene godtas", async () => {
+    const svar = await egenCv(EKTE_ENV, {
+      klienter: klienter(
+        klientMed({
+          stilling: "",
+          arbeidsgiver: "",
+          krav: krav(30, Array(10).fill("Windows")),
+          nokkelord: nokkelord(40),
+        }),
+      ),
+    });
+
+    expect(svar.status).toBe(200);
+  });
+});
+
+describe("duplikate nøkkelord", () => {
+  it("FR-12: like nøkkelord telles én gang, og tomme fjernes", async () => {
+    const svar = await egenCv(EKTE_ENV, {
+      klienter: klienter(
+        klientMed({
+          ...GYLDIG_SVAR,
+          nokkelord: [
+            { tekst: "Windows", kravIndeks: 0 },
+            { tekst: "windows", kravIndeks: null },
+            { tekst: "Første-linje", kravIndeks: null },
+            { tekst: "første linje", kravIndeks: 0 },
+            { tekst: "ITIL", kravIndeks: null },
+            { tekst: "  ", kravIndeks: null },
+            { tekst: "–", kravIndeks: null },
+          ],
+        }),
+      ),
+    });
+
+    const analyse = gapAnalyse.parse(svar.json);
+    expect(analyse.nokkelord.map((n) => [n.tekst, n.kravIndeks])).toEqual([
+      ["Windows", 0],
+      ["Første-linje", null],
+      ["ITIL", null],
+    ]);
+    expect(analyse.treffprosent).toBe(
+      Math.round((100 * analyse.nokkelord.filter((n) => n.funnet).length) / 3),
+    );
+  });
+});
+
+describe("logglinjen for ekte generering", () => {
+  it("AD-10: har tokenene fra adapteren og verken nøkkel eller tekst", async () => {
+    const nokkel = "hemmelig-nokkel-4711";
+    await egenCv({ MISTRAL_API_KEY: nokkel }, { klienter: klienter(klientMed(GYLDIG_SVAR)) });
+
+    const [linje] = logglinjer();
+    expect(linje).toMatchObject({ modus: "ekte", status: 200, inputTokens: 120, outputTokens: 80 });
+    const logget = logg.mock.calls.flat().join("\n");
+    expect(logget).not.toContain(nokkel);
+    for (const tekst of ["Windows og Linux", "Testvik kommune", "IT-brukerstøtte"]) {
+      expect(logget).not.toContain(tekst);
     }
   });
 });

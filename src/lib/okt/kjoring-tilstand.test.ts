@@ -102,10 +102,44 @@ describe("analyserTrykket", () => {
     },
   );
 
-  it("AD-6: egen CV i ekte modus gir ingen kjøring ennå (story 2.3)", () => {
+  it("FR-7: egen CV i ekte modus starter en kjøring med maskert CV-tekst", () => {
     const tilstand = med(
       { cvTekst: "Kari Nordmann", annonse: "a".repeat(200) },
       { bekreftetPersonvern: true, modus: "ekte" },
+    );
+
+    const neste = reducer(tilstand, { type: "analyserTrykket" });
+
+    expect(neste.innhold.kjoring).toEqual({
+      id: 1,
+      cvTekst: "Kari Nordmann",
+      annonse: "a".repeat(200),
+      erEksempel: false,
+    });
+    expect(neste.innhold.demoVarsel).toBeNull();
+    expect(neste.innhold.resultatdeler.gap?.status).toBe("venter");
+  });
+
+  it("FR-6: et nytt fødselsnummer i ekte modus maskeres først, og kjøringen bruker maskert tekst", () => {
+    const tilstand = med(
+      { cvTekst: "Kari Nordmann 01019012345", annonse: "a".repeat(200) },
+      { bekreftetPersonvern: true, modus: "ekte" },
+    );
+
+    const forste = reducer(tilstand, { type: "analyserTrykket" });
+    expect(forste.innhold.kjoring).toBeNull();
+
+    const andre = reducer(forste, { type: "analyserTrykket" });
+    expect(andre.innhold.kjoring).toMatchObject({
+      cvTekst: "Kari Nordmann [fødselsnummer fjernet]",
+      erEksempel: false,
+    });
+  });
+
+  it("FR-4: egen CV i ekte modus uten avkrysning gir ingen kjøring", () => {
+    const tilstand = med(
+      { cvTekst: "Kari Nordmann", annonse: "a".repeat(200) },
+      { modus: "ekte" },
     );
 
     expect(
