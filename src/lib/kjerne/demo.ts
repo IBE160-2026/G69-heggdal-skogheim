@@ -2,9 +2,13 @@ import { DEMO_ANNONSE, DEMO_CV } from "@/lib/kontrakt/demo";
 
 import { masker } from "./masker";
 
-// FR-9: store og små bokstaver, mellomrom og linjeskift regnes ikke med.
+// FR-9 (addendum D0): store og små bokstaver, mellomrom, linjeskift, listetegn,
+// bindestreker, tankestreker, anførselstegn og apostrofer regnes ikke med.
+// [ANTAKELSE] Alle bindestreker fjernes, ikke bare den ved linjeskift.
+const IKKE_MED = /[\s•▪‣◦*\-‐–—«»"“”„'‘’]+/gu;
+
 export function normaliser(tekst: string): string {
-  return tekst.normalize("NFC").toLowerCase().replace(/\s+/gu, "");
+  return tekst.normalize("NFC").toLowerCase().replace(IKKE_MED, "");
 }
 
 const DEMO_CV_NORMALISERT = normaliser(masker(DEMO_CV));
