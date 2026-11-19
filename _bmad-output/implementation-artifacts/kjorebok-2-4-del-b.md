@@ -2,6 +2,20 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+## Status 2026-11-19 (runde 5 forberedt)
+
+- **Beslutning (Kevin og Sondre, 2026-11-19):** forklaringen i runde 4, par 2 K1 hos OpenAI («Erfaringen er med brukerstøtte i studiet») bryter SM-2 og FR-27. OpenAI er den foreløpige favoritten.
+- **Prompten i runde 5:** [`spec-2-4-del-b-runde-5-cv-ens-egne-ord.md`](spec-2-4-del-b-runde-5-cv-ens-egne-ord.md). Det brukeren har, beskrives med CV-ens egne ord i `forklaring` og `raad`, ikke med annonsens betegnelser eller nivåord. Vurderingen bruker [`vurdering-2-4-leverandorvalg-runde-5.md`](vurdering-2-4-leverandorvalg-runde-5.md), der regelen for vurderingen står.
+- **Målingen i runde 5** krever Kevins godkjenning. Begge kjøres på samme commit, uten kontrollkall:
+
+  ```bash
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50
+  npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --pris-inn 14.53 --pris-ut 72.65
+  ```
+
+  - Forventet kostnad er ca. 0,22 kr for OpenAI og ca. 1,20 kr for Mistral, ca. 1,4 kr til sammen. Prompten er ca. 150 tokens lengre enn i runde 4.
+  - Øvre grense er ca. 1,6 kr og ca. 7,4 kr uten mva, hvis alle kallene når taket på 8000 output-tokens.
+
 ## Status 2026-11-19 (runde 4 målt)
 
 - **Begge er målt på commit `be2b0e2`** med prompten fra `5346bee`, uten kontrollkall (Kevins godkjenning):

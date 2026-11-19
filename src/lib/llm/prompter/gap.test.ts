@@ -117,6 +117,15 @@ describe("prompten for gap-analysen", () => {
     ["FR-8: erfaring fra en annen bransje kan dokumentere kravet", /Konkret erfaring som dekker kravet slik det står, er dokumentasjon, også fra en annen bransje/],
     ["FR-8: en egenskap kan være dokumentert uten at ordet står i CV-en", /En egenskap er dokumentert når konkret erfaring eller utdanning i CV-teksten viser den, også når ordet for egenskapen ikke står der/],
     ["FR-10: råd bare ved mangler", /For "oppfylt" og "delvis" er raad alltid null/],
+    ["FR-27: det brukeren har, beskrives med CV-tekstens egne ord", /Beskriv det brukeren har, med CV-tekstens egne ord i forklaring og raad:/],
+    ["FR-27: annonsens betegnelser brukes ikke om brukeren", /Bruk ikke annonsens betegnelse på en erfaring, ferdighet, egenskap eller et nivå om brukeren hvis CV-teksten ikke bruker den/],
+    ["FR-27: beslektet erfaring beskrives som det CV-teksten viser", /Er erfaringen bare beslektet, skriv hva CV-teksten viser, og at det ikke er det samme som kravet/],
+    ["FR-27: en egenskap som konkret erfaring viser, kan nevnes", /Viser konkret erfaring en egenskap \(se steg 3\), kan egenskapen nevnes sammen med erfaringen som viser den/],
+    ["FR-27: nivå som ikke er oppgitt, er ikke noe brukeren mangler", /Står det ikke noe nivå i CV-teksten, skriv at nivået ikke er oppgitt, ikke at brukeren mangler det/],
+    ["FR-27: det som mangler, kan nevnes med annonsens ord", /Det som mangler, kan nevnes med annonsens ord/],
+    ["FR-27 og NFR-5: CV på et annet språk kan oversettes", /Er CV-teksten på et annet språk, kan ordene oversettes til bokmål/],
+    ["FR-27: forklaringen viser til regelen", /Det setningen sier at brukeren har, skrives med CV-tekstens egne ord \(se Ærlighet\)/],
+    ["FR-27: rådet viser til regelen", /Det rådet sier at brukeren har, skrives med CV-tekstens egne ord \(se Ærlighet\)/],
     ["FR-8: nivå som ikke er oppgitt, nedgraderes ikke automatisk", /Er nivået ikke oppgitt, vurder det CV-teksten konkret viser/],
   ])("%s står i systeminstruksen", (_navn, monster) => {
     expect(GAP_INSTRUKS).toMatch(monster);
@@ -132,6 +141,17 @@ describe("prompten for gap-analysen", () => {
     expect(sammensatte).toBeGreaterThan(kategorier);
     expect(regler).toBeGreaterThan(sammensatte);
     expect(tvil).toBeGreaterThan(regler);
+  });
+
+  it("FR-27: regelen om CV-tekstens egne ord står under Ærlighet, før Språk", () => {
+    const aerlighet = GAP_INSTRUKS.indexOf("Ærlighet:");
+    const regel = GAP_INSTRUKS.indexOf("Beskriv det brukeren har, med CV-tekstens egne ord");
+    const sprak = GAP_INSTRUKS.indexOf("Språk:");
+
+    expect(aerlighet).toBeGreaterThan(0);
+    expect(regel).toBeGreaterThan(aerlighet);
+    expect(sprak).toBeGreaterThan(regel);
+    expect(GAP_INSTRUKS).not.toContain("Kravteksten (krav) bruker annonsens ord");
   });
 
   it("FR-8: regelen om flere deler står bare ett sted i steg 3", () => {
@@ -182,6 +202,13 @@ describe("prompten for gap-analysen", () => {
     "Windows",
     "Microsoft 365",
     "kveldsvakt",
+    // Runde 5: ordene fra forklaringene som feilet i runde 4.
+    "brukerstøtte",
+    "veiledning",
+    "god forståelse",
+    "kundeservice",
+    "kommunikasjonsevner",
+    "studentassistent",
   ])(
     "SM-1: systeminstruksen har ikke eksempelet %j fra testdataene",
     (tekst) => {

@@ -45,13 +45,20 @@ Oppgaven:
    - Står det et nivå ved ferdigheten i CV-teksten, sammenlign det med nivået kravet ber om. Er nivået i CV-teksten lavere, er kravet høyst "delvis", også når ferdigheten ellers passer. Er nivået ikke oppgitt, vurder det CV-teksten konkret viser.
    Er du i tvil, velg alltid den svakeste kategorien.
 4. Belegg (belegg): for "oppfylt" og "delvis" siterer du ett eller flere korte utdrag fra CV-teksten. Ta ikke med listetegn (som -, •, * eller –) eller innrykk først i belegget. Ellers siteres det ordrett, tegn for tegn, uten å endre, forkorte eller oversette. Hvert belegg er hele ord fra CV-teksten. Finner du ikke et ordrett belegg, er kravet "mangler". For "mangler" er belegg en tom liste.
-5. For "delvis": skriv én setning i forklaring om hvorfor kravet bare er delvis oppfylt. For et sammensatt krav sier setningen hvilken del som mangler. Ellers er forklaring null.
-6. For "mangler": skriv et ærlig råd i raad, for eksempel å vise vilje til å lære, å trekke fram beslektet erfaring, eller å legge erfaringen inn i CV-teksten hvis brukeren faktisk har den. Rådet skal aldri være å påstå kvalifikasjonen. For "oppfylt" og "delvis" er raad alltid null.
+5. For "delvis": skriv én setning i forklaring om hvorfor kravet bare er delvis oppfylt. For et sammensatt krav sier setningen hvilken del som mangler. Det setningen sier at brukeren har, skrives med CV-tekstens egne ord (se Ærlighet). Ellers er forklaring null.
+6. For "mangler": skriv et ærlig råd i raad, for eksempel å vise vilje til å lære, å trekke fram beslektet erfaring, eller å legge erfaringen inn i CV-teksten hvis brukeren faktisk har den. Rådet skal aldri være å påstå kvalifikasjonen. Det rådet sier at brukeren har, skrives med CV-tekstens egne ord (se Ærlighet). For "oppfylt" og "delvis" er raad alltid null.
 7. Hent ut nøkkelordene i annonsen (nokkelord): korte ord eller uttrykk som en rekrutterer ville søke etter, slik de står i annonsen. Hvert nøkkelord har kravIndeks: nummeret (fra 0) på kravet i krav-listen det hører til, eller null hvis det ikke hører til ett bestemt krav. Ta ikke med samme nøkkelord flere ganger.
 
 Ærlighet:
 - Fyll aldri inn kvalifikasjoner, arbeidsgivere, utdanning, årstall, tall eller erfaring som ikke står i CV-teksten. Det du skriver om brukeren, skal bygge på CV-teksten alene.
 - Noe som ikke står i CV-teksten, kan bare nevnes som noe brukeren mangler.
+- Beskriv det brukeren har, med CV-tekstens egne ord i forklaring og raad:
+  - Bruk ikke annonsens betegnelse på en erfaring, ferdighet, egenskap eller et nivå om brukeren hvis CV-teksten ikke bruker den.
+  - Er erfaringen bare beslektet, skriv hva CV-teksten viser, og at det ikke er det samme som kravet.
+  - Viser konkret erfaring en egenskap (se steg 3), kan egenskapen nevnes sammen med erfaringen som viser den.
+  - Står det ikke noe nivå i CV-teksten, skriv at nivået ikke er oppgitt, ikke at brukeren mangler det.
+  - Det som mangler, kan nevnes med annonsens ord.
+  - Er CV-teksten på et annet språk, kan ordene oversettes til bokmål.
 
 Språk:
 - Skriv alle tekster du lager (krav, forklaring, raad) på naturlig bokmål, også når CV-teksten eller annonsen er på et annet språk. Belegg siteres ordrett på originalspråket.
