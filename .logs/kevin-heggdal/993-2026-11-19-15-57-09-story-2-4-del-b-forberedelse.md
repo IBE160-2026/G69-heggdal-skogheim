@@ -570,3 +570,59 @@ Kevin godkjente én siste kontroll med OpenAI `gpt-4.1-mini` på temperatur 0, m
 ### Åpne punkter
 - Kevin og Sondre velger leverandør og temperatur og signerer vurderingen. Anbefalingen er OpenAI `gpt-4.1-mini` med temperatur 0, med de gjenværende feilene dokumentert som kjente svakheter.
 - Etter valget: B4 (manuell test i appen), B6 (`MAKS_UTDATA_TOKENS`, `STANDARD_MODELL`, PRD §10.1, endringslogg for AD-3 om temperatur 0) og del C.
+
+## 2026-11-19 kl. 23:12 — Kevin Heggdal
+
+### Oppgave
+Sondre har bekreftet valget av OpenAI `gpt-4.1-mini` med temperatur 0 etter AD-11. Før story 2.4 kan flettes, ba Kevin om seks ting:
+- dokumentere det endelige valget med begrunnelsen fra AD-11
+- skrive tydelig at SM-1 ikke er bestått (9 av 12, par 3), som et åpent punkt som må løses før innleveringen, og undersøke om det er fasiten eller modellen som tar feil, uten å endre fasiten
+- dokumentere vilkårene til OpenAI med offisielle kilder
+- kontrollere standardverdiene i koden og at ingen hemmeligheter blir committet
+- fortsette med de trygge og gratis oppgavene etter BMAD
+- committe og gi en status
+
+Det skulle ikke gjøres betalte kall, ingen push, PR eller fletting og ikke noe arbeid på story 2.7.
+
+### Plan
+- **Koden:** `bmad-build` med den korte ruten («oneshot»), med spec [spec-2-4-del-b-valgt-oppsett.md](../../_bmad-output/implementation-artifacts/spec-2-4-del-b-valgt-oppsett.md) og én gjennomgang med Blind Hunter.
+- **Dokumentasjonen:** vurderingen av kontrollen, kjørebøkene for del B og del C, oversikten over vilkår og priser, og PRD §10.1.
+- **Kildene:** developers.openai.com (lest). openai.com/policies/data-processing-addendum svarer 403 på automatiske oppslag.
+- **Hemmeligheter:** søk etter nøkkelmønstre i de sporede filene og i alle commitene mellom `origin/main` og `HEAD`.
+
+### Resultat
+- **Valget er dokumentert** i avsnitt 5 i [vurdering-2-4-kontroll-temperatur-0.md](../../_bmad-output/implementation-artifacts/vurdering-2-4-kontroll-temperatur-0.md): `LLM_LEVERANDOR=openai`, `LLM_MODELL=gpt-4.1-mini` (versjonen fra leverandøren er `gpt-4.1-mini-2025-04-14`), `TEMPERATUR=0`, commit for kontrollen `ee49c2b`. Begrunnelsen er AD-11 (Mistral består ikke) og PRD §6.
+- **SM-1 er ikke bestått (9 av 12),** avsnitt 6. Fasiten er ikke endret. Analysen:
+  - «Strukturert og nøyaktig»: fasitens `D` bygger på beslektet erfaring (registrering i kundesystem, bacheloroppgave). Modellen er trolig for streng.
+  - «Gode samarbeidsevner»: fasitens `D` har svakere grunnlag (kundeservice er ikke samarbeid med kolleger, og fasiten skriver selv «ikke direkte dokumentert»). Modellens `M` kan forsvares med tvilsregelen.
+  - Tre mulige løsninger: (1) rette modellen med en ny måling, (2) vurdere fasiten for samarbeid på nytt med begrunnelse og signatur, (3) akseptere og dokumentere avviket.
+- **Vilkårene til OpenAI,** avsnitt 7:
+  - Ingen trening på API-data «unless you explicitly opt in».
+  - Logger for misbruk lagres i opptil 30 dager.
+  - DPA-en er publisert, men ikke lest direkte (403).
+  - Data behandles utenfor EØS.
+  - Sondre bekrefter delingen av data og avtalegrunnlaget før produksjonsbruk. Personvernteksten må si at dataene går ut av EØS.
+- **Koden** (`374495d`):
+  - Testen for OpenAI-adapteren sjekker `temperature` 0, og testen for Mistral sjekker `temperature === TEMPERATUR`.
+  - En egen test låser `TEMPERATUR = 0` og `STANDARD_MODELL.openai = gpt-4.1-mini`.
+  - Kommentarene i `felles.ts` og `leverandor.ts` er oppdatert (de nevner SM-1, og at Mistral bare er målt med 0,2).
+  - Punktet om `gpt-5-mini` i `deferred-work.md` er lukket.
+  - `LLM_LEVERANDOR` har fortsatt Mistral som standard i koden (AD-3). Produksjonen settes i del C.
+- **Gjennomgangen:** 12 funn. 8 er rettet, og 4 er avvist med begrunnelse.
+- **Kontrollene:** lint, typecheck, `npm test` (836 av 836), build og tørrkjøringen er grønne.
+- **Hemmeligheter:** ingen. Treffene er bare plassholdere i kjøreboka. `.env.local` er ignorert, og bare `.env.example` (tom) er sporet.
+- **Dokumentasjonen** (`cbf2f26`):
+  - PRD §10.1 er merket som valgt.
+  - Kjøreboka for del B har status og en sjekkliste for etterarbeidet.
+  - Kjøreboka for del C er tilpasset OpenAI.
+  - Oversikten over vilkår og priser viser til avsnitt 7.
+- **Sprint-status:** 2-4 står fortsatt som `in-progress`.
+
+### Åpne punkter
+- SM-1 i par 3 må avklares og løses før innleveringen (Kevin og Sondre velger løsning 1, 2 eller 3 i avsnitt 6).
+- Sondre bekrefter OpenAI-vilkårene (deling av data, DPA, kreditt) før produksjonsbruk.
+- Kevin og Sondre signerer vurderingen.
+- Kevin godkjenner eller avviser forslaget om `MAKS_UTDATA_TOKENS` (8000 → for eksempel 2500).
+- B4: manuell test i appen med OpenAI (2 betalte kall, krever godkjenning).
+- Nøklene fra målingen roteres eller slettes.
+- Del C.
