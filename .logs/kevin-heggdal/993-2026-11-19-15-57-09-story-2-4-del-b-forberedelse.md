@@ -528,3 +528,45 @@ Kevin godkjente runde 5: 12 betalte kall mot OpenAI `gpt-4.1-mini` og 12 mot Mis
   - (C) en ny runde med prompten
 
   Anbefalingen er B og deretter A.
+
+## 2026-11-19 kl. 23:02 — Kevin Heggdal
+
+### Oppgave
+Kevin godkjente én siste kontroll med OpenAI `gpt-4.1-mini` på temperatur 0, med 12 betalte kall. Prompten og alle andre innstillinger skulle være uendret, og Mistral skulle ikke kjøres. Etterpå skulle resultatet sammenlignes med rundene 4 og 5 (SM-2, SM-3 og SM-1), med en anbefaling om temperatur og en oversikt over feil som gjenstår. Resultatene skulle lagres og committes, og arbeidskopien skulle være ren. Deretter avsluttes målingene, og leverandørvalget tas sammen med Sondre. Det skulle ikke gjøres push, fletting eller noe arbeid på del C eller story 2.7.
+
+### Plan
+- **Endringen:** `TEMPERATUR` i `src/lib/llm/felles.ts` ble satt fra 0,2 til 0, innenfor AD-3. Verdien er felles for appen og begge leverandørene.
+- **Kontrollene før målingen:** lint, typecheck, `npm test` (835 av 835), build og tørrkjøringen («Temperatur: 0» i rapporten) var grønne.
+- **Commit og måling:** endringen ble committet alene (`ee49c2b`), så målingen kan spores. Deretter ble `npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50` kjørt én gang.
+- **Vurderingen:** [vurdering-2-4-kontroll-temperatur-0.md](../../_bmad-output/implementation-artifacts/vurdering-2-4-kontroll-temperatur-0.md), med en tabell som sammenligner temperatur 0 med rundene 4 og 5.
+
+### Resultat
+- **Målingen:** `testsett-rapporter/2026-11-19-225914-openai-gpt-4.1-mini.md`.
+  - 12 av 12 ga status 200, med 0 feil.
+  - Kostnaden var 0,2225 kr, og den lengste kjøringen tok 8392 ms.
+  - Det høyeste antallet output-tokens var 608.
+- **Kategoriene:** identiske i alle tre kjøringene per par.
+  - Par 1, 2 og 4 er lik fasiten. «Brukerstøtte» er `D` i alle tre.
+  - Par 3: «Strukturert og nøyaktig» og «Samarbeid» er `M` mot `D`, altså to krav under fasiten i alle tre.
+- **Kriteriene:**
+  - **SM-2:** `J`.
+  - **SM-3 etter PRD-en** (ingen krav over fasiten, Mangler alltid Mangler): `J`, 12 av 12.
+  - **Toleransen i FR-8** (høyst ett krav under): `N` i par 3, så SM-1 er 9 av 12.
+  - **NFR-4, NFR-5 og kostnaden:** `J`.
+- **Sammenlignet med rundene 4 og 5 (temperatur 0,2):**
+  - Runde 4 hadde ingen krav over fasiten, men én setning som brøt SM-2.
+  - Runde 5 hadde ett krav over fasiten (brukerstøtte) og én kjøring med to krav under.
+  - Med temperatur 0 er det ingen krav over fasiten og ingen brudd på SM-2, men den samme forsiktige feilen i par 3 hver gang.
+- **Avklaring om definisjonen:** SM-3 i PRD-en dekker ikke «høyst ett under». Det er FR-8 og sjekklisten (SM-1). I vurderingene for rundene 3–5 ble det regnet på samme linje.
+- **Anbefalingen er temperatur 0:** stabilt, ingen krav over fasiten og SM-2 i orden. Verdien er allerede 0 i koden.
+- **Feil som må dokumenteres:**
+  - Par 3 er for strengt vurdert (to krav `M` der fasiten har `D`, beslektet erfaring).
+  - «It-brukerstøtte» i stillingen.
+  - Kravtekster med «(en fordel)».
+  - Små språkfeil (setninger uten subjekt).
+- **Kostnaden for alle målingene i dag:** OpenAI ca. 0,88 kr, Mistral ca. 5,8–6,2 kr. Målingene er avsluttet.
+- **Commits** (lokale): `ee49c2b` (temperatur 0) og `a3951ff` (rapporten og vurderingen).
+
+### Åpne punkter
+- Kevin og Sondre velger leverandør og temperatur og signerer vurderingen. Anbefalingen er OpenAI `gpt-4.1-mini` med temperatur 0, med de gjenværende feilene dokumentert som kjente svakheter.
+- Etter valget: B4 (manuell test i appen), B6 (`MAKS_UTDATA_TOKENS`, `STANDARD_MODELL`, PRD §10.1, endringslogg for AD-3 om temperatur 0) og del C.
