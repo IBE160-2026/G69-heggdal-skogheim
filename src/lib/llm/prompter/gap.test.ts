@@ -99,7 +99,14 @@ describe("prompten for gap-analysen", () => {
     ["FR-7: et punkt med flere ting deles ikke opp", /er fortsatt ett krav\. Del det ikke opp i flere krav/],
     ["FR-8: oppfylt dekker direkte hele kravet", /"oppfylt": CV-teksten har konkret erfaring, utdanning eller dokumentasjon som direkte dekker hele kravet/],
     ["FR-8: delvis ved beslektet erfaring, del av kravet eller egenvurdering", /"delvis": CV-teksten har overførbar eller beslektet erfaring, dekker bare en del av kravet, eller kravet står bare som brukerens egenvurdering/],
-    ["FR-8: hver del av et sammensatt krav må være dokumentert", /Har kravet flere deler som alle kreves, må hver del være dokumentert\. Er bare noen av delene dokumentert, er kravet "delvis"/],
+    ["FR-7: et sammensatt krav er ett krav", /Sammensatte krav: et punkt med flere deler, for eksempel to verktøy eller to egenskaper, er ett krav. Når alle delene kreves, gjelder dette/],
+    ["FR-7: kravteksten har alle delene", /Del det ikke opp i flere krav, og skriv kravteksten med alle delene slik de står i punktet/],
+    ["FR-8: alle delene dokumentert gir oppfylt", /Alle delene er dokumentert: "oppfylt"/],
+    ["FR-8: noen av delene dokumentert gir delvis", /Bare noen av delene er dokumentert: "delvis"/],
+    ["FR-8: ved delvis siterer belegget delen som er dekket", /Belegget siterer delene som er dekket, og forklaringen sier hvilken del som mangler/],
+    ["FR-8: ingen av delene, men beslektet erfaring, gir delvis", /Ingen av delene er dokumentert, men CV-teksten har overførbar eller beslektet erfaring: "delvis"/],
+    ["FR-8: ingen av delene og ikke noe beslektet gir mangler", /Ingen av delene er dokumentert, og CV-teksten har ingen overførbar eller beslektet erfaring: "mangler"/],
+    ["FR-8: forklaringen for et sammensatt krav sier hvilken del som mangler", /For et sammensatt krav sier setningen hvilken del som mangler/],
     ["FR-8: for alternativer er ett av dem nok", /Er delene alternativer \(for eksempel «eller»\), er det nok at ett av dem er dokumentert/],
     ["FR-8: egenvurdering gir høyst delvis", /bare har egenvurdering som grunnlag, er høyst "delvis"/],
     ["FR-8: konkret erfaring som viser egenskapen, er dokumentasjon", /Konkret erfaring eller utdanning i CV-teksten som viser egenskapen, er dokumentasjon/],
@@ -109,14 +116,34 @@ describe("prompten for gap-analysen", () => {
     expect(GAP_INSTRUKS).toMatch(monster);
   });
 
-  it("FR-8: reglene for oppfylt står etter kategoriene og før tvilsregelen", () => {
+  it("FR-8: sammensatte krav og reglene for oppfylt står etter kategoriene og før tvilsregelen", () => {
     const kategorier = GAP_INSTRUKS.indexOf('"mangler": CV-teksten dokumenterer ikke kravet');
-    const regler = GAP_INSTRUKS.indexOf('Disse reglene begrenser "oppfylt"');
+    const sammensatte = GAP_INSTRUKS.indexOf("Sammensatte krav:");
+    const regler = GAP_INSTRUKS.indexOf('Disse reglene begrenser også "oppfylt"');
     const tvil = GAP_INSTRUKS.indexOf("Er du i tvil, velg alltid den svakeste kategorien");
 
     expect(kategorier).toBeGreaterThan(0);
-    expect(regler).toBeGreaterThan(kategorier);
+    expect(sammensatte).toBeGreaterThan(kategorier);
+    expect(regler).toBeGreaterThan(sammensatte);
     expect(tvil).toBeGreaterThan(regler);
+  });
+
+  it("FR-8: regelen om flere deler står bare ett sted i steg 3", () => {
+    expect(GAP_INSTRUKS).not.toMatch(/Har kravet flere deler som alle kreves, må hver del/);
+    expect(GAP_INSTRUKS.split("Sammensatte krav:")).toHaveLength(2);
+    expect(GAP_INSTRUKS).not.toContain('Disse reglene begrenser "oppfylt"');
+  });
+
+  it("FR-7 og FR-8: ett krav per punkt i steg 2 står før reglene i steg 3, og alternativene står i blokken for sammensatte krav", () => {
+    const steg2 = GAP_INSTRUKS.indexOf("Hvert punkt i en liste i annonsen er ett krav");
+    const sammensatte = GAP_INSTRUKS.indexOf("Sammensatte krav:");
+    const alternativer = GAP_INSTRUKS.indexOf("Er delene alternativer");
+    const regler = GAP_INSTRUKS.indexOf('Disse reglene begrenser også "oppfylt"');
+
+    expect(steg2).toBeGreaterThan(0);
+    expect(sammensatte).toBeGreaterThan(steg2);
+    expect(alternativer).toBeGreaterThan(sammensatte);
+    expect(regler).toBeGreaterThan(alternativer);
   });
 
   it.each([

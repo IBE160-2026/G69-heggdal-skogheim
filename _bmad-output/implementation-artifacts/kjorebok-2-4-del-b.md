@@ -2,6 +2,24 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+## Status 2026-11-19 (runde 3 forberedt)
+
+- **Sondres regel for sammensatte krav** (meldt av Kevin 2026-11-19) er lagt inn i prompten: [`spec-2-4-del-b-runde-3-sammensatte-krav.md`](spec-2-4-del-b-runde-3-sammensatte-krav.md).
+  - Ett krav per punkt, også i kravteksten.
+  - Alle delene dokumentert: Oppfylt. Noen av delene: Delvis oppfylt, og belegget viser delen som er dekket, mens forklaringen sier hva som mangler. Ingen av delene: Mangler, eller Delvis oppfylt ved beslektet erfaring (FR-8). Sondre må bekrefte den siste lesingen.
+  - Fasitene er kontrollert og ikke endret.
+- **Prompten er endret etter runde 2, så runde 3 måler begge på nytt på samme commit.** Det krever Kevins godkjenning, og nøkkelen fra Sondre må ligge i `.env.local` (aldri i git). Den skal bare brukes til testsettet med fiktive testdata.
+
+  ```bash
+  # Mistral Medium 3.5: 12 kall, forventet ca. 1,1 kr
+  npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --pris-inn 14.53 --pris-ut 72.65
+  # OpenAI gpt-4.1-mini: kontroll på par 2 (1 kall), deretter 12 kall, forventet ca. 0,3 kr
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50 --par par-2-it-support --ganger 1
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50
+  ```
+
+- **Kopien for runde 3:** [`vurdering-2-4-leverandorvalg-runde-3.md`](vurdering-2-4-leverandorvalg-runde-3.md).
+
 ## Status 2026-11-19 (runde 2, Mistral målt)
 
 - **Mistral Medium 3.5 i runde 2** (godkjent av Kevin): `testsett-rapporter/2026-11-19-2129-mistral-mistral-medium-2604.md`, commit `28da462`.

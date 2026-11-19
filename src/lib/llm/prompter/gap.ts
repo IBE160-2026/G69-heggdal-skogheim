@@ -22,7 +22,7 @@ Dataene:
 Oppgaven:
 1. Hent ut stillingstittelen (stilling) og arbeidsgiveren (arbeidsgiver) fra annonsen. Står de ikke der, bruk en tom tekst. Skriv stillingen med vanlig skrift, med stor forbokstav og ellers små bokstaver, også når annonsen skriver den med bare store bokstaver. Behold ordene og innholdet, og behold forkortelser og egennavn slik de står. En forkortelse som uttales bokstav for bokstav, skrives med store bokstaver, også når den er første del av et sammensatt ord.
 2. Hent ut alle krav og ønsker i annonsen (krav), i annonsens rekkefølge, med en kort tekst på bokmål.
-   - Hvert punkt i en liste i annonsen er ett krav. Et punkt som nevner flere ting, for eksempel to verktøy eller to egenskaper, er fortsatt ett krav. Del det ikke opp i flere krav. Står kvalifikasjonene i løpende tekst, er hver kvalifikasjon ett krav.
+   - Hvert punkt i en liste i annonsen er ett krav. Et punkt som nevner flere ting, for eksempel to verktøy eller to egenskaper, er fortsatt ett krav. Del det ikke opp i flere krav, og skriv kravteksten med alle delene slik de står i punktet. Står kvalifikasjonene i løpende tekst, er hver kvalifikasjon ett krav.
    - Bare kvalifikasjoner er krav: det annonsen krever eller ønsker at søkeren har eller kan, som utdanning, erfaring, kunnskaper, egenskaper, språk og sertifikater. Også ønsker, det vil si det annonsen sier er valgfritt eller ønsket, er krav. Vilkår annonsen uttrykkelig krever av søkeren, for eksempel et sertifikat eller en attest, er også krav.
    - Oppgavene i jobben er ikke krav. Det som beskriver oppgavene i jobben, uansett overskrift, tas ikke med. Heller ikke beskrivelser av selve stillingen, som arbeidstid og vakter, det arbeidsgiveren tilbyr, eller praktisk informasjon om stillingen, som søknadsfrist, stillingsprosent, lønn og kontaktperson.
    - Hvert krav står én gang. Ta ikke med samme krav flere ganger, også om annonsen nevner det mer enn ett sted.
@@ -30,13 +30,18 @@ Oppgaven:
    - "oppfylt": CV-teksten har konkret erfaring, utdanning eller dokumentasjon som direkte dekker hele kravet.
    - "delvis": CV-teksten har overførbar eller beslektet erfaring, dekker bare en del av kravet, eller kravet står bare som brukerens egenvurdering.
    - "mangler": CV-teksten dokumenterer ikke kravet.
-   Disse reglene begrenser "oppfylt":
-   - Har kravet flere deler som alle kreves, må hver del være dokumentert. Er bare noen av delene dokumentert, er kravet "delvis". Er delene alternativer (for eksempel «eller»), er det nok at ett av dem er dokumentert.
+   Sammensatte krav: et punkt med flere deler, for eksempel to verktøy eller to egenskaper, er ett krav. Når alle delene kreves, gjelder dette:
+   - Alle delene er dokumentert: "oppfylt".
+   - Bare noen av delene er dokumentert: "delvis". Belegget siterer delene som er dekket, og forklaringen sier hvilken del som mangler.
+   - Ingen av delene er dokumentert, men CV-teksten har overførbar eller beslektet erfaring: "delvis".
+   - Ingen av delene er dokumentert, og CV-teksten har ingen overførbar eller beslektet erfaring: "mangler".
+   Er delene alternativer (for eksempel «eller»), er det nok at ett av dem er dokumentert.
+   Disse reglene begrenser også "oppfylt":
    - En egenskap brukeren bare skriver om seg selv, for eksempel i en profil eller et sammendrag, er en egenvurdering og ikke dokumentasjon. Et krav som bare har egenvurdering som grunnlag, er høyst "delvis". Konkret erfaring eller utdanning i CV-teksten som viser egenskapen, er dokumentasjon.
    - Sier CV-teksten selv at nivået er lavere enn det kravet ber om, er kravet høyst "delvis". Er nivået ikke oppgitt, vurder det CV-teksten konkret viser.
    Er du i tvil, velg alltid den svakeste kategorien.
 4. Belegg (belegg): for "oppfylt" og "delvis" siterer du ett eller flere korte utdrag fra CV-teksten. Ta ikke med listetegn (som -, •, * eller –) eller innrykk først i belegget. Ellers siteres det ordrett, tegn for tegn, uten å endre, forkorte eller oversette. Hvert belegg er hele ord fra CV-teksten. Finner du ikke et ordrett belegg, er kravet "mangler". For "mangler" er belegg en tom liste.
-5. For "delvis": skriv én setning i forklaring om hvorfor kravet bare er delvis oppfylt. Ellers er forklaring null.
+5. For "delvis": skriv én setning i forklaring om hvorfor kravet bare er delvis oppfylt. For et sammensatt krav sier setningen hvilken del som mangler. Ellers er forklaring null.
 6. For "mangler": skriv et ærlig råd i raad, for eksempel å vise vilje til å lære, å trekke fram beslektet erfaring, eller å legge erfaringen inn i CV-teksten hvis brukeren faktisk har den. Rådet skal aldri være å påstå kvalifikasjonen. Ellers er raad null.
 7. Hent ut nøkkelordene i annonsen (nokkelord): korte ord eller uttrykk som en rekrutterer ville søke etter, slik de står i annonsen. Hvert nøkkelord har kravIndeks: nummeret (fra 0) på kravet i krav-listen det hører til, eller null hvis det ikke hører til ett bestemt krav. Ta ikke med samme nøkkelord flere ganger.
 
