@@ -2,6 +2,18 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+## Status 2026-11-19 (runde 4 målt)
+
+- **Begge er målt på commit `be2b0e2`** med prompten fra `5346bee`, uten kontrollkall (Kevins godkjenning):
+  - **OpenAI:** `2026-11-19-223737-openai-gpt-4.1-mini.md`, 12 av 12, 0,2094 kr, lengste 8701 ms.
+  - **Mistral:** `2026-11-19-223858-mistral-mistral-medium-2604.md`, 12 av 12, 1,1822 kr, lengste 5809 ms.
+  - **Samlet:** 1,39 kr. Ingen feil og ingen nye forsøk.
+- **OpenAI består SM-3 i alle 12 kjøringene:** ingen krav over fasiten, og høyst ett under per kjøring.
+  - NFR-4, kostnaden og NFR-5 (med forbehold for små språkfeil) er i orden.
+  - **SM-2 avklares:** i par 2 K1 skriver OpenAI «Erfaringen er med brukerstøtte i studiet», men CV-en har bare veiledning.
+- **Mistral feiler SM-3** (6 av 12 kjøringer bestått). Det er en tilbakegang fra runde 3: par 4 «Selvstendig» er `O` i alle tre, par 1 K1 «Nøyaktig» er `O`, og par 3 K2 og K3 har to krav under fasiten.
+- Se [`vurdering-2-4-leverandorvalg-runde-4.md`](vurdering-2-4-leverandorvalg-runde-4.md). Forslaget etter AD-11 er OpenAI `gpt-4.1-mini`. Kevin og Sondre avgjør SM-2 i par 2 K1, bekrefter DPA-en og signerer.
+
 ## Status 2026-11-19 (runde 4 forberedt)
 
 - **Prompten i runde 4** retter feilene fra runde 3 med generelle regler. Se [`spec-2-4-del-b-runde-4-alternativer-niva-og-rapportnavn.md`](spec-2-4-del-b-runde-4-alternativer-niva-og-rapportnavn.md) og [`vurdering-2-4-leverandorvalg-runde-4.md`](vurdering-2-4-leverandorvalg-runde-4.md).
