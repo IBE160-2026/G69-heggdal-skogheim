@@ -73,6 +73,7 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-ekte-gap-analyse-med-spraakmodellen.md`
   summary: Set `maxOutputTokens` (and consider caps on free-text lengths) in the adapters once the model is chosen in story 2.4.
   evidence: Without a cap a runaway answer is billed until the 45 s timeout; reasoning models count reasoning tokens as output, so the right cap depends on the measured model.
+  status: Delvis lukket i story 2.4 del A. Adapterne har `maxOutputTokens: MAKS_UTDATA_TOKENS` (8000) i `lib/llm/felles.ts`. Verdien vurderes på nytt i del B ut fra høyeste `outputTokens` i testsettrapporten. Grenser på fritekstlengdene er ikke vurdert.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-ekte-gap-analyse-med-spraakmodellen.md`
   summary: The default OpenAI model `gpt-5-mini` is a reasoning model and ignores `temperature`, so AD-3's 0–0.3 does not hold for OpenAI; settle the model (or record the exception) in story 2.4.
   evidence: AI SDK drops the setting with a warning; the adapter test only checks that the value is passed.

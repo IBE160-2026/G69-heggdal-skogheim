@@ -17,6 +17,12 @@ import { GAP_INSTRUKS, gapBrukermelding } from "./prompter/gap";
 // AD-3: lav temperatur, så svaret blir stabilt. Grensen er 0–0,3.
 export const TEMPERATUR = 0.2;
 
+// Taket på utdata, så et svar som løper løpsk, ikke faktureres til tidsgrensen.
+// Resonneringsmodeller teller resonnering som utdata, og et avkuttet svar gir
+// `ugyldig_svar`. Verdien vurderes på nytt etter målingen i story 2.4, ut fra
+// høyeste `outputTokens` i testsettrapporten.
+export const MAKS_UTDATA_TOKENS = 8000;
+
 // Skjemaet modellen får. Strikt JSON-skjema krever at alle felt finnes, så
 // `forklaring` og `raad` er `nullable` her og blir gjort om til `undefined` før
 // pipelinen validerer svaret mot `gapSvar`. Grensene sjekkes i pipelinen (AD-4).
@@ -64,6 +70,7 @@ export async function analyseGapMed(
       prompt: gapBrukermelding(cvTekst, annonse),
       output: Output.object({ schema: gapModellSkjema, name: "gap_analyse" }),
       temperature: TEMPERATUR,
+      maxOutputTokens: MAKS_UTDATA_TOKENS,
       maxRetries: 0,
       abortSignal: signal,
       providerOptions,
