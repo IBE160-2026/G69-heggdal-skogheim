@@ -2,6 +2,20 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+## Status 2026-11-19 (kontroll med temperatur 0, målingene avsluttet)
+
+- **Kontrollen** (godkjent av Kevin): bare OpenAI, 12 kjøringer, prompten fra runde 5, `TEMPERATUR` 0 (`ee49c2b`).
+  - Rapporten er `2026-11-19-225914-openai-gpt-4.1-mini.md`.
+  - Kostnaden var 0,2225 kr, og den lengste kjøringen tok 8392 ms.
+  - Ingen feil og ingen nye forsøk.
+- **Resultatet:**
+  - Kategoriene er identiske i alle tre kjøringene per par.
+  - SM-2 er i orden. SM-3 etter PRD-en (ingen krav over fasiten, Mangler alltid Mangler) er bestått i 12 av 12.
+  - Par 3 har to krav under fasiten i alle tre («Strukturert og nøyaktig» og «Samarbeid» er `M`). Det bryter toleransen i FR-8 (SM-1), og 9 av 12 kjøringer består dermed hele sjekklisten.
+  - Se [`vurdering-2-4-kontroll-temperatur-0.md`](vurdering-2-4-kontroll-temperatur-0.md).
+- **Anbefalingen er temperatur 0**, fordi resultatet blir stabilt og ingen krav havner over fasiten. Verdien er allerede 0 i koden.
+- **Målingene er avsluttet** (Kevin, 2026-11-19). Leverandørvalget tas av Kevin og Sondre.
+
 ## Status 2026-11-19 (runde 5 målt)
 
 - **Begge er målt på commit `2e92de3`** med prompten fra `271edb4`:
