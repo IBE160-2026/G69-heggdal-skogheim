@@ -3,8 +3,9 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { gapSvar } from "@/lib/kontrakt/gap";
 
-import { gapModellSkjema, MAKS_UTDATA_TOKENS } from "./felles";
+import { gapModellSkjema, MAKS_UTDATA_TOKENS, TEMPERATUR } from "./felles";
 import { lagEkteKlient } from "./klient";
+import { STANDARD_MODELL } from "./leverandor";
 import { RESONNERING_MODELLER, resonnering } from "./mistral";
 import { GAP_INSTRUKS } from "./prompter/gap";
 
@@ -61,8 +62,9 @@ describe("adapterne", () => {
     expect(valg.prompt).toContain("Annonse");
     expect(valg.output).toBeDefined();
     expect(valg.maxRetries).toBe(0);
-    expect(valg.temperature).toBeGreaterThanOrEqual(0);
-    expect(valg.temperature).toBeLessThanOrEqual(0.3);
+    expect(valg.temperature).toBe(TEMPERATUR);
+    expect(TEMPERATUR).toBeGreaterThanOrEqual(0);
+    expect(TEMPERATUR).toBeLessThanOrEqual(0.3);
     expect(valg.maxOutputTokens).toBe(8000);
     expect(MAKS_UTDATA_TOKENS).toBe(8000);
     expect(valg.abortSignal).toBe(signal);
@@ -120,9 +122,17 @@ describe("adapterne", () => {
       modelId: "gpt-4.1-mini",
     });
     expect(valg.providerOptions).toEqual({ openai: { strictJsonSchema: true } });
+    expect(valg.temperature).toBe(0);
     expect(valg.maxRetries).toBe(0);
     expect(valg.maxOutputTokens).toBe(MAKS_UTDATA_TOKENS);
     expect(valg.instructions).toBe(GAP_INSTRUKS);
+  });
+
+  // Låser oppsettet som ble valgt i story 2.4 (vurdering-2-4-kontroll-temperatur-0.md), så en
+  // endring må gjøres bevisst.
+  it("AD-11: det valgte oppsettet er gpt-4.1-mini med temperatur 0", () => {
+    expect(STANDARD_MODELL.openai).toBe("gpt-4.1-mini");
+    expect(TEMPERATUR).toBe(0);
   });
 
   it("AD-3: LLM_MODELL velger modellen", async () => {

@@ -14,9 +14,12 @@ import { kategori, nokkelordSvar } from "@/lib/kontrakt/gap";
 import type { GapInndata, LlmSvar } from "./klient";
 import { GAP_INSTRUKS, gapBrukermelding } from "./prompter/gap";
 
-// AD-3: lav temperatur, så svaret blir stabilt. Grensen er 0–0,3. Satt til 0 for
-// kontrollen av stabilitet med OpenAI etter runde 5 i story 2.4 (Kevin, 2026-11-19).
-// Var 0,2 i rundene 1–5. Den endelige verdien avgjøres etter kontrollen.
+// AD-3: lav temperatur, så svaret blir stabilt. Grensen er 0–0,3. Valgt 0 sammen med
+// OpenAI gpt-4.1-mini (AD-11, 2026-11-19). Med 0 var kategoriene like i alle kjøringene,
+// og ingen krav kom over fasiten. SM-1 er likevel ikke bestått, fordi par 3 har to krav
+// under fasiten (vurdering-2-4-kontroll-temperatur-0.md). Verdien gjelder begge
+// leverandørene. Mistral er bare målt med 0,2 (målerundene 1–5). Testene i
+// adaptere.test.ts låser verdien.
 export const TEMPERATUR = 0;
 
 // Taket på utdata, så et svar som løper løpsk, ikke faktureres til tidsgrensen.
