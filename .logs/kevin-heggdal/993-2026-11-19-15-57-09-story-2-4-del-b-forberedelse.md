@@ -493,3 +493,38 @@ Det skulle ikke gjøres betalte kall, ingen push eller fletting og ikke noe arbe
 
 ### Åpne punkter
 - Runde 5: OpenAI (12 kall, ca. 0,22 kr) og Mistral (12 kall, ca. 1,20 kr) måles på samme commit etter Kevins godkjenning. Det blir ca. 1,4 kr til sammen.
+
+## 2026-11-19 kl. 22:57 — Kevin Heggdal
+
+### Oppgave
+Kevin godkjente runde 5: 12 betalte kall mot OpenAI `gpt-4.1-mini` og 12 mot Mistral Medium 3.5, med samme prompt og commit, uten kontrollkall eller nye forsøk og uten endringer i prompten. Etterpå skulle begge vurderes samlet (SM-2, SM-3, SM-1, kostnader og gjenværende feil), og rapportene og dokumentasjonen skulle committes lokalt. Det skulle ikke gjøres push, fletting eller noe arbeid på del C eller story 2.7.
+
+### Plan
+- **Forutsetningene:** `git status` var tom på `2e92de3`, og `npm test` ga 835 av 835.
+- **Kjøringene:** OpenAI og så Mistral i én kjøring i bakgrunnen.
+- **Vurderingen:** hver kategori ble vurdert mot fasiten, og hver `forklaring` og hvert `raad` ble lest etter regelen om CV-ens egne ord. Alt er ført inn i [vurdering-2-4-leverandorvalg-runde-5.md](../../_bmad-output/implementation-artifacts/vurdering-2-4-leverandorvalg-runde-5.md), med en tabell for rundene 3–5.
+
+### Resultat
+- **OpenAI `gpt-4.1-mini-2025-04-14`:** 12 av 12 med 0 feil, 0,2223 kr (0,0185 kr per gap-kjøring). Den lengste kjøringen tok 10389 ms.
+  - **SM-2:** `J`. Regelen om egne ord ble fulgt, for eksempel «CV-en viser erfaring som studentassistent med veiledning, men ikke direkte brukerstøtte».
+  - **SM-3:** `N`, 10 av 12. Par 2 K1 «brukerstøtte eller kundeservice» er `O` uten forklaring. Par 3 K3 har to krav under fasiten («Strukturert og nøyaktig» `M` og «Samarbeid» `M`).
+- **Mistral `mistral-medium-2604`:** 12 av 12 med 0 feil, 1,2293 kr (0,1024 kr per gap-kjøring). Den lengste kjøringen tok 6383 ms.
+  - **SM-2:** `J`. Forklaringen er for eksempel «Du har veiledningserfaring, men dette er ikke det samme som brukerstøtte».
+  - **SM-3:** `N`, 8 av 12. Par 4 «Selvstendig og ansvarsbevisst» er `O` i alle tre. Par 3 K2 har to krav under fasiten. Forklaringene legger fortsatt til «bankkontekst» i par 1 (kategorien er innenfor toleransen).
+- **NFR-4 og kostnad:** i orden for begge. NFR-5 er `J` med små språkfeil hos begge.
+- **Over rundene 3–5:** OpenAI består 32 av 36 kjøringer med 3 krav over fasiten. Mistral består 24 av 36 med 9 krav over fasiten.
+- **Kostnadene:**
+  - Runde 5: 1,45 kr.
+  - Alle målingene i dag: OpenAI ca. 0,65 kr, Mistral ca. 5,8–6,2 kr (ca. 0,6 USD, under grensen på 2 USD).
+- **Commit:** `19407b5` (lokal), med rapportene, vurderingen og kjøreboka.
+- **Vurderingen:**
+  - Variasjonen fra kjøring til kjøring med samme prompt er nå like stor som effekten av rettingene. OpenAI hadde 10, 12 og 10 av 12 i rundene 3–5, og feilen med brukerstøtte kom tilbake i 1 av 3 kjøringer.
+  - Nye rettinger av prompten risikerer å tilpasse den til de fire testparene, og gir tilbakeganger (Mistral i runde 4).
+
+### Åpne punkter
+- Valget av leverandør i story 2.4 er ikke tatt. Kevin og Sondre velger mellom:
+  - (A) OpenAI `gpt-4.1-mini` etter AD-11 (Mistral består ikke), med de kjente svakhetene dokumentert
+  - (B) en måling med OpenAI på temperatur 0 for å redusere variasjonen (endring i `TEMPERATUR`, innenfor AD-3, ca. 0,22 kr)
+  - (C) en ny runde med prompten
+
+  Anbefalingen er B og deretter A.
