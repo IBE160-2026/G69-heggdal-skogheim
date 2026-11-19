@@ -17,6 +17,7 @@
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Like krav fjernes bare i prompten. Vurder å fjerne dem i koden (alternativ C) hvis målingen viser duplikater
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — OpenAI-nøkkelen fra Sondre trengs til målingen av `gpt-4.1-mini` (eller Sondre kjører den selv)
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Mistral Large 4 feiler NFR-4 (tidsavbrudd etter over 45 s mot kravet på 30 s, også med `low`). Neste kandidat er kontrollen av Medium 3.5 (`mistral-medium-2604`), som krever godkjenning
+- [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Full måling av Mistral Medium 3.5 (12 kjøringer, ca. 1,2–1,9 kr, øvre grense ca. 10 kr inkl. mva) trenger godkjenning. Vurder også om det er riktig at «Windows og Microsoft 365» deles i to krav (FR-8)
 
 ## Løst
 

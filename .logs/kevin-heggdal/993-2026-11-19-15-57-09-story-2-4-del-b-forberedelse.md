@@ -92,3 +92,31 @@ Før en eventuell kontroll av Mistral Medium 3.5 skulle det sjekkes at modellen 
 
 ### Åpne punkter
 - Prisen for Medium 3.5 står allerede åpen i issues.md. Den kan bekreftes i Mistral-konsollen eller ved å sammenligne faktisk forbruk etter kontrollen.
+
+## 2026-11-19 kl. 20:37 — Kevin Heggdal
+
+### Oppgave
+Kevin godkjente én kontroll av Mistral Medium 3.5 (`mistral-medium-2604`, `reasoningEffort` `none`) på par 2. Rammen var høyst 2 kr samlet for Mistral-testene så langt og denne kontrollen. Kontrollen skulle kjøres én gang uten nye forsøk, og det skulle ikke gjøres andre betalte kall, ingen push eller fletting og ikke noe arbeid på story 2.5 eller 2.6.
+
+### Plan
+- Budsjettet ble sjekket før kjøringen. De to Large 4-kontrollene som fikk tidsavbrudd, koster høyst ca. 0,24 kr hver inkl. mva (taket er 8000 output-tokens). Diagnosekallet kostet ca. 0,001 kr, og denne kontrollen høyst ca. 0,8 kr. Til sammen blir det høyst ca. 1,3 kr, som er innenfor 2 kr.
+- Kontrollen ble kjørt med `npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --par par-2-it-support --ganger 1 --pris-inn 15 --pris-ut 75`.
+
+### Resultat
+- **Rapporten:** `testsett-rapporter/2026-11-19-2037-mistral-mistral-medium-2604.md`, committet i en egen commit med meldingen «docs: kontrollrapporten for Mistral Medium 3.5».
+- **Kjøringen:**
+  - Status 200 på 4774 ms. NFR-4 (30 s) er oppfylt for dette paret.
+  - Rapporten viser «Resonnering (reasoningEffort): none», og modellen leverandøren oppga, er `mistral-medium-2604`.
+  - 1673 tokens inn og 783 ut. Det koster 0,0838 kr uten mva (ca. 0,10 kr med) etter tredjepartsprisen (15 / 75 kr per million).
+  - Ingen belegg er fjernet og ingen krav nedgradert. Treffprosenten er 31 %.
+- **Samlet forbruk på Mistral i dag:** høyst ca. 0,6 kr inkl. mva. Det er et konservativt anslag, fordi tokenene i de to kontrollene med tidsavbrudd er ukjente.
+- **Rask vurdering med sjekklisten** (ikke den endelige vurderingen):
+  - Ingen forbudte påstander og ingen påfunnet innhold.
+  - Førerkort og ITIL står som «Mangler». Rådene er ærlige.
+  - «Windows og Microsoft 365» er delt i to: Windows er «Oppfylt» og Microsoft 365 «Mangler».
+  - «Kommunikasjonsevner» står som «Mangler», mens fasiten sier «Delvis oppfylt». Det er ett krav under fasiten, som er innenfor FR-8.
+  - Én liten feil i norsken: «It-brukerstøtte» skal være «IT-brukerstøtte».
+
+### Åpne punkter
+- Story 2.4 del B: full måling av Medium 3.5 (4 par × 3 kjøringer). Den er anslått til ca. 1,2–1,9 kr, med en øvre grense på ca. 10 kr inkl. mva. Den er over rammen på 2 kr og trenger ny godkjenning.
+- Vurder om det er riktig at «Windows og Microsoft 365» deles i to krav. Det har betydning for FR-8 og sjekklisten.
