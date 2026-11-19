@@ -2,6 +2,36 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+## Status 2026-11-19 (etter B2)
+
+- **B2 er gjort** (godkjent av Kevin): `testsett-rapporter/2026-11-19-2057-mistral-mistral-medium-2604.md`.
+  - 12 av 12 kjøringer ga status 200, uten feil og uten nye forsøk. Den lengste tok 6617 ms, og det høyeste antallet output-tokens var 908.
+  - Kostnaden var 1,0129 kr (0,0844 kr per gap-kjøring) etter tredjepartsprisen. Prisen er ikke eksakt bekreftet hos Mistral.
+  - **Medium 3.5 feiler SM-3 og SM-1 (gap):** par 1 og par 4 har krav over fasiten i alle tre kjøringene. SM-2, NFR-5, NFR-4 og kostnaden er i orden. Se avsnitt 2, 4 og 5 i vurderingen for runde 1.
+- **Etter regelen (§ 9) avgjør B3 nå valget:**
+  - Består OpenAI, velges OpenAI. Da gjelder tredjelandsoverføringen (USA) i del C.
+  - Feiler OpenAI på samme punkt (krav over fasiten), er det prompten. Da følger runde 2 (se «Hvis runde 2» under), og begge måles på nytt.
+- **B3, neste steg** (krever nøkkelen fra Sondre, Sondres bekreftelse av vilkårene og Kevins godkjenning). Først kontrollen (§ 5), så den fulle målingen (§ 6):
+
+  ```bash
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50 --par par-2-it-support --ganger 1
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50
+  ```
+
+  - Prisen er bekreftet på developers.openai.com (2026-11-19).
+  - Forventet kostnad er ca. 0,02 kr for kontrollen og ca. 0,3 kr for den fulle målingen. Øvre grense er ca. 1,6 kr uten mva for den fulle målingen, hvis alle de 12 kallene når taket på 8000 output-tokens.
+  - Koden og prompten skal ikke endres mellom B2 og B3. Da kan de to leverandørene sammenlignes på samme versjon (prompten fra `246e58b`).
+- **B4 (manuell test i appen, § 7):** gjenstår for begge. Det er 2 betalte kall per leverandør, og det krever godkjenning.
+
+### Hvis runde 2 (bare hvis OpenAI også har krav over fasiten)
+
+Et forslag som ikke er gjort. Det gjøres med `bmad-build` og en egen spec, og eksemplene skal ikke hentes fra testdataene. Tvilsregelen i steg 3 i prompten gjøres konkret for tre tilfeller:
+- En egenskap som bare står som brukerens egenvurdering (for eksempel i profilen), dokumenterer ikke kravet alene. Kravet er da høyst «delvis».
+- Oppgir CV-teksten et lavere nivå enn kravet, er kravet høyst «delvis».
+- Har kravet flere deler, og CV-teksten dokumenterer bare noen av dem, er kravet «delvis». Et punkt i annonsen som nevner flere ting, holdes samlet som ett krav.
+
+Etter en endring i prompten måles begge på nytt med alle 12 kjøringene (SM-1, SM-2), i en ny kopi av malen.
+
 ## Status 2026-11-19 (etter B1)
 
 - **Kontrollene (§ 5) er gjort for Mistral.** Large 4 (`mistral-large-4-0`) fikk tidsavbrudd etter 45 s to ganger, også med `low`, og er tatt ut av runde 1 (NFR-4). Medium 3.5 (`mistral-medium-2604`, `none`) besto på 4,8 s. Rapportene er committet som dokumentasjon etter Kevins beslutning, i stedet for å slettes. Se avsnitt 0 i [`vurdering-2-4-leverandorvalg-runde-1.md`](vurdering-2-4-leverandorvalg-runde-1.md).
