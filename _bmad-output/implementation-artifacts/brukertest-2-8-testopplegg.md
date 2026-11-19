@@ -2,7 +2,7 @@
 
 **Mål (SM-10):** Tre medstudenter utenfor gruppen bruker appen med sin egen CV-tekst og annonsen fra testpar 1. Etterpå svarer de på spørsmålet «Fant du en erfaring du ikke hadde tenkt på som relevant?». Testen er bestått når minst to svarer ja.
 
-**Varighet:** 10–15 minutter per person, fysisk eller på Teams med skjermdeling.
+**Varighet:** 10–15 minutter per person, fysisk eller på Teams med skjermdeling. Passer ingen av delene, se punkt 7 for testen hjemmefra.
 
 ## 1. Før testen
 
@@ -76,3 +76,36 @@ Ingen navn og ingen CV-tekst. Bruk T1, T2 og T3.
 - **Minst to ja:** SM-10 er oppfylt. Noter resultatet i sesjonsloggen og sett story 2.8 til `done`.
 - **Færre enn to ja:** Gruppen vurderer endringer i prompten eller visningen før epic 3. Noter vurderingen i sesjonsloggen.
 - I begge tilfeller: legg utfylt notatmal og observasjoner inn i sesjonsloggen (NFR-10). Lagre aldri navn eller CV-tekst i repoet.
+
+## 7. Variant: testen hjemmefra
+
+Brukes når testen ikke kan gjøres fysisk eller på Teams. Personen bruker appen på sin egen maskin og svarer på melding etterpå. Gruppen ser aldri CV-en.
+
+**Slik gjør dere det:**
+
+1. Send meldingen under, med lenken til appen og annonseteksten fra testpar 1.
+2. Vent på svarene. Purr én gang etter to dager hvis du ikke har hørt noe.
+3. Før svarene inn i notatmalen i punkt 5. Skriv «hjemmefra» i raden «Annet», og la «Står fast / nøler» bygge på svaret på spørsmål 3.
+
+**Ikke gjør dette:** be om å få CV-en tilsendt for å kjøre testen selv. Da tester dere analysen, ikke om appen hjelper personen, og gruppen sitter med personopplysninger den ikke trenger.
+
+**Melding til personen:**
+
+> Hei! Takk for at du vil teste appen vår. Det tar 10–15 minutter.
+>
+> 1. Åpne [lenke til appen].
+> 2. Bruk din egen CV, enten som fil eller innlimt tekst. Fjern gjerne fødselsnummer, adresse og bilde først. Appen viser hvordan.
+> 3. Lim inn annonsen under, trykk *Analyser* og les gjennom resultatet.
+> 4. Svar på spørsmålene nederst. Ikke send oss CV-en eller noe fra den.
+>
+> CV-teksten sendes til en språkmodell for analysen, men ingenting lagres, og alt er borte når du lukker fanen.
+>
+> **Annonsen:**
+> [lim inn teksten fra testdata/par-1-butikk-bank/annonse.txt]
+>
+> **Spørsmål:**
+> 1. Fant du en erfaring du ikke hadde tenkt på som relevant? (ja/nei) Hvis ja, hvilken type erfaring var det? Skriv bare typen, for eksempel «frivillig verv».
+> 2. Var det noe i resultatet du var uenig i, eller som var feil?
+> 3. Var det noe du stod fast på eller ikke forsto?
+> 4. Ville du brukt dette når du søker jobb? Hvorfor eller hvorfor ikke?
+> 5. Omtrent hvor lang tid tok analysen?
