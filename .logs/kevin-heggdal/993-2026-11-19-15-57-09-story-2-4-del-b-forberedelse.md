@@ -306,3 +306,37 @@ Kevin godkjente runde 2 med Mistral Medium 3.5 (`mistral-medium-2604`): høyst 1
 ### Åpne punkter
 - OpenAI `gpt-4.1-mini` måles i runde 2 på samme commit `28da462` når nøkkelen fra Sondre er kommet. Det krever Kevins godkjenning.
 - Mistral feiler SM-3 på par 1 i runde 2. Valget etter AD-11 tas når OpenAI er målt. Består heller ikke OpenAI, vurderes en runde 3 (en regel om at kravet vurderes slik det står, uten krav om samme bransje, og en strengere regel for nivå).
+
+## 2026-11-19 kl. 21:47 — Kevin Heggdal
+
+### Oppgave
+Sondre har svart:
+- OpenAI-nøkkelen kommer på DM til Kevin. Den skal bare brukes til testsettet i story 2.4, med `gpt-4.1-mini` og fiktive testdata, og ligge i `.env.local`, som aldri committes.
+- Sondre bekreftet regelen for sammensatte krav: ett krav, begge delene gir Oppfylt, én del gir Delvis oppfylt med belegg for delen og en forklaring på det som mangler, og ingen deler gir Mangler.
+
+Kevin ba om at regelen legges inn i gap-prompten med `bmad-build`, at fasitene kontrolleres uten å endres for å få modellen til å bestå, og at testene oppdateres. Det skulle ikke gjøres betalte kall, ingen push eller fletting, ingen endringer i Vercel og ikke noe arbeid på story 2.7.
+
+### Plan
+- Arbeidet fulgte `bmad-build` med den korte ruten («oneshot»): spec [spec-2-4-del-b-runde-3-sammensatte-krav.md](../../_bmad-output/implementation-artifacts/spec-2-4-del-b-runde-3-sammensatte-krav.md) og én gjennomgang med Blind Hunter. Konteksten for epic 2 var gyldig.
+- Alle de sammensatte kravene i de fire fasitene ble kontrollert mot regelen.
+
+### Resultat
+- **Fasitene:** konsistente med regelen for par 1 («Nøyaktig og pålitelig»), par 2 («Windows og Microsoft 365», «muntlig og skriftlig») og par 4 (fire sammensatte krav).
+  - **Motstrid ved en bokstavelig lesing:** i par 3 har «Erfaring med bokføring og avstemminger» og «Strukturert og nøyaktig» `D` uten at noen del er direkte dokumentert, fordi det finnes beslektet erfaring (FR-8). «Ingen deler = Mangler» ville gitt to krav under fasiten.
+  - **Løsning:** FR-8 går foran (beslektet erfaring gir Delvis oppfylt). Fasitene er ikke endret, og Sondre bør bekrefte lesingen.
+- **Prompten** (`gap.ts`):
+  - Steg 2: kravteksten skal ha alle delene slik de står i punktet.
+  - Steg 3: en egen blokk «Sammensatte krav» (alle delene, noen av delene, ingen deler med og uten beslektet erfaring) og alternativer for seg.
+  - Steg 5: forklaringen sier hvilken del som mangler.
+- **Testene:** mønstre for regelen, en negativ test for den gamle overskriften og en test av rekkefølgen fra steg 2 til steg 3.
+- **Gjennomgangen:** 11 funn. Åtte er rettet, og tre er avvist med begrunnelse i spec-en.
+- **Kontrollene:** lint, typecheck, `npm test` (806 av 806 i 48 filer), build og tørrkjøringen (12 av 12) er grønne. `.env.local` er ignorert og ikke sporet.
+- **Dokumentasjonen:** ny [vurdering-2-4-leverandorvalg-runde-3.md](../../_bmad-output/implementation-artifacts/vurdering-2-4-leverandorvalg-runde-3.md) og en statusdel for runde 3 i kjøreboka.
+- **Commit:** `1ad9821` (lokal). Ingen betalte kall.
+
+### Åpne punkter
+- Runde 3: begge måles på nytt på samme commit, fordi prompten er endret.
+  - Mistral Medium 3.5: 12 kall, ca. 1,1 kr.
+  - OpenAI `gpt-4.1-mini`: 1 kall i kontrollen og 12 i målingen, ca. 0,3 kr.
+  - Det krever Kevins godkjenning, og nøkkelen fra Sondre må ligge i `.env.local`.
+- Sondre bekrefter lesingen «ingen deler, men beslektet erfaring = Delvis oppfylt» (par 3).
