@@ -180,3 +180,54 @@ Kevin har kontrollert Mistral-konsollen og spør om B2 (12 kjøringer med Medium
 
 ### Åpne punkter
 - Prisen for Medium 3.5 kan bekreftes under Usage i konsollen. Kontrollen med 1673 inn og 783 ut skal gi ca. 0,0084 USD med tredjepartsprisen. Ellers kan den bekreftes etter B2 ut fra forbruket.
+
+## 2026-11-19 kl. 21:04 — Kevin Heggdal
+
+### Oppgave
+Kevin godkjente B2: full måling av Mistral Medium 3.5 (`mistral-medium-2604`) med 4 par × 3 kjøringer og høyst 12 betalte kall, uten nye forsøk. Målingen skulle bruke prisanslagene og dokumentere at prisen ikke er eksakt bekreftet. Etterpå skulle jeg arbeide selvstendig med story 2.4 innenfor grensene:
+- ingen flere betalte kall
+- ingen push, fletting eller PR
+- ingen endringer i Vercel, produksjonsvariablene eller nøklene
+- ikke starte story 2.7
+- ikke sette 2.4 til `done`
+
+Før målingen hadde Kevin sjekket Usage: 1 fakturerbart kall og 0,01 USD for `mistral-medium-2604`.
+
+### Plan
+- **Forutsetningene i kjøreboka (§ 1):**
+  - `git status` var tom.
+  - `npm test` ga 776 av 776 tester grønne i 48 filer.
+  - Tørrkjøringen med `--mock` ga 12 kjøringer uten feil, og rapporten ble ignorert av git.
+- **B2:** `npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --pris-inn 14.53 --pris-ut 72.65`, kjørt én gang.
+- **Vurderingen:** hver kjøring ble vurdert mot fasitene og sjekklisten, og resultatene ble ført inn i avsnitt 0, 2, 4, 5, 6 og 7 i vurderingen for runde 1.
+- **Forberedelsene til B3 og del C:** ny kjørebok for del C, med utgangspunktet i produksjonen kontrollert med et gratis `GET /api/status`. Koden og prompten ble bevisst ikke endret mellom B2 og B3, så leverandørene kan sammenlignes på samme versjon.
+
+### Resultat
+- **B2:** `testsett-rapporter/2026-11-19-2057-mistral-mistral-medium-2604.md`, commit for målingen `7231521`, prompten fra `246e58b`.
+  - 12 av 12 kjøringer ga status 200, med 0 feil og ingen nye forsøk.
+  - Varigheten var 3900–6617 ms, så NFR-4 er oppfylt.
+  - Output-tokens var 692–908, langt under taket på 8000.
+  - Kostnaden var 1,0129 kr totalt og 0,0844 kr per gap-kjøring, ca. 0,34 kr per full kjøring (× 4). Det er godt under 1 kr, men prisen er ikke eksakt bekreftet.
+  - Ingen belegg ble fjernet, og ingen krav ble nedgradert.
+- **Vurderingen av Medium 3.5 i runde 1:**
+  - SM-2 og NFR-5 er `J`: ingen forbudte påstander og bare små feil i språket.
+  - **SM-3 og SM-1 (gap) er `N`:**
+    - Par 1: «Gode digitale ferdigheter» (Office «grunnleggende») og «Nøyaktig og pålitelig» (egenvurdering) er `O` mot `D` i fasiten i alle tre kjøringene.
+    - Par 4: «Selvstendig og ansvarsbevisst» er `O` mot `D` i alle tre.
+    - Par 3 er bestått (ett krav under fasiten).
+    - Par 2 avklares: «Windows og Microsoft 365» ble delt i Windows `O` og Microsoft 365 `M`.
+  - **Etter regelen avgjør B3 valget:** består OpenAI, velges OpenAI. Feiler OpenAI på samme punkt, rettes prompten i runde 2.
+- **Commits** (lokale):
+  - `a8fd990`: rapporten og vurderingen.
+  - `6f53219`: kjøreboka for del B (status, kommandoene for B3, forslaget til runde 2) og den nye kjøreboka [kjorebok-2-4-del-c.md](../../_bmad-output/implementation-artifacts/kjorebok-2-4-del-c.md).
+- **Produksjonen i dag:** `GET /api/status` gir `demo` med Mistral AI og Frankrike, i regionen `arn1`. Ingenting er endret.
+- **issues.md:** fire punkter er lukket (kursen, Large 4, B2 og kontrollen av konsollen), og fire nye er lagt til.
+
+### Åpne punkter
+- B3: OpenAI `gpt-4.1-mini` trenger nøkkelen fra Sondre, Sondres bekreftelse av vilkårene og Kevins godkjenning. Forventet kostnad er ca. 0,3 kr.
+- Mistral Medium 3.5 feiler SM-3 i runde 1. B3 avgjør valget, eventuelt via runde 2.
+- Kevin og Sondre avgjør hvordan et krav som modellen deler i to, leses mot fasiten (par 2).
+- Prisen for Medium 3.5 er ikke eksakt bekreftet. Sammenlign Usage etter B2 med ca. 0,10 USD.
+- «It-brukerstøtte»: forkortelser i stillingen. Vurder en retting etter runde 1.
+- B4 (manuell test i appen) og del C (kjøreboka for del C) gjenstår.
+
