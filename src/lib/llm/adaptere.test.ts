@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { gapSvar } from "@/lib/kontrakt/gap";
 
-import { gapModellSkjema } from "./felles";
+import { gapModellSkjema, MAKS_UTDATA_TOKENS } from "./felles";
 import { lagEkteKlient } from "./klient";
 import { GAP_INSTRUKS } from "./prompter/gap";
 
@@ -47,7 +47,7 @@ afterEach(() => {
 });
 
 describe("adapterne", () => {
-  it("AD-3: Mistral er standard, med generateText, Output.object, maxRetries 0, temperatur og strikt skjema", async () => {
+  it("AD-3: Mistral er standard, med generateText, Output.object, maxRetries 0, temperatur, maxOutputTokens og strikt skjema", async () => {
     svarMed(SVAR);
     const signal = new AbortController().signal;
     await kall({ MISTRAL_API_KEY: "x" }, signal);
@@ -61,6 +61,8 @@ describe("adapterne", () => {
     expect(valg.maxRetries).toBe(0);
     expect(valg.temperature).toBeGreaterThanOrEqual(0);
     expect(valg.temperature).toBeLessThanOrEqual(0.3);
+    expect(valg.maxOutputTokens).toBe(8000);
+    expect(MAKS_UTDATA_TOKENS).toBe(8000);
     expect(valg.abortSignal).toBe(signal);
     expect(valg.providerOptions).toEqual({ mistral: { strictJsonSchema: true } });
     expect(valg.model).toMatchObject({
@@ -80,6 +82,7 @@ describe("adapterne", () => {
     });
     expect(valg.providerOptions).toEqual({ openai: { strictJsonSchema: true } });
     expect(valg.maxRetries).toBe(0);
+    expect(valg.maxOutputTokens).toBe(MAKS_UTDATA_TOKENS);
     expect(valg.instructions).toBe(GAP_INSTRUKS);
   });
 

@@ -65,3 +65,6 @@ Thumbs.db
 *.[dD][oO][cC][xX]
 !testdata/**/*.[pP][dD][fF]
 !testdata/**/*.[dD][oO][cC][xX]
+
+# Tørrkjøringer av testsettet er ikke målinger (story 2.4)
+testsett-rapporter/*-mock.md
