@@ -2,6 +2,21 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+## Status 2026-11-19 (leverandøren er valgt)
+
+- **Valget (Kevin, bekreftet av Sondre, 2026-11-19): OpenAI `gpt-4.1-mini` med temperatur 0, etter AD-11.** Mistral består ikke (Large 4 feilet NFR-4, Medium 3.5 feilet SM-3). Begrunnelse og vilkår med kilder: avsnitt 5 og 7 i [`vurdering-2-4-kontroll-temperatur-0.md`](vurdering-2-4-kontroll-temperatur-0.md).
+- **SM-1 er IKKE bestått (9 av 12 kjøringer).** I par 3 vurderes to krav strengere enn fasiten. Det er et åpent punkt som må avklares og løses før innleveringen. Avsnitt 6 i vurderingen har en analyse av om det er fasiten eller modellen, og tre mulige løsninger. Fasiten er ikke endret.
+- **Koden:** `STANDARD_MODELL.openai = "gpt-4.1-mini"` og `TEMPERATUR = 0` er låst med tester (`374495d`). `LLM_LEVERANDOR` har fortsatt Mistral som standard i koden (AD-3). Produksjonen får `LLM_LEVERANDOR=openai` i del C.
+- **Etterarbeidet (§ 10):**
+  - [x] Rapportene og vurderingene er committet (rundene 1–5 og kontrollen med temperatur 0).
+  - [x] Resultatet, modellen (`gpt-4.1-mini`, versjonen fra leverandøren `gpt-4.1-mini-2025-04-14`) og commiten (`ee49c2b`) er notert i sesjonsloggen.
+  - [x] PRD §10.1 er merket som valgt, med lenke og de åpne punktene.
+  - [ ] Forslaget om `MAKS_UTDATA_TOKENS` (8000 → for eksempel 2500, høyeste med OpenAI var 616) venter på Kevins godkjenning.
+  - [ ] B4, den manuelle testen i appen (§ 7, 2 betalte kall med OpenAI), venter på Kevins godkjenning.
+  - [ ] Nøklene fra målingen slettes eller roteres (Kevin for Mistral, Sondre for OpenAI). OpenAI-nøkkelen skal bare brukes til testsettet. Produksjonen får en egen nøkkel i del C.
+  - [ ] Kevin og Sondre signerer vurderingen.
+- 2-4 står som `in-progress` til SM-1 er løst og del C er gjort.
+
 ## Status 2026-11-19 (kontroll med temperatur 0, målingene avsluttet)
 
 - **Kontrollen** (godkjent av Kevin): bare OpenAI, 12 kjøringer, prompten fra runde 5, `TEMPERATUR` 0 (`ee49c2b`).

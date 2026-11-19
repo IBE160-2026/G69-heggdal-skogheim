@@ -2,6 +2,10 @@
 
 > **Forhåndsundersøkt 2026-11-19 i offentlige kilder. Ingenting her er bekreftet.** Hver opplysning **må bekreftes i kontoen** hos leverandøren før målingen, og igjen før produksjonen (del C). Skriv inn lenke og dato i avsnitt 1 og 0 i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md). Ingen måleresultater står her.
 
+## Valget 2026-11-19
+
+OpenAI `gpt-4.1-mini` er valgt (Kevin og Sondre, AD-11). Vilkårene for OpenAI med offisielle kilder og det Sondre må bekrefte (deling av data, DPA, behandling utenfor EØS), står i avsnitt 7 i [`vurdering-2-4-kontroll-temperatur-0.md`](vurdering-2-4-kontroll-temperatur-0.md).
+
 ## Kontrollert 2026-11-19 (B1)
 
 Kildene under ble åpnet og lest 2026-11-19. Resultatet er ført inn i avsnitt 1 i [`vurdering-2-4-leverandorvalg-runde-1.md`](vurdering-2-4-leverandorvalg-runde-1.md), som gjelder foran tabellene lenger ned der de er uenige.
