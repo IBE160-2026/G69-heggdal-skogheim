@@ -157,3 +157,26 @@ Planen for resten av story 2.4 og B1, de gratis forberedelsene til målingen i r
   
   Deretter kan B2 godkjennes.
 - Sondre må bekrefte OpenAI-vilkårene i nettleser (DPA-en, kreditten og at deling er av) og levere nøkkelen før B3.
+
+## 2026-11-19 kl. 20:55 — Kevin Heggdal
+
+### Oppgave
+Kevin har kontrollert Mistral-konsollen og spør om B2 (12 kjøringer med Medium 3.5) trygt kan kjøres innenfor grensen på 2 USD per måned, eller om noe annet bør gjøres først. Det skulle ikke gjøres betalte kall, og ingen push eller fletting.
+
+### Plan
+- Kevins bekreftelser ble ført inn i avsnitt 1 i vurderingen for runde 1.
+- Det verste tilfellet for B2 ble regnet ut mot grensen og forbruket så langt i dag.
+
+### Resultat
+- **Bekreftet av Kevin 2026-11-19:**
+  - Pay-as-you-go er aktivt, og kreditten er 10 USD.
+  - Automatisk påfylling er av, og organisasjonen har en grense på 2 USD per måned for all bruk.
+  - API-trening er av, og Labs-modeller er deaktivert.
+  - Konsollen viser ingen pris for Medium 3.5.
+- **Commit:** «docs: Kevins kontroll av Mistral-konsollen i runde 1».
+- **Forbruket i dag:** høyst ca. 0,05 USD (de to kontrollene av Large 4 med tidsavbrudd, diagnosekallet og kontrollen av Medium 3.5).
+- **B2 med tredjepartsprisen:** forventet ca. 0,12 USD og høyst ca. 0,77 USD (12 × 2500 inn og 8000 ut). Til sammen blir det høyst ca. 0,82 USD, godt under 2 USD.
+- **Prisen:** grensen holder selv om den faktiske prisen er inntil ca. 2,4 ganger tredjepartsprisen. Den usikre prisen påvirker derfor bare om kriteriet om 1 kr per kjøring er oppfylt, ikke om kjøringen er trygg.
+
+### Åpne punkter
+- Prisen for Medium 3.5 kan bekreftes under Usage i konsollen. Kontrollen med 1673 inn og 783 ut skal gi ca. 0,0084 USD med tredjepartsprisen. Ellers kan den bekreftes etter B2 ut fra forbruket.
