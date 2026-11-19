@@ -2,6 +2,20 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+## Status 2026-11-19 (etter B1)
+
+- **Kontrollene (§ 5) er gjort for Mistral.** Large 4 (`mistral-large-4-0`) fikk tidsavbrudd etter 45 s to ganger, også med `low`, og er tatt ut av runde 1 (NFR-4). Medium 3.5 (`mistral-medium-2604`, `none`) besto på 4,8 s. Rapportene er committet som dokumentasjon etter Kevins beslutning, i stedet for å slettes. Se avsnitt 0 i [`vurdering-2-4-leverandorvalg-runde-1.md`](vurdering-2-4-leverandorvalg-runde-1.md).
+- **Kopien for runde 1:** [`vurdering-2-4-leverandorvalg-runde-1.md`](vurdering-2-4-leverandorvalg-runde-1.md). Avsnitt 0 og 1 er fylt ut med kilder og dato, og feltene merket **(bekreftes)** gjenstår.
+- **Kursen:** 9,6866 kr per USD (Norges Bank, 2026-11-19).
+- **B2, neste steg (krever Kevins godkjenning):** full måling av Medium 3.5 når prisen er bekreftet i konsollen. Med tredjepartsprisen blir kommandoen:
+
+  ```bash
+  npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --pris-inn 14.53 --pris-ut 72.65
+  ```
+
+  Bytt prisene hvis konsollen viser noe annet. 12 kall, forventet ca. 1,0–1,4 kr uten mva. Øvre grense er ca. 7,4 kr uten mva (ca. 9,3 kr med) hvis alle kallene når taket på 8000 output-tokens, regnet med høyst 2500 input-tokens per kall.
+- **B3 (OpenAI):** venter på nøkkelen fra Sondre (`OPENAI_API_KEY` er tom i `.env.local`) og på Sondres bekreftelse av vilkårene. Prisen er bekreftet på developers.openai.com: 3,87 / 15,50 kr.
+
 Kjøreboka dekker AK 2 i story 2.4 og AD-11: testsettet kjøres mot Mistral og OpenAI, vurderes med sjekklisten, og leverandøren velges. Del B er ikke ferdig før stegene her er gjort. Sett ikke 2-4 til `done` i `sprint-status.yaml`. Del C (produksjonen) gjenstår uansett.
 
 ## Hvem gjør hva

@@ -2,6 +2,20 @@
 
 > **Forhåndsundersøkt 2026-11-19 i offentlige kilder. Ingenting her er bekreftet.** Hver opplysning **må bekreftes i kontoen** hos leverandøren før målingen, og igjen før produksjonen (del C). Skriv inn lenke og dato i avsnitt 1 og 0 i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md). Ingen måleresultater står her.
 
+## Kontrollert 2026-11-19 (B1)
+
+Kildene under ble åpnet og lest 2026-11-19. Resultatet er ført inn i avsnitt 1 i [`vurdering-2-4-leverandorvalg-runde-1.md`](vurdering-2-4-leverandorvalg-runde-1.md), som gjelder foran tabellene lenger ned der de er uenige.
+
+- **Mistral, trening:** for pay-as-you-go *kan* API-data brukes til trening, med reservasjon under Admin panel → Privacy → «Data usage for improving our services». Bryterne for Vibe og API er separate, og reservasjonen gjelder ikke Labs- og Public Preview-modeller ([help 323757](https://help.mistral.ai/en/articles/323757-do-you-use-my-user-data-to-train-your-artificial-intelligence-models), [help 455207](https://help.mistral.ai/en/articles/455207-can-i-opt-out-of-my-input-or-output-data-being-used-for-training), oppdatert 2026-11-18). Det er strengere enn tabellen under («brukes ikke til trening»).
+- **Mistral, DPA:** [legal.mistral.ai/terms/data-processing-addendum](https://legal.mistral.ai/terms/data-processing-addendum), gjeldende fra 2026-07-27. Den er en del av avtalen og trenger ingen egen signatur. `mistral.ai/terms` sender videre til `legal.mistral.ai/terms`.
+- **Mistral, land:** data ligger i EØS som standard ([help 347629](https://help.mistral.ai/en/articles/347629-where-do-you-store-my-data-or-my-organization-s-data)). Appen bruker standardendepunktet `api.mistral.ai`.
+- **Mistral, pris for Medium 3.5:** fortsatt ikke på noen offentlig side fra Mistral. Den må bekreftes i konsollen.
+- **OpenAI, trening:** API-data brukes ikke til trening som standard ([developers.openai.com: your data](https://developers.openai.com/api/docs/guides/your-data)). Logger for misbruk lagres i opptil 30 dager.
+- **OpenAI, DPA:** openai.com svarer 403 på automatiske oppslag, så siden er ikke lest direkte. Ifølge nettsøk er DPA-en oppdatert 2025-12-01 og gjeldende fra 2026-01-01, og den inngås via et skjema. Sondre må bekrefte det i nettleser.
+- **OpenAI, land:** USA. Behandling i EU krever godkjenning via salg ([docs: data residency](https://developers.openai.com/api/docs/guides/data-residency)).
+- **OpenAI, pris for `gpt-4.1-mini`:** 0,40 USD inn, 0,10 USD cached input og 1,60 USD ut per million tokens ([developers.openai.com: pricing](https://developers.openai.com/api/docs/pricing)). Det bekrefter tallet under, som var oppgitt etter hukommelsen.
+- **Kurs:** 9,6866 kr per USD og 10,6475 kr per EUR (Norges Bank, 2026-11-19).
+
 Kriteriene kommer fra PRD §6 (vilkår først), AD-11 (ingen trening på API-data, databehandleravtale, kreditt uten automatisk påfylling) og AK 3 i story 2.4.
 
 ## Budsjettet (beslutning, Kevin og Sondre 2026-11-19)
