@@ -11,10 +11,11 @@
 - [ ] 2026-11-19 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Story 2.4: standardmodell for OpenAI bør bli gpt-4.1-mini (gpt-5-mini krever verifisert organisasjon og ignorerer temperatur)
 - [ ] 2026-11-19 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Story 2.4: juster prompten (bare kvalifikasjoner som krav, ingen duplikater, ingen listetegn først i belegg, stilling i vanlig skrift) og mål mot fasitene
 - [ ] 2026-11-19 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Lag Mistral-nøkkel (betalt plan) til målingen i 2.4
-- [ ] 2026-11-19 [story-2-5-forstaaelige-feil](981-2026-11-19-15-45-54-story-2-5-forstaaelige-feil.md) — Manuell test av 2.5 før fletting: LLM_MODELL=finnes-ikke gir melding og Prøv igjen, Prøv med eksempel virker; sett gpt-4.1-mini tilbake
 - [ ] 2026-11-19 [story-2-5-forstaaelige-feil](981-2026-11-19-15-45-54-story-2-5-forstaaelige-feil.md) — Story 2.4/produksjon: oppbrukt kreditt gir Prøv igjen uten henvisning til Prøv med eksempel (deferred-work.md)
 
 ## Løst
+
+- [x] 2026-11-19 [story-2-5-forstaaelige-feil](981-2026-11-19-15-45-54-story-2-5-forstaaelige-feil.md) — Manuell test av 2.5 før fletting: LLM_MODELL=finnes-ikke gir melding og Prøv igjen, Prøv med eksempel virker; sett gpt-4.1-mini tilbake (løst 2026-11-19: Sondre testet, PR #16 flettet)
 
 - [x] 2026-11-18 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Manuell test av 2.3 med API-nøkkel (par 2 på bokmål innen 30 s, par 1 med annonse-med-instruks.txt uten AFR/bankerfaring), senest i 2.4 (løst 2026-11-19: bestått med OpenAI gpt-4.1-mini, se loggen)
 

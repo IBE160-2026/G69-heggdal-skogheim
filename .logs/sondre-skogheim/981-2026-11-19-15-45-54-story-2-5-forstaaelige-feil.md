@@ -23,7 +23,7 @@ Bygge story 2.5 med bmad-build: norske feilmeldinger fra én tabell, *Prøv igje
 - **Kontrollene:** lint, typecheck, 732 tester og build er grønne.
 - **Gjennomgangen:** 12 funn. 2 er rettet, 1 er utsatt og 9 er avvist.
 - **Sprint-status:** 2-5 står som `review`.
+- **Etterpå:** Sondre testet med `LLM_MODELL=finnes-ikke` og fikk meldingen og *Prøv igjen*. PR #16 er flettet, og 2-5 står som `done`.
 
 ### Åpne punkter
 - Story 2.4 og produksjon: når kreditten er brukt opp, får brukeren *Prøv igjen*, som ikke hjelper, og ingen henvisning til *Prøv med eksempel* (`deferred-work.md`).
-- Manuell test før fletting: sett `LLM_MODELL=finnes-ikke` i `.env.local`. *Analyser* med par 2 skal vise meldingen og *Prøv igjen*, og *Prøv med eksempel* skal virke etterpå. Sett `LLM_MODELL=gpt-4.1-mini` tilbake etterpå.

@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 11-03-2026 14:28
-last_updated: 11-19-2026 15:45
+last_updated: 11-19-2026 15:51
 project: G69-heggdal-skogheim
 project_key: NOKEY
 tracking_system: file-system
@@ -49,7 +49,7 @@ development_status:
   2-2-prov-med-eksempel-viser-gap-analysen: done
   2-3-ekte-gap-analyse-med-spraakmodellen: done
   2-4-velge-leverandor-ved-maaling: in-progress
-  2-5-forstaaelige-feil-uten-tap-av-data: review
+  2-5-forstaaelige-feil-uten-tap-av-data: done
   2-6-redigere-kopiere-og-generere-gap-analysen-paa-nytt: backlog
   2-7-endre-cv-tekst-gaa-tilbake-og-starte-paa-nytt: backlog
   2-8-brukertest-med-medstudenter: backlog
