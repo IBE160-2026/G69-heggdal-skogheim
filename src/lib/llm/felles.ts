@@ -14,8 +14,10 @@ import { kategori, nokkelordSvar } from "@/lib/kontrakt/gap";
 import type { GapInndata, LlmSvar } from "./klient";
 import { GAP_INSTRUKS, gapBrukermelding } from "./prompter/gap";
 
-// AD-3: lav temperatur, så svaret blir stabilt. Grensen er 0–0,3.
-export const TEMPERATUR = 0.2;
+// AD-3: lav temperatur, så svaret blir stabilt. Grensen er 0–0,3. Satt til 0 for
+// kontrollen av stabilitet med OpenAI etter runde 5 i story 2.4 (Kevin, 2026-11-19).
+// Var 0,2 i rundene 1–5. Den endelige verdien avgjøres etter kontrollen.
+export const TEMPERATUR = 0;
 
 // Taket på utdata, så et svar som løper løpsk, ikke faktureres til tidsgrensen.
 // Resonneringsmodeller teller resonnering som utdata, og et avkuttet svar gir
