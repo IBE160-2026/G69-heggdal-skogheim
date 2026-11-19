@@ -72,3 +72,23 @@ Vi fortsatte med story 2.4 del B etter pausen. Begge kontrollene med Mistral Lar
 
 ### Åpne punkter
 - Story 2.4 del B: Large 4 feiler NFR-4 (over 45 s mot kravet på 30 s). Vurder kontrollen av Medium 3.5 (`mistral-medium-2604`, resonnering `none`) som neste betalte kall. Den trenger godkjenning fra Kevin.
+
+## 2026-11-19 kl. 20:35 — Kevin Heggdal
+
+### Oppgave
+Før en eventuell kontroll av Mistral Medium 3.5 skulle det sjekkes at modellen er tilgjengelig, og om prisen kan bekreftes hos Mistral. I tillegg skulle forventet kostnad og en øvre grense for én kjøring anslås. Det skulle ikke gjøres noen betalte kall, ingen push eller fletting og ikke noe arbeid på story 2.5 eller 2.6.
+
+### Plan
+- Gratis kall `GET /v1/models/{id}` for `mistral-medium-2604` og `mistral-medium-latest` med nøkkelen fra `.env.local`. Nøkkelen ble ikke vist.
+- Lest Mistrals modellside for Medium 3.5, docs: models, mistral.ai/pricing og docs.mistral.ai/platform/pricing (404), og gjort et nettsøk.
+- Kostnaden ble anslått ut fra størrelsen på prompten (`gap.ts`, ca. 4,8k tegn), par 2 (ca. 1,5k tegn) og demosvaret (ca. 2,3k tegn).
+
+### Resultat
+- **Tilgjengelig:** `mistral-medium-2604` gir HTTP 200 med `deprecation: null` og `reasoning: true`, og konteksten er 262 144 tokens. `mistral-medium-latest`, `mistral-medium-3-5` og flere andre navn er aliaser for den.
+- **Utfasingen:** dokumentasjonen sier fortsatt at modellen er utfaset fra 2026-10-31, med Large 4 som erstatning. API-et viser ingen utfasing.
+- **Prisen er ikke bekreftet hos Mistral:** ingen offentlig side fra Mistral viser prisen for Medium 3.5. Tredjeparter oppgir 1,50 / 7,50 USD per million tokens. OpenRouter (vertskap i EU) oppgir 1,65 / 8,25 USD.
+- **Kostnaden for én kjøring av par 2:** forventet ca. 0,15 kr og høyst ca. 0,8 kr inkl. mva. Grensen gjelder når output-taket på 8000 tokens nås og kursen er 10 kr per USD. Den holder under 1 kr så lenge den faktiske prisen ikke er mer enn ca. 20 % høyere enn tredjepartsprisen.
+- Det ble ikke gjort noen betalte kall.
+
+### Åpne punkter
+- Prisen for Medium 3.5 står allerede åpen i issues.md. Den kan bekreftes i Mistral-konsollen eller ved å sammenligne faktisk forbruk etter kontrollen.
