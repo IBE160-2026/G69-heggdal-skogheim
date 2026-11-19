@@ -2,6 +2,19 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+## Status 2026-11-19 (runde 5 målt)
+
+- **Begge er målt på commit `2e92de3`** med prompten fra `271edb4`:
+  - **OpenAI:** `2026-11-19-225200-openai-gpt-4.1-mini.md`, 12 av 12, 0,2223 kr, lengste 10389 ms.
+  - **Mistral:** `2026-11-19-225329-mistral-mistral-medium-2604.md`, 12 av 12, 1,2293 kr, lengste 6383 ms.
+  - **Samlet:** 1,45 kr. Ingen feil og ingen nye forsøk.
+- **SM-2 er i orden for begge.** Regelen om CV-ens egne ord virket.
+- **Ingen består SM-3:**
+  - **OpenAI (10 av 12):** «brukerstøtte» er `O` i par 2 K1, og par 3 K3 har to krav under fasiten.
+  - **Mistral (8 av 12):** par 4 «Selvstendig» er `O` i alle tre, og par 3 K2 har to krav under fasiten.
+- **Over rundene 3–5:** OpenAI består 32 av 36 kjøringer med 3 krav over fasiten, Mistral 24 av 36 med 9 krav over fasiten.
+- Se [`vurdering-2-4-leverandorvalg-runde-5.md`](vurdering-2-4-leverandorvalg-runde-5.md). Valget er ikke tatt.
+
 ## Status 2026-11-19 (runde 5 forberedt)
 
 - **Beslutning (Kevin og Sondre, 2026-11-19):** forklaringen i runde 4, par 2 K1 hos OpenAI («Erfaringen er med brukerstøtte i studiet») bryter SM-2 og FR-27. OpenAI er den foreløpige favoritten.
