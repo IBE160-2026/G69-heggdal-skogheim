@@ -454,3 +454,42 @@ Kevin godkjente runde 4: 12 betalte kall mot OpenAI `gpt-4.1-mini` og 12 mot Mis
 ### Åpne punkter
 - Kevin og Sondre avgjør SM-2 for OpenAI i par 2 K1, velger leverandør etter AD-11 og signerer vurderingen for runde 4.
 - Sondre bekrefter OpenAI-vilkårene (DPA-en i nettleser, at deling er av, kreditten) før del C.
+
+## 2026-11-19 kl. 22:50 — Kevin Heggdal
+
+### Oppgave
+Kevin og Sondre er enige om at OpenAI `gpt-4.1-mini` er den foreløpige favoritten, men at formuleringen om brukerstøtte i runde 4 bryter SM-2 og FR-27, fordi CV-en dokumenterer veiledning. Sondre foreslo en generell regel om at erfaring beskrives med CV-ens egne ord.
+
+Kevin ba om fem ting:
+- finne nøyaktig hvor formuleringen stod
+- rette gap-prompten med en generell regel uten eksempler fra testsettet
+- følge `bmad-build` med gratis tester, gjennomgang og dokumentasjon
+- forberede runde 5 med begge leverandørene på samme prompt og commit
+- gi et kostnadsestimat
+
+Det skulle ikke gjøres betalte kall, ingen push eller fletting og ikke noe arbeid på del C eller story 2.7.
+
+### Plan
+- **Formuleringen:** funnet i rapporten fra runde 4 med `grep`.
+- **`bmad-build` med den korte ruten («oneshot»):** spec [spec-2-4-del-b-runde-5-cv-ens-egne-ord.md](../../_bmad-output/implementation-artifacts/spec-2-4-del-b-runde-5-cv-ens-egne-ord.md) og én gjennomgang med Blind Hunter.
+
+### Resultat
+- **Hvor formuleringen stod:** i feltet `forklaring`, ikke i kravteksten eller beleggene. Det var OpenAI, par 2, kjøring 1, kravet «Erfaring med brukerstøtte eller kundeservice» (kategori «delvis»), på linje 198 i `testsett-rapporter/2026-11-19-223737-openai-gpt-4.1-mini.md`. Den nøyaktige teksten er «Erfaringen er med brukerstøtte i studiet, men ikke spesifikt i kundeservice.»
+- **Samme type feil:** «CV-en dokumenterer god forståelse av Windows» i alle tre kjøringene av par 2 hos OpenAI. CV-en har bare «Operativsystemer: Windows».
+- **Prompten:** en ny regel under «Ærlighet» med underpunkter.
+  - Det brukeren har, beskrives med CV-tekstens egne ord i `forklaring` og `raad`.
+  - Annonsens betegnelser og nivåord brukes ikke om brukeren hvis CV-en ikke bruker dem.
+  - Beslektet erfaring beskrives som det CV-en viser.
+  - En egenskap kan nevnes sammen med den konkrete erfaringen som viser den.
+  - Et nivå som ikke er oppgitt, beskrives som «ikke oppgitt».
+  - Det som mangler, kan nevnes med annonsens ord, og CV-er på andre språk kan oversettes.
+  - Steg 5 og 6 viser til regelen.
+- **Gjennomgangen:** 11 funn, og alle er rettet. Det viktigste var at regelen ikke skal kollidere med regelen i steg 3 om at konkret erfaring kan dokumentere en egenskap.
+- **Kontrollene:** lint, typecheck, `npm test` (835 av 835 i 48 filer), build og begge tørrkjøringene er grønne.
+- **Dokumentasjonen:**
+  - ny [vurdering-2-4-leverandorvalg-runde-5.md](../../_bmad-output/implementation-artifacts/vurdering-2-4-leverandorvalg-runde-5.md), som sier hvordan regelen vurderes: et brudd gir `N` under SM-2, og det gjelder begge leverandørene
+  - en statusdel i kjøreboka med kommandoene og kostnadsanslaget
+- **Commit:** `271edb4` (lokal). Ingen betalte kall.
+
+### Åpne punkter
+- Runde 5: OpenAI (12 kall, ca. 0,22 kr) og Mistral (12 kall, ca. 1,20 kr) måles på samme commit etter Kevins godkjenning. Det blir ca. 1,4 kr til sammen.
