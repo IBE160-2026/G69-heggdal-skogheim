@@ -2,6 +2,20 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+## Status 2026-11-19 (runde 2, Mistral målt)
+
+- **Mistral Medium 3.5 i runde 2** (godkjent av Kevin): `testsett-rapporter/2026-11-19-2129-mistral-mistral-medium-2604.md`, commit `28da462`.
+  - 12 av 12 kjøringer ga status 200, med 0 feil og ingen nye forsøk.
+  - Den lengste tok 6038 ms, og det høyeste antallet output-tokens var 978.
+  - Kostnaden var 1,1352 kr (0,0946 kr per gap-kjøring), med prisen som ikke er eksakt bekreftet.
+- **Resultatet:**
+  - Tilfellene av krav over fasiten gikk ned fra 9 til 2, og par 3 og par 4 er bestått.
+  - **SM-3 feiler fortsatt på par 1:** «Gode digitale ferdigheter» er `O` i K1 og K3.
+  - Par 1 «Kundeorientert» er nå for strengt vurdert (`D` mot `O`). Modellen krever bankerfaring.
+  - Par 2 er delt i K2 og K3.
+  - Se sammenligningen øverst i [`vurdering-2-4-leverandorvalg-runde-2.md`](vurdering-2-4-leverandorvalg-runde-2.md).
+- **Neste steg:** OpenAI `gpt-4.1-mini` måles på samme commit `28da462` med kommandoene under. Koden og prompten endres ikke før det er gjort. Da kan begge måles på samme grunnlag, og AD-11 kan brukes på runde 2.
+
 ## Status 2026-11-19 (runde 2 forberedt)
 
 - **Beslutning (Kevin, 2026-11-19):** prompten rettes etter runde 1, før OpenAI er målt. Begge leverandørene måles i runde 2 på samme prompt, og valget tas etter AD-11 på runde 2. Det erstatter planen under («B3 avgjør nå valget» og «Hvis runde 2»). Grunnlaget er SM-2: feiler én kjøring, rettes prompten, og alt kjøres på nytt. Runde 1 og rapportene fra den står uendret.
