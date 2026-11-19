@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -8,7 +9,7 @@ import { type GapInndata, lagEkteKlient, type LlmKlient } from "@/lib/llm/klient
 import { mockKlient } from "@/lib/llm/mock";
 import { nullstill } from "@/lib/pipeline/grense";
 
-import { genererEnv, kjentePar, kjorTestsett, main, rapportNavn } from "../kjor-testsett";
+import { genererEnv, kjentePar, kjorTestsett, lesGit, main, RAPPORTMAPPE, rapportNavn } from "../kjor-testsett";
 import type { Valg } from "./argumenter";
 
 // main får en falsk ekte klient, så ingen test når leverandøren.
@@ -58,7 +59,7 @@ function falskKlient() {
         throw new Error("nettverk nede");
       }
       const { svar } = await mockKlient.analyseGap(inndata);
-      return { svar, inputTokens: 1000, outputTokens: 400 };
+      return { svar, inputTokens: 1000, outputTokens: 400, modellversjon: "gpt-5-mini-2025-08-07" };
     }),
   };
   return { klient, kall };
@@ -88,6 +89,7 @@ describe("kjorTestsett", () => {
     expect(forste.inputTokens).toBe(1000);
     expect(forste.outputTokens).toBe(400);
     expect(forste.analyse?.treffprosent).toBe(22);
+    expect(forste.modellversjon).toBe("gpt-5-mini-2025-08-07");
   });
 
   it("AD-11: en kjøring som feiler, står med feilkode, og de andre fortsetter", async () => {
@@ -96,7 +98,15 @@ describe("kjorTestsett", () => {
 
     const [en, to, tre] = data.par[0].kjoringer;
     expect(en.feilkode).toBeNull();
-    expect(to).toMatchObject({ status: 502, feilkode: "llm_feil", inputTokens: null, analyse: null });
+    expect(to).toMatchObject({
+      status: 502,
+      feilkode: "llm_feil",
+      inputTokens: null,
+      modellversjon: null,
+      analyse: null,
+    });
+    expect(en.modellversjon).toBe("gpt-5-mini-2025-08-07");
+    expect(rapport).toContain("- **Status:** 502 (llm_feil)\n- **Modellversjon:** ukjent");
     expect(tre.feilkode).toBeNull();
     expect(rapport).toContain("- **Status:** 502 (llm_feil)");
     expect(rapport).toContain("- **Kjøringer:** 3, **feil:** 1 (kjøring 2: llm_feil)");
@@ -104,7 +114,12 @@ describe("kjorTestsett", () => {
 
   it("AD-4: ugyldig svar gir ugyldig_svar med tokens", async () => {
     const klient: LlmKlient = {
-      analyseGap: async () => ({ svar: undefined, inputTokens: 900, outputTokens: 8000 }),
+      analyseGap: async () => ({
+        svar: undefined,
+        inputTokens: 900,
+        outputTokens: 8000,
+        modellversjon: "mistral-medium-2508",
+      }),
     };
     const { data } = await kjorTestsett({ ...VALG, par: "par-2-it-support", ganger: 1 }, klient, {
       git: GIT,
@@ -115,6 +130,7 @@ describe("kjorTestsett", () => {
       feilkode: "ugyldig_svar",
       inputTokens: 900,
       outputTokens: 8000,
+      modellversjon: "mistral-medium-2508",
     });
   });
 
@@ -145,7 +161,24 @@ describe("kjorTestsett", () => {
     expect(data.par.flatMap((p) => p.kjoringer)).toHaveLength(12);
     expect(rapport).toContain("- **Kjøringer:** 12, **feil:** 0");
     expect(rapport).toContain("(tørrkjøring med mock)");
+    expect(data.par.flatMap((p) => p.kjoringer).every((k) => k.modellversjon === "mock")).toBe(true);
+    expect(rapport).toContain("- **Modellversjon fra leverandøren:** mock (12 kjøringer)");
     expect(nettverk).not.toHaveBeenCalled();
+  });
+
+  it("NFR-10: --mock med en kjøring uten svar gir ukjent versjon, ikke mock", async () => {
+    const klient: LlmKlient = {
+      analyseGap: async () => {
+        throw new Error("nettverk nede");
+      },
+    };
+    const { data } = await kjorTestsett(
+      { ...VALG, mock: true, prisInn: 0, prisUt: 0, par: "par-2-it-support", ganger: 1 },
+      klient,
+      { git: GIT },
+    );
+
+    expect(data.par[0].kjoringer[0]).toMatchObject({ feilkode: "llm_feil", modellversjon: null });
   });
 
   it("AD-11: en fasit som ikke kan leses, stopper før første kall", async () => {
@@ -209,7 +242,10 @@ describe("main", () => {
     const filer = readdirSync(mappe);
     expect(filer).toHaveLength(1);
     expect(filer[0]).toMatch(/-mistral-mistral-medium-latest-mock\.md$/);
-    expect(readFileSync(path.join(mappe, filer[0]), "utf8")).toContain("- **Kjøringer:** 12, **feil:** 0");
+    const tekst = readFileSync(path.join(mappe, filer[0]), "utf8");
+    expect(tekst).toContain("- **Kjøringer:** 12, **feil:** 0");
+    expect(tekst).toContain("- **Modell (bedt om):** mistral-medium-latest");
+    expect(tekst).toContain("- **Modellversjon fra leverandøren:** mock (12 kjøringer)");
     expect(lagEkteKlient).not.toHaveBeenCalled();
     expect(nettverk).not.toHaveBeenCalled();
   });
@@ -258,6 +294,30 @@ describe("main", () => {
     expect(await main(["--leverandor", "foo"], {})).toBe(1);
     expect(feil).toHaveBeenCalledWith(expect.stringContaining("Bruk: npm run testsett"));
     expect(nettverk).not.toHaveBeenCalled();
+  });
+});
+
+describe("lesGit", () => {
+  it("NFR-10: en rapport som ikke er committet, regnes ikke som en endring, men annet gjør", () => {
+    const mappe = mkdtempSync(path.join(tmpdir(), "testsett-git-"));
+    const git = (...args: string[]) => execFileSync("git", args, { cwd: mappe, encoding: "utf8" });
+    try {
+      git("init", "-q");
+      writeFileSync(path.join(mappe, "a.txt"), "a");
+      git("add", ".");
+      git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-q", "-m", "a");
+
+      mkdirSync(path.join(mappe, RAPPORTMAPPE));
+      writeFileSync(path.join(mappe, RAPPORTMAPPE, "rapport.md"), "rapport");
+      const ren = lesGit(mappe);
+      expect(ren.commit).toMatch(/^[0-9a-f]{40}$/);
+      expect(ren.endringer).toBe(false);
+
+      writeFileSync(path.join(mappe, "a.txt"), "endret");
+      expect(lesGit(mappe).endringer).toBe(true);
+    } finally {
+      rmSync(mappe, { recursive: true, force: true });
+    }
   });
 });
 

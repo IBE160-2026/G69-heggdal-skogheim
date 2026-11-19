@@ -25,6 +25,8 @@ export type Kjoring = {
   feilkode: string | null;
   inputTokens: number | null;
   outputTokens: number | null;
+  // NFR-10: modellen leverandøren svarte med. `null` når kjøringen feilet uten svar.
+  modellversjon: string | null;
   varighetMs: number;
   analyse: GapAnalyse | null;
 };
@@ -64,13 +66,49 @@ function kjoringKostnad(k: Kjoring, meta: Metadata): number | null {
   return kostnad(k.inputTokens, k.outputTokens, meta.prisInn, meta.prisUt);
 }
 
-function topptekst(meta: Metadata): string[] {
+const UKJENT_VERSJON = "ukjent";
+
+// AI SDK faller tilbake til modellen som ble bedt om når leverandøren ikke oppgir
+// noen, så en versjon lik navnet er kanskje ikke løst opp.
+const SAMME_SOM_NAVNET =
+  " (samme som navnet som ble bedt om; leverandøren oppga kanskje ingen egen versjon)";
+
+function versjon(k: Kjoring): string {
+  return k.modellversjon ?? UKJENT_VERSJON;
+}
+
+// Versjonen kommer fra leverandøren, så den escapes som modelltekst.
+function versjonVisning(v: string, meta: Metadata): string {
+  return `${celle(v)}${v === meta.modell ? SAMME_SOM_NAVNET : ""}`;
+}
+
+function kjoringerTekst(antall: number): string {
+  return `${antall} ${antall === 1 ? "kjøring" : "kjøringer"}`;
+}
+
+// NFR-10: hver distinkte versjon med antall kjøringer, i rekkefølgen de kom.
+// Ukjent står til slutt.
+function versjonerTekst(par: ParResultat[], meta: Metadata): string {
+  const antall = new Map<string, number>();
+  for (const k of par.flatMap((p) => p.kjoringer)) {
+    antall.set(versjon(k), (antall.get(versjon(k)) ?? 0) + 1);
+  }
+  const navn = [...antall.keys()].sort(
+    (a, b) => Number(a === UKJENT_VERSJON) - Number(b === UKJENT_VERSJON),
+  );
+  return navn.length === 0
+    ? "–"
+    : navn.map((v) => `${versjonVisning(v, meta)} (${kjoringerTekst(antall.get(v) ?? 0)})`).join(", ");
+}
+
+function topptekst(meta: Metadata, par: ParResultat[]): string[] {
   return [
     `# Testsett: ${meta.leverandor} ${meta.modell}${meta.mock ? " (tørrkjøring med mock)" : ""}`,
     "",
     `- **Commit:** \`${meta.commit}\`${meta.endringer ? " (arbeidstreet har endringer som ikke er committet)" : ""}`,
     `- **Leverandør:** ${meta.leverandor}`,
-    `- **Modell:** ${meta.modell}`,
+    `- **Modell (bedt om):** ${meta.modell}`,
+    `- **Modellversjon fra leverandøren:** ${versjonerTekst(par, meta)}`,
     `- **Dato:** ${meta.dato}`,
     `- **Priser:** ${prisTekst(meta.prisInn)} per million input-tokens, ${prisTekst(meta.prisUt)} per million output-tokens`,
     `- **Kjøringer per par:** ${meta.ganger}`,
@@ -89,6 +127,7 @@ function kjoringSeksjon(k: Kjoring, fasit: Fasit, meta: Metadata): string[] {
     `#### Kjøring ${k.nr}`,
     "",
     `- **Status:** ${k.status}${k.feilkode ? ` (${k.feilkode})` : ""}`,
+    `- **Modellversjon:** ${versjonVisning(versjon(k), meta)}`,
     `- **Tokens:** ${tall(k.inputTokens)} inn, ${tall(k.outputTokens)} ut${
       k.outputTokens !== null && k.outputTokens >= MAKS_UTDATA_TOKENS
         ? " (nådde taket for output-tokens)"
@@ -220,7 +259,7 @@ function totalt({ meta, par }: RapportData): string[] {
 
 export function lagRapport(data: RapportData): string {
   return [
-    ...topptekst(data.meta),
+    ...topptekst(data.meta, data.par),
     "",
     ...data.par.flatMap((p) => parSeksjon(p, data.sjekkliste, data.meta)),
     ...totalt(data),

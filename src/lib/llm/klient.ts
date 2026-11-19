@@ -10,6 +10,9 @@ export type LlmSvar = {
   svar: unknown;
   inputTokens: number;
   outputTokens: number;
+  // NFR-10: modellen leverandøren faktisk svarte med (`response.modelId`), også når
+  // et alias er brukt. Bare testsettskriptet bruker den. Mock-adapteren oppgir ingen.
+  modellversjon?: string;
 };
 
 export type GapInndata = {

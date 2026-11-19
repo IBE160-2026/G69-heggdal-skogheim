@@ -22,6 +22,9 @@ export const RAPPORTMAPPE = "testsett-rapporter";
 // Høye grenser bare for skriptet, så rate-limiten (AD-9) ikke stopper målingen.
 const HOY_GRENSE = "1000000";
 
+// Modellversjonen i rapporten ved `--mock`.
+export const MOCK_VERSJON = "mock";
+
 export type GitInfo = { commit: string; endringer: boolean };
 
 export type Opsjoner = {
@@ -38,9 +41,13 @@ export function kjentePar(testdata: string = TESTDATA): string[] {
 }
 
 // NFR-10: full commit-hash og om arbeidstreet har endringer.
-export function lesGit(): GitInfo {
-  const git = (...args: string[]) => execFileSync("git", args, { encoding: "utf8" }).trim();
-  return { commit: git("rev-parse", "HEAD"), endringer: git("status", "--porcelain") !== "" };
+export function lesGit(cwd?: string): GitInfo {
+  const git = (...args: string[]) => execFileSync("git", args, { encoding: "utf8", cwd }).trim();
+  // Rapportene fra tidligere kjøringer regnes ikke som endringer i koden.
+  return {
+    commit: git("rev-parse", "HEAD"),
+    endringer: git("status", "--porcelain", "--", ":/", `:(top,exclude)${RAPPORTMAPPE}`) !== "",
+  };
 }
 
 // Miljøet til `generer`. Det inneholder ingen ekte nøkkel: nøkkelen ligger bare i
@@ -56,9 +63,10 @@ export function genererEnv(valg: Valg): Record<string, string> {
   };
 }
 
-type Tokens = { inputTokens: number; outputTokens: number };
+type Tokens = { inputTokens: number; outputTokens: number; modellversjon: string | null };
 
-// Lagrer tokens for siste kall, siden svaret fra `generer` ikke har dem.
+// Lagrer tokens og modellversjonen for siste kall, siden svaret fra `generer`
+// ikke har dem (NFR-10).
 function medTokens(klient: LlmKlient) {
   let siste: Tokens | null = null;
 
@@ -66,7 +74,11 @@ function medTokens(klient: LlmKlient) {
     klient: {
       async analyseGap(inndata) {
         const svar = await klient.analyseGap(inndata);
-        siste = { inputTokens: svar.inputTokens, outputTokens: svar.outputTokens };
+        siste = {
+          inputTokens: svar.inputTokens,
+          outputTokens: svar.outputTokens,
+          modellversjon: svar.modellversjon ?? null,
+        };
         return svar;
       },
     } satisfies LlmKlient,
@@ -133,6 +145,8 @@ export async function kjorTestsett(
         feilkode,
         inputTokens: tokens?.inputTokens ?? null,
         outputTokens: tokens?.outputTokens ?? null,
+        // Mock-adapteren oppgir ingen versjon. Uten svar er versjonen ukjent (null).
+        modellversjon: valg.mock && tokens ? MOCK_VERSJON : (tokens?.modellversjon ?? null),
         varighetMs,
         analyse: feilkode === null ? (svar.json as GapAnalyse) : null,
       });

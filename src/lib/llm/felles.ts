@@ -54,6 +54,11 @@ function utenNull(svar: GapModellSvar) {
   };
 }
 
+// NFR-10: modellen leverandøren svarte med. Feltet tas bare med når den finnes.
+function medVersjon(modelId: string | undefined): Pick<LlmSvar, "modellversjon"> {
+  return modelId ? { modellversjon: modelId } : {};
+}
+
 type ProviderOptions = Parameters<typeof generateText>[0]["providerOptions"];
 
 // Felles kall for begge adapterne. Et svar utenfor skjemaet gir `svar: undefined`,
@@ -80,6 +85,7 @@ export async function analyseGapMed(
       svar: utenNull(resultat.output),
       inputTokens: resultat.usage.inputTokens ?? 0,
       outputTokens: resultat.usage.outputTokens ?? 0,
+      ...medVersjon(resultat.response?.modelId),
     };
   } catch (feil) {
     if (NoObjectGeneratedError.isInstance(feil)) {
@@ -87,6 +93,7 @@ export async function analyseGapMed(
         svar: undefined,
         inputTokens: feil.usage?.inputTokens ?? 0,
         outputTokens: feil.usage?.outputTokens ?? 0,
+        ...medVersjon(feil.response?.modelId),
       };
     }
     // Uten utdata fordi kallet ble avbrutt, er det et tidsavbrudd, ikke et ugyldig svar.

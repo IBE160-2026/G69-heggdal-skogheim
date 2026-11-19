@@ -31,10 +31,11 @@ const SVAR = {
   nokkelord: [{ tekst: "AFR", kravIndeks: 1 }],
 };
 
-function svarMed(output: unknown) {
+function svarMed(output: unknown, modelId = "mistral-medium-2508") {
   generer.mockResolvedValue({
     output,
     usage: { inputTokens: 1200, outputTokens: 300 },
+    response: { id: "1", timestamp: new Date(), modelId },
   } as unknown as Awaited<ReturnType<typeof generateText>>);
 }
 
@@ -123,7 +124,7 @@ describe("adapterne", () => {
     ).toBe(false);
   });
 
-  it("AD-4: svar utenfor skjemaet gir svar: undefined med tokenene", async () => {
+  it("AD-4: svar utenfor skjemaet gir svar: undefined med tokenene og modellversjonen", async () => {
     generer.mockRejectedValue(
       new NoObjectGeneratedError({
         message: "ugyldig",
@@ -134,21 +135,48 @@ describe("adapterne", () => {
       } as unknown as ConstructorParameters<typeof NoObjectGeneratedError>[0]),
     );
 
-    await expect(kall({ MISTRAL_API_KEY: "x" })).resolves.toEqual({
+    const svar = await kall({ MISTRAL_API_KEY: "x" });
+    expect(svar).toEqual({
       svar: undefined,
       inputTokens: 50,
       outputTokens: 5,
+      modellversjon: "m",
     });
+  });
+
+  it("NFR-10: svar utenfor skjemaet uten response gir ingen modellversjon", async () => {
+    generer.mockRejectedValue(
+      new NoObjectGeneratedError({
+        message: "ugyldig",
+        usage: { inputTokens: 50, outputTokens: 5 },
+      } as unknown as ConstructorParameters<typeof NoObjectGeneratedError>[0]),
+    );
+
+    const svar = await kall({ MISTRAL_API_KEY: "x" });
+    expect("modellversjon" in svar).toBe(false);
+  });
+
+  it("NFR-10: modellversjonen er den leverandøren svarte med, ikke aliaset", async () => {
+    svarMed(SVAR, "mistral-medium-2508");
+    const svar = await kall({ MISTRAL_API_KEY: "x" });
+
+    expect(generer.mock.calls[0][0].model).toMatchObject({ modelId: "mistral-medium-latest" });
+    expect(svar.modellversjon).toBe("mistral-medium-2508");
+  });
+
+  it("NFR-10: svar uten modelId gir ingen modellversjon", async () => {
+    svarMed(SVAR, "");
+    const svar = await kall({ MISTRAL_API_KEY: "x" });
+
+    expect("modellversjon" in svar).toBe(false);
   });
 
   it("AD-4: ingen utdata gir svar: undefined uten tokener", async () => {
     generer.mockRejectedValue(new NoOutputGeneratedError());
 
-    await expect(kall({ MISTRAL_API_KEY: "x" })).resolves.toEqual({
-      svar: undefined,
-      inputTokens: 0,
-      outputTokens: 0,
-    });
+    const svar = await kall({ MISTRAL_API_KEY: "x" });
+    expect(svar).toEqual({ svar: undefined, inputTokens: 0, outputTokens: 0 });
+    expect("modellversjon" in svar).toBe(false);
   });
 
   it("AD-8: ingen utdata fordi signalet er avbrutt, kastes videre", async () => {
