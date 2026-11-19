@@ -50,3 +50,25 @@ Forberede del B av story 2.4 (målingen og leverandørvalget etter AD-11) mens P
 - Prisen for Mistral Medium 3.5 er ikke bekreftet hos Mistral. Valutakursen (10 kr per USD) er et forsiktig anslag, ikke en kurs fra Norges Bank.
 - Like krav fjernes bare i prompten. Kommer det duplikater i målingen, vurderes det å fjerne dem i koden (alternativ C, med flytting av `kravIndeks`).
 - OpenAI-nøkkelen fra Sondre trengs i `.env.local` på maskinen som måler, eller så kjører Sondre OpenAI-målingen selv.
+
+## 2026-11-19 kl. 20:33 — Kevin Heggdal
+
+### Oppgave
+Vi fortsatte med story 2.4 del B etter pausen. Begge kontrollene med Mistral Large 4 hadde fått tidsavbrudd etter 45 s, så Kevin valgte alternativ B: ett lite diagnosekall mot `mistral-large-4-0` uten JSON-skjema og med høyst 50 output-tokens. Rapporten fra kontroll 2 skulle committes som dokumentasjon. Det skulle ikke gjøres andre betalte kall, ingen push eller fletting og ikke noe arbeid på story 2.6.
+
+### Plan
+- Først ble det kontrollert at vi var på grenen `story-2.4-del-b-maaling-og-valg`, at de lokale commitene (`082386e`, `246e58b`, `7cde3c2`, `51d5989`) fortsatt fantes, og at `.env.local` var ignorert (`.gitignore:43`, `.env.*`) og ikke sporet.
+- Diagnosekallet gikk direkte mot `POST /v1/chat/completions` med et lite skript i scratchpad-mappa, uten AI SDK og uten skjema. Nøkkelen ble lest fra `.env.local` og ble ikke vist. Kallet ble sendt med `max_tokens: 50`, `temperature: 0.2`, `reasoning_effort: "low"` og et kort spørsmål på norsk.
+
+### Resultat
+- **Kontroll 2** (`testsett-rapporter/2026-11-19-1607-mistral-mistral-large-4-0.md`): par 2, én kjøring med `reasoningEffort` `low`. Kjøringen fikk tidsavbrudd (504, `llm_tidsavbrudd`) etter 45 004 ms. Rapporten er committet i `e0ef215`.
+- **Diagnosekallet:** HTTP 200 på 3,3 s totalt (2,97 s hos Mistral), `model: mistral-large-4-0`, `finish_reason: stop`. Det brukte 31 input-tokens og 44 output-tokens, og 39 av dem var resonnering. Svaret var «Oslo». Kostnaden var omtrent 0,001 kr.
+- **Hva diagnosen viser:**
+  - Nøkkelen, modellnavnet og `reasoning_effort: "low"` virker. Resonneringen blir faktisk kortere.
+  - Mistral svarer raskt på et lite kall, så tidsavbruddet skyldes ikke at kontoen, nettet eller modellen er treg i seg selv.
+  - Tidsavbruddet kommer av selve gap-oppgaven: en lang prompt, et strikt JSON-skjema og et langt svar fra en resonneringsmodell.
+  - NFR-4 krever at gap-analysen er ferdig innen 30 s. Large 4 bruker over 45 s og feiler derfor NFR-4 slik den er satt opp nå.
+- Det ble ikke gjort noen andre betalte kall.
+
+### Åpne punkter
+- Story 2.4 del B: Large 4 feiler NFR-4 (over 45 s mot kravet på 30 s). Vurder kontrollen av Medium 3.5 (`mistral-medium-2604`, resonnering `none`) som neste betalte kall. Den trenger godkjenning fra Kevin.
