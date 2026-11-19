@@ -11,8 +11,11 @@
 - [ ] 2026-11-09 [story-1-3-oppfolging-fnr-stavekontroll](995-2026-11-09-00-34-47-story-1-3-oppfolging-fnr-stavekontroll.md) — Lag PR for `story-1.3-oppfolging-fnr-stavekontroll` mot `main` før PR-en for 1.4, og vurder merge av `main` i stedet for rebase av 1.4–1.6
 - [ ] 2026-11-18 [story-1-5-pdf-to-kolonner](997-2026-11-07-23-19-12-story-1-5-pdf-to-kolonner.md) — Next.js 16.4.4 varsles som sårbar under `next build`, og builden kan stoppe i GitHub CI. Vurder oppgradering i en egen endring
 - [ ] 2026-11-19 [story-2-4-testsett-del-a](994-2026-11-19-14-33-09-story-2-4-testsett-del-a.md) — Story 2.4 del B: avklar betalte nøkler med Sondre, kjør `npm run testsett` mot Mistral og OpenAI, vurder med sjekklisten, velg etter AD-11 og noter resultat, `LLM_MODELL` og commit
-- [ ] 2026-11-19 [story-2-4-testsett-del-a](994-2026-11-19-14-33-09-story-2-4-testsett-del-a.md) — Story 2.4 del B: vurder `MAKS_UTDATA_TOKENS` (8000) ut fra høyeste output-tokens, og avklar at `gpt-5-mini` ignorerer temperaturen
+- [ ] 2026-11-19 [story-2-4-testsett-del-a](994-2026-11-19-14-33-09-story-2-4-testsett-del-a.md) — Story 2.4 del B: vurder `MAKS_UTDATA_TOKENS` (8000) ut fra høyeste output-tokens (temperaturdelen er løst 2026-11-19: OpenAI bruker `gpt-4.1-mini`, som tar imot temperaturen)
 - [ ] 2026-11-19 [story-2-4-testsett-del-a](994-2026-11-19-14-33-09-story-2-4-testsett-del-a.md) — Story 2.4 del C: vilkår, variabler og nøkkel bare i Production på Vercel, kreditt under 200 kr uten påfylling, og personvernboksen i produksjon
+- [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Bekreft prisen for Mistral Medium 3.5 hos Mistral og valutakursen (Norges Bank) før full måling
+- [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Like krav fjernes bare i prompten. Vurder å fjerne dem i koden (alternativ C) hvis målingen viser duplikater
+- [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — OpenAI-nøkkelen fra Sondre trengs til målingen av `gpt-4.1-mini` (eller Sondre kjører den selv)
 
 ## Løst
 
