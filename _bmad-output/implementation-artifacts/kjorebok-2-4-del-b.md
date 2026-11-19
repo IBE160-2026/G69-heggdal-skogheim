@@ -63,6 +63,8 @@ Den 2026-11-19 fant Kevin `mistral-medium-2604` med `GET /v1/models` i sin konto
 
 Uansett hvilket navn som brukes, viser rapporten både «Modell (bedt om)» og «Modellversjon fra leverandøren», altså modellen som faktisk svarte. Det er den som føres inn i malen.
 
+**Resonnering (2026-11-19):** Medium 3.5 og Large 4 er resonneringsmodeller. Kontrollen med Large 4 uten innstilling fikk tidsavbrudd etter 45 s (`testsett-rapporter/2026-11-19-1557-mistral-mistral-large-4-0.md`, kjørt før innstillingen fantes). Mistral-adapteren sender nå `reasoningEffort` `"none"` for Medium 3.5 og `"low"` for Large 4, som er den laveste innsatsen modellen tar imot (Large 4 tar ikke imot `none`). Bruk de datobestemte navnene. `mistral-large-latest` får ingen innstilling, fordi AI SDK dropper den for det aliaset. Rapporten viser verdien i linjen «Resonnering (reasoningEffort)». Se [spec-2-4-del-b-resonnering-mistral.md](spec-2-4-del-b-resonnering-mistral.md).
+
 ## 4. Prisene
 
 Skriptet trenger prisene i kroner per million tokens (`--pris-inn` og `--pris-ut`). De står ikke i koden.
@@ -84,6 +86,7 @@ Sjekk i rapporten:
 
 - [ ] Status 200 og ingen feilkode. Ved `llm_feil`: sjekk nøkkelen, kreditten og modellnavnet.
 - [ ] «Modellversjon fra leverandøren» er et datobestemt eller spesifikt navn. Er `--modell` et alias, skal versjonen være forskjellig fra aliaset.
+- [ ] «Resonnering (reasoningEffort)» er `low` for `mistral-large-4-0` og `none` for `mistral-medium-2604`.
 - [ ] Er `--modell` et alias (for eksempel `…-latest`), har rapporten **ikke** merknaden «samme som navnet som ble bedt om». Merknaden betyr da at leverandøren kanskje ikke oppga noen versjon, og at AI SDK bare gjentok aliaset fra `--modell`. Stopp i så fall, og finn den faktiske versjonen (steg 3) før den fulle målingen. Med et datobestemt navn er merknaden normal: navnet kommer vanligvis tilbake uendret.
 - [ ] Kostnaden er rimelig sammenlignet med budsjettet.
 

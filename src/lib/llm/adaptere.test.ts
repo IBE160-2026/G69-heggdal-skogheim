@@ -5,6 +5,7 @@ import { gapSvar } from "@/lib/kontrakt/gap";
 
 import { gapModellSkjema, MAKS_UTDATA_TOKENS } from "./felles";
 import { lagEkteKlient } from "./klient";
+import { RESONNERING_MODELLER, resonnering } from "./mistral";
 import { GAP_INSTRUKS } from "./prompter/gap";
 
 // Ingen test kaller et ekte API: `generateText` er mocket.
@@ -65,11 +66,48 @@ describe("adapterne", () => {
     expect(valg.maxOutputTokens).toBe(8000);
     expect(MAKS_UTDATA_TOKENS).toBe(8000);
     expect(valg.abortSignal).toBe(signal);
-    expect(valg.providerOptions).toEqual({ mistral: { strictJsonSchema: true } });
+    // Standardmodellen er Medium 3.5 (alias), så resonneringen er "none".
+    expect(valg.providerOptions).toEqual({
+      mistral: { strictJsonSchema: true, reasoningEffort: "none" },
+    });
     expect(valg.model).toMatchObject({
       provider: expect.stringContaining("mistral"),
       modelId: "mistral-medium-latest",
     });
+  });
+
+  it.each([
+    ["mistral-medium-2604", "none"],
+    ["mistral-medium-3-5", "none"],
+    ["mistral-medium-latest", "none"],
+    ["mistral-large-4-0", "low"],
+    ["mistral-large-4", "low"],
+    [" Mistral-Large-4-0 ", "low"],
+  ])("AD-8: %s sendes med reasoningEffort %s", async (modell, innsats) => {
+    svarMed(SVAR);
+    await kall({ MISTRAL_API_KEY: "x", LLM_MODELL: modell });
+
+    expect(generer.mock.calls[0][0].providerOptions).toEqual({
+      mistral: { strictJsonSchema: true, reasoningEffort: innsats },
+    });
+  });
+
+  it.each(["mistral-small-latest", "mistral-large-2512", "mistral-large-latest", "open-mistral-nemo"])(
+    "AD-8: andre Mistral-modeller (%s) får ingen reasoningEffort",
+    async (modell) => {
+      svarMed(SVAR);
+      await kall({ MISTRAL_API_KEY: "x", LLM_MODELL: modell });
+
+      expect(generer.mock.calls[0][0].providerOptions).toEqual({
+        mistral: { strictJsonSchema: true },
+      });
+    },
+  );
+
+  it("AD-8: ingen Large-modell i tabellen får \"none\", som Large 4 ikke tar imot", () => {
+    const large = RESONNERING_MODELLER.filter((m) => m.startsWith("mistral-large"));
+    expect(large.length).toBeGreaterThan(0);
+    for (const m of large) expect(resonnering(m)).toBe("low");
   });
 
   it("AD-3: LLM_LEVERANDOR=openai gir OpenAI med standardmodellen", async () => {

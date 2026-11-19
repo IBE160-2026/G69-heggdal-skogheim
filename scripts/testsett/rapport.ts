@@ -1,6 +1,7 @@
 import type { GapAnalyse, Kategori } from "@/lib/kontrakt/gap";
 import { MAKS_UTDATA_TOKENS, TEMPERATUR } from "@/lib/llm/felles";
 import type { Leverandor } from "@/lib/llm/leverandor";
+import { resonnering } from "@/lib/llm/mistral";
 
 import { kostnad, kroner, kronerMedUkjente, snittMedUkjente } from "./kostnad";
 import { dekningTekst, type Fasit, nokkelordDekning, type Sjekkliste } from "./fasit";
@@ -66,6 +67,13 @@ function kjoringKostnad(k: Kjoring, meta: Metadata): number | null {
   return kostnad(k.inputTokens, k.outputTokens, meta.prisInn, meta.prisUt);
 }
 
+// AD-8: resonneringen Mistral-adapteren sender for modellen (NFR-10). Mock og
+// OpenAI sender ingen.
+function resonneringTekst(meta: Metadata): string {
+  if (meta.mock || meta.leverandor !== "mistral") return "ikke satt";
+  return resonnering(meta.modell) ?? "ikke satt (leverandørens standard)";
+}
+
 const UKJENT_VERSJON = "ukjent";
 
 // AI SDK faller tilbake til modellen som ble bedt om når leverandøren ikke oppgir
@@ -114,6 +122,7 @@ function topptekst(meta: Metadata, par: ParResultat[]): string[] {
     `- **Kjøringer per par:** ${meta.ganger}`,
     `- **Temperatur:** ${TEMPERATUR}`,
     `- **Tak for output-tokens:** ${MAKS_UTDATA_TOKENS}`,
+    `- **Resonnering (reasoningEffort):** ${resonneringTekst(meta)}`,
     ...(meta.mock
       ? ["", "> Tørrkjøring: alle parene fikk demosvaret fra mock-adapteren. Dette er ikke en måling og skal ikke committes som en."]
       : []),

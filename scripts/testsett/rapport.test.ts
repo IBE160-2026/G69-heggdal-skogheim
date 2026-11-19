@@ -237,6 +237,18 @@ describe("lagRapport", () => {
     );
   });
 
+  it.each([
+    ["mistral", "mistral-large-4-0", false, "low"],
+    ["mistral", "mistral-medium-2604", false, "none"],
+    ["mistral", "mistral-small-latest", false, "ikke satt (leverandørens standard)"],
+    ["mistral", "mistral-large-4-0", true, "ikke satt"],
+    ["openai", "gpt-4.1-mini", false, "ikke satt"],
+  ] as const)("NFR-10: %s %s (mock %s) viser resonneringen %s", (leverandor, modell, mock, forventet) => {
+    const d = data();
+    Object.assign(d.meta, { leverandor, modell, mock });
+    expect(lagRapport(d)).toContain(`- **Resonnering (reasoningEffort):** ${forventet}`);
+  });
+
   it("tørrkjøringen er merket", () => {
     const d = data();
     d.meta.mock = true;
