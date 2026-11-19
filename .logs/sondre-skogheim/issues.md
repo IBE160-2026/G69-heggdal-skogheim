@@ -4,8 +4,6 @@
 
 - [ ] 2026-10-29 [prd-finalize](995-2026-10-29-15-15-11-prd-finalize.md) — Valgfritt: full språkvask med bmad-review (structure, prose) på prd.md og addendum.md
 - [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Brukertesten i SM-10 (tre medstudenter utenfor gruppen) gjøres i story 2.8, før epic 3
-- [ ] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Etter at 1.6 er satt til done: kjør de to manuelle testene for 1.6 (demoteksten fra par 1 gir ikke varsel, fødselsnummer gir to trykk, også i Safari) senest i story 2.2, (testen for statusHentet med demo er lagt inn i story 2.1, 3016b7b)
-- [ ] 2026-11-18 [story-2-1-gap-analyse-api](985-2026-11-18-19-15-43-story-2-1-gap-analyse-api.md) — Les tonen i råd- og forklaringstekstene i src/lib/llm/demo-svar/gap.json
 - [ ] 2026-11-18 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Sondre og Kevin avgjør betalt plan hos Mistral/OpenAI (kreditt under 200 kr) før 2.4, ellers blir produksjonen i demomodus
 - [ ] 2026-11-18 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Story 2.4: maxOutputTokens og at gpt-5-mini ignorerer temperaturen (deferred-work.md)
 - [ ] 2026-11-19 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Story 2.4: standardmodell for OpenAI bør bli gpt-4.1-mini (gpt-5-mini krever verifisert organisasjon og ignorerer temperatur)
@@ -16,9 +14,13 @@
 - [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — En mislykket Generer på nytt sletter den forrige analysen (deferred-work.md)
 - [ ] 2026-11-19 [kevin-nokkel-og-todelte-krav](979-2026-11-19-21-42-57-kevin-nokkel-og-todelte-krav.md) — Slett Kevins OpenAI-nøkkel (kevin-maaling-2-4) når målingen i 2.4 er ferdig
 - [ ] 2026-11-19 [kevin-nokkel-og-todelte-krav](979-2026-11-19-21-42-57-kevin-nokkel-og-todelte-krav.md) — Story 2.4 (Kevin): regelen for krav med to deler (Delvis oppfylt når én del er dekket) inn i gap-prompten, og fasitene sjekkes
+- [ ] 2026-11-19 [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md) — 1.6 i Safari: fødselsnummer med to trykk (krever Mac eller iPhone)
+- [ ] 2026-11-19 [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md) — Demosvaret: avgjør ny tekst for AFR-rådet i gap.json («kontrollsteget» er et internt ord, brukeren ser Endre CV-tekst)
 
 ## Løst
 
+- [x] 2026-11-18 [story-2-1-gap-analyse-api](985-2026-11-18-19-15-43-story-2-1-gap-analyse-api.md) — Les tonen i råd- og forklaringstekstene i src/lib/llm/demo-svar/gap.json (løst 2026-11-19: lest, se [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md); ny tekst for AFR-rådet er eget punkt)
+- [x] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Etter at 1.6 er satt til done: kjør de to manuelle testene for 1.6 (demoteksten fra par 1 gir ikke varsel, fødselsnummer gir to trykk, også i Safari) senest i story 2.2, (testen for statusHentet med demo er lagt inn i story 2.1, 3016b7b) (løst 2026-11-19 for Edge: begge bestått i headless Edge, se [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md); Safari står som eget punkt)
 - [x] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Test 2.6 i nettleseren før fletting: rediger et krav, Kopier og lim inn, Generer på nytt med og uten redigering, tastatur alene og 320 px (løst 2026-11-19: Sondre testet, PR #17 flettet)
 - [x] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Vurder ordlyden «Lage nytt Gap-analyse og nøkkelord?» i dialogen (malen i EXPERIENCE.md gir feil kjønn) (løst 2026-11-19: tittelen er «Lage ny gap-analyse?», og malen i EXPERIENCE.md har tittel per fane)
 - [x] 2026-11-19 [story-2-5-forstaaelige-feil](981-2026-11-19-15-45-54-story-2-5-forstaaelige-feil.md) — Manuell test av 2.5 før fletting: LLM_MODELL=finnes-ikke gir melding og Prøv igjen, Prøv med eksempel virker; sett gpt-4.1-mini tilbake (løst 2026-11-19: Sondre testet, PR #16 flettet)
