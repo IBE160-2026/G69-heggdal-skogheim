@@ -385,3 +385,38 @@ Begge skulle måles med nøyaktig samme prompt og kodeversjon og bare med fiktiv
 
   Anbefalingen er A først, og deretter Mistral etter PRD §6 hvis resultatet fortsatt er likt.
 - Testsettet skriver over en rapport når to kjøringer starter i samme minutt. Filnavnet bør få sekunder, eller et løpenummer når fila finnes.
+
+## 2026-11-19 kl. 22:35 — Kevin Heggdal
+
+### Oppgave
+Kevin valgte runde 4. Feilene fra runde 3 skulle gjennomgås med `bmad-build`, og gap-prompten skulle få generelle regler:
+- «eller» betyr at ett dokumentert alternativ er nok
+- et lavere ferdighetsnivå gir ikke automatisk «Oppfylt»
+- kravet vurderes slik det står, uten krav som ikke finnes
+
+Sondres regel for sammensatte krav skulle fortsatt følges. I tillegg skulle feilen i testsettet rettes, der en rapport kunne overskrives når to kjøringer starter i samme minutt, med en regresjonstest. Det skulle ikke gjøres betalte kall, ingen push eller fletting, ingen endringer i Vercel og ikke noe arbeid på del C eller story 2.7.
+
+### Plan
+- Arbeidet fulgte `bmad-build` med den korte ruten («oneshot»). Begge målene er med etter Kevins ønske. Spec: [spec-2-4-del-b-runde-4-alternativer-niva-og-rapportnavn.md](../../_bmad-output/implementation-artifacts/spec-2-4-del-b-runde-4-alternativer-niva-og-rapportnavn.md).
+- Én gjennomgang med Blind Hunter. Funnene ble vurdert, rettet eller utsatt.
+
+### Resultat
+- **Prompten** (steg 3 og 6 i `gap.ts`):
+  - Et alternativ må selv være dokumentert, og erfaring som bare ligner, gir «delvis».
+  - Nivået i CV-en sammenlignes med kravet, og et lavere nivå gir høyst «delvis».
+  - Kravet vurderes slik det står. Det legges ikke til krav om bransje, arbeidsgiver eller stilling.
+  - Konkret erfaring dokumenterer en egenskap også når ordet ikke står i CV-en, men det gjør ikke beslektet erfaring til dokumentasjon.
+  - `raad` er null for «oppfylt» og «delvis».
+  - Sondres regel er uendret, og en test sjekker det.
+- **Testsettet** (`scripts/kjor-testsett.ts`):
+  - `rapportNavn` har sekunder (`TTMMSS`).
+  - `skrivNyRapport` overskriver aldri. Er navnet tatt, får fila `-nrN` før `-mock.md` eller `.md` (så `.gitignore` fortsatt fanger tørrkjøringene), med en øvre grense på 1000.
+  - `main` tar imot `na`, så tiden kan styres i testene.
+  - Regresjonstestene dekker samme minutt, samme sekund (via `main`, med linjen i konsollen), ENOENT og et modellnavn som slutter på et siffer.
+- **Gjennomgangen:** 10 funn. 7 er rettet, blant dem at reglene om kravet slik det står, ikke skal oppheve regelen om alternativer, og at nivået igjen er et tak. 2 er utsatt til `deferred-work.md` (å fjerne `raad` ved «delvis» i koden, og formatet på filnavnet i spec-en for del A). 1 er avvist.
+- **Kontrollene:** lint, typecheck, `npm test` (819 av 819 i 48 filer), build og begge tørrkjøringene er grønne.
+- **Dokumentasjonen:** ny [vurdering-2-4-leverandorvalg-runde-4.md](../../_bmad-output/implementation-artifacts/vurdering-2-4-leverandorvalg-runde-4.md) og en statusdel for runde 4 i kjøreboka med kommandoene og kostnadsanslaget.
+- **Commit:** `5346bee` (lokal). Ingen betalte kall.
+
+### Åpne punkter
+- Runde 4: OpenAI (12 kall, ca. 0,21 kr) og Mistral (12 kall, ca. 1,18 kr) måles på samme commit etter Kevins godkjenning. Det blir ca. 1,4 kr til sammen.
