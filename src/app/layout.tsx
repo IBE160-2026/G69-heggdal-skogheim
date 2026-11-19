@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import { Demomodus } from "@/components/Demomodus";
 import { Kunngjoring } from "@/components/Kunngjoring";
+import { Toaster } from "@/components/ui/sonner";
 import { OktProvider } from "@/lib/okt/OktProvider";
 
 import "./globals.css";
@@ -34,6 +35,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Demomodus />
           {children}
           <Kunngjoring />
+          {/* UX-DR11: toast bare for kopiering, øverst på midten på alle skjermer. */}
+          <Toaster position="top-center" customAriaLabel="Varsler" />
         </OktProvider>
       </body>
     </html>

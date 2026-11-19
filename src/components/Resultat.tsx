@@ -7,6 +7,7 @@ import { flushSync } from "react-dom";
 import { ANALYSER_ID } from "@/components/CvPanel";
 import { INNHOLD } from "@/components/Forberedelse";
 import { GapAnalyseFane } from "@/components/GapAnalyseFane";
+import { FANENAVN_GAP, GapVerktoylinje } from "@/components/GapVerktoylinje";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -81,7 +82,9 @@ export function Resultat() {
         <Tabs defaultValue="gap" activationMode="manual">
           <TabsList variant="line" className="h-auto w-full justify-start border-b">
             <TabsTrigger value="gap" className="h-11 flex-none px-3 lg:h-9">
-              Gap-analyse og nøkkelord
+              {FANENAVN_GAP}
+              {/* UX-DR10: synlig og lest opp som en del av fanenavnet. */}
+              {gap?.redigert ? " · redigert" : null}
               {genererer ? (
                 <>
                   <Loader2
@@ -101,6 +104,9 @@ export function Resultat() {
             aria-busy={genererer ? true : undefined}
             className="pt-4 text-base"
           >
+            {/* Verktøylinjen står fast over innholdet, så knappen beholder fokus under
+                ny generering. Ved feil har varselet *Prøv igjen* i stedet. */}
+            {gap?.status === "feil" ? null : <GapVerktoylinje />}
             <GapAnalyseFane />
           </TabsContent>
         </Tabs>

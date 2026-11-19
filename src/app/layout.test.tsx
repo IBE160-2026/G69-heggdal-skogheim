@@ -17,7 +17,10 @@ describe("RootLayout", () => {
       </RootLayout>,
     );
 
-    expect(html.match(/aria-live=/g)).toHaveLength(1);
+    // Den ene live-regionen i appen. Toasten fra sonner har sin egen region (UX-DR11).
+    expect(html.match(/<div aria-live=/g)).toHaveLength(1);
+    expect(html.match(/aria-live=/g)).toHaveLength(2);
+    expect(html).toContain('<section aria-label="Varsler"');
     expect(html).toContain('aria-live="polite"');
     // Kunngjoring bruker useOkt og ville kastet en feil utenfor OktProvider.
     expect(html.indexOf("<main>Innhold</main>")).toBeLessThan(
