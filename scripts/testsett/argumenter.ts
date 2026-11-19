@@ -24,7 +24,7 @@ export const STANDARD_GANGER = 3;
 export const BRUK = `Bruk: npm run testsett -- --leverandor mistral|openai [valg]
 
   --leverandor mistral|openai  påkrevd
-  --modell <navn>              standard mistral-medium-latest eller gpt-5-mini
+  --modell <navn>              standard mistral-medium-latest eller gpt-4.1-mini
   --ganger <antall>            kjøringer per par, heltall fra 1 (standard ${STANDARD_GANGER})
   --par <mappe>                bare ett par, for eksempel par-2-it-support
   --pris-inn <kr>              kroner per million input-tokens (påkrevd uten --mock)

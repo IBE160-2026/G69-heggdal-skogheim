@@ -76,7 +76,29 @@ describe("prompten for gap-analysen", () => {
     ["FR-11: kravIndeks til ett krav eller null", /kravIndeks.*eller null/],
     ["NFR-5: bokmål", /på naturlig bokmål/],
     ["FR-10: råd som aldri påstår kvalifikasjonen", /aldri være å påstå kvalifikasjonen/],
+    ["FR-7: bare kvalifikasjoner er krav", /Bare kvalifikasjoner er krav/],
+    ["FR-7: ønsker er krav", /Også ønsker, det vil si det annonsen sier er valgfritt eller ønsket, er krav/],
+    ["FR-7: oppgavene i jobben er ikke krav", /beskriver oppgavene i jobben, uansett overskrift, tas ikke med/],
+    ["FR-7: hvert krav står én gang", /Hvert krav står én gang/],
+    ["FR-7: vilkår annonsen uttrykkelig krever, er krav", /Vilkår annonsen uttrykkelig krever av søkeren.*er også krav/],
+    ["FR-7: beskrivelser av stillingen er ikke krav", /beskrivelser av selve stillingen, som arbeidstid og vakter/],
+    ["FR-7: praktisk informasjon er ikke krav", /praktisk informasjon om stillingen, som søknadsfrist, stillingsprosent, lønn og kontaktperson/],
+    [
+      "FR-9: ingen listetegn eller innrykk først i belegget, ellers ordrett",
+      /Ta ikke med listetegn.*eller innrykk først i belegget\. Ellers siteres det ordrett, tegn for tegn/,
+    ],
+    [
+      "stillingen med vanlig skrift",
+      /stillingen med vanlig skrift, med stor forbokstav.*behold forkortelser og egennavn slik de står/,
+    ],
   ])("%s står i systeminstruksen", (_navn, monster) => {
     expect(GAP_INSTRUKS).toMatch(monster);
   });
+
+  it.each(["Arbeidsoppgaver", "en fordel", "førerkort", "(for eksempel IT)", "nattskift"])(
+    "SM-1: systeminstruksen har ikke eksempelet %j fra testdataene",
+    (tekst) => {
+      expect(GAP_INSTRUKS.toLowerCase()).not.toContain(tekst.toLowerCase());
+    },
+  );
 });

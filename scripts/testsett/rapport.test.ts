@@ -129,18 +129,18 @@ describe("lagRapport", () => {
     expect(rapport).toContain("- **Kostnad:** ukjent");
     expect(rapport).toContain("- **Kjøringer:** 2, **feil:** 1 (kjøring 2: llm_tidsavbrudd)");
     expect(rapport).toContain(
-      "- **Gjennomsnittlig kostnad:** minst 0,0150 kr (1 kjøring med ukjent kostnad)",
+      "- **Gjennomsnittlig kostnad:** 0,0150 kr (gjennomsnitt av de kjente, 1 kjøring med ukjent kostnad er ikke med)",
     );
     expect(rapport).toContain("- **Lengste varighet:** 45001 ms");
     expect(rapport).toContain("- **Høyeste output-tokens:** 500");
   });
 
-  it("SM-8: Totalt viser samlet og gjennomsnittlig kostnad som nedre grenser med ukjente", () => {
+  it("SM-8: Totalt viser samlet kostnad som nedre grense og snittet av de kjente", () => {
     const totalt = rapport.slice(rapport.indexOf("## Totalt"));
     expect(totalt).toContain("- **Kjøringer:** 2, **feil:** 1");
     expect(totalt).toContain("- **Samlet kostnad:** minst 0,0150 kr (1 kjøring med ukjent kostnad)");
     expect(totalt).toContain(
-      "- **Gjennomsnittlig kostnad per kjøring:** minst 0,0150 kr (1 kjøring med ukjent kostnad)",
+      "- **Gjennomsnittlig kostnad per kjøring:** 0,0150 kr (gjennomsnitt av de kjente, 1 kjøring med ukjent kostnad er ikke med)",
     );
     expect(totalt).toContain(`- **Høyeste output-tokens:** 500 (taket er ${MAKS_UTDATA_TOKENS})`);
     expect(totalt).toContain(`- **Temperatur:** ${TEMPERATUR}`);

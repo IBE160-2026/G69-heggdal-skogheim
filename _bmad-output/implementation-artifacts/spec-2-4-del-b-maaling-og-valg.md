@@ -115,6 +115,8 @@ context:
 
 ## Spec Change Log
 
+- 2026-11-19: `STANDARD_MODELL.openai` endret fra `gpt-5-mini` til `gpt-4.1-mini` etter Sondres gjennomgang av PR #14, godkjent av Kevin. Unntak fra Never-listen.
+
 ## Review Triage Log
 
 | # | Layer | Finding | Verdict | Route | Evidence |

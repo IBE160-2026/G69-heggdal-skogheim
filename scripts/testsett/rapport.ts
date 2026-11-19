@@ -2,7 +2,7 @@ import type { GapAnalyse, Kategori } from "@/lib/kontrakt/gap";
 import { MAKS_UTDATA_TOKENS, TEMPERATUR } from "@/lib/llm/felles";
 import type { Leverandor } from "@/lib/llm/leverandor";
 
-import { kostnad, kroner, kronerMedUkjente, snittKostnad } from "./kostnad";
+import { kostnad, kroner, kronerMedUkjente, snittMedUkjente } from "./kostnad";
 import { dekningTekst, type Fasit, nokkelordDekning, type Sjekkliste } from "./fasit";
 
 // Rapporten bygges bare fra flaggene, pipelinesvaret, tokens, testdata og
@@ -183,7 +183,7 @@ function oppsummering(p: ParResultat, meta: Metadata): string[] {
     `- **Kjøringer:** ${p.kjoringer.length}, **feil:** ${feil.length}${
       feil.length ? ` (${feil.map((k) => `kjøring ${k.nr}: ${k.feilkode}`).join(", ")})` : ""
     }`,
-    `- **Gjennomsnittlig kostnad:** ${kronerMedUkjente(snittKostnad(kostnader), kostnader)}`,
+    `- **Gjennomsnittlig kostnad:** ${snittMedUkjente(kostnader)}`,
     `- **Lengste varighet:** ${lengste} ms`,
     `- **Høyeste output-tokens:** ${output.length ? Math.max(...output) : "–"}`,
     `- **Treffprosent per kjøring:** ${treff.length ? treff.map((t) => `${t} %`).join(", ") : "–"}`,
@@ -249,7 +249,7 @@ function totalt({ meta, par }: RapportData): string[] {
     "",
     `- **Kjøringer:** ${alle.length}, **feil:** ${feil}`,
     `- **Samlet kostnad:** ${kronerMedUkjente(sum, kostnader)}`,
-    `- **Gjennomsnittlig kostnad per kjøring:** ${kronerMedUkjente(snittKostnad(kostnader), kostnader)}`,
+    `- **Gjennomsnittlig kostnad per kjøring:** ${snittMedUkjente(kostnader)}`,
     `- **Lengste varighet:** ${Math.max(0, ...alle.map((k) => k.varighetMs))} ms`,
     `- **Høyeste output-tokens:** ${output.length ? Math.max(...output) : "–"} (taket er ${MAKS_UTDATA_TOKENS})`,
     `- **Temperatur:** ${TEMPERATUR}`,

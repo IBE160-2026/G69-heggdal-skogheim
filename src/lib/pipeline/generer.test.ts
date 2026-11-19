@@ -2,12 +2,13 @@ import { readFileSync } from "node:fs";
 
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from "vitest";
 
+import { normaliser } from "@/lib/kjerne/demo";
 import { DEMO_ANNONSE, DEMO_CV } from "@/lib/kontrakt/demo";
 import { gapAnalyse } from "@/lib/kontrakt/gap";
 import type { LlmKlient } from "@/lib/llm/klient";
 import { mockKlient } from "@/lib/llm/mock";
 
-import { generer, type Klienter, LLM_TIDSGRENSE_MS } from "./generer";
+import { generer, type Klienter, LISTETEGN_FORST, LLM_TIDSGRENSE_MS } from "./generer";
 import { nullstill } from "./grense";
 
 const DEMO_ENV = {};
@@ -542,5 +543,99 @@ describe("logglinjen for ekte generering", () => {
     for (const tekst of ["Windows og Linux", "Testvik kommune", "IT-brukerstøtte"]) {
       expect(logget).not.toContain(tekst);
     }
+  });
+});
+
+describe("listetegn først i belegg", () => {
+  const CV_MED_LISTE = `${EGEN_CV}\n- Betjente kassasystem i butikk\n• Kasse\n  * Tok dagsoppgjør hver kveld\nIT-utdanning 2024–nå\n`;
+
+  function medBelegg(belegg: string[][]) {
+    return generer(
+      "gap",
+      { cvTekst: CV_MED_LISTE, annonse: ANNONSE_2 },
+      EKTE_ENV,
+      {
+        klienter: klienter(
+          klientMed({
+            stilling: "",
+            arbeidsgiver: "",
+            krav: belegg.map((b, i) => ({ tekst: `Krav ${i}`, kategori: "oppfylt", belegg: b })),
+            nokkelord: [],
+          }),
+        ),
+      },
+    );
+  }
+
+  it.each([
+    ["- Betjente kassasystem", "Betjente kassasystem"],
+    ["• Kasse", "Kasse"],
+    ["  * Tok dagsoppgjør", "Tok dagsoppgjør"],
+    ["– Kasse", "Kasse"],
+    ["— Kasse", "Kasse"],
+    ["‐ Kasse", "Kasse"],
+    ["▪ Kasse", "Kasse"],
+    ["‣ Kasse", "Kasse"],
+    ["◦ Kasse", "Kasse"],
+    ["Kasse  \n", "Kasse"],
+    ["IT-utdanning", "IT-utdanning"],
+    ["2024–nå", "2024–nå"],
+  ])("FR-9: belegget %j vises og lagres som %j", async (belegg, forventet) => {
+    const svar = await medBelegg([[belegg]]);
+
+    expect(svar.status).toBe(200);
+    const analyse = gapAnalyse.parse(svar.json);
+    expect(analyse.krav[0]).toMatchObject({
+      kategori: "oppfylt",
+      belegg: [forventet],
+      nedgradert: false,
+    });
+    expect(analyse.fjernetBelegg).toBe(0);
+  });
+
+  it("FR-9: belegg med listetegn gir samme kategorier som uten", async () => {
+    const med = gapAnalyse.parse(
+      (await medBelegg([["- Betjente kassasystem"], ["• Kasse"], ["  * Tok dagsoppgjør"], ["- Finnes ikke i CV-en"]])).json,
+    );
+    const uten = gapAnalyse.parse(
+      (await medBelegg([["Betjente kassasystem"], ["Kasse"], ["Tok dagsoppgjør"], ["Finnes ikke i CV-en"]])).json,
+    );
+
+    expect(med).toEqual(uten);
+    expect(med.krav.map((k) => k.kategori)).toEqual(["oppfylt", "oppfylt", "oppfylt", "mangler"]);
+  });
+
+  it("FR-9: like belegg i samme krav etter at listetegnene er fjernet, står én gang", async () => {
+    const svar = await medBelegg([["- Kasse", "Kasse", "• Kasse ", "Tok dagsoppgjør"]]);
+
+    const analyse = gapAnalyse.parse(svar.json);
+    expect(analyse.krav[0].belegg).toEqual(["Kasse", "Tok dagsoppgjør"]);
+    expect(analyse.fjernetBelegg).toBe(0);
+  });
+
+  it("FR-9: to like ugyldige belegg telles begge i fjernetBelegg", async () => {
+    const svar = await medBelegg([["Finnes ikke", "- Finnes ikke"]]);
+
+    const analyse = gapAnalyse.parse(svar.json);
+    expect(analyse.krav[0]).toMatchObject({ kategori: "mangler", belegg: [], nedgradert: true });
+    expect(analyse.fjernetBelegg).toBe(2);
+  });
+
+  it("FR-9: alle listetegnene som fjernes først, fjernes også av normaliseringen", () => {
+    // Alle tegn i BMP som regelen fjerner, utenom mellomrom.
+    const tegn = Array.from({ length: 0xd800 }, (_, i) => String.fromCodePoint(i)).filter(
+      (t) => LISTETEGN_FORST.test(t) && !/\s/u.test(t),
+    );
+
+    expect(tegn).toEqual(["*", "-", "‐", "–", "—", "•", "‣", "▪", "◦"]);
+    for (const t of tegn) expect(normaliser(`a${t}b`)).toBe("ab");
+  });
+
+  it("FR-9: et belegg som bare er listetegn, fjernes og kravet nedgraderes", async () => {
+    const svar = await medBelegg([["- "]]);
+
+    const analyse = gapAnalyse.parse(svar.json);
+    expect(analyse.krav[0]).toMatchObject({ kategori: "mangler", belegg: [], nedgradert: true });
+    expect(analyse.fjernetBelegg).toBe(1);
   });
 });

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { kostnad, kroner, kronerMedUkjente, snittKostnad } from "./kostnad";
+import { kostnad, kroner, kronerMedUkjente, snittKostnad, snittMedUkjente } from "./kostnad";
 
 describe("kostnad", () => {
   it("SM-8: tokens / 1 000 000 × pris for input og output", () => {
@@ -31,5 +31,14 @@ describe("kostnad", () => {
     expect(kronerMedUkjente(0.018, [0.018])).toBe("0,0180 kr");
     expect(kronerMedUkjente(0.018, [0.018, null])).toBe("minst 0,0180 kr (1 kjøring med ukjent kostnad)");
     expect(kronerMedUkjente(null, [null, null])).toBe("minst 0,0000 kr (2 kjøringer med ukjent kostnad)");
+  });
+
+  it("SM-8: gjennomsnittet omtales ikke som «minst», og ukjente står som ikke med", () => {
+    expect(snittMedUkjente([0.01, 0.03])).toBe("0,0200 kr");
+    expect(snittMedUkjente([0.01, null, 0.03])).toBe(
+      "0,0200 kr (gjennomsnitt av de kjente, 1 kjøring med ukjent kostnad er ikke med)",
+    );
+    expect(snittMedUkjente([null, null])).toBe("ukjent");
+    expect(snittMedUkjente([0.01, null])).not.toContain("minst");
   });
 });

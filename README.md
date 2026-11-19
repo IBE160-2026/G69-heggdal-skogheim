@@ -40,7 +40,7 @@ npm run testsett -- --leverandor openai --pris-inn <kr> --pris-ut <kr>
 
 - `--leverandor mistral|openai` er påkrevd.
 - `--pris-inn` og `--pris-ut` er kroner per million input- og output-tokens. De er påkrevd ved ekte kjøring og står ikke i koden. Hent dem fra prislisten til leverandøren.
-- `--modell <navn>` (standard `mistral-medium-latest` eller `gpt-5-mini`), `--ganger <antall>` (standard 3) og `--par <mappe>` (for eksempel `par-2-it-support`) er valgfrie.
+- `--modell <navn>` (standard `mistral-medium-latest` eller `gpt-4.1-mini`), `--ganger <antall>` (standard 3) og `--par <mappe>` (for eksempel `par-2-it-support`) er valgfrie.
 
 Rapporter fra ekte målinger committes. Tørrkjøringer får `-mock` i filnavnet og ignoreres av git. Nøkkelen skrives aldri til rapporten eller konsollen. Rapporten viser både modellen som ble bedt om (`--modell`) og modellversjonen leverandøren faktisk svarte med.
 

@@ -83,6 +83,9 @@ Hver tabell fylles ut fra de to rapportene. K1–K3 er de tre kjøringene. Hvilk
 | Treffprosent (fasit 22 %) | | | | | | |
 | Nøkkelorddekning (av 9) | | | | | | |
 | Nedgraderte krav / fjernede belegg | | | | | | |
+| Antall krav fra modellen (fasit 6) | | | | | | |
+| Duplikater eller arbeidsoppgaver som krav (J/N) | | | | | | |
+| Stilling med vanlig skrift (J/N) | | | | | | |
 | Varighet (ms) | | | | | | |
 | Output-tokens (merket ved taket?) | | | | | | |
 | Kostnad (kr) | | | | | | |
@@ -126,6 +129,9 @@ Hver tabell fylles ut fra de to rapportene. K1–K3 er de tre kjøringene. Hvilk
 | Treffprosent (fasit 11 %) | | | | | | |
 | Nøkkelorddekning (av 9) | | | | | | |
 | Nedgraderte krav / fjernede belegg | | | | | | |
+| Antall krav fra modellen (fasit 6) | | | | | | |
+| Duplikater eller arbeidsoppgaver som krav (J/N) | | | | | | |
+| Stilling med vanlig skrift (J/N) | | | | | | |
 | Varighet (ms) | | | | | | |
 | Output-tokens (merket ved taket?) | | | | | | |
 | Kostnad (kr) | | | | | | |
@@ -169,6 +175,9 @@ Hver tabell fylles ut fra de to rapportene. K1–K3 er de tre kjøringene. Hvilk
 | Treffprosent (fasit 8 %) | | | | | | |
 | Nøkkelorddekning (av 13) | | | | | | |
 | Nedgraderte krav / fjernede belegg | | | | | | |
+| Antall krav fra modellen (fasit 6) | | | | | | |
+| Duplikater eller arbeidsoppgaver som krav (J/N) | | | | | | |
+| Stilling med vanlig skrift (J/N) | | | | | | |
 | Varighet (ms) | | | | | | |
 | Output-tokens (merket ved taket?) | | | | | | |
 | Kostnad (kr) | | | | | | |
@@ -214,6 +223,9 @@ Målingen bruker `cv.txt`, altså forventet uttrekk. Innlesingen av `cv.pdf` vur
 | Treffprosent (fasit 33 %) | | | | | | |
 | Nøkkelorddekning (av 12) | | | | | | |
 | Nedgraderte krav / fjernede belegg | | | | | | |
+| Antall krav fra modellen (fasit 6) | | | | | | |
+| Duplikater eller arbeidsoppgaver som krav (J/N) | | | | | | |
+| Stilling med vanlig skrift (J/N) | | | | | | |
 | Varighet (ms) | | | | | | |
 | Output-tokens (merket ved taket?) | | | | | | |
 | Kostnad (kr) | | | | | | |
@@ -266,12 +278,14 @@ Dette er Sondres manuelle test fra 2.3. Den kjøres med `npm run dev` og nøkkel
 |---|---|---|---|---|
 | 1 | | | – | |
 
+Runde 1 bruker den rettede prompten fra `spec-2-4-del-b-prompt-krav-og-belegg.md` (beslutning 3a, Kevin 2026-11-19): bare kvalifikasjoner er krav (ikke arbeidsoppgaver), hvert krav står én gang, ingen listetegn eller innrykk først i beleggene og stillingen med vanlig skrift. Pipelinen fjerner i tillegg listetegn og innrykk først i hvert belegg før beleggkontrollen. Commit for prompten i runde 1: _(fylles inn ved målingen)_.
+
 ## 7. Oppfølging etter valget
 
 | Punkt | Observasjon | Forslag (godkjennes av Kevin før endring) |
 |---|---|---|
 | `MAKS_UTDATA_TOKENS` (8000) | Høyeste output-tokens: ___. Nådde noen kjøring taket? | |
-| `STANDARD_MODELL` for OpenAI | Standarden er `gpt-5-mini`, som ga 404 hos Sondre | Bytt til `gpt-4.1-mini` hvis OpenAI velges, eller verifiser organisasjonen |
+| `STANDARD_MODELL` for OpenAI | Endret til `gpt-4.1-mini` (Sondre, PR #14). `gpt-5-mini` ga 404 uten en verifisert organisasjon | Ingen. Bekreft at standarden stemmer med valget |
 | `STANDARD_MODELL` | Valgt modell: ___ | Oppdater standarden, eller la `LLM_MODELL` styre alene |
 | PRD §10.1 | Valget er tatt | Merk spørsmålet som løst med dato og lenke hit |
 | Del C | Vilkår, Vercel Production, kreditt under 200 kr, personvernboks | Egen økt |

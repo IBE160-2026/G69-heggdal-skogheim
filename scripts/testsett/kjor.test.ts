@@ -278,6 +278,44 @@ describe("main", () => {
     expect(konsoll).not.toContain(NOKKEL);
     expect(nettverk).not.toHaveBeenCalled();
   });
+
+  it("PR #14: feiler alle kjøringene, gir målingen utgangskode 1, og rapporten skrives likevel", async () => {
+    const klient: LlmKlient = {
+      analyseGap: vi.fn(async () => {
+        throw new Error("nettverk nede");
+      }),
+    };
+    vi.mocked(lagEkteKlient).mockReturnValue(klient);
+    const feil = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const kode = await main(
+      ["--leverandor", "mistral", "--pris-inn", "1", "--pris-ut", "1", "--par", "par-2-it-support", "--ganger", "2"],
+      { MISTRAL_API_KEY: "x" },
+      { rapportmappe: mappe },
+    );
+
+    expect(kode).toBe(1);
+    expect(feil).toHaveBeenCalledWith(expect.stringContaining("Alle kjøringene feilet"));
+    const [fil] = readdirSync(mappe);
+    expect(readFileSync(path.join(mappe, fil), "utf8")).toContain("- **Kjøringer:** 2, **feil:** 2");
+  });
+
+  it("PR #14: feiler bare noen av kjøringene, gir målingen utgangskode 0", async () => {
+    const { klient } = falskKlient();
+    vi.mocked(lagEkteKlient).mockReturnValue(klient);
+    vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const kode = await main(
+      ["--leverandor", "mistral", "--pris-inn", "1", "--pris-ut", "1", "--par", "par-3-regnskap"],
+      { MISTRAL_API_KEY: "x" },
+      { rapportmappe: mappe },
+    );
+
+    expect(kode).toBe(0);
+    const [fil] = readdirSync(mappe);
+    expect(readFileSync(path.join(mappe, fil), "utf8")).toContain("- **Kjøringer:** 3, **feil:** 1");
+  });
+
   it("AD-11: mangler nøkkelen, gir det norsk melding, utgangskode 1 og ingen kall", async () => {
     const feil = vi.spyOn(console, "error").mockImplementation(() => {});
 
@@ -305,7 +343,7 @@ describe("lesGit", () => {
       git("init", "-q");
       writeFileSync(path.join(mappe, "a.txt"), "a");
       git("add", ".");
-      git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-q", "-m", "a");
+      git("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "-c", "commit.gpgsign=false", "-c", "core.hooksPath=", "commit", "-q", "-m", "a");
 
       mkdirSync(path.join(mappe, RAPPORTMAPPE));
       writeFileSync(path.join(mappe, RAPPORTMAPPE, "rapport.md"), "rapport");

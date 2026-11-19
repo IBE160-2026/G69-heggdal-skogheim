@@ -8,7 +8,7 @@ Kjøreboka dekker AK 2 i story 2.4 og AD-11: testsettet kjøres mot Mistral og O
 
 | Steg | Ansvarlig |
 |---|---|
-| Mistral-konto, kreditt (ca. 5–10 EUR, ingen automatisk påfylling), grense for forbruket, trening av, nøkkel | Kevin |
+| Mistral-konto, kreditt (10 USD kjøpt av Kevin, ingen automatisk påfylling), grense for forbruket, trening av, nøkkel | Kevin |
 | OpenAI-konto, kreditt (ca. 5 USD, automatisk påfylling av), trening av, nøkkel | Sondre |
 | Kontroll av nøkkelen og full måling | Den som har nøkkelen. Nøkkelen deles ikke i chat eller git |
 | Manuell test i appen (avsnitt 3 i malen) | Sondre, som i 2.3 |
@@ -59,7 +59,7 @@ Skriptet leser filen selv (`--env-file-if-exists=.env.local`). Nøkkelen skrives
    **Lim aldri nøkkelen inn direkte i kommandoen.** Den havner da i historikken til skallet. Se etter Medium-modellene, feltet `id`, eventuelle `aliases` og at modellen ikke er avviklet (`deprecation`).
 3. Før navnet, kilden og datoen inn i avsnitt 0 i malen («Modell (`--modell`, datobestemt navn)»).
 
-Den 2026-11-19 viste modelloversikten ingen Medium-modell med dato i navnet som ikke var avviklet (se [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md)). Finnes det ikke noe datobestemt navn i kontoen heller, stopp her, og la Kevin og Sondre bestemme modellen før målingen.
+Den 2026-11-19 fant Kevin `mistral-medium-2604` med `GET /v1/models` i sin konto (avsnittet over). Forundersøkelsen i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) fant ikke noe slikt navn. Hvis kontoen senere viser andre navn, og det ikke finnes noe datobestemt Medium-navn som ikke er avviklet, stopp her, og la Kevin og Sondre bestemme modellen før målingen.
 
 Uansett hvilket navn som brukes, viser rapporten både «Modell (bedt om)» og «Modellversjon fra leverandøren», altså modellen som faktisk svarte. Det er den som føres inn i malen.
 
@@ -84,7 +84,7 @@ Sjekk i rapporten:
 
 - [ ] Status 200 og ingen feilkode. Ved `llm_feil`: sjekk nøkkelen, kreditten og modellnavnet.
 - [ ] «Modellversjon fra leverandøren» er et datobestemt eller spesifikt navn. Er `--modell` et alias, skal versjonen være forskjellig fra aliaset.
-- [ ] Rapporten har **ikke** merknaden «samme som navnet som ble bedt om». Den betyr at leverandøren kanskje ikke oppga noen versjon, og at AI SDK bare gjentok navnet fra `--modell`. Stopp da, og finn den faktiske versjonen (steg 3) før den fulle målingen.
+- [ ] Er `--modell` et alias (for eksempel `…-latest`), har rapporten **ikke** merknaden «samme som navnet som ble bedt om». Merknaden betyr da at leverandøren kanskje ikke oppga noen versjon, og at AI SDK bare gjentok aliaset fra `--modell`. Stopp i så fall, og finn den faktiske versjonen (steg 3) før den fulle målingen. Med et datobestemt navn er merknaden normal: navnet kommer vanligvis tilbake uendret.
 - [ ] Kostnaden er rimelig sammenlignet med budsjettet.
 
 Kontrollrapporten er ikke en måling. Slett den, eller la være å committe den. Skriptet regner ikke filer i `testsett-rapporter/` som endringer i arbeidstreet, så den gjør ikke neste rapport «skitten». Andre filer gjør det.
@@ -137,7 +137,7 @@ Regelen (AD-11, avsnitt 5 i malen): Mistral velges hvis vilkårene er i orden, o
 
 - [ ] Commit rapportene og den utfylte malen.
 - [ ] Noter resultatet, modellen (bedt om og versjonen fra leverandøren) og commit i sesjonsloggen (`sesjonslogg`-skillen).
-- [ ] Avsnitt 7 i malen: forslag om `MAKS_UTDATA_TOKENS`, OpenAI-modellen (`gpt-4.1-mini` i stedet for `gpt-5-mini`) og `STANDARD_MODELL`. Ingen av dem endres uten Kevins godkjenning.
+- [ ] Avsnitt 7 i malen: forslag om `MAKS_UTDATA_TOKENS` og `STANDARD_MODELL`. Ingen av dem endres uten Kevins godkjenning.
 - [ ] Merk PRD §10.1 som løst med dato og lenke til malen.
 - [ ] Slett eller roter nøklene som ble brukt til målingen, hvis de ikke skal brukes i produksjonen.
 - [ ] 2-4 står som `in-progress` til del C (vilkår, Vercel Production, kreditt under 200 kr, personvernboks) er gjort.

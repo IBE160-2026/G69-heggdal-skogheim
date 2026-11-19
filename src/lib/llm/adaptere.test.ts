@@ -79,7 +79,7 @@ describe("adapterne", () => {
     const valg = generer.mock.calls[0][0];
     expect(valg.model).toMatchObject({
       provider: expect.stringContaining("openai"),
-      modelId: "gpt-5-mini",
+      modelId: "gpt-4.1-mini",
     });
     expect(valg.providerOptions).toEqual({ openai: { strictJsonSchema: true } });
     expect(valg.maxRetries).toBe(0);

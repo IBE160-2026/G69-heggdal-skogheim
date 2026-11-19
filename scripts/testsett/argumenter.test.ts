@@ -50,7 +50,7 @@ describe("lesArgumenter", () => {
 
   it("AD-11: standardmodellen følger leverandøren", () => {
     const tolket = les("--leverandor", "openai", ...PRISER);
-    expect(tolket.ok && tolket.valg.modell).toBe("gpt-5-mini");
+    expect(tolket.ok && tolket.valg.modell).toBe("gpt-4.1-mini");
   });
 
   it("AD-11: --leverandor er påkrevd og må være mistral eller openai", () => {

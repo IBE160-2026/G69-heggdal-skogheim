@@ -215,6 +215,13 @@ export async function main(
   const alle = data.par.flatMap((p) => p.kjoringer);
   const feil = alle.filter((k) => k.feilkode !== null).length;
   console.log(`Rapporten er skrevet til ${fil} (${alle.length} kjøringer, ${feil} feil).`);
+
+  // En måling der alle kjøringene feilet, er mislykket og gir utgangskode 1. Rapporten
+  // skrives likevel, så feilkodene kan leses (Sondre, PR #14).
+  if (alle.length > 0 && feil === alle.length) {
+    console.error("Alle kjøringene feilet. Målingen er mislykket. Se feilkodene i rapporten.");
+    return 1;
+  }
   return 0;
 }
 

@@ -12,7 +12,7 @@ export const NOKKEL_VARIABEL: Record<Leverandor, string> = {
 // Standardmodellene til målingen i story 2.4 bestemmer den endelige modellen.
 export const STANDARD_MODELL: Record<Leverandor, string> = {
   mistral: "mistral-medium-latest",
-  openai: "gpt-5-mini",
+  openai: "gpt-4.1-mini",
 };
 
 type Env = Record<string, string | undefined>;
