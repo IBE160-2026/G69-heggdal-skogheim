@@ -340,3 +340,48 @@ Kevin ba om at regelen legges inn i gap-prompten med `bmad-build`, at fasitene k
   - OpenAI `gpt-4.1-mini`: 1 kall i kontrollen og 12 i målingen, ca. 0,3 kr.
   - Det krever Kevins godkjenning, og nøkkelen fra Sondre må ligge i `.env.local`.
 - Sondre bekrefter lesingen «ingen deler, men beslektet erfaring = Delvis oppfylt» (par 3).
+
+## 2026-11-19 kl. 22:26 — Kevin Heggdal
+
+### Oppgave
+Kevin la OpenAI-nøkkelen fra Sondre i `.env.local` og godkjente målingene i runde 3:
+- én kontroll av OpenAI på par 2, deretter 12 kjøringer med `gpt-4.1-mini`
+- deretter 12 kjøringer med Mistral Medium 3.5
+
+Begge skulle måles med nøyaktig samme prompt og kodeversjon og bare med fiktive testdata, uten nye forsøk, uten endringer i prompten og med en samlet anslått kostnad under 2 kr. Resultatene skulle sammenlignes mot SM-1, SM-2, SM-3, NFR-4, NFR-5 og AD-11, med en anbefaling om leverandør. Det skulle ikke gjøres push, fletting, endringer i Vercel eller noe arbeid på del C eller story 2.7.
+
+### Plan
+- **Forutsetningene:**
+  - `git status` var tom på `4cd4f2f`.
+  - Nøkkelen er satt med prefikset `sk-`. Bare lengden og prefikset ble sjekket, nøkkelen ble ikke vist.
+  - `.env.local` er ignorert og ikke sporet.
+  - `npm test` ga 806 av 806, og tørrkjøringen for OpenAI ga 12 av 12.
+- **Kjøringene, på samme commit:** kontrollen av OpenAI, så 12 med OpenAI og så 12 med Mistral. Kostnaden ble sjekket etter hvert steg (0,02, deretter 0,22 og deretter 1,38 kr).
+- **Vurderingen:** ført inn for begge leverandørene i [vurdering-2-4-leverandorvalg-runde-3.md](../../_bmad-output/implementation-artifacts/vurdering-2-4-leverandorvalg-runde-3.md), med en tabell som sammenligner alle rundene.
+
+### Resultat
+- **OpenAI `gpt-4.1-mini-2025-04-14`:**
+  - Kontrollen ga 200 på 9148 ms, med 2129 inn og 597 ut, og kostet 0,0175 kr.
+  - Den fulle målingen ga 12 av 12 med 0 feil og kostet 0,2039 kr (0,0170 kr per gap-kjøring). Den lengste kjøringen tok 8857 ms, og det høyeste antallet output-tokens var 605.
+  - Kontrollrapporten ble overskrevet av den fulle målingen (samme minutt i filnavnet). Tallene står i vurderingen.
+- **Mistral `mistral-medium-2604`:** 12 av 12 med 0 feil, 1,1606 kr (0,0967 kr per gap-kjøring). Den lengste kjøringen tok 6594 ms, og det høyeste antallet output-tokens var 946.
+- **Samlet kostnad:** 1,38 kr, under rammen på 2 kr.
+- **Vurderingen etter kriteriene:**
+  - **SM-3 og SM-1 (gap):** begge `N`, med 2 krav over fasiten hver og 10 av 12 kjøringer bestått.
+    - Mistral: par 1 «Gode digitale ferdigheter» er `O` i K2 og K3. «Kundeorientert» er dessuten `D` i alle tre (for strengt, men tillatt alene).
+    - OpenAI: par 2 «Erfaring med brukerstøtte eller kundeservice» er `O` i K1 og K2. Veiledning av studenter ble regnet som brukerstøtte.
+  - **SM-2:** begge `J`.
+  - **NFR-4:** begge `J` (lengste kjøring 6,6 og 9,1 s).
+  - **NFR-5:** Mistral `J` med små feil («en introduksjonskurs»). OpenAI `J` med forbehold (særskriving som «Tysk kunnskaper», og «It-brukerstøtte»). OpenAI ga også råd ved «delvis», mot prompten.
+  - **Kostnad:** begge `J` (gap × 4 er 0,39 og 0,07 kr).
+  - **Sammensatte krav:** samlet som ett krav i alle seks kjøringene av par 2. Sondres regel virket for begge.
+- **AD-11:** ingen av leverandørene består. Kevins beslutning er at prompten rettes og begge måles på nytt når begge feiler. Valget er derfor ikke tatt.
+- **Commit:** `d9d32d1` (lokal), med rapportene, vurderingen og kjøreboka.
+
+### Åpne punkter
+- Valget av leverandør er ikke tatt. Kevin og Sondre velger mellom:
+  - (A) runde 4 med en rettet prompt, der begge måles på nytt (ca. 1,4 kr)
+  - (B) en egen beslutning om avvik fra AD-11
+
+  Anbefalingen er A først, og deretter Mistral etter PRD §6 hvis resultatet fortsatt er likt.
+- Testsettet skriver over en rapport når to kjøringer starter i samme minutt. Filnavnet bør få sekunder, eller et løpenummer når fila finnes.
