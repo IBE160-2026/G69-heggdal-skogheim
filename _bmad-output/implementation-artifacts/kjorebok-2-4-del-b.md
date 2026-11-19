@@ -2,6 +2,20 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+## Status 2026-11-19 (runde 3 målt)
+
+- **Begge er målt på commit `4cd4f2f`** med prompten fra `1ad9821` (godkjent av Kevin, ramme 2 kr):
+  - **OpenAI `gpt-4.1-mini`:** kontroll (200, 9148 ms, 0,0175 kr) og 12 av 12 i `2026-11-19-2220-openai-gpt-4.1-mini.md` (0,2039 kr, lengste 8857 ms). Kontrollrapporten ble overskrevet, fordi den fulle målingen startet i samme minutt og filnavnet bare har minutter. Tallene står i vurderingen.
+  - **Mistral Medium 3.5:** 12 av 12 i `2026-11-19-2222-mistral-mistral-medium-2604.md` (1,1606 kr, lengste 6594 ms).
+  - **Samlet:** 1,38 kr. Ingen feil og ingen nye forsøk.
+- **Resultatet:** begge feiler SM-3, med 2 krav over fasiten hver og 10 av 12 kjøringer bestått.
+  - **Mistral:** feiler på par 1 («Gode digitale ferdigheter»).
+  - **OpenAI:** feiler på par 2 («Brukerstøtte eller kundeservice»).
+  - Det sammensatte kravet i par 2 står samlet i alle seks kjøringene.
+  - SM-2, NFR-4 og kostnaden er i orden for begge. NFR-5 er i orden, men med flere små språkfeil hos OpenAI.
+  - Se [`vurdering-2-4-leverandorvalg-runde-3.md`](vurdering-2-4-leverandorvalg-runde-3.md).
+- **Valget er ikke tatt.** Begge feiler, og etter Kevins beslutning skal prompten da rettes og begge måles på nytt. Alternativet er en egen beslutning fra Kevin og Sondre. Begge måtene står i sesjonsloggen.
+
 ## Status 2026-11-19 (runde 3 forberedt)
 
 - **Sondres regel for sammensatte krav** (meldt av Kevin 2026-11-19) er lagt inn i prompten: [`spec-2-4-del-b-runde-3-sammensatte-krav.md`](spec-2-4-del-b-runde-3-sammensatte-krav.md).
