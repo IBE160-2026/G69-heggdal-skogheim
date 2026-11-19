@@ -10,6 +10,9 @@
 - [ ] 2026-11-07 [story-1-6-demovarsel](996-2026-11-07-23-50-49-story-1-6-demovarsel.md) — Lag PR for 1.6 først når PR-ene for 1.3, 1.4 og 1.5 er merget, og rebaser 1.6 på `main`
 - [ ] 2026-11-09 [story-1-3-oppfolging-fnr-stavekontroll](995-2026-11-09-00-34-47-story-1-3-oppfolging-fnr-stavekontroll.md) — Lag PR for `story-1.3-oppfolging-fnr-stavekontroll` mot `main` før PR-en for 1.4, og vurder merge av `main` i stedet for rebase av 1.4–1.6
 - [ ] 2026-11-18 [story-1-5-pdf-to-kolonner](997-2026-11-07-23-19-12-story-1-5-pdf-to-kolonner.md) — Next.js 16.4.4 varsles som sårbar under `next build`, og builden kan stoppe i GitHub CI. Vurder oppgradering i en egen endring
+- [ ] 2026-11-19 [story-2-4-testsett-del-a](994-2026-11-19-14-33-09-story-2-4-testsett-del-a.md) — Story 2.4 del B: avklar betalte nøkler med Sondre, kjør `npm run testsett` mot Mistral og OpenAI, vurder med sjekklisten, velg etter AD-11 og noter resultat, `LLM_MODELL` og commit
+- [ ] 2026-11-19 [story-2-4-testsett-del-a](994-2026-11-19-14-33-09-story-2-4-testsett-del-a.md) — Story 2.4 del B: vurder `MAKS_UTDATA_TOKENS` (8000) ut fra høyeste output-tokens, og avklar at `gpt-5-mini` ignorerer temperaturen
+- [ ] 2026-11-19 [story-2-4-testsett-del-a](994-2026-11-19-14-33-09-story-2-4-testsett-del-a.md) — Story 2.4 del C: vilkår, variabler og nøkkel bare i Production på Vercel, kreditt under 200 kr uten påfylling, og personvernboksen i produksjon
 
 ## Løst
 
