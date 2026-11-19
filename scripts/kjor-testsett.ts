@@ -22,6 +22,9 @@ export const RAPPORTMAPPE = "testsett-rapporter";
 // Høye grenser bare for skriptet, så rate-limiten (AD-9) ikke stopper målingen.
 const HOY_GRENSE = "1000000";
 
+// Modellversjonen i rapporten ved `--mock`.
+export const MOCK_VERSJON = "mock";
+
 export type GitInfo = { commit: string; endringer: boolean };
 
 export type Opsjoner = {
@@ -38,9 +41,13 @@ export function kjentePar(testdata: string = TESTDATA): string[] {
 }
 
 // NFR-10: full commit-hash og om arbeidstreet har endringer.
-export function lesGit(): GitInfo {
-  const git = (...args: string[]) => execFileSync("git", args, { encoding: "utf8" }).trim();
-  return { commit: git("rev-parse", "HEAD"), endringer: git("status", "--porcelain") !== "" };
+export function lesGit(cwd?: string): GitInfo {
+  const git = (...args: string[]) => execFileSync("git", args, { encoding: "utf8", cwd }).trim();
+  // Rapportene fra tidligere kjøringer regnes ikke som endringer i koden.
+  return {
+    commit: git("rev-parse", "HEAD"),
+    endringer: git("status", "--porcelain", "--", ":/", `:(top,exclude)${RAPPORTMAPPE}`) !== "",
+  };
 }
 
 // Miljøet til `generer`. Det inneholder ingen ekte nøkkel: nøkkelen ligger bare i
@@ -56,9 +63,10 @@ export function genererEnv(valg: Valg): Record<string, string> {
   };
 }
 
-type Tokens = { inputTokens: number; outputTokens: number };
+type Tokens = { inputTokens: number; outputTokens: number; modellversjon: string | null };
 
-// Lagrer tokens for siste kall, siden svaret fra `generer` ikke har dem.
+// Lagrer tokens og modellversjonen for siste kall, siden svaret fra `generer`
+// ikke har dem (NFR-10).
 function medTokens(klient: LlmKlient) {
   let siste: Tokens | null = null;
 
@@ -66,7 +74,11 @@ function medTokens(klient: LlmKlient) {
     klient: {
       async analyseGap(inndata) {
         const svar = await klient.analyseGap(inndata);
-        siste = { inputTokens: svar.inputTokens, outputTokens: svar.outputTokens };
+        siste = {
+          inputTokens: svar.inputTokens,
+          outputTokens: svar.outputTokens,
+          modellversjon: svar.modellversjon ?? null,
+        };
         return svar;
       },
     } satisfies LlmKlient,
@@ -80,12 +92,35 @@ function medTokens(klient: LlmKlient) {
 
 const to = (n: number) => String(n).padStart(2, "0");
 
-// `<ÅÅÅÅ-MM-DD-TTMM>-<leverandor>-<modell>[-mock].md`, med lokal tid.
+// `<ÅÅÅÅ-MM-DD-TTMMSS>-<leverandor>-<modell>[-mock].md`, med lokal tid. Sekundene
+// skiller kjøringer som starter i samme minutt (en kontroll og en full måling).
 export function rapportNavn(valg: Valg, dato: Date): string {
-  const tid = `${dato.getFullYear()}-${to(dato.getMonth() + 1)}-${to(dato.getDate())}-${to(dato.getHours())}${to(dato.getMinutes())}`;
+  const tid = `${dato.getFullYear()}-${to(dato.getMonth() + 1)}-${to(dato.getDate())}-${to(dato.getHours())}${to(dato.getMinutes())}${to(dato.getSeconds())}`;
   const modell = valg.modell.toLowerCase().replace(/[^a-z0-9.-]+/g, "-");
   return `${tid}-${valg.leverandor}-${modell}${valg.mock ? "-mock" : ""}.md`;
 }
+
+// Skriver rapporten uten å overskrive en som finnes. Er navnet tatt (samme sekund),
+// får fila et løpenummer før `-mock.md` eller `.md` (`-nr2`, `-nr3` …), så tørrkjøringer
+// fortsatt slutter på `-mock.md` og ignoreres av git. `nr` skiller tallet fra et modellnavn
+// som slutter på et siffer. Andre skrivefeil kastes videre, og etter 1000 tatte navn gis det opp.
+// Gir stien som ble skrevet.
+export function skrivNyRapport(mappe: string, navn: string, tekst: string): string {
+  const slutt = navn.match(/(-mock)?\.md$/)?.[0] ?? "";
+  const grunn = navn.slice(0, navn.length - slutt.length);
+  for (let nummer = 1; nummer <= MAKS_LOPENUMMER; nummer++) {
+    const fil = path.join(mappe, nummer === 1 ? navn : `${grunn}-nr${nummer}${slutt}`);
+    try {
+      writeFileSync(fil, tekst, { encoding: "utf8", flag: "wx" });
+      return fil;
+    } catch (feil) {
+      if ((feil as NodeJS.ErrnoException).code !== "EEXIST") throw feil;
+    }
+  }
+  throw new Error(`Fant ikke et ledig filnavn for ${navn} i ${mappe} etter ${MAKS_LOPENUMMER} forsøk.`);
+}
+
+const MAKS_LOPENUMMER = 1000;
 
 // Kjører hvert par `valg.ganger` ganger gjennom den ekte pipelinen. Klienten
 // brukes som både mock og ekte, så også par 1 (demoeksempelet) går til modellen.
@@ -133,6 +168,8 @@ export async function kjorTestsett(
         feilkode,
         inputTokens: tokens?.inputTokens ?? null,
         outputTokens: tokens?.outputTokens ?? null,
+        // Mock-adapteren oppgir ingen versjon. Uten svar er versjonen ukjent (null).
+        modellversjon: valg.mock && tokens ? MOCK_VERSJON : (tokens?.modellversjon ?? null),
         varighetMs,
         analyse: feilkode === null ? (svar.json as GapAnalyse) : null,
       });
@@ -167,7 +204,10 @@ export async function kjorTestsett(
 export async function main(
   argv: readonly string[] = process.argv.slice(2),
   env: Record<string, string | undefined> = process.env,
-  { rapportmappe = RAPPORTMAPPE }: { rapportmappe?: string } = {},
+  {
+    rapportmappe = RAPPORTMAPPE,
+    na = () => new Date(),
+  }: { rapportmappe?: string; na?: () => Date } = {},
 ): Promise<number> {
   const tolket = lesArgumenter(argv, kjentePar(), (l) => nokkel(env, l) !== "");
   if (!tolket.ok) {
@@ -192,15 +232,21 @@ export async function main(
     });
   }
 
-  const dato = new Date();
+  const dato = na();
   const { rapport, data } = await kjorTestsett(valg, klient, { na: () => dato });
   mkdirSync(rapportmappe, { recursive: true });
-  const fil = path.join(rapportmappe, rapportNavn(valg, dato));
-  writeFileSync(fil, rapport, "utf8");
+  const fil = skrivNyRapport(rapportmappe, rapportNavn(valg, dato), rapport);
 
   const alle = data.par.flatMap((p) => p.kjoringer);
   const feil = alle.filter((k) => k.feilkode !== null).length;
   console.log(`Rapporten er skrevet til ${fil} (${alle.length} kjøringer, ${feil} feil).`);
+
+  // En måling der alle kjøringene feilet, er mislykket og gir utgangskode 1. Rapporten
+  // skrives likevel, så feilkodene kan leses (Sondre, PR #14).
+  if (alle.length > 0 && feil === alle.length) {
+    console.error("Alle kjøringene feilet. Målingen er mislykket. Se feilkodene i rapporten.");
+    return 1;
+  }
   return 0;
 }
 

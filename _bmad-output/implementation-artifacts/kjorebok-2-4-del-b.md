@@ -1,0 +1,342 @@
+# Kjørebok: måling og leverandørvalg (story 2.4 del B)
+
+> **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
+
+## Status 2026-11-19 (leverandøren er valgt)
+
+- **Valget (Kevin, bekreftet av Sondre, 2026-11-19): OpenAI `gpt-4.1-mini` med temperatur 0, etter AD-11.** Mistral består ikke (Large 4 feilet NFR-4, Medium 3.5 feilet SM-3). Begrunnelse og vilkår med kilder: avsnitt 5 og 7 i [`vurdering-2-4-kontroll-temperatur-0.md`](vurdering-2-4-kontroll-temperatur-0.md).
+- **SM-1 er IKKE bestått (9 av 12 kjøringer).** I par 3 vurderes to krav strengere enn fasiten. Det er et åpent punkt som må avklares og løses før innleveringen. Kevin og Sondre har valgt løsning 2: å vurdere fasiten for «Gode samarbeidsevner» på nytt. Grunnlaget er [`beslutningsgrunnlag-2-4-fasit-par-3.md`](beslutningsgrunnlag-2-4-fasit-par-3.md). Fasiten er ikke endret, og beslutningen er ikke tatt.
+- **Koden:** `STANDARD_MODELL.openai = "gpt-4.1-mini"` og `TEMPERATUR = 0` er låst med tester (`374495d`). `LLM_LEVERANDOR` har fortsatt Mistral som standard i koden (AD-3). Produksjonen får `LLM_LEVERANDOR=openai` i del C.
+- **Etterarbeidet (§ 10):**
+  - [x] Rapportene og vurderingene er committet (rundene 1–5 og kontrollen med temperatur 0).
+  - [x] Resultatet, modellen (`gpt-4.1-mini`, versjonen fra leverandøren `gpt-4.1-mini-2025-04-14`) og commiten (`ee49c2b`) er notert i sesjonsloggen.
+  - [x] PRD §10.1 er merket som valgt, med lenke og de åpne punktene.
+  - [x] `MAKS_UTDATA_TOKENS` beholdes på 8000 foreløpig (Kevin, 2026-11-19). Det høyeste med OpenAI var 616.
+  - [ ] B4, den manuelle testen i appen (§ 7, 2 betalte kall med OpenAI), venter på Kevins godkjenning.
+  - [ ] Nøklene fra målingen slettes eller roteres (Kevin for Mistral, Sondre for OpenAI). OpenAI-nøkkelen skal bare brukes til testsettet. Produksjonen får en egen nøkkel i del C.
+  - [ ] Kevin og Sondre signerer vurderingen.
+- 2-4 står som `in-progress` til SM-1 er løst og del C er gjort.
+
+## Status 2026-11-19 (kontroll med temperatur 0, målingene avsluttet)
+
+- **Kontrollen** (godkjent av Kevin): bare OpenAI, 12 kjøringer, prompten fra runde 5, `TEMPERATUR` 0 (`ee49c2b`).
+  - Rapporten er `2026-11-19-225914-openai-gpt-4.1-mini.md`.
+  - Kostnaden var 0,2225 kr, og den lengste kjøringen tok 8392 ms.
+  - Ingen feil og ingen nye forsøk.
+- **Resultatet:**
+  - Kategoriene er identiske i alle tre kjøringene per par.
+  - SM-2 er i orden. SM-3 etter PRD-en (ingen krav over fasiten, Mangler alltid Mangler) er bestått i 12 av 12.
+  - Par 3 har to krav under fasiten i alle tre («Strukturert og nøyaktig» og «Samarbeid» er `M`). Det bryter toleransen i FR-8 (SM-1), og 9 av 12 kjøringer består dermed hele sjekklisten.
+  - Se [`vurdering-2-4-kontroll-temperatur-0.md`](vurdering-2-4-kontroll-temperatur-0.md).
+- **Anbefalingen er temperatur 0**, fordi resultatet blir stabilt og ingen krav havner over fasiten. Verdien er allerede 0 i koden.
+- **Målingene er avsluttet** (Kevin, 2026-11-19). Leverandørvalget tas av Kevin og Sondre.
+
+## Status 2026-11-19 (runde 5 målt)
+
+- **Begge er målt på commit `2e92de3`** med prompten fra `271edb4`:
+  - **OpenAI:** `2026-11-19-225200-openai-gpt-4.1-mini.md`, 12 av 12, 0,2223 kr, lengste 10389 ms.
+  - **Mistral:** `2026-11-19-225329-mistral-mistral-medium-2604.md`, 12 av 12, 1,2293 kr, lengste 6383 ms.
+  - **Samlet:** 1,45 kr. Ingen feil og ingen nye forsøk.
+- **SM-2 er i orden for begge.** Regelen om CV-ens egne ord virket.
+- **Ingen består SM-3:**
+  - **OpenAI (10 av 12):** «brukerstøtte» er `O` i par 2 K1, og par 3 K3 har to krav under fasiten.
+  - **Mistral (8 av 12):** par 4 «Selvstendig» er `O` i alle tre, og par 3 K2 har to krav under fasiten.
+- **Over rundene 3–5:** OpenAI består 32 av 36 kjøringer med 3 krav over fasiten, Mistral 24 av 36 med 9 krav over fasiten.
+- Se [`vurdering-2-4-leverandorvalg-runde-5.md`](vurdering-2-4-leverandorvalg-runde-5.md). Valget er ikke tatt.
+
+## Status 2026-11-19 (runde 5 forberedt)
+
+- **Beslutning (Kevin og Sondre, 2026-11-19):** forklaringen i runde 4, par 2 K1 hos OpenAI («Erfaringen er med brukerstøtte i studiet») bryter SM-2 og FR-27. OpenAI er den foreløpige favoritten.
+- **Prompten i runde 5:** [`spec-2-4-del-b-runde-5-cv-ens-egne-ord.md`](spec-2-4-del-b-runde-5-cv-ens-egne-ord.md). Det brukeren har, beskrives med CV-ens egne ord i `forklaring` og `raad`, ikke med annonsens betegnelser eller nivåord. Vurderingen bruker [`vurdering-2-4-leverandorvalg-runde-5.md`](vurdering-2-4-leverandorvalg-runde-5.md), der regelen for vurderingen står.
+- **Målingen i runde 5** krever Kevins godkjenning. Begge kjøres på samme commit, uten kontrollkall:
+
+  ```bash
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50
+  npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --pris-inn 14.53 --pris-ut 72.65
+  ```
+
+  - Forventet kostnad er ca. 0,22 kr for OpenAI og ca. 1,20 kr for Mistral, ca. 1,4 kr til sammen. Prompten er ca. 150 tokens lengre enn i runde 4.
+  - Øvre grense er ca. 1,6 kr og ca. 7,4 kr uten mva, hvis alle kallene når taket på 8000 output-tokens.
+
+## Status 2026-11-19 (runde 4 målt)
+
+- **Begge er målt på commit `be2b0e2`** med prompten fra `5346bee`, uten kontrollkall (Kevins godkjenning):
+  - **OpenAI:** `2026-11-19-223737-openai-gpt-4.1-mini.md`, 12 av 12, 0,2094 kr, lengste 8701 ms.
+  - **Mistral:** `2026-11-19-223858-mistral-mistral-medium-2604.md`, 12 av 12, 1,1822 kr, lengste 5809 ms.
+  - **Samlet:** 1,39 kr. Ingen feil og ingen nye forsøk.
+- **OpenAI består SM-3 i alle 12 kjøringene:** ingen krav over fasiten, og høyst ett under per kjøring.
+  - NFR-4, kostnaden og NFR-5 (med forbehold for små språkfeil) er i orden.
+  - **SM-2 avklares:** i par 2 K1 skriver OpenAI «Erfaringen er med brukerstøtte i studiet», men CV-en har bare veiledning.
+- **Mistral feiler SM-3** (6 av 12 kjøringer bestått). Det er en tilbakegang fra runde 3: par 4 «Selvstendig» er `O` i alle tre, par 1 K1 «Nøyaktig» er `O`, og par 3 K2 og K3 har to krav under fasiten.
+- Se [`vurdering-2-4-leverandorvalg-runde-4.md`](vurdering-2-4-leverandorvalg-runde-4.md). Forslaget etter AD-11 er OpenAI `gpt-4.1-mini`. Kevin og Sondre avgjør SM-2 i par 2 K1, bekrefter DPA-en og signerer.
+
+## Status 2026-11-19 (runde 4 forberedt)
+
+- **Prompten i runde 4** retter feilene fra runde 3 med generelle regler. Se [`spec-2-4-del-b-runde-4-alternativer-niva-og-rapportnavn.md`](spec-2-4-del-b-runde-4-alternativer-niva-og-rapportnavn.md) og [`vurdering-2-4-leverandorvalg-runde-4.md`](vurdering-2-4-leverandorvalg-runde-4.md).
+  - Et alternativ må selv være dokumentert.
+  - Et lavere nivå gir høyst «delvis».
+  - Kravet vurderes slik det står, uten nye krav.
+  - Råd gis bare ved «mangler».
+  - Sondres regel for sammensatte krav er uendret.
+- **Rapportnavnene har nå sekunder** (`ÅÅÅÅ-MM-DD-TTMMSS-…`), og en rapport overskrives aldri. Er navnet tatt, får fila `-nrN` før `-mock.md` eller `.md`. Det er dekket av regresjonstester. Feilen fra runde 3 (kontrollen ble overskrevet) kan ikke skje igjen.
+- **Målingen i runde 4** krever Kevins godkjenning. Begge kjøres på samme commit:
+
+  ```bash
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50
+  npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --pris-inn 14.53 --pris-ut 72.65
+  ```
+
+  - Nøkkelen for OpenAI virket i runde 3, så det trengs ingen ny kontroll. Hvis Kevin vil ha en, kommer det 1 kall til, til ca. 0,02 kr.
+  - Forventet kostnad er ca. 0,21 kr for OpenAI og ca. 1,18 kr for Mistral, ca. 1,4 kr til sammen.
+  - Øvre grense er ca. 1,6 kr for OpenAI og ca. 7,4 kr for Mistral uten mva, hvis alle kallene når taket på 8000 output-tokens. For Mistral holder grensen på 2 USD per måned uansett forbruket nede.
+
+## Status 2026-11-19 (runde 3 målt)
+
+- **Begge er målt på commit `4cd4f2f`** med prompten fra `1ad9821` (godkjent av Kevin, ramme 2 kr):
+  - **OpenAI `gpt-4.1-mini`:** kontroll (200, 9148 ms, 0,0175 kr) og 12 av 12 i `2026-11-19-2220-openai-gpt-4.1-mini.md` (0,2039 kr, lengste 8857 ms). Kontrollrapporten ble overskrevet, fordi den fulle målingen startet i samme minutt og filnavnet bare har minutter. Tallene står i vurderingen.
+  - **Mistral Medium 3.5:** 12 av 12 i `2026-11-19-2222-mistral-mistral-medium-2604.md` (1,1606 kr, lengste 6594 ms).
+  - **Samlet:** 1,38 kr. Ingen feil og ingen nye forsøk.
+- **Resultatet:** begge feiler SM-3, med 2 krav over fasiten hver og 10 av 12 kjøringer bestått.
+  - **Mistral:** feiler på par 1 («Gode digitale ferdigheter»).
+  - **OpenAI:** feiler på par 2 («Brukerstøtte eller kundeservice»).
+  - Det sammensatte kravet i par 2 står samlet i alle seks kjøringene.
+  - SM-2, NFR-4 og kostnaden er i orden for begge. NFR-5 er i orden, men med flere små språkfeil hos OpenAI.
+  - Se [`vurdering-2-4-leverandorvalg-runde-3.md`](vurdering-2-4-leverandorvalg-runde-3.md).
+- **Valget er ikke tatt.** Begge feiler, og etter Kevins beslutning skal prompten da rettes og begge måles på nytt. Alternativet er en egen beslutning fra Kevin og Sondre. Begge måtene står i sesjonsloggen.
+
+## Status 2026-11-19 (runde 3 forberedt)
+
+- **Sondres regel for sammensatte krav** (meldt av Kevin 2026-11-19) er lagt inn i prompten: [`spec-2-4-del-b-runde-3-sammensatte-krav.md`](spec-2-4-del-b-runde-3-sammensatte-krav.md).
+  - Ett krav per punkt, også i kravteksten.
+  - Alle delene dokumentert: Oppfylt. Noen av delene: Delvis oppfylt, og belegget viser delen som er dekket, mens forklaringen sier hva som mangler. Ingen av delene: Mangler, eller Delvis oppfylt ved beslektet erfaring (FR-8). Sondre må bekrefte den siste lesingen.
+  - Fasitene er kontrollert og ikke endret.
+- **Prompten er endret etter runde 2, så runde 3 måler begge på nytt på samme commit.** Det krever Kevins godkjenning, og nøkkelen fra Sondre må ligge i `.env.local` (aldri i git). Den skal bare brukes til testsettet med fiktive testdata.
+
+  ```bash
+  # Mistral Medium 3.5: 12 kall, forventet ca. 1,1 kr
+  npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --pris-inn 14.53 --pris-ut 72.65
+  # OpenAI gpt-4.1-mini: kontroll på par 2 (1 kall), deretter 12 kall, forventet ca. 0,3 kr
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50 --par par-2-it-support --ganger 1
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50
+  ```
+
+- **Kopien for runde 3:** [`vurdering-2-4-leverandorvalg-runde-3.md`](vurdering-2-4-leverandorvalg-runde-3.md).
+
+## Status 2026-11-19 (runde 2, Mistral målt)
+
+- **Mistral Medium 3.5 i runde 2** (godkjent av Kevin): `testsett-rapporter/2026-11-19-2129-mistral-mistral-medium-2604.md`, commit `28da462`.
+  - 12 av 12 kjøringer ga status 200, med 0 feil og ingen nye forsøk.
+  - Den lengste tok 6038 ms, og det høyeste antallet output-tokens var 978.
+  - Kostnaden var 1,1352 kr (0,0946 kr per gap-kjøring), med prisen som ikke er eksakt bekreftet.
+- **Resultatet:**
+  - Tilfellene av krav over fasiten gikk ned fra 9 til 2, og par 3 og par 4 er bestått.
+  - **SM-3 feiler fortsatt på par 1:** «Gode digitale ferdigheter» er `O` i K1 og K3.
+  - Par 1 «Kundeorientert» er nå for strengt vurdert (`D` mot `O`). Modellen krever bankerfaring.
+  - Par 2 er delt i K2 og K3.
+  - Se sammenligningen øverst i [`vurdering-2-4-leverandorvalg-runde-2.md`](vurdering-2-4-leverandorvalg-runde-2.md).
+- **Neste steg:** OpenAI `gpt-4.1-mini` måles på samme commit `28da462` med kommandoene under. Koden og prompten endres ikke før det er gjort. Da kan begge måles på samme grunnlag, og AD-11 kan brukes på runde 2.
+
+## Status 2026-11-19 (runde 2 forberedt)
+
+- **Beslutning (Kevin, 2026-11-19):** prompten rettes etter runde 1, før OpenAI er målt. Begge leverandørene måles i runde 2 på samme prompt, og valget tas etter AD-11 på runde 2. Det erstatter planen under («B3 avgjør nå valget» og «Hvis runde 2»). Grunnlaget er SM-2: feiler én kjøring, rettes prompten, og alt kjøres på nytt. Runde 1 og rapportene fra den står uendret.
+- **Prompten i runde 2:** [`spec-2-4-del-b-runde-2-kategori-og-sammensatte-krav.md`](spec-2-4-del-b-runde-2-kategori-og-sammensatte-krav.md). Årsaksanalysen står i spec-en. Steg 1–3 i `GAP_INSTRUKS` følger nå FR-8 og FR-7 nøyaktig. Det gjelder definisjonene, sammensatte krav og alternativer, egenvurdering, lavere nivå, ett krav per listepunkt og forkortelser i stillingen. Koden, skjemaet og fasiten er ikke endret.
+- **Kopien for runde 2:** [`vurdering-2-4-leverandorvalg-runde-2.md`](vurdering-2-4-leverandorvalg-runde-2.md).
+- **Målingen i runde 2** krever Kevins godkjenning. Arbeidstreet må være rent, og `npm test` og tørrkjøringen med `--mock` må være grønne. Prisene er de samme som i runde 1.
+
+  ```bash
+  # Mistral Medium 3.5: 12 kall, forventet ca. 1,0 kr, øvre grense ca. 7,4 kr uten mva (innenfor grensen på 2 USD)
+  npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --pris-inn 14.53 --pris-ut 72.65
+  # OpenAI gpt-4.1-mini: kontroll på par 2 (1 kall), deretter 12 kall, forventet ca. 0,3 kr
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50 --par par-2-it-support --ganger 1
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50
+  ```
+
+  Alle tre kjøres på samme commit, med prompten fra runde 2. OpenAI krever nøkkelen og Sondres bekreftelse av vilkårene. Mistral kan måles først.
+- **Hva runde 2 skal vise:** ingen krav over fasiten (SM-3), og høyst ett krav under fasiten per par (FR-8). Det er en risiko at de strengere reglene presser et krav under fasiten til, for eksempel i par 3, der ett krav allerede lå under i runde 1. Det sjekkes i vurderingen.
+
+## Status 2026-11-19 (etter B2)
+
+- **B2 er gjort** (godkjent av Kevin): `testsett-rapporter/2026-11-19-2057-mistral-mistral-medium-2604.md`.
+  - 12 av 12 kjøringer ga status 200, uten feil og uten nye forsøk. Den lengste tok 6617 ms, og det høyeste antallet output-tokens var 908.
+  - Kostnaden var 1,0129 kr (0,0844 kr per gap-kjøring) etter tredjepartsprisen. Prisen er ikke eksakt bekreftet hos Mistral.
+  - **Medium 3.5 feiler SM-3 og SM-1 (gap):** par 1 og par 4 har krav over fasiten i alle tre kjøringene. SM-2, NFR-5, NFR-4 og kostnaden er i orden. Se avsnitt 2, 4 og 5 i vurderingen for runde 1.
+- **Etter regelen (§ 9) avgjør B3 nå valget:**
+  - Består OpenAI, velges OpenAI. Da gjelder tredjelandsoverføringen (USA) i del C.
+  - Feiler OpenAI på samme punkt (krav over fasiten), er det prompten. Da følger runde 2 (se «Hvis runde 2» under), og begge måles på nytt.
+- **B3, neste steg** (krever nøkkelen fra Sondre, Sondres bekreftelse av vilkårene og Kevins godkjenning). Først kontrollen (§ 5), så den fulle målingen (§ 6):
+
+  ```bash
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50 --par par-2-it-support --ganger 1
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50
+  ```
+
+  - Prisen er bekreftet på developers.openai.com (2026-11-19).
+  - Forventet kostnad er ca. 0,02 kr for kontrollen og ca. 0,3 kr for den fulle målingen. Øvre grense er ca. 1,6 kr uten mva for den fulle målingen, hvis alle de 12 kallene når taket på 8000 output-tokens.
+  - Koden og prompten skal ikke endres mellom B2 og B3. Da kan de to leverandørene sammenlignes på samme versjon (prompten fra `246e58b`).
+- **B4 (manuell test i appen, § 7):** gjenstår for begge. Det er 2 betalte kall per leverandør, og det krever godkjenning.
+
+### Hvis runde 2 (bare hvis OpenAI også har krav over fasiten)
+
+Et forslag som ikke er gjort. Det gjøres med `bmad-build` og en egen spec, og eksemplene skal ikke hentes fra testdataene. Tvilsregelen i steg 3 i prompten gjøres konkret for tre tilfeller:
+- En egenskap som bare står som brukerens egenvurdering (for eksempel i profilen), dokumenterer ikke kravet alene. Kravet er da høyst «delvis».
+- Oppgir CV-teksten et lavere nivå enn kravet, er kravet høyst «delvis».
+- Har kravet flere deler, og CV-teksten dokumenterer bare noen av dem, er kravet «delvis». Et punkt i annonsen som nevner flere ting, holdes samlet som ett krav.
+
+Etter en endring i prompten måles begge på nytt med alle 12 kjøringene (SM-1, SM-2), i en ny kopi av malen.
+
+## Status 2026-11-19 (etter B1)
+
+- **Kontrollene (§ 5) er gjort for Mistral.** Large 4 (`mistral-large-4-0`) fikk tidsavbrudd etter 45 s to ganger, også med `low`, og er tatt ut av runde 1 (NFR-4). Medium 3.5 (`mistral-medium-2604`, `none`) besto på 4,8 s. Rapportene er committet som dokumentasjon etter Kevins beslutning, i stedet for å slettes. Se avsnitt 0 i [`vurdering-2-4-leverandorvalg-runde-1.md`](vurdering-2-4-leverandorvalg-runde-1.md).
+- **Kopien for runde 1:** [`vurdering-2-4-leverandorvalg-runde-1.md`](vurdering-2-4-leverandorvalg-runde-1.md). Avsnitt 0 og 1 er fylt ut med kilder og dato, og feltene merket **(bekreftes)** gjenstår.
+- **Kursen:** 9,6866 kr per USD (Norges Bank, 2026-11-19).
+- **B2, neste steg (krever Kevins godkjenning):** full måling av Medium 3.5 når prisen er bekreftet i konsollen. Med tredjepartsprisen blir kommandoen:
+
+  ```bash
+  npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --pris-inn 14.53 --pris-ut 72.65
+  ```
+
+  Bytt prisene hvis konsollen viser noe annet. 12 kall, forventet ca. 1,0–1,4 kr uten mva. Øvre grense er ca. 7,4 kr uten mva (ca. 9,3 kr med) hvis alle kallene når taket på 8000 output-tokens, regnet med høyst 2500 input-tokens per kall.
+- **B3 (OpenAI):** venter på nøkkelen fra Sondre (`OPENAI_API_KEY` er tom i `.env.local`) og på Sondres bekreftelse av vilkårene. Prisen er bekreftet på developers.openai.com: 3,87 / 15,50 kr.
+
+Kjøreboka dekker AK 2 i story 2.4 og AD-11: testsettet kjøres mot Mistral og OpenAI, vurderes med sjekklisten, og leverandøren velges. Del B er ikke ferdig før stegene her er gjort. Sett ikke 2-4 til `done` i `sprint-status.yaml`. Del C (produksjonen) gjenstår uansett.
+
+## Hvem gjør hva
+
+| Steg | Ansvarlig |
+|---|---|
+| Mistral-konto, kreditt (10 USD kjøpt av Kevin, ingen automatisk påfylling), grense for forbruket, trening av, nøkkel | Kevin |
+| OpenAI-konto, kreditt (ca. 5 USD, automatisk påfylling av), trening av, nøkkel | Sondre |
+| Kontroll av nøkkelen og full måling | Den som har nøkkelen. Nøkkelen deles ikke i chat eller git |
+| Manuell test i appen (avsnitt 3 i malen) | Sondre, som i 2.3 |
+| Vurderingen og valget | Kevin og Sondre sammen |
+
+Totalt budsjett er under 200 kr. Valutakursen føres inn med kilde og dato i avsnitt 0 i malen.
+
+## 1. Forutsetninger
+
+- [ ] Kontoene er satt opp etter sjekklistene i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md), og avsnitt 1 i vurderingsmalen er fylt ut med lenke og dato. Har en leverandør `N` på trening eller databehandleravtale, måles den ikke.
+- [ ] Arbeidstreet er rent (`git status` uten endringer), så rapporten ikke får merknaden om endringer som ikke er committet. Commit-hashen i rapporten skal kunne spores (NFR-10).
+- [ ] `npm ci` er kjørt, og `npm test` er grønn.
+- [ ] Tørrkjøringen virker uten nøkkel:
+
+  ```bash
+  npm run testsett -- --leverandor mistral --mock
+  ```
+
+  Den gir utgangskode 0 og en rapport i `testsett-rapporter/` med `-mock` i filnavnet, «Modell (bedt om)» og versjonen «mock». Den ignoreres av git.
+
+## 2. `.env.local`
+
+Lag `.env.local` i prosjektroten (ignoreres av git via `.env.*`). Bare nøkkelen som skal brukes, trengs:
+
+```bash
+MISTRAL_API_KEY=<nøkkelen fra Mistral>
+OPENAI_API_KEY=<nøkkelen fra OpenAI>
+```
+
+Skriptet leser filen selv (`--env-file-if-exists=.env.local`). Nøkkelen skrives aldri til rapporten eller konsollen. Ikke legg den i Vercel i denne delen.
+
+## 3. Modellnavnene
+
+**OpenAI:** `gpt-4.1-mini` (beslutning, Kevin 2026-11-19). `gpt-5-mini` ga 404 hos Sondre uten en verifisert organisasjon. `gpt-4.1-mini` er ikke en resonneringsmodell og tar imot temperaturen (AD-3).
+
+**Mistral:** begge måles foreløpig (beslutning, Kevin 2026-11-19): Medium 3.5 med `--modell mistral-medium-2604` og Large 4 med `--modell mistral-large-4-0`. Navnene er hentet fra `GET /v1/models` med Kevins konto 2026-11-19. Det endelige modellvalget tas etter Kevins beslutning. Hvis kontoen senere viser andre navn, gjelder fremgangsmåten under. **Ikke gjett navnet.**
+
+1. Les modelloversikten: <https://docs.mistral.ai/getting-started/models> (kolonnen for API-navn, utfasing og avvikling).
+2. Se hvilke modeller kontoen har tilgang til, helst i Mistral-konsollen (Admin Panel / AI Studio, oversikten over modeller). Vil du heller bruke API-et (`GET /v1/models`, en liste og ikke en generering), last nøkkelen fra `.env.local` uten å skrive den ut. I PowerShell:
+
+   ```powershell
+   $nokkel = ((Get-Content .env.local | Where-Object { $_ -match '^MISTRAL_API_KEY=' }) -replace '^MISTRAL_API_KEY=', '').Trim()
+   (Invoke-RestMethod https://api.mistral.ai/v1/models -Headers @{ Authorization = "Bearer $nokkel" }).data |
+     Where-Object { $_.id -like '*medium*' } | Select-Object id, aliases, deprecation
+   Remove-Variable nokkel
+   ```
+
+   **Lim aldri nøkkelen inn direkte i kommandoen.** Den havner da i historikken til skallet. Se etter Medium-modellene, feltet `id`, eventuelle `aliases` og at modellen ikke er avviklet (`deprecation`).
+3. Før navnet, kilden og datoen inn i avsnitt 0 i malen («Modell (`--modell`, datobestemt navn)»).
+
+Den 2026-11-19 fant Kevin `mistral-medium-2604` med `GET /v1/models` i sin konto (avsnittet over). Forundersøkelsen i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) fant ikke noe slikt navn. Hvis kontoen senere viser andre navn, og det ikke finnes noe datobestemt Medium-navn som ikke er avviklet, stopp her, og la Kevin og Sondre bestemme modellen før målingen.
+
+Uansett hvilket navn som brukes, viser rapporten både «Modell (bedt om)» og «Modellversjon fra leverandøren», altså modellen som faktisk svarte. Det er den som føres inn i malen.
+
+**Resonnering (2026-11-19):** Medium 3.5 og Large 4 er resonneringsmodeller. Kontrollen med Large 4 uten innstilling fikk tidsavbrudd etter 45 s (`testsett-rapporter/2026-11-19-1557-mistral-mistral-large-4-0.md`, kjørt før innstillingen fantes). Mistral-adapteren sender nå `reasoningEffort` `"none"` for Medium 3.5 og `"low"` for Large 4, som er den laveste innsatsen modellen tar imot (Large 4 tar ikke imot `none`). Bruk de datobestemte navnene. `mistral-large-latest` får ingen innstilling, fordi AI SDK dropper den for det aliaset. Rapporten viser verdien i linjen «Resonnering (reasoningEffort)». Se [spec-2-4-del-b-resonnering-mistral.md](spec-2-4-del-b-resonnering-mistral.md).
+
+## 4. Prisene
+
+Skriptet trenger prisene i kroner per million tokens (`--pris-inn` og `--pris-ut`). De står ikke i koden.
+
+1. Hent prisen per million input- og output-tokens for modellen fra prissiden eller kontoen den dagen målingen gjøres.
+2. Hent valutakursen med kilde og dato (for eksempel Norges Bank).
+3. Regn om til kroner og før pris, kilde, kurs og dato inn i avsnitt 0 i malen.
+
+## 5. Kontroll av hver nøkkel (ett par, én kjøring)
+
+Før den fulle målingen: én kjøring med ett par, så en feil nøkkel eller et feil modellnavn ikke bruker opp kreditten.
+
+```bash
+npm run testsett -- --leverandor mistral --modell <modell> --pris-inn <kr> --pris-ut <kr> --par par-2-it-support --ganger 1
+npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn <kr> --pris-ut <kr> --par par-2-it-support --ganger 1
+```
+
+Sjekk i rapporten:
+
+- [ ] Status 200 og ingen feilkode. Ved `llm_feil`: sjekk nøkkelen, kreditten og modellnavnet.
+- [ ] «Modellversjon fra leverandøren» er et datobestemt eller spesifikt navn. Er `--modell` et alias, skal versjonen være forskjellig fra aliaset.
+- [ ] «Resonnering (reasoningEffort)» er `low` for `mistral-large-4-0` og `none` for `mistral-medium-2604`.
+- [ ] Er `--modell` et alias (for eksempel `…-latest`), har rapporten **ikke** merknaden «samme som navnet som ble bedt om». Merknaden betyr da at leverandøren kanskje ikke oppga noen versjon, og at AI SDK bare gjentok aliaset fra `--modell`. Stopp i så fall, og finn den faktiske versjonen (steg 3) før den fulle målingen. Med et datobestemt navn er merknaden normal: navnet kommer vanligvis tilbake uendret.
+- [ ] Kostnaden er rimelig sammenlignet med budsjettet.
+
+Kontrollrapporten er ikke en måling. Slett den, eller la være å committe den. Skriptet regner ikke filer i `testsett-rapporter/` som endringer i arbeidstreet, så den gjør ikke neste rapport «skitten». Andre filer gjør det.
+
+## 6. Full måling per leverandør
+
+Tre kjøringer av alle fire parene (12 kall per leverandør):
+
+```bash
+npm run testsett -- --leverandor mistral --modell <modell> --pris-inn <kr> --pris-ut <kr>
+npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn <kr> --pris-ut <kr>
+```
+
+- [ ] Hver kjøring gir utgangskode 0 og en rapport i `testsett-rapporter/` uten `-mock`.
+- [ ] Toppteksten har commit, «Modell (bedt om)», «Modellversjon fra leverandøren» med antall kjøringer, priser, temperatur og tak.
+- [ ] Viser toppteksten flere versjoner, har modellen byttet underveis. Noter det i malen, og vurder å måle på nytt.
+- [ ] Kjøringer med feil (fra «Totalt») føres inn i avsnitt 0. Feilede kjøringer gjentas ikke stille. En ny runde er en ny kopi av malen.
+- [ ] Commit hver ekte rapport (eller flytt den ut av prosjektet) før neste kjøring, så ingenting annet enn rapporter ligger uncommittet. Rapportene har ingen nøkler. Sjekk det med et søk etter `API_KEY` og nøkkelens prefiks før commit. En annen fil som ikke er committet (for eksempel den utfylte malen), gir merknaden om endringer i neste rapport.
+
+## 7. Manuell test i appen (NFR-4, NFR-9)
+
+Avsnitt 3 i malen. Testen bruker den samme kreditten som målingen. **Hver analyse i appen er ett betalt kall** (og telles i rate-limiten), så kjør bare de to analysene under, og ikke prøv igjen uten grunn. For hver leverandør:
+
+1. Sjekk den gjenværende kreditten i kontoen. Før den andre leverandøren: sjekk at kreditten hos den fortsatt holder.
+2. Sett `LLM_LEVERANDOR` og `LLM_MODELL` i `.env.local` til leverandøren og modellen som ble målt.
+3. Kjør `npm run dev`.
+4. Par 2 (`testdata/par-2-it-support`): gap-analysen kommer på bokmål innen 30 s (NFR-4). Noter tiden.
+5. Par 1 med annonsen i `testdata/robusthet/annonse-med-instruks.txt`: AFR er fortsatt Mangler, og ingen AFR- eller bankerfaring påstås (NFR-9).
+6. Stopp `npm run dev`, og **fjern `LLM_LEVERANDOR` og `LLM_MODELL` fra `.env.local`** igjen, så de ikke styrer neste test eller senere utvikling.
+
+## 8. Utfylling av malen
+
+Kopier [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md) for runden (én kopi per målerunde), og fyll ut:
+
+- Avsnitt 0: rapportfilene, modell (bedt om), modellversjonen fra leverandøren (fra rapporten), commit, rent arbeidstre, priser, kilder, kurs og feil.
+- Avsnitt 1: vilkårene med lenke og dato.
+- Avsnitt 2: kategorier, sjekklisten og hjelpetallene per par og kjøring.
+- Avsnitt 3: den manuelle testen.
+- Avsnitt 4: sammendraget. «1 kr per kjøring» vurderes som gjennomsnittlig kostnad per gap-kjøring × 4.
+
+## 9. Valget
+
+Regelen (AD-11, avsnitt 5 i malen): Mistral velges hvis vilkårene er i orden, og den består SM-1 (gap), SM-2, SM-3 og NFR-5 innenfor 1 kr per kjøring. Ellers velges OpenAI.
+
+- Feiler **begge** på samme punkt, er det prompten: rett den med `bmad-build`, og mål **begge** på nytt (ny målerunde, ny kopi av malen, rad i avsnitt 6).
+- Feiler **bare Mistral**, velges OpenAI.
+- Kevin og Sondre vurderer og bestemmer sammen, og begge signerer malen.
+
+## 10. Etterarbeid
+
+- [ ] Commit rapportene og den utfylte malen.
+- [ ] Noter resultatet, modellen (bedt om og versjonen fra leverandøren) og commit i sesjonsloggen (`sesjonslogg`-skillen).
+- [ ] Avsnitt 7 i malen: forslag om `MAKS_UTDATA_TOKENS` og `STANDARD_MODELL`. Ingen av dem endres uten Kevins godkjenning.
+- [ ] Merk PRD §10.1 som løst med dato og lenke til malen.
+- [ ] Slett eller roter nøklene som ble brukt til målingen, hvis de ikke skal brukes i produksjonen.
+- [ ] 2-4 står som `in-progress` til del C (vilkår, Vercel Production, kreditt under 200 kr, personvernboks) er gjort.

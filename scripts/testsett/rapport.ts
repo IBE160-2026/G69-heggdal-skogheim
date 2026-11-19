@@ -1,8 +1,9 @@
 import type { GapAnalyse, Kategori } from "@/lib/kontrakt/gap";
 import { MAKS_UTDATA_TOKENS, TEMPERATUR } from "@/lib/llm/felles";
 import type { Leverandor } from "@/lib/llm/leverandor";
+import { resonnering } from "@/lib/llm/mistral";
 
-import { kostnad, kroner, kronerMedUkjente, snittKostnad } from "./kostnad";
+import { kostnad, kroner, kronerMedUkjente, snittMedUkjente } from "./kostnad";
 import { dekningTekst, type Fasit, nokkelordDekning, type Sjekkliste } from "./fasit";
 
 // Rapporten bygges bare fra flaggene, pipelinesvaret, tokens, testdata og
@@ -25,6 +26,8 @@ export type Kjoring = {
   feilkode: string | null;
   inputTokens: number | null;
   outputTokens: number | null;
+  // NFR-10: modellen leverandøren svarte med. `null` når kjøringen feilet uten svar.
+  modellversjon: string | null;
   varighetMs: number;
   analyse: GapAnalyse | null;
 };
@@ -64,18 +67,62 @@ function kjoringKostnad(k: Kjoring, meta: Metadata): number | null {
   return kostnad(k.inputTokens, k.outputTokens, meta.prisInn, meta.prisUt);
 }
 
-function topptekst(meta: Metadata): string[] {
+// AD-8: resonneringen Mistral-adapteren sender for modellen (NFR-10). Mock og
+// OpenAI sender ingen.
+function resonneringTekst(meta: Metadata): string {
+  if (meta.mock || meta.leverandor !== "mistral") return "ikke satt";
+  return resonnering(meta.modell) ?? "ikke satt (leverandørens standard)";
+}
+
+const UKJENT_VERSJON = "ukjent";
+
+// AI SDK faller tilbake til modellen som ble bedt om når leverandøren ikke oppgir
+// noen, så en versjon lik navnet er kanskje ikke løst opp.
+const SAMME_SOM_NAVNET =
+  " (samme som navnet som ble bedt om; leverandøren oppga kanskje ingen egen versjon)";
+
+function versjon(k: Kjoring): string {
+  return k.modellversjon ?? UKJENT_VERSJON;
+}
+
+// Versjonen kommer fra leverandøren, så den escapes som modelltekst.
+function versjonVisning(v: string, meta: Metadata): string {
+  return `${celle(v)}${v === meta.modell ? SAMME_SOM_NAVNET : ""}`;
+}
+
+function kjoringerTekst(antall: number): string {
+  return `${antall} ${antall === 1 ? "kjøring" : "kjøringer"}`;
+}
+
+// NFR-10: hver distinkte versjon med antall kjøringer, i rekkefølgen de kom.
+// Ukjent står til slutt.
+function versjonerTekst(par: ParResultat[], meta: Metadata): string {
+  const antall = new Map<string, number>();
+  for (const k of par.flatMap((p) => p.kjoringer)) {
+    antall.set(versjon(k), (antall.get(versjon(k)) ?? 0) + 1);
+  }
+  const navn = [...antall.keys()].sort(
+    (a, b) => Number(a === UKJENT_VERSJON) - Number(b === UKJENT_VERSJON),
+  );
+  return navn.length === 0
+    ? "–"
+    : navn.map((v) => `${versjonVisning(v, meta)} (${kjoringerTekst(antall.get(v) ?? 0)})`).join(", ");
+}
+
+function topptekst(meta: Metadata, par: ParResultat[]): string[] {
   return [
     `# Testsett: ${meta.leverandor} ${meta.modell}${meta.mock ? " (tørrkjøring med mock)" : ""}`,
     "",
     `- **Commit:** \`${meta.commit}\`${meta.endringer ? " (arbeidstreet har endringer som ikke er committet)" : ""}`,
     `- **Leverandør:** ${meta.leverandor}`,
-    `- **Modell:** ${meta.modell}`,
+    `- **Modell (bedt om):** ${meta.modell}`,
+    `- **Modellversjon fra leverandøren:** ${versjonerTekst(par, meta)}`,
     `- **Dato:** ${meta.dato}`,
     `- **Priser:** ${prisTekst(meta.prisInn)} per million input-tokens, ${prisTekst(meta.prisUt)} per million output-tokens`,
     `- **Kjøringer per par:** ${meta.ganger}`,
     `- **Temperatur:** ${TEMPERATUR}`,
     `- **Tak for output-tokens:** ${MAKS_UTDATA_TOKENS}`,
+    `- **Resonnering (reasoningEffort):** ${resonneringTekst(meta)}`,
     ...(meta.mock
       ? ["", "> Tørrkjøring: alle parene fikk demosvaret fra mock-adapteren. Dette er ikke en måling og skal ikke committes som en."]
       : []),
@@ -89,6 +136,7 @@ function kjoringSeksjon(k: Kjoring, fasit: Fasit, meta: Metadata): string[] {
     `#### Kjøring ${k.nr}`,
     "",
     `- **Status:** ${k.status}${k.feilkode ? ` (${k.feilkode})` : ""}`,
+    `- **Modellversjon:** ${versjonVisning(versjon(k), meta)}`,
     `- **Tokens:** ${tall(k.inputTokens)} inn, ${tall(k.outputTokens)} ut${
       k.outputTokens !== null && k.outputTokens >= MAKS_UTDATA_TOKENS
         ? " (nådde taket for output-tokens)"
@@ -144,7 +192,7 @@ function oppsummering(p: ParResultat, meta: Metadata): string[] {
     `- **Kjøringer:** ${p.kjoringer.length}, **feil:** ${feil.length}${
       feil.length ? ` (${feil.map((k) => `kjøring ${k.nr}: ${k.feilkode}`).join(", ")})` : ""
     }`,
-    `- **Gjennomsnittlig kostnad:** ${kronerMedUkjente(snittKostnad(kostnader), kostnader)}`,
+    `- **Gjennomsnittlig kostnad:** ${snittMedUkjente(kostnader)}`,
     `- **Lengste varighet:** ${lengste} ms`,
     `- **Høyeste output-tokens:** ${output.length ? Math.max(...output) : "–"}`,
     `- **Treffprosent per kjøring:** ${treff.length ? treff.map((t) => `${t} %`).join(", ") : "–"}`,
@@ -210,7 +258,7 @@ function totalt({ meta, par }: RapportData): string[] {
     "",
     `- **Kjøringer:** ${alle.length}, **feil:** ${feil}`,
     `- **Samlet kostnad:** ${kronerMedUkjente(sum, kostnader)}`,
-    `- **Gjennomsnittlig kostnad per kjøring:** ${kronerMedUkjente(snittKostnad(kostnader), kostnader)}`,
+    `- **Gjennomsnittlig kostnad per kjøring:** ${snittMedUkjente(kostnader)}`,
     `- **Lengste varighet:** ${Math.max(0, ...alle.map((k) => k.varighetMs))} ms`,
     `- **Høyeste output-tokens:** ${output.length ? Math.max(...output) : "–"} (taket er ${MAKS_UTDATA_TOKENS})`,
     `- **Temperatur:** ${TEMPERATUR}`,
@@ -220,7 +268,7 @@ function totalt({ meta, par }: RapportData): string[] {
 
 export function lagRapport(data: RapportData): string {
   return [
-    ...topptekst(data.meta),
+    ...topptekst(data.meta, data.par),
     "",
     ...data.par.flatMap((p) => parSeksjon(p, data.sjekkliste, data.meta)),
     ...totalt(data),

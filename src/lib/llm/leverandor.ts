@@ -9,10 +9,12 @@ export const NOKKEL_VARIABEL: Record<Leverandor, string> = {
   openai: "OPENAI_API_KEY",
 };
 
-// Standardmodellene til målingen i story 2.4 bestemmer den endelige modellen.
+// Standardmodellene når `LLM_MODELL` mangler. Story 2.4 valgte OpenAI gpt-4.1-mini (AD-11,
+// 2026-11-19). Produksjonen setter `LLM_LEVERANDOR=openai` og `LLM_MODELL` i Vercel (del C).
+// Mistral er fortsatt standard når `LLM_LEVERANDOR` mangler (AD-3).
 export const STANDARD_MODELL: Record<Leverandor, string> = {
   mistral: "mistral-medium-latest",
-  openai: "gpt-5-mini",
+  openai: "gpt-4.1-mini",
 };
 
 type Env = Record<string, string | undefined>;

@@ -28,6 +28,15 @@ export function kronerMedUkjente(belop: number | null, kostnader: readonly (numb
   return `minst ${kroner(belop ?? 0)} (${ukjente} ${ukjente === 1 ? "kjøring" : "kjøringer"} med ukjent kostnad)`;
 }
 
+// Gjennomsnittet av de kjente kostnadene med antallet ukjente som ikke er med. Et
+// gjennomsnitt er ingen nedre grense, så det står ikke «minst» her (Sondre, PR #14).
+export function snittMedUkjente(kostnader: readonly (number | null)[]): string {
+  const ukjente = kostnader.filter((k) => k === null).length;
+  const snitt = snittKostnad(kostnader);
+  if (ukjente === 0 || snitt === null) return kroner(snitt);
+  return `${kroner(snitt)} (gjennomsnitt av de kjente, ${ukjente} ${ukjente === 1 ? "kjøring" : "kjøringer"} med ukjent kostnad er ikke med)`;
+}
+
 // Kroner med fire desimaler, så også små beløp synes (for eksempel «0,0123 kr»).
 export function kroner(belop: number | null): string {
   return belop === null ? "ukjent" : `${belop.toFixed(4).replace(".", ",")} kr`;

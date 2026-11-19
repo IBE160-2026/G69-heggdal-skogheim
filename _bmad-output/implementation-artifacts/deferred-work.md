@@ -77,12 +77,20 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-ekte-gap-analyse-med-spraakmodellen.md`
   summary: The default OpenAI model `gpt-5-mini` is a reasoning model and ignores `temperature`, so AD-3's 0–0.3 does not hold for OpenAI; settle the model (or record the exception) in story 2.4.
   evidence: AI SDK drops the setting with a warning; the adapter test only checks that the value is passed.
+  status: Lukket 2026-11-19 i story 2.4 del B. Modellen er gpt-4.1-mini, som tar imot temperaturen, og TEMPERATUR er 0 (spec-2-4-del-b-valgt-oppsett.md).
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-del-b-runde-4-alternativer-niva-og-rapportnavn.md`
+  summary: Drop `raad` in the pipeline (`src/lib/llm/felles.ts` or `generer.ts`) unless the category is «mangler», so the rule does not rest on the prompt alone.
+  evidence: In runde 3, OpenAI gpt-4.1-mini returned `raad` for «delvis» in several runs against step 6. Runde 4 only tightens the prompt; changing the pipeline was out of scope.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-del-b-runde-4-alternativer-niva-og-rapportnavn.md`
+  summary: Update the report-name format in `spec-2-4-velge-leverandor-ved-maaling.md` (line ~149) from `TTMM` to `TTMMSS` with the `-nrN` suffix.
+  evidence: Runde 4 changed `rapportNavn` and `skrivNyRapport`. The done spec for del A still documents the minute-only name, and the workflow does not edit specs as part of a fix.
 
 ## Deferred from: code review of spec-2-4-velge-leverandor-ved-maaling.md (2026-11-19)
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-4-velge-leverandor-ved-maaling.md`
   summary: The test-set report stores only the requested model name, not the model id the provider answered with, so reports under an alias like `mistral-medium-latest` may measure different models (NFR-10).
   evidence: Needs `LlmSvar` to carry the response model id from `generateText`.
+  status: Lukket i story 2.4 del B (`082386e`). Rapporten viser «Modellversjon fra leverandøren» (`response.modelId`) i toppteksten og per kjøring.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-4-velge-leverandor-ved-maaling.md`
   summary: The Windows drive-letter fix in the `kjor-testsett.ts` script guard is never exercised by CI.
   evidence: CI runs on Ubuntu only; move the comparison into an exported helper with a unit test.

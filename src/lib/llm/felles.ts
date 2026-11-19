@@ -14,8 +14,13 @@ import { kategori, nokkelordSvar } from "@/lib/kontrakt/gap";
 import type { GapInndata, LlmSvar } from "./klient";
 import { GAP_INSTRUKS, gapBrukermelding } from "./prompter/gap";
 
-// AD-3: lav temperatur, så svaret blir stabilt. Grensen er 0–0,3.
-export const TEMPERATUR = 0.2;
+// AD-3: lav temperatur, så svaret blir stabilt. Grensen er 0–0,3. Valgt 0 sammen med
+// OpenAI gpt-4.1-mini (AD-11, 2026-11-19). Med 0 var kategoriene like i alle kjøringene,
+// og ingen krav kom over fasiten. SM-1 er likevel ikke bestått, fordi par 3 har to krav
+// under fasiten (vurdering-2-4-kontroll-temperatur-0.md). Verdien gjelder begge
+// leverandørene. Mistral er bare målt med 0,2 (målerundene 1–5). Testene i
+// adaptere.test.ts låser verdien.
+export const TEMPERATUR = 0;
 
 // Taket på utdata, så et svar som løper løpsk, ikke faktureres til tidsgrensen.
 // Resonneringsmodeller teller resonnering som utdata, og et avkuttet svar gir
@@ -54,6 +59,11 @@ function utenNull(svar: GapModellSvar) {
   };
 }
 
+// NFR-10: modellen leverandøren svarte med. Feltet tas bare med når den finnes.
+function medVersjon(modelId: string | undefined): Pick<LlmSvar, "modellversjon"> {
+  return modelId ? { modellversjon: modelId } : {};
+}
+
 type ProviderOptions = Parameters<typeof generateText>[0]["providerOptions"];
 
 // Felles kall for begge adapterne. Et svar utenfor skjemaet gir `svar: undefined`,
@@ -80,6 +90,7 @@ export async function analyseGapMed(
       svar: utenNull(resultat.output),
       inputTokens: resultat.usage.inputTokens ?? 0,
       outputTokens: resultat.usage.outputTokens ?? 0,
+      ...medVersjon(resultat.response?.modelId),
     };
   } catch (feil) {
     if (NoObjectGeneratedError.isInstance(feil)) {
@@ -87,6 +98,7 @@ export async function analyseGapMed(
         svar: undefined,
         inputTokens: feil.usage?.inputTokens ?? 0,
         outputTokens: feil.usage?.outputTokens ?? 0,
+        ...medVersjon(feil.response?.modelId),
       };
     }
     // Uten utdata fordi kallet ble avbrutt, er det et tidsavbrudd, ikke et ugyldig svar.

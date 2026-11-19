@@ -11,6 +11,8 @@ import {
   type GapSvar,
   gapSvar,
   GRUNNLAG_GRENSER,
+  type Krav,
+  type KravSvar,
   type NokkelordSvar,
 } from "@/lib/kontrakt/gap";
 import { genererBody, resultatdel as resultatdelSkjema } from "@/lib/kontrakt/generer";
@@ -130,6 +132,26 @@ function utenDuplikater(nokkelord: readonly NokkelordSvar[]): NokkelordSvar[] {
   });
 }
 
+// Listetegn (de samme som i `IKKE_MED` i `lib/kjerne/demo.ts`) og mellomrom først i
+// belegget. Bindestreker og tankestreker inne i belegget beholdes.
+export const LISTETEGN_FORST = /^[\s•▪‣◦*\-‐–—]+/u;
+
+// Beslutning B i 2.4: belegget vises og lagres uten listetegn og innrykk først og
+// uten mellomrom sist. Normaliseringen fjerner dem uansett, så beleggkontrollen gir
+// samme resultat.
+function utenListetegn(krav: readonly KravSvar[]): KravSvar[] {
+  return krav.map((k) => ({
+    ...k,
+    belegg: k.belegg.map((b) => b.replace(LISTETEGN_FORST, "").trimEnd()),
+  }));
+}
+
+// Like belegg i samme krav står én gang, og det første beholdes. Gjøres etter
+// beleggkontrollen, så `fjernetBelegg` teller alle ugyldige belegg som før.
+function utenLikeBelegg(krav: readonly Krav[]): Krav[] {
+  return krav.map((k) => ({ ...k, belegg: [...new Set(k.belegg)] }));
+}
+
 // Et svar over `GRUNNLAG_GRENSER` avvises i stedet for å kuttes, så ingen krav
 // skjules for brukeren uten at det synes.
 function innenforGrensene({ krav, nokkelord }: GapSvar): boolean {
@@ -209,8 +231,11 @@ async function kjor(
   const gap = { ...parsed.data, nokkelord: utenDuplikater(parsed.data.nokkelord) };
   if (!innenforGrensene(gap)) throw new GenereringsFeil("ugyldig_svar");
 
-  // 6. Beleggkontroll (FR-9, AD-14).
-  const { krav, fjernetBelegg } = kontrollerKrav(gap.krav, kanonisk);
+  // 6. Beleggkontroll (FR-9, AD-14), med listetegn og innrykk fjernet først i
+  // hvert belegg.
+  const kontrollert = kontrollerKrav(utenListetegn(gap.krav), kanonisk);
+  const krav = utenLikeBelegg(kontrollert.krav);
+  const { fjernetBelegg } = kontrollert;
 
   // 7. Treffprosent (FR-12). En kravIndeks utenfor kravene blir null.
   const nokkelord = finnNokkelord(

@@ -41,6 +41,7 @@ function data(): RapportData {
             feilkode: null,
             inputTokens: 2000,
             outputTokens: 500,
+            modellversjon: "gpt-5-mini-2025-08-07",
             varighetMs: 1234,
             analyse: {
               stilling: "IT-brukerstøtte",
@@ -69,6 +70,7 @@ function data(): RapportData {
             feilkode: "llm_tidsavbrudd",
             inputTokens: null,
             outputTokens: null,
+            modellversjon: null,
             varighetMs: 45001,
             analyse: null,
           },
@@ -84,7 +86,10 @@ describe("lagRapport", () => {
   it("NFR-10: topptekst med commit, endringer, leverandør, modell, dato og priser", () => {
     expect(rapport).toContain(`- **Commit:** \`${"a".repeat(40)}\` (arbeidstreet har endringer`);
     expect(rapport).toContain("- **Leverandør:** openai");
-    expect(rapport).toContain("- **Modell:** gpt-5-mini");
+    expect(rapport).toContain("- **Modell (bedt om):** gpt-5-mini");
+    expect(rapport).toContain(
+      "- **Modellversjon fra leverandøren:** gpt-5-mini-2025-08-07 (1 kjøring), ukjent (1 kjøring)",
+    );
     expect(rapport).toContain("- **Dato:** 2026-11-19T12:00:00.000Z");
     expect(rapport).toContain("2,5 kr per million input-tokens, 20 kr per million output-tokens");
     expect(rapport).not.toContain("Tørrkjøring");
@@ -124,18 +129,18 @@ describe("lagRapport", () => {
     expect(rapport).toContain("- **Kostnad:** ukjent");
     expect(rapport).toContain("- **Kjøringer:** 2, **feil:** 1 (kjøring 2: llm_tidsavbrudd)");
     expect(rapport).toContain(
-      "- **Gjennomsnittlig kostnad:** minst 0,0150 kr (1 kjøring med ukjent kostnad)",
+      "- **Gjennomsnittlig kostnad:** 0,0150 kr (gjennomsnitt av de kjente, 1 kjøring med ukjent kostnad er ikke med)",
     );
     expect(rapport).toContain("- **Lengste varighet:** 45001 ms");
     expect(rapport).toContain("- **Høyeste output-tokens:** 500");
   });
 
-  it("SM-8: Totalt viser samlet og gjennomsnittlig kostnad som nedre grenser med ukjente", () => {
+  it("SM-8: Totalt viser samlet kostnad som nedre grense og snittet av de kjente", () => {
     const totalt = rapport.slice(rapport.indexOf("## Totalt"));
     expect(totalt).toContain("- **Kjøringer:** 2, **feil:** 1");
     expect(totalt).toContain("- **Samlet kostnad:** minst 0,0150 kr (1 kjøring med ukjent kostnad)");
     expect(totalt).toContain(
-      "- **Gjennomsnittlig kostnad per kjøring:** minst 0,0150 kr (1 kjøring med ukjent kostnad)",
+      "- **Gjennomsnittlig kostnad per kjøring:** 0,0150 kr (gjennomsnitt av de kjente, 1 kjøring med ukjent kostnad er ikke med)",
     );
     expect(totalt).toContain(`- **Høyeste output-tokens:** 500 (taket er ${MAKS_UTDATA_TOKENS})`);
     expect(totalt).toContain(`- **Temperatur:** ${TEMPERATUR}`);
@@ -172,6 +177,76 @@ describe("lagRapport", () => {
     expect(lagRapport(d)).toContain(
       `- **Tokens:** 900 inn, ${MAKS_UTDATA_TOKENS} ut (nådde taket for output-tokens)`,
     );
+  });
+
+  it("NFR-10: hver kjøring viser modellversjonen, og en kjøring uten svar står som ukjent", () => {
+    expect(rapport).toContain("- **Status:** 200\n- **Modellversjon:** gpt-5-mini-2025-08-07");
+    expect(rapport).toContain("- **Status:** 504 (llm_tidsavbrudd)\n- **Modellversjon:** ukjent");
+  });
+
+  it("NFR-10: et alias som løses opp, gir bedt om og versjonen hver for seg", () => {
+    const d = data();
+    d.meta.modell = "mistral-medium-latest";
+    d.par[0].kjoringer[0].modellversjon = "mistral-medium-2508";
+    d.par[0].kjoringer.pop();
+    const tekst = lagRapport(d);
+    expect(tekst).toContain("- **Modell (bedt om):** mistral-medium-latest");
+    expect(tekst).toContain("- **Modellversjon fra leverandøren:** mistral-medium-2508 (1 kjøring)\n");
+    expect(tekst).toContain("- **Modellversjon:** mistral-medium-2508");
+  });
+
+  it("NFR-10: versjonen skifter underveis, og toppteksten lister begge med antall", () => {
+    const d = data();
+    const mal = d.par[0].kjoringer[0];
+    d.par[0].kjoringer = Array.from({ length: 12 }, (_, i) => ({
+      ...mal,
+      nr: i + 1,
+      modellversjon: i < 6 ? "a" : "b",
+    }));
+    const tekst = lagRapport(d);
+    expect(tekst).toContain("- **Modellversjon fra leverandøren:** a (6 kjøringer), b (6 kjøringer)");
+    expect(tekst).toContain("#### Kjøring 6\n\n- **Status:** 200\n- **Modellversjon:** a");
+    expect(tekst).toContain("#### Kjøring 7\n\n- **Status:** 200\n- **Modellversjon:** b");
+  });
+
+  it("NFR-10: en versjon lik navnet som ble bedt om, merkes i toppteksten og ved kjøringen", () => {
+    const d = data();
+    d.par[0].kjoringer[0].modellversjon = "gpt-5-mini";
+    const tekst = lagRapport(d);
+    const merknad =
+      "gpt-5-mini (samme som navnet som ble bedt om; leverandøren oppga kanskje ingen egen versjon)";
+    expect(tekst).toContain(`- **Modellversjon fra leverandøren:** ${merknad} (1 kjøring), ukjent (1 kjøring)`);
+    expect(tekst).toContain(`- **Modellversjon:** ${merknad}\n`);
+    expect(rapport).not.toContain("samme som navnet som ble bedt om");
+  });
+
+  it("NFR-10: linjeskift og | i versjonen fra leverandøren escapes", () => {
+    const d = data();
+    d.par[0].kjoringer[0].modellversjon = "a|b\n# c";
+    const tekst = lagRapport(d);
+    expect(tekst).toContain("- **Modellversjon fra leverandøren:** a\\|b # c (1 kjøring)");
+    expect(tekst).toContain("- **Modellversjon:** a\\|b # c\n");
+    expect(tekst).not.toContain("\n# c");
+  });
+
+  it("NFR-10: ukjent står sist i listen over versjoner", () => {
+    const d = data();
+    d.par[0].kjoringer.reverse();
+    expect(lagRapport(d)).toContain(
+      "- **Modellversjon fra leverandøren:** gpt-5-mini-2025-08-07 (1 kjøring), ukjent (1 kjøring)",
+    );
+  });
+
+  it.each([
+    ["mistral", "mistral-large-4-0", false, "low"],
+    ["mistral", "mistral-medium-2604", false, "none"],
+    ["mistral", "mistral-small-latest", false, "ikke satt (leverandørens standard)"],
+    ["mistral", "mistral-large-4-0", true, "ikke satt"],
+    ["openai", "gpt-4.1-mini", false, "ikke satt"],
+  ] as const)("NFR-10: %s %s (mock %s) viser resonneringen %s", (leverandor, modell, mock, forventet) => {
+    const d = data();
+    Object.assign(d.meta, { leverandor, modell, mock });
+    expect(lagRapport(d)).toContain(`- **Resonnering (reasoningEffort):** ${forventet}`);
   });
 
   it("tørrkjøringen er merket", () => {
