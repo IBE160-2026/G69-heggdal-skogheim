@@ -8,7 +8,6 @@
 - [ ] 2026-11-18 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Story 2.4: maxOutputTokens og at gpt-5-mini ignorerer temperaturen (deferred-work.md)
 - [ ] 2026-11-19 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Story 2.4: standardmodell for OpenAI bør bli gpt-4.1-mini (gpt-5-mini krever verifisert organisasjon og ignorerer temperatur)
 - [ ] 2026-11-19 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Story 2.4: juster prompten (bare kvalifikasjoner som krav, ingen duplikater, ingen listetegn først i belegg, stilling i vanlig skrift) og mål mot fasitene
-- [ ] 2026-11-19 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Lag Mistral-nøkkel (betalt plan) til målingen i 2.4
 - [ ] 2026-11-19 [story-2-5-forstaaelige-feil](981-2026-11-19-15-45-54-story-2-5-forstaaelige-feil.md) — Story 2.4/produksjon: oppbrukt kreditt gir Prøv igjen uten henvisning til Prøv med eksempel (deferred-work.md)
 - [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Story 5.2: sjekk med NVDA/VoiceOver om vellykket kopiering leses opp to ganger (toast «Kopiert» og live-regionen «Kopiert.»)
 - [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — En mislykket Generer på nytt sletter den forrige analysen (deferred-work.md)
@@ -19,6 +18,7 @@
 
 ## Løst
 
+- [x] 2026-11-19 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Lag Mistral-nøkkel (betalt plan) til målingen i 2.4 (løst 2026-11-19: Kevin har kjørt fire målerunder med Mistral Medium 3.5; produksjonen ser ut til å bli OpenAI)
 - [x] 2026-11-19 [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md) — Demosvaret: avgjør ny tekst for AFR-rådet i gap.json («kontrollsteget» er et internt ord, brukeren ser Endre CV-tekst) (løst 2026-11-19: ny tekst med Endre CV-tekst, grenen demosvar-raad-afr)
 - [x] 2026-11-18 [story-2-1-gap-analyse-api](985-2026-11-18-19-15-43-story-2-1-gap-analyse-api.md) — Les tonen i råd- og forklaringstekstene i src/lib/llm/demo-svar/gap.json (løst 2026-11-19: lest, se [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md); ny tekst for AFR-rådet er eget punkt)
 - [x] 2026-11-18 [prd-tilbakemelding-faglaerer](986-2026-11-18-14-30-49-prd-tilbakemelding-faglaerer.md) — Etter at 1.6 er satt til done: kjør de to manuelle testene for 1.6 (demoteksten fra par 1 gir ikke varsel, fødselsnummer gir to trykk, også i Safari) senest i story 2.2, (testen for statusHentet med demo er lagt inn i story 2.1, 3016b7b) (løst 2026-11-19 for Edge: begge bestått i headless Edge, se [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md); Safari står som eget punkt)
