@@ -105,6 +105,8 @@ Verdien er allerede 0 i `src/lib/llm/felles.ts` (`ee49c2b`). Hvis Kevin og Sondr
 - **Gode samarbeidsevner:** grunnlaget for fasitens `D` er svakere. Kundeservice er kontakt med kunder, ikke samarbeid med kolleger, og fasiten skriver selv «ikke direkte dokumentert». Modellens `M` kan forsvares med tvilsregelen i FR-8. Her er fasiten trolig for raus, eller i det minste et tvilstilfelle.
 - **Uansett:** begge feilene går i den forsiktige retningen (ingen påstander om det brukeren ikke har), og rådene er ærlige.
 
+**Status 2026-11-19:** Kevin og Sondre har valgt løsning 2. Grunnlaget for beslutningen er [`beslutningsgrunnlag-2-4-fasit-par-3.md`](beslutningsgrunnlag-2-4-fasit-par-3.md). Til beslutningen er tatt og dokumentert, står SM-1 som **IKKE bestått (9 av 12)**, og fasiten er uendret.
+
 **Mulige løsninger (Kevin og Sondre avgjør):**
 1. **Fasiten beholdes, og modellen rettes.** Det krever en ny endring i prompten og en ny betalt måling (OpenAI, 12 kall, ca. 0,22 kr). Endringen kan også flytte andre krav, slik runde 4 gjorde med Mistral.
 2. **Fasiten for «Gode samarbeidsevner» vurderes på nytt** ut fra CV-en og FR-8, uavhengig av modellen. Hvis den endres til `M`, har par 3 bare ett krav under fasiten, og SM-1 blir 12 av 12 i kontrollen med temperatur 0, uten ny måling. En slik endring må begrunnes, dateres og signeres av begge i fasiten og her. Det må også stå tydelig at den ble gjort etter målingen.
