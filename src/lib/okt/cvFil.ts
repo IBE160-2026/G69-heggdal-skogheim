@@ -7,11 +7,8 @@ import { hentGetDocument } from "./pdfjs";
 
 export type CvFilSvar =
   | { type: "lest"; cvTekst: string }
-  | { type: "avvist"; melding: string }
+  | { type: "avvist" }
   | { type: "feilet" };
-
-export const FIL_AVVIST =
-  "Filen kan ikke brukes. Velg en PDF-, DOCX- eller TXT-fil på maks 5 MB.";
 
 const LESERE: Record<string, (data: ArrayBuffer) => string | Promise<string>> = {
   ".pdf": async (data) => lesPdf(data, await hentGetDocument()),
@@ -25,19 +22,16 @@ function endelse(navn: string): string {
 }
 
 // Avgjør før lesing om filen kan brukes (FR-1). Endelsen avgjør formatet, og
-// MIME-typen brukes ikke. Gir meldingen for en avvist fil, ellers null.
-export function avvisCvFil(fil: File): string | null {
-  const type = endelse(fil.name);
-  if (!LESERE[type] || fil.size > CV_FIL_MAKS) return FIL_AVVIST;
-
-  return null;
+// MIME-typen brukes ikke. Gir true for en fil som avvises. Meldingen står i
+// feiltabellen i UI-et (AD-8).
+export function avvisCvFil(fil: File): boolean {
+  return !LESERE[endelse(fil.name)] || fil.size > CV_FIL_MAKS;
 }
 
 // Leser CV-filen i nettleseren (FR-2). Funksjonen kaster aldri: en fil som ikke
 // kan leses, gir `feilet` (FR-22).
 export async function lesCvFil(fil: File): Promise<CvFilSvar> {
-  const melding = avvisCvFil(fil);
-  if (melding) return { type: "avvist", melding };
+  if (avvisCvFil(fil)) return { type: "avvist" };
 
   try {
     const les = LESERE[endelse(fil.name)];

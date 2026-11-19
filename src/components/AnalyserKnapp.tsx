@@ -4,6 +4,7 @@ import { Info } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 import { ANALYSER_ID } from "@/components/CvPanel";
+import { FEILMELDINGER } from "@/components/feilmeldinger";
 import { ProvEksempelKnapp } from "@/components/ProvEksempelKnapp";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -41,8 +42,7 @@ export function AnalyserKnapp() {
         >
           <Info aria-hidden="true" />
           <AlertDescription className="text-foreground">
-            Full analyse av din egen CV krever en API-nøkkel. Prøv eksempelet
-            for å se hvordan resultatet ser ut.
+            {FEILMELDINGER.demo_krever_nokkel.tekst}
           </AlertDescription>
           <ProvEksempelKnapp className="col-start-2 mt-2 justify-self-start" />
         </Alert>

@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { CV_FIL_MAKS } from "@/lib/kontrakt/grenser";
 
-import { avvisCvFil, FIL_AVVIST, lesCvFil } from "./cvFil";
+import { avvisCvFil, lesCvFil } from "./cvFil";
 
 // Node-testene bruker legacy-builden av pdfjs med den samme lesPdf.
 vi.mock("./pdfjs", () => ({
@@ -53,7 +53,6 @@ describe("lesCvFil", () => {
     ).resolves.toEqual({ type: "lest", cvTekst: "Ola" });
     await expect(lesCvFil(fil("Ola", "cv", "text/plain"))).resolves.toEqual({
       type: "avvist",
-      melding: FIL_AVVIST,
     });
   });
 
@@ -71,16 +70,14 @@ describe("lesCvFil", () => {
 
     await expect(lesCvFil(stor)).resolves.toEqual({
       type: "avvist",
-      melding: FIL_AVVIST,
     });
   });
 
   it.each(["cv.odt", "cv.doc", "cv", "cv.txt.exe"])(
-    "FR-1: %s avvises med formatmeldingen",
+    "FR-1: %s avvises",
     async (navn) => {
       await expect(lesCvFil(fil("Ola", navn))).resolves.toEqual({
         type: "avvist",
-        melding: FIL_AVVIST,
       });
     },
   );
@@ -102,7 +99,6 @@ describe("lesCvFil", () => {
 
     await expect(lesCvFil(stor)).resolves.toEqual({
       type: "avvist",
-      melding: FIL_AVVIST,
     });
   });
 
@@ -112,12 +108,6 @@ describe("lesCvFil", () => {
     await expect(lesCvFil(fil(bytes, "cv.pdf"))).resolves.toEqual({
       type: "feilet",
     });
-  });
-
-  it("FR-1: formatmeldingen nevner PDF, DOCX og TXT", () => {
-    expect(FIL_AVVIST).toBe(
-      "Filen kan ikke brukes. Velg en PDF-, DOCX- eller TXT-fil på maks 5 MB.",
-    );
   });
 
   it("FR-22: ødelagt DOCX gir feilet", async () => {
@@ -144,9 +134,9 @@ describe("lesCvFil", () => {
   });
 
   it("FR-1: avvisCvFil avgjør uten å lese filen", () => {
-    expect(avvisCvFil(fil("x", "cv.txt"))).toBeNull();
-    expect(avvisCvFil(fil("x", "cv.pdf"))).toBeNull();
-    expect(avvisCvFil(fil("x", "cv.odt"))).toBe(FIL_AVVIST);
+    expect(avvisCvFil(fil("x", "cv.txt"))).toBe(false);
+    expect(avvisCvFil(fil("x", "cv.pdf"))).toBe(false);
+    expect(avvisCvFil(fil("x", "cv.odt"))).toBe(true);
   });
 
   it("FR-1: tom fil leses som tom tekst", async () => {
