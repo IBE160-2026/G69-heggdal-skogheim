@@ -19,6 +19,9 @@
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Mistral Large 4 feiler NFR-4 (tidsavbrudd etter over 45 s mot kravet på 30 s, også med `low`). Neste kandidat er kontrollen av Medium 3.5 (`mistral-medium-2604`), som krever godkjenning
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Full måling av Mistral Medium 3.5 (12 kjøringer, ca. 1,2–1,9 kr, øvre grense ca. 10 kr inkl. mva) trenger godkjenning. Vurder også om det er riktig at «Windows og Microsoft 365» deles i to krav (FR-8)
 
+- [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Kevin bekrefter i Mistral-konsollen før B2: prisen for Medium 3.5, at kontoen står på pay-as-you-go, at bryteren for trening på API-kall er av (Admin → Privacy, ikke bryteren for Vibe) og den månedlige grensen for forbruket i organisasjonen og workspacen
+- [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Sondre bekrefter OpenAI-vilkårene i nettleser før B3: DPA-en (openai.com gir 403 for automatiske oppslag), kreditten og at deling er av
+
 ## Løst
 
 - [x] 2026-11-18 [story-1-5-pdf-to-kolonner](997-2026-11-07-23-19-12-story-1-5-pdf-to-kolonner.md) — Rett statusavviket i story 1.6: spec-en står som `done` og sprint-status som `review`, mens NVDA og VoiceOver i Safari gjenstår (løst 2026-11-18: spec-en for 1.6 er satt til `review`)

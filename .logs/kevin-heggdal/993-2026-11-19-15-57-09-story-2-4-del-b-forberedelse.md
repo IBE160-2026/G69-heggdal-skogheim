@@ -120,3 +120,40 @@ Kevin godkjente én kontroll av Mistral Medium 3.5 (`mistral-medium-2604`, `reas
 ### Åpne punkter
 - Story 2.4 del B: full måling av Medium 3.5 (4 par × 3 kjøringer). Den er anslått til ca. 1,2–1,9 kr, med en øvre grense på ca. 10 kr inkl. mva. Den er over rammen på 2 kr og trenger ny godkjenning.
 - Vurder om det er riktig at «Windows og Microsoft 365» deles i to krav. Det har betydning for FR-8 og sjekklisten.
+
+## 2026-11-19 kl. 20:45 — Kevin Heggdal
+
+### Oppgave
+Planen for resten av story 2.4 og B1, de gratis forberedelsene til målingen i runde 1. Først sjekket vi om story 2.4 også har en del C. Planen dekker resten av del B og del C. Kevin vil fullføre hele 2.4 før story 2.7. B1 omfatter kopien av vurderingsmalen, resultatene fra kontrollene, kursen fra Norges Bank og vilkårene til Mistral og OpenAI med kilder og dato. Det skulle ikke gjøres betalte kall, ingen endringer i Vercel og ingen push eller fletting.
+
+### Plan
+- I `epics.md` har story 2.4 tre akseptansekriterier og ingen deler. Inndelingen i A, B og C (testsettskriptet, målingen og valget, produksjonen) kommer fra spec-en for del A (`spec-2-4-velge-leverandor-ved-maaling.md:21`).
+- Planen for resten av del B: B1 gratis forberedelser, B2 full måling av Medium 3.5, B3 OpenAI `gpt-4.1-mini`, B4 manuell test i appen, B5 vurdering og valg etter AD-11, B6 etterarbeid og PR. Del C: C1 vilkår, C2 kreditt, C3 Vercel Production, C4 personvernboksen i produksjonen, C5 avslutning. Hvert betalt steg og hver endring i Vercel krever Kevins godkjenning.
+- B1 fulgte § 8 i kjøreboka. Kildene ble lest med WebFetch og curl. help.mistral.ai ble lest med curl, fordi WebFetch ble blokkert. openai.com svarer 403 på automatiske oppslag, så OpenAI ble lest på developers.openai.com.
+
+### Resultat
+- **Ny fil:** [vurdering-2-4-leverandorvalg-runde-1.md](../../_bmad-output/implementation-artifacts/vurdering-2-4-leverandorvalg-runde-1.md).
+  - Avsnitt 0 har modellene, prisene i kroner, kursen (9,6866 kr per USD, Norges Bank 2026-11-19) og en tabell over de fire kontrollene.
+  - Large 4 er tatt ut av runde 1 fordi den feiler NFR-4.
+  - Det er notert at Medium 3.5 er utfaset i dokumentasjonen.
+  - Avsnitt 1 har vilkårene for begge leverandørene med lenke og dato.
+  - Avsnitt 6 har raden for runde 1, commiten for prompten (`246e58b`) og observasjonen fra kontrollen (kravet som ble delt i to, «It-brukerstøtte»).
+- **Funn om vilkårene:**
+  - **Mistral, trening:** for pay-as-you-go *kan* API-data brukes til trening, med reservasjon under Admin → Privacy → «Data usage for improving our services». Bryteren for Vibe er en annen, og reservasjonen gjelder ikke Labs- og Public Preview-modeller.
+  - **Mistral, DPA og data:** DPA-en gjelder fra 2026-07-27 og er en del av avtalen. Data ligger i EØS som standard, og appen bruker `api.mistral.ai`.
+  - **OpenAI, trening og pris:** ingen trening på API-data som standard, og loggene lagres i opptil 30 dager. Prisen for `gpt-4.1-mini` er bekreftet: 0,40 / 1,60 USD.
+  - **OpenAI, DPA og land:** DPA-en er ikke lest direkte (403). Behandling i EU krever godkjenning via salg, så vi regner med USA.
+- **Oppdatert:**
+  - `kjorebok-2-4-del-b.md` har fått en statusdel med kommandoen for B2 (`--pris-inn 14.53 --pris-ut 72.65`). Forventet kostnad er ca. 1,0–1,4 kr, med en øvre grense på ca. 7,4 kr uten mva.
+  - `vilkaar-og-priser-2-4.md` har fått en del med det som ble kontrollert 2026-11-19.
+- **Commit:** `bdf3b99` (lokal). Det ble ikke gjort betalte kall eller endringer i Vercel.
+
+### Åpne punkter
+- Kevin må bekrefte i Mistral-konsollen:
+  - prisen for Medium 3.5
+  - at kontoen står på pay-as-you-go
+  - at bryteren for trening på API-kall er av (ikke bare den for Vibe)
+  - den månedlige grensen for forbruket i organisasjonen og workspacen
+  
+  Deretter kan B2 godkjennes.
+- Sondre må bekrefte OpenAI-vilkårene i nettleser (DPA-en, kreditten og at deling er av) og levere nøkkelen før B3.
