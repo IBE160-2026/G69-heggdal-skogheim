@@ -626,3 +626,33 @@ Det skulle ikke gjøres betalte kall, ingen push, PR eller fletting og ikke noe 
 - B4: manuell test i appen med OpenAI (2 betalte kall, krever godkjenning).
 - Nøklene fra målingen roteres eller slettes.
 - Del C.
+
+## 2026-11-19 kl. 23:17 — Kevin Heggdal
+
+### Oppgave
+Kevin og Sondre valgte løsning 2: å vurdere fasiten for «Gode samarbeidsevner» i par 3 på nytt. Kevin ba om å få dokumentert konkret hva CV-en, annonsen og fasiten sier om «Gode samarbeidsevner» og «Strukturert og nøyaktig», uten å endre fasiten. SM-1 skulle fortsatt stå som ikke bestått (9 av 12), og avviket skulle være åpent til det finnes en dokumentert beslutning. `MAKS_UTDATA_TOKENS` skulle beholdes på 8000. Del B skulle forberedes for PR, med en tydelig beskrivelse av leverandørvalget, testresultatene, kjente avvik og det som gjenstår i del B og C. Testene, hemmelighetene og arbeidskopien skulle kontrolleres. Det skulle ikke gjøres betalte kall, ingen push, PR eller fletting.
+
+### Plan
+- CV-en, annonsen og fasiten for par 3 ble lest ordrett, og resultatene fra alle rundene for de to kravene ble samlet.
+- `git fetch` og `git merge-tree --write-tree` (tørrkjøring) ble brukt for å se om grenen kan flettes med `main`. Ingen fletting ble gjort.
+
+### Resultat
+- **Beslutningsgrunnlaget:** [beslutningsgrunnlag-2-4-fasit-par-3.md](../../_bmad-output/implementation-artifacts/beslutningsgrunnlag-2-4-fasit-par-3.md).
+  - Det gjengir ordrett annonsen («regnskapsbyrå med 15 ansatte», kravene uten utdyping), CV-en (ingen profil og ingen egenvurdering, kundeservice med kundehenvendelser og registrering i kundesystemet) og fasiten (begge `D`, «ikke direkte dokumentert»).
+  - Det gjengir FR-8 og hva modellene har svart i rundene 3–5 og kontrollen med temperatur 0.
+  - **Vurderingen:** «Gode samarbeidsevner» er et reelt tvilstilfelle (kundekontakt er ikke samarbeid med kolleger). «Strukturert og nøyaktig» har bedre grunnlag for `D`.
+  - **Konsekvensene:**
+    - (A) fasiten beholdes: SM-1 er 9 av 12
+    - (B) samarbeid endres til `M`: SM-1 blir 12 av 12 uten ny måling, men flere tidligere kjøringer havner da over fasiten, og det må stå at endringen ble gjort etter målingen
+    - (C) begge endres: ikke foreslått
+  - Beslutningen og signaturene er ikke fylt ut.
+- **Fasiten er uendret.** SM-1 står som IKKE bestått i vurderingen og i kjøreboka.
+- **`MAKS_UTDATA_TOKENS`** beholdes på 8000 (Kevin). Det er ført inn i kjøreboka.
+- **PR-utkastet:** [pr-2-4-del-b.md](../../_bmad-output/implementation-artifacts/pr-2-4-del-b.md), med tittel, sammendrag, endringene per runde, en tabell over testresultatene, kjente avvik, det som gjenstår i del B og C, personvern og kontrollkommandoer.
+- **Grenen mot `main`:** 23 commits bak og 38 foran. En tørrkjøring av flettingen gir konflikter i `deferred-work.md` og `epic-2-context.md`. Grenen må oppdateres med `main` før PR-en kan flettes, og det krever Kevins godkjenning.
+- **Kontrollene:** lint, typecheck, `npm test` (836 av 836), build og tørrkjøringen er grønne. Søket etter hemmeligheter i `origin/main..HEAD` fant ingen treff. `.env.local` er ignorert, og bare `.env.example` er sporet.
+- **Commit:** dokumentasjonen er committet lokalt.
+
+### Åpne punkter
+- Kevin og Sondre tar en dokumentert beslutning om fasiten for «Gode samarbeidsevner» (A, B eller C i beslutningsgrunnlaget). SM-1 er ikke bestått til da.
+- Grenen oppdateres med `main` (to konflikter i dokumenter) før PR-en, etter Kevins godkjenning.
