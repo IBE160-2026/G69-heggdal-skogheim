@@ -81,7 +81,7 @@ export function GapVerktoylinje() {
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Lage nytt {FANENAVN_GAP}?</AlertDialogTitle>
+            <AlertDialogTitle>Lage ny gap-analyse?</AlertDialogTitle>
             <AlertDialogDescription>
               Redigeringene dine i {FANENAVN_GAP} blir overskrevet. Det nye bygger
               på CV-teksten og annonsen, ikke på endringene dine. Andre faner endres

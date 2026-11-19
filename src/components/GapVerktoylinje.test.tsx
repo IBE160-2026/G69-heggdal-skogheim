@@ -210,7 +210,7 @@ describe("GapVerktoylinje, Generer på nytt", () => {
     fireEvent.click(generer());
 
     const dialog = screen.getByRole("alertdialog");
-    expect(dialog.textContent).toContain("Lage nytt Gap-analyse og nøkkelord?");
+    expect(dialog.textContent).toContain("Lage ny gap-analyse?");
     expect(dialog.textContent).toContain(
       "Redigeringene dine i Gap-analyse og nøkkelord blir overskrevet. Det nye bygger på CV-teksten og annonsen, ikke på endringene dine. Andre faner endres ikke.",
     );

@@ -15,10 +15,10 @@
 - [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Test 2.6 i nettleseren før fletting: rediger et krav, Kopier og lim inn, Generer på nytt med og uten redigering, tastatur alene og 320 px
 - [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Story 5.2: sjekk med NVDA/VoiceOver om vellykket kopiering leses opp to ganger (toast «Kopiert» og live-regionen «Kopiert.»)
 - [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — En mislykket Generer på nytt sletter den forrige analysen (deferred-work.md)
-- [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Vurder ordlyden «Lage nytt Gap-analyse og nøkkelord?» i dialogen (malen i EXPERIENCE.md gir feil kjønn)
 
 ## Løst
 
+- [x] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Vurder ordlyden «Lage nytt Gap-analyse og nøkkelord?» i dialogen (malen i EXPERIENCE.md gir feil kjønn) (løst 2026-11-19: tittelen er «Lage ny gap-analyse?», og malen i EXPERIENCE.md har tittel per fane)
 - [x] 2026-11-19 [story-2-5-forstaaelige-feil](981-2026-11-19-15-45-54-story-2-5-forstaaelige-feil.md) — Manuell test av 2.5 før fletting: LLM_MODELL=finnes-ikke gir melding og Prøv igjen, Prøv med eksempel virker; sett gpt-4.1-mini tilbake (løst 2026-11-19: Sondre testet, PR #16 flettet)
 
 - [x] 2026-11-18 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Manuell test av 2.3 med API-nøkkel (par 2 på bokmål innen 30 s, par 1 med annonse-med-instruks.txt uten AFR/bankerfaring), senest i 2.4 (løst 2026-11-19: bestått med OpenAI gpt-4.1-mini, se loggen)

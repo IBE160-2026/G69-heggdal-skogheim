@@ -97,7 +97,7 @@ Visuell utforming står i `DESIGN.md` (Components).
 | Bekreftelsesdialog | Se IA | shadcn `AlertDialog`. *Avbryt* har fokus når dialogen åpnes. |
 
 **Ordlyd i dialogene:**
-- *Generer på nytt* i redigert fane (FR-19): «Lage nytt {fanenavn}? Redigeringene dine i {fanenavn} blir overskrevet. Det nye bygger på CV-teksten og annonsen, ikke på endringene dine. Andre faner endres ikke.» Knapper: *Avbryt*, *Lag ny*.
+- *Generer på nytt* i redigert fane (FR-19): «{tittel} Redigeringene dine i {fanenavn} blir overskrevet. Det nye bygger på CV-teksten og annonsen, ikke på endringene dine. Andre faner endres ikke.» Knapper: *Avbryt*, *Lag ny*. Tittelen står per fane, med riktig kjønn og liten forbokstav: «Lage ny gap-analyse?», «Lage nytt søknadsbrev?», «Lage nye CV-forbedringer?» og «Lage nye ATS-forslag?».
 - *Analyser* når det finnes redigerte faner (FR-3): «Starte en ny analyse? Alle resultatdelene erstattes. Redigeringene dine i {liste over redigerte faner} blir overskrevet.» Knapper: *Avbryt*, *Analyser på nytt*.
 - *Ny analyse* (FR-21): «Tømme alt? CV-teksten, annonsen og alle resultatdelene fjernes.» Knapper: *Avbryt*, *Tøm alt*.
 - *Prøv med eksempel* med innhold: «Erstatte teksten din med eksempelet? CV-teksten, annonsen og eventuelle resultater erstattes.» Knapper: *Avbryt*, *Bruk eksempelet*.
