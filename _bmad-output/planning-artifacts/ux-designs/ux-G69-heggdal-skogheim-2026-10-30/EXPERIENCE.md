@@ -119,6 +119,11 @@ Visuell utforming står i `DESIGN.md` (Components).
 | Feil eller tidsavbrudd fra språkmodellen | Fanen det gjelder | `Alert` med feilmelding og *Prøv igjen*. Tekstene og andre faner er urørt (FR-22). |
 | Ugyldig svar fra språkmodellen | Fanen det gjelder | Som over: «Svaret fra språkmodellen kunne ikke brukes. Prøv igjen.» |
 | Grensen for bruk er nådd | Forberedelse eller fane | «Appen har nådd grensen for bruk akkurat nå. Prøv igjen senere, eller bruk *Prøv med eksempel*.» Ingen *Prøv igjen*-knapp (NFR-3). |
+| Kreditten hos leverandøren er brukt opp | Fanen det gjelder | Som feil fra språkmodellen (`llm_feil`), ikke som grensen for bruk. *Prøv med eksempel* virker fortsatt (NFR-3). |
+| Egen CV uten nøkkel (`demo_krever_nokkel`) | Fane | «Full analyse av din egen CV krever en API-nøkkel. Prøv eksempelet for å se hvordan resultatet ser ut.» med knappen *Prøv med eksempel*. Ingen *Prøv igjen*-knapp. Samme tekst som varselet i forberedelsen. |
+| Serveren avviser teksten som for lang (`for_lang_tekst`) | Fane | «Teksten er for lang til å analyseres. CV-en kan være maks 15 000 tegn og annonsen maks 8 000. Gå tilbake og kort ned teksten.» Ingen *Prøv igjen*-knapp. |
+| Serveren avviser teksten som for kort (`for_kort_tekst`) | Fane | «Teksten er for kort til å analyseres. Annonsen må være minst 200 tegn. Gå tilbake og legg til mer.» Ingen *Prøv igjen*-knapp. |
+| Serveren avviser inndataene (`ugyldig_inndata`) | Fane | «Teksten kunne ikke sendes til analyse. Gå tilbake og trykk *Analyser* på nytt.» Ingen *Prøv igjen*-knapp. |
 | Redigert fane | Resultat | Fanemerket «· redigert». Gir dialog før ny generering. |
 | Utdatert fane | Resultat | Banner for utdatert fane (FR-19). |
 | Tom kategorigruppe | Gap-analyse | Gruppen vises ikke. Oppsummeringen viser 0 for kategorien. |

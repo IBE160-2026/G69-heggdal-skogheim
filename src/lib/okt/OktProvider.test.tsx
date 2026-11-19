@@ -196,4 +196,35 @@ describe("startGenerering", () => {
       feilkode: "llm_feil",
     });
   });
+
+  it("AD-6: Prøv igjen etter feil sender én ny POST for samme kjøring og forkaster ikke svaret", async () => {
+    let feiler = true;
+    const mock = apiMock(async () =>
+      feiler
+        ? Response.json({ feil: { kode: "llm_tidsavbrudd" } }, { status: 504 })
+        : Response.json(svar),
+    );
+    monterMed(mock, true);
+
+    act(() => okt.dispatch({ type: "eksempelValgt" }));
+    await vent();
+    const { kjoring, utkast } = okt.tilstand.innhold;
+    expect(okt.tilstand.innhold.resultatdeler.gap?.status).toBe("feil");
+
+    feiler = false;
+    act(() => okt.startGenerering("gap"));
+    expect(okt.tilstand.innhold.resultatdeler.gap?.status).toBe("genererer");
+    await vent();
+
+    const kall = gapKall(mock);
+    expect(kall).toHaveLength(2);
+    expect(kall[1][1]?.body).toBe(kall[0][1]?.body);
+    expect(okt.tilstand.innhold.kjoring).toBe(kjoring);
+    expect(okt.tilstand.innhold.utkast).toEqual(utkast);
+    expect(okt.tilstand.innhold.resultatdeler.gap).toMatchObject({
+      status: "ferdig",
+      feilkode: null,
+      generert: svar,
+    });
+  });
 });

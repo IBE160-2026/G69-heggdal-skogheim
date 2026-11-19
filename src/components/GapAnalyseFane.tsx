@@ -9,9 +9,12 @@ import {
   Info,
   type LucideIcon,
 } from "lucide-react";
-import type { MouseEvent, ReactNode } from "react";
+import { useRef, type MouseEvent, type ReactNode } from "react";
 
+import { FEILMELDINGER } from "@/components/feilmeldinger";
+import { ProvEksempelKnapp } from "@/components/ProvEksempelKnapp";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Feilkode } from "@/lib/kontrakt/feil";
 import type { GapAnalyse, Kategori, Krav } from "@/lib/kontrakt/gap";
@@ -68,24 +71,41 @@ function FastRaad() {
   );
 }
 
-const SPRAAKMODELLEN_SVARTE_IKKE =
-  "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen.";
+// FR-22, AD-8: feilen fra tabellen i en Alert med role="alert", aldri som toast.
+// Live-regionen gjentar den ikke.
+function Feil({ feilkode }: { feilkode: Feilkode }) {
+  const { startGenerering } = useOkt();
+  const varsel = useRef<HTMLDivElement>(null);
+  const { tekst, provIgjen, provEksempel } = FEILMELDINGER[feilkode];
 
-// Til story 2.5, som lager hele meldingstabellen og *Prøv igjen*.
-function feilmelding(feilkode: Feilkode | null): ReactNode {
-  switch (feilkode) {
-    case "ugyldig_svar":
-      return "Svaret fra språkmodellen kunne ikke brukes. Prøv igjen.";
-    case "grense_naadd":
-      return (
-        <>
-          Appen har nådd grensen for bruk akkurat nå. Prøv igjen senere, eller
-          bruk <em>Prøv med eksempel</em>.
-        </>
-      );
-    default:
-      return SPRAAKMODELLEN_SVARTE_IKKE;
+  function provPaaNytt() {
+    // Fanepanelet (`tabIndex={-1}`) får fokus, siden knappen forsvinner med feilen
+    // (UX-DR24). Samme kjøring sendes på nytt, og teksten i feltene berøres ikke.
+    const panel = varsel.current?.closest<HTMLElement>("[role=tabpanel]");
+    startGenerering("gap");
+    panel?.focus();
   }
+
+  return (
+    <Alert ref={varsel} variant="destructive">
+      <CircleAlert aria-hidden="true" />
+      <AlertDescription>{tekst}</AlertDescription>
+      {provIgjen ? (
+        <Button
+          type="button"
+          variant="outline"
+          size="lg"
+          className="col-start-2 mt-2 h-11 justify-self-start px-4 text-foreground lg:h-9"
+          onClick={provPaaNytt}
+        >
+          Prøv igjen
+        </Button>
+      ) : null}
+      {provEksempel ? (
+        <ProvEksempelKnapp className="col-start-2 mt-2 justify-self-start text-foreground" />
+      ) : null}
+    </Alert>
+  );
 }
 
 function Kategorimerke({
@@ -365,12 +385,7 @@ export function GapAnalyseFane() {
   }
 
   if (gap.status === "feil") {
-    return (
-      <Alert variant="destructive">
-        <CircleAlert aria-hidden="true" />
-        <AlertDescription>{feilmelding(gap.feilkode)}</AlertDescription>
-      </Alert>
-    );
+    return <Feil feilkode={gap.feilkode ?? "llm_feil"} />;
   }
 
   const analyse = gap.redigert ?? gap.generert;

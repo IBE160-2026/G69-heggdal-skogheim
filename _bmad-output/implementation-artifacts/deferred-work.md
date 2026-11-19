@@ -86,3 +86,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-4-velge-leverandor-ved-maaling.md`
   summary: The Windows drive-letter fix in the `kjor-testsett.ts` script guard is never exercised by CI.
   evidence: CI runs on Ubuntu only; move the comparison into an exported helper with a unit test.
+
+## Deferred from: code review of story 2.5 (2026-11-19)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-5-forstaaelige-feil-uten-tap-av-data.md`
+  summary: When the provider credit is used up, the user gets `llm_feil` with *Prøv igjen* (which cannot help) and no pointer to *Prøv med eksempel*; decide in 2.4/production whether to detect quota exhaustion or add the example button to `llm_feil`.
+  evidence: A provider 429 `insufficient_quota` maps to `llm_feil` on purpose (NFR-3); the pipeline test shows the demo still works, but the UI does not point there.

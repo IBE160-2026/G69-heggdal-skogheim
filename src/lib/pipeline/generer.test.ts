@@ -375,6 +375,30 @@ describe("rate-limit (steg D)", () => {
   });
 });
 
+describe("kreditten er brukt opp", () => {
+  it("NFR-3: 429 fra leverandøren gir llm_feil og ikke grense_naadd, og demoeksempelet virker etterpå", async () => {
+    // Slik AI SDK pakker inn et 429-svar fra leverandøren (for eksempel insufficient_quota).
+    const kvote = Object.assign(new Error("You exceeded your current quota"), {
+      name: "AI_APICallError",
+      statusCode: 429,
+      responseBody: '{"error":{"code":"insufficient_quota"}}',
+    });
+    const k = klienter(klientMed(null, kvote));
+
+    const svar = await egenCv(EKTE_ENV, { klienter: k });
+
+    expect(svar).toEqual({ status: 502, json: { feil: { kode: "llm_feil" } } });
+    expect(logglinjer().at(-1)).toMatchObject({ status: 502, feilkode: "llm_feil" });
+
+    const demo = await generer("gap", { cvTekst: DEMO_CV, annonse: DEMO_ANNONSE }, EKTE_ENV, {
+      klienter: k,
+    });
+    expect(demo.status).toBe(200);
+    expect(gapAnalyse.parse(demo.json).treffprosent).toBe(22);
+    expect(k.mock.analyseGap).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe("signal og tidsavbrudd", () => {
   it("AD-8: adapteren får et signal med tidsgrensen på 45 s", async () => {
     const timeout = vi.spyOn(AbortSignal, "timeout");

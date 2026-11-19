@@ -95,6 +95,9 @@ export function Resultat() {
           </TabsList>
           <TabsContent
             value="gap"
+            // *Prøv igjen* gir fokus til panelet (UX-DR24). Id-en står Radix for, så
+            // fanen beholder aria-controls.
+            tabIndex={-1}
             aria-busy={genererer ? true : undefined}
             className="pt-4 text-base"
           >
