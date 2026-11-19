@@ -420,3 +420,37 @@ Sondres regel for sammensatte krav skulle fortsatt følges. I tillegg skulle fei
 
 ### Åpne punkter
 - Runde 4: OpenAI (12 kall, ca. 0,21 kr) og Mistral (12 kall, ca. 1,18 kr) måles på samme commit etter Kevins godkjenning. Det blir ca. 1,4 kr til sammen.
+
+## 2026-11-19 kl. 22:42 — Kevin Heggdal
+
+### Oppgave
+Kevin godkjente runde 4: 12 betalte kall mot OpenAI `gpt-4.1-mini` og 12 mot Mistral Medium 3.5, på samme commit og med nøyaktig samme prompt, uten kontrollkall. Det skulle ikke gjøres endringer i prompten underveis og ingen nye forsøk. Etterpå skulle de to modellene sammenlignes (SM-3, de andre kravene og kostnadene), med en anbefaling om leverandør. Det skulle ikke gjøres push, fletting eller noe arbeid på del C eller story 2.7.
+
+### Plan
+- **Forutsetningene:** `git status` var tom på `be2b0e2`, og `npm test` ga 819 av 819.
+- **Kjøringene:** OpenAI og så Mistral i én kjøring i bakgrunnen, uten commit mellom dem.
+- **Vurderingen:** hver kjøring ble vurdert mot fasiten og sjekklisten og ført inn i [vurdering-2-4-leverandorvalg-runde-4.md](../../_bmad-output/implementation-artifacts/vurdering-2-4-leverandorvalg-runde-4.md), med en tabell over alle rundene.
+
+### Resultat
+- **OpenAI `gpt-4.1-mini-2025-04-14`:** 12 av 12 med 0 feil, 0,2094 kr (0,0175 kr per gap-kjøring, ca. 0,07 kr per full kjøring). Den lengste kjøringen tok 8701 ms, og det høyeste antallet output-tokens var 590.
+  - **SM-3 er bestått i 12 av 12:** ingen krav over fasiten, og høyst ett under per kjøring (par 2 K3 kommunikasjon `M`, par 3 K1 og K2 samarbeid `M`).
+  - Regelen om alternativer virket: «brukerstøtte eller kundeservice» er `D` i alle tre.
+  - Det ble ikke gitt råd ved «delvis».
+  - **SM-2 avklares:** i par 2 K1 er forklaringen «Erfaringen er med brukerstøtte i studiet», men CV-en har bare veiledning. Strengt lest er det et brudd.
+  - **NFR-5:** `J` med forbehold (særskriving «Tysk kunnskapsnivået», «It-brukerstøtte», «Deltid»).
+- **Mistral `mistral-medium-2604`:** 12 av 12 med 0 feil, 1,1822 kr (0,0985 kr per gap-kjøring). Den lengste kjøringen tok 5809 ms.
+  - **SM-3 er bare bestått i 6 av 12.** Det er en tilbakegang fra runde 3:
+    - Par 4: «Selvstendig og ansvarsbevisst» er `O` i alle tre.
+    - Par 1 K1: «Nøyaktig og pålitelig» er `O`.
+    - Par 3 K2 og K3: «Excel» `D` og «bokføring» `M` gir to krav under fasiten.
+  - **Rettet:** «Gode digitale ferdigheter» er `D` i alle tre, og «Kundeorientert» er `O` i 2 av 3.
+- **Kostnaden i runde 4:** 1,39 kr.
+- **Kostnaden for alle målingene i dag:**
+  - Mistral: ca. 5,0 kr (B2, runde 2, 3 og 4 og kontrollene). Med tredjepartsprisen er det ca. 0,5 USD.
+  - OpenAI: ca. 0,43 kr.
+- **AD-11:** Mistral består ikke, så regelen gir OpenAI. Forslaget er OpenAI `gpt-4.1-mini`, hvis Kevin og Sondre godtar setningen i par 2 K1 og Sondre bekrefter DPA-en.
+- **Commit:** `100ba27` (lokal), med rapportene, vurderingen og kjøreboka.
+
+### Åpne punkter
+- Kevin og Sondre avgjør SM-2 for OpenAI i par 2 K1, velger leverandør etter AD-11 og signerer vurderingen for runde 4.
+- Sondre bekrefter OpenAI-vilkårene (DPA-en i nettleser, at deling er av, kreditten) før del C.
