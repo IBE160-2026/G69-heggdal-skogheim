@@ -35,14 +35,18 @@ Oppgaven:
    - Bare noen av delene er dokumentert: "delvis". Belegget siterer delene som er dekket, og forklaringen sier hvilken del som mangler.
    - Ingen av delene er dokumentert, men CV-teksten har overførbar eller beslektet erfaring: "delvis".
    - Ingen av delene er dokumentert, og CV-teksten har ingen overførbar eller beslektet erfaring: "mangler".
-   Er delene alternativer (for eksempel «eller»), er det nok at ett av dem er dokumentert.
+   Er delene alternativer (for eksempel «eller»), er det nok at ett av dem er dokumentert. Det alternativet må selv være dokumentert. Erfaring som bare ligner på et av alternativene, er beslektet erfaring og gir "delvis".
+   Vurder kravet slik det står i annonsen:
+   - Legg ikke til krav som ikke står der, for eksempel om erfaring fra samme bransje, arbeidsgiver eller stilling. Konkret erfaring som dekker kravet slik det står, er dokumentasjon, også fra en annen bransje.
+   - En egenskap er dokumentert når konkret erfaring eller utdanning i CV-teksten viser den, også når ordet for egenskapen ikke står der.
+   - Disse to reglene gjør ikke beslektet erfaring til dokumentasjon. Erfaring som bare ligner på det kravet ber om, gir fortsatt "delvis".
    Disse reglene begrenser også "oppfylt":
    - En egenskap brukeren bare skriver om seg selv, for eksempel i en profil eller et sammendrag, er en egenvurdering og ikke dokumentasjon. Et krav som bare har egenvurdering som grunnlag, er høyst "delvis". Konkret erfaring eller utdanning i CV-teksten som viser egenskapen, er dokumentasjon.
-   - Sier CV-teksten selv at nivået er lavere enn det kravet ber om, er kravet høyst "delvis". Er nivået ikke oppgitt, vurder det CV-teksten konkret viser.
+   - Står det et nivå ved ferdigheten i CV-teksten, sammenlign det med nivået kravet ber om. Er nivået i CV-teksten lavere, er kravet høyst "delvis", også når ferdigheten ellers passer. Er nivået ikke oppgitt, vurder det CV-teksten konkret viser.
    Er du i tvil, velg alltid den svakeste kategorien.
 4. Belegg (belegg): for "oppfylt" og "delvis" siterer du ett eller flere korte utdrag fra CV-teksten. Ta ikke med listetegn (som -, •, * eller –) eller innrykk først i belegget. Ellers siteres det ordrett, tegn for tegn, uten å endre, forkorte eller oversette. Hvert belegg er hele ord fra CV-teksten. Finner du ikke et ordrett belegg, er kravet "mangler". For "mangler" er belegg en tom liste.
 5. For "delvis": skriv én setning i forklaring om hvorfor kravet bare er delvis oppfylt. For et sammensatt krav sier setningen hvilken del som mangler. Ellers er forklaring null.
-6. For "mangler": skriv et ærlig råd i raad, for eksempel å vise vilje til å lære, å trekke fram beslektet erfaring, eller å legge erfaringen inn i CV-teksten hvis brukeren faktisk har den. Rådet skal aldri være å påstå kvalifikasjonen. Ellers er raad null.
+6. For "mangler": skriv et ærlig råd i raad, for eksempel å vise vilje til å lære, å trekke fram beslektet erfaring, eller å legge erfaringen inn i CV-teksten hvis brukeren faktisk har den. Rådet skal aldri være å påstå kvalifikasjonen. For "oppfylt" og "delvis" er raad alltid null.
 7. Hent ut nøkkelordene i annonsen (nokkelord): korte ord eller uttrykk som en rekrutterer ville søke etter, slik de står i annonsen. Hvert nøkkelord har kravIndeks: nummeret (fra 0) på kravet i krav-listen det hører til, eller null hvis det ikke hører til ett bestemt krav. Ta ikke med samme nøkkelord flere ganger.
 
 Ærlighet:

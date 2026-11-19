@@ -110,7 +110,13 @@ describe("prompten for gap-analysen", () => {
     ["FR-8: for alternativer er ett av dem nok", /Er delene alternativer \(for eksempel «eller»\), er det nok at ett av dem er dokumentert/],
     ["FR-8: egenvurdering gir høyst delvis", /bare har egenvurdering som grunnlag, er høyst "delvis"/],
     ["FR-8: konkret erfaring som viser egenskapen, er dokumentasjon", /Konkret erfaring eller utdanning i CV-teksten som viser egenskapen, er dokumentasjon/],
-    ["FR-8: lavere nivå i CV-teksten gir høyst delvis", /Sier CV-teksten selv at nivået er lavere enn det kravet ber om, er kravet høyst "delvis"/],
+    ["FR-8: lavere nivå i CV-teksten gir høyst delvis, også når ferdigheten passer", /Står det et nivå ved ferdigheten i CV-teksten, sammenlign det med nivået kravet ber om\. Er nivået i CV-teksten lavere, er kravet høyst "delvis", også når ferdigheten ellers passer/],
+    ["FR-8: reglene om kravet slik det står, gjør ikke beslektet erfaring til dokumentasjon", /Disse to reglene gjør ikke beslektet erfaring til dokumentasjon\. Erfaring som bare ligner på det kravet ber om, gir fortsatt "delvis"/],
+    ["FR-8: alternativet må selv være dokumentert", /Det alternativet må selv være dokumentert\. Erfaring som bare ligner på et av alternativene, er beslektet erfaring og gir "delvis"/],
+    ["FR-8: kravet vurderes slik det står, uten nye krav", /Vurder kravet slik det står i annonsen:\n\s*- Legg ikke til krav som ikke står der, for eksempel om erfaring fra samme bransje, arbeidsgiver eller stilling/],
+    ["FR-8: erfaring fra en annen bransje kan dokumentere kravet", /Konkret erfaring som dekker kravet slik det står, er dokumentasjon, også fra en annen bransje/],
+    ["FR-8: en egenskap kan være dokumentert uten at ordet står i CV-en", /En egenskap er dokumentert når konkret erfaring eller utdanning i CV-teksten viser den, også når ordet for egenskapen ikke står der/],
+    ["FR-10: råd bare ved mangler", /For "oppfylt" og "delvis" er raad alltid null/],
     ["FR-8: nivå som ikke er oppgitt, nedgraderes ikke automatisk", /Er nivået ikke oppgitt, vurder det CV-teksten konkret viser/],
   ])("%s står i systeminstruksen", (_navn, monster) => {
     expect(GAP_INSTRUKS).toMatch(monster);
@@ -144,6 +150,19 @@ describe("prompten for gap-analysen", () => {
     expect(sammensatte).toBeGreaterThan(steg2);
     expect(alternativer).toBeGreaterThan(sammensatte);
     expect(regler).toBeGreaterThan(alternativer);
+  });
+
+  it("FR-8: reglene om å vurdere kravet slik det står, står etter alternativene og før begrensningene", () => {
+    const alternativer = GAP_INSTRUKS.indexOf("Er delene alternativer");
+    const slikDetStar = GAP_INSTRUKS.indexOf("Vurder kravet slik det står i annonsen");
+    const regler = GAP_INSTRUKS.indexOf('Disse reglene begrenser også "oppfylt"');
+
+    expect(slikDetStar).toBeGreaterThan(alternativer);
+    expect(regler).toBeGreaterThan(slikDetStar);
+    // Sondres regel for sammensatte krav (runde 3) står uendret.
+    expect(GAP_INSTRUKS).toContain('- Bare noen av delene er dokumentert: "delvis". Belegget siterer delene som er dekket, og forklaringen sier hvilken del som mangler.');
+    expect(GAP_INSTRUKS).not.toContain("Sier CV-teksten selv at nivået");
+    expect(GAP_INSTRUKS).not.toContain("Ellers er raad null");
   });
 
   it.each([

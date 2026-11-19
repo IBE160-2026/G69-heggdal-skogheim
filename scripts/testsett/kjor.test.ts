@@ -9,7 +9,16 @@ import { type GapInndata, lagEkteKlient, type LlmKlient } from "@/lib/llm/klient
 import { mockKlient } from "@/lib/llm/mock";
 import { nullstill } from "@/lib/pipeline/grense";
 
-import { genererEnv, kjentePar, kjorTestsett, lesGit, main, RAPPORTMAPPE, rapportNavn } from "../kjor-testsett";
+import {
+  genererEnv,
+  kjentePar,
+  kjorTestsett,
+  lesGit,
+  main,
+  RAPPORTMAPPE,
+  rapportNavn,
+  skrivNyRapport,
+} from "../kjor-testsett";
 import type { Valg } from "./argumenter";
 
 // main får en falsk ekte klient, så ingen test når leverandøren.
@@ -250,6 +259,24 @@ describe("main", () => {
     expect(nettverk).not.toHaveBeenCalled();
   });
 
+  it("regresjon: to kjøringer som starter i samme sekund, gir to rapporter, og den første er uendret", async () => {
+    const dato = new Date(2026, 10, 19, 22, 20, 3);
+    const valg = ["--leverandor", "mistral", "--mock", "--par", "par-2-it-support", "--ganger", "1"];
+    const logg = vi.spyOn(console, "log").mockImplementation(() => {});
+
+    expect(await main(valg, {}, { rapportmappe: mappe, na: () => dato })).toBe(0);
+    const [forste] = readdirSync(mappe);
+    const tekst = readFileSync(path.join(mappe, forste), "utf8");
+    expect(await main(valg, {}, { rapportmappe: mappe, na: () => dato })).toBe(0);
+
+    expect(readdirSync(mappe).sort()).toEqual([
+      "2026-11-19-222003-mistral-mistral-medium-latest-mock.md",
+      "2026-11-19-222003-mistral-mistral-medium-latest-nr2-mock.md",
+    ]);
+    expect(readFileSync(path.join(mappe, forste), "utf8")).toBe(tekst);
+    expect(logg).toHaveBeenLastCalledWith(expect.stringContaining("mistral-medium-latest-nr2-mock.md"));
+  });
+
   it("NFR-10: med nøkkel havner nøkkelen verken i rapporten eller i konsollen", async () => {
     const NOKKEL = "sk-falsk-hemmelig-nokkel-456";
     const { klient } = falskKlient();
@@ -360,11 +387,63 @@ describe("lesGit", () => {
 });
 
 describe("rapportNavn", () => {
-  it("dato, leverandør og modell, og -mock for tørrkjøringer", () => {
-    const dato = new Date(2026, 10, 19, 9, 5);
-    expect(rapportNavn(VALG, dato)).toBe("2026-11-19-0905-openai-gpt-5-mini.md");
+  it("dato med sekunder, leverandør og modell, og -mock for tørrkjøringer", () => {
+    const dato = new Date(2026, 10, 19, 9, 5, 7);
+    expect(rapportNavn(VALG, dato)).toBe("2026-11-19-090507-openai-gpt-5-mini.md");
     expect(rapportNavn({ ...VALG, modell: "Org/Modell:1", mock: true }, dato)).toBe(
-      "2026-11-19-0905-openai-org-modell-1-mock.md",
+      "2026-11-19-090507-openai-org-modell-1-mock.md",
     );
+  });
+
+  it("regresjon: to kjøringer i samme minutt, men ulike sekunder, får ulike navn", () => {
+    const kontroll = new Date(2026, 10, 19, 22, 20, 3);
+    const full = new Date(2026, 10, 19, 22, 20, 41);
+    expect(rapportNavn(VALG, kontroll)).not.toBe(rapportNavn(VALG, full));
+  });
+});
+
+describe("skrivNyRapport", () => {
+  let mappe: string;
+
+  beforeEach(() => {
+    mappe = mkdtempSync(path.join(tmpdir(), "rapport-"));
+  });
+
+  afterEach(() => {
+    rmSync(mappe, { recursive: true, force: true });
+  });
+
+  it("regresjon: et navn som er tatt, overskrives aldri, men får løpenummer", () => {
+    const forste = skrivNyRapport(mappe, "2026-11-19-222003-openai-gpt-4.1-mini.md", "kontroll");
+    const andre = skrivNyRapport(mappe, "2026-11-19-222003-openai-gpt-4.1-mini.md", "full");
+    const tredje = skrivNyRapport(mappe, "2026-11-19-222003-openai-gpt-4.1-mini.md", "tredje");
+
+    expect(path.basename(forste)).toBe("2026-11-19-222003-openai-gpt-4.1-mini.md");
+    expect(path.basename(andre)).toBe("2026-11-19-222003-openai-gpt-4.1-mini-nr2.md");
+    expect(path.basename(tredje)).toBe("2026-11-19-222003-openai-gpt-4.1-mini-nr3.md");
+    expect(readFileSync(forste, "utf8")).toBe("kontroll");
+    expect(readFileSync(andre, "utf8")).toBe("full");
+  });
+
+  it("løpenummeret står før -mock, så tørrkjøringen fortsatt ignoreres av git", () => {
+    skrivNyRapport(mappe, "2026-11-19-222003-mistral-x-mock.md", "a");
+    const andre = skrivNyRapport(mappe, "2026-11-19-222003-mistral-x-mock.md", "b");
+
+    expect(path.basename(andre)).toBe("2026-11-19-222003-mistral-x-nr2-mock.md");
+    expect(path.basename(andre)).toMatch(/-mock\.md$/);
+  });
+
+  it("andre skrivefeil enn en fil som finnes, kastes videre, og ingen fil skrives", () => {
+    expect(() => skrivNyRapport(path.join(mappe, "finnes-ikke"), "a.md", "x")).toThrow(
+      expect.objectContaining({ code: "ENOENT" }),
+    );
+    expect(readdirSync(mappe)).toEqual([]);
+  });
+
+  it("løpenummeret skilles fra et modellnavn som slutter på et siffer", () => {
+    skrivNyRapport(mappe, "2026-11-19-222003-mistral-mistral-large-4-0.md", "a");
+    const andre = skrivNyRapport(mappe, "2026-11-19-222003-mistral-mistral-large-4-0.md", "b");
+
+    expect(path.basename(andre)).toBe("2026-11-19-222003-mistral-mistral-large-4-0-nr2.md");
   });
 });

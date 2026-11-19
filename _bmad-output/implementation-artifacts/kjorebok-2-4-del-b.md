@@ -2,6 +2,26 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+## Status 2026-11-19 (runde 4 forberedt)
+
+- **Prompten i runde 4** retter feilene fra runde 3 med generelle regler. Se [`spec-2-4-del-b-runde-4-alternativer-niva-og-rapportnavn.md`](spec-2-4-del-b-runde-4-alternativer-niva-og-rapportnavn.md) og [`vurdering-2-4-leverandorvalg-runde-4.md`](vurdering-2-4-leverandorvalg-runde-4.md).
+  - Et alternativ må selv være dokumentert.
+  - Et lavere nivå gir høyst «delvis».
+  - Kravet vurderes slik det står, uten nye krav.
+  - Råd gis bare ved «mangler».
+  - Sondres regel for sammensatte krav er uendret.
+- **Rapportnavnene har nå sekunder** (`ÅÅÅÅ-MM-DD-TTMMSS-…`), og en rapport overskrives aldri. Er navnet tatt, får fila `-nrN` før `-mock.md` eller `.md`. Det er dekket av regresjonstester. Feilen fra runde 3 (kontrollen ble overskrevet) kan ikke skje igjen.
+- **Målingen i runde 4** krever Kevins godkjenning. Begge kjøres på samme commit:
+
+  ```bash
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50
+  npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --pris-inn 14.53 --pris-ut 72.65
+  ```
+
+  - Nøkkelen for OpenAI virket i runde 3, så det trengs ingen ny kontroll. Hvis Kevin vil ha en, kommer det 1 kall til, til ca. 0,02 kr.
+  - Forventet kostnad er ca. 0,21 kr for OpenAI og ca. 1,18 kr for Mistral, ca. 1,4 kr til sammen.
+  - Øvre grense er ca. 1,6 kr for OpenAI og ca. 7,4 kr for Mistral uten mva, hvis alle kallene når taket på 8000 output-tokens. For Mistral holder grensen på 2 USD per måned uansett forbruket nede.
+
 ## Status 2026-11-19 (runde 3 målt)
 
 - **Begge er målt på commit `4cd4f2f`** med prompten fra `1ad9821` (godkjent av Kevin, ramme 2 kr):

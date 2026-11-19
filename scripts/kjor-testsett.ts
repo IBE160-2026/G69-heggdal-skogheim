@@ -92,12 +92,35 @@ function medTokens(klient: LlmKlient) {
 
 const to = (n: number) => String(n).padStart(2, "0");
 
-// `<ÅÅÅÅ-MM-DD-TTMM>-<leverandor>-<modell>[-mock].md`, med lokal tid.
+// `<ÅÅÅÅ-MM-DD-TTMMSS>-<leverandor>-<modell>[-mock].md`, med lokal tid. Sekundene
+// skiller kjøringer som starter i samme minutt (en kontroll og en full måling).
 export function rapportNavn(valg: Valg, dato: Date): string {
-  const tid = `${dato.getFullYear()}-${to(dato.getMonth() + 1)}-${to(dato.getDate())}-${to(dato.getHours())}${to(dato.getMinutes())}`;
+  const tid = `${dato.getFullYear()}-${to(dato.getMonth() + 1)}-${to(dato.getDate())}-${to(dato.getHours())}${to(dato.getMinutes())}${to(dato.getSeconds())}`;
   const modell = valg.modell.toLowerCase().replace(/[^a-z0-9.-]+/g, "-");
   return `${tid}-${valg.leverandor}-${modell}${valg.mock ? "-mock" : ""}.md`;
 }
+
+// Skriver rapporten uten å overskrive en som finnes. Er navnet tatt (samme sekund),
+// får fila et løpenummer før `-mock.md` eller `.md` (`-nr2`, `-nr3` …), så tørrkjøringer
+// fortsatt slutter på `-mock.md` og ignoreres av git. `nr` skiller tallet fra et modellnavn
+// som slutter på et siffer. Andre skrivefeil kastes videre, og etter 1000 tatte navn gis det opp.
+// Gir stien som ble skrevet.
+export function skrivNyRapport(mappe: string, navn: string, tekst: string): string {
+  const slutt = navn.match(/(-mock)?\.md$/)?.[0] ?? "";
+  const grunn = navn.slice(0, navn.length - slutt.length);
+  for (let nummer = 1; nummer <= MAKS_LOPENUMMER; nummer++) {
+    const fil = path.join(mappe, nummer === 1 ? navn : `${grunn}-nr${nummer}${slutt}`);
+    try {
+      writeFileSync(fil, tekst, { encoding: "utf8", flag: "wx" });
+      return fil;
+    } catch (feil) {
+      if ((feil as NodeJS.ErrnoException).code !== "EEXIST") throw feil;
+    }
+  }
+  throw new Error(`Fant ikke et ledig filnavn for ${navn} i ${mappe} etter ${MAKS_LOPENUMMER} forsøk.`);
+}
+
+const MAKS_LOPENUMMER = 1000;
 
 // Kjører hvert par `valg.ganger` ganger gjennom den ekte pipelinen. Klienten
 // brukes som både mock og ekte, så også par 1 (demoeksempelet) går til modellen.
@@ -181,7 +204,10 @@ export async function kjorTestsett(
 export async function main(
   argv: readonly string[] = process.argv.slice(2),
   env: Record<string, string | undefined> = process.env,
-  { rapportmappe = RAPPORTMAPPE }: { rapportmappe?: string } = {},
+  {
+    rapportmappe = RAPPORTMAPPE,
+    na = () => new Date(),
+  }: { rapportmappe?: string; na?: () => Date } = {},
 ): Promise<number> {
   const tolket = lesArgumenter(argv, kjentePar(), (l) => nokkel(env, l) !== "");
   if (!tolket.ok) {
@@ -206,11 +232,10 @@ export async function main(
     });
   }
 
-  const dato = new Date();
+  const dato = na();
   const { rapport, data } = await kjorTestsett(valg, klient, { na: () => dato });
   mkdirSync(rapportmappe, { recursive: true });
-  const fil = path.join(rapportmappe, rapportNavn(valg, dato));
-  writeFileSync(fil, rapport, "utf8");
+  const fil = skrivNyRapport(rapportmappe, rapportNavn(valg, dato), rapport);
 
   const alle = data.par.flatMap((p) => p.kjoringer);
   const feil = alle.filter((k) => k.feilkode !== null).length;
