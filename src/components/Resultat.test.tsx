@@ -248,6 +248,71 @@ describe("Resultat", () => {
     );
   });
 
+  it("UX-DR10: etter redigering viser fanen «· redigert», som er en del av navnet", async () => {
+    await apneEksempelet();
+    await svar200();
+
+    fireEvent.change(document.getElementById("krav-0-tekst")!, {
+      target: { value: "Endret krav" },
+    });
+
+    expect(
+      screen.getByRole("tab", {
+        name: "Gap-analyse og nøkkelord · redigert",
+      }),
+    ).toBeTruthy();
+    expect(screen.getByRole("tab").textContent).toBe(
+      "Gap-analyse og nøkkelord · redigert",
+    );
+  });
+
+  it("UX-DR11: verktøylinjen står over skjelettet under generering og vises ikke ved feil", async () => {
+    await apneEksempelet();
+
+    const kopier = screen.getByRole("button", { name: "Kopier" });
+    expect(kopier.getAttribute("aria-disabled")).toBe("true");
+    expect(panel().firstElementChild?.contains(kopier)).toBe(true);
+    expect(panel().querySelector("[data-slot=skeleton]")).not.toBeNull();
+
+    await svarFeil(Response.json({ feil: { kode: "llm_feil" } }, { status: 502 }));
+
+    expect(screen.queryByRole("button", { name: "Kopier" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Generer på nytt" })).toBeNull();
+  });
+
+  it("FR-24: i demomodus gir Generer på nytt demosvaret igjen, og fetch går bare til egne ruter", async () => {
+    await apneEksempelet();
+    await svar200();
+    fireEvent.change(document.getElementById("krav-0-tekst")!, {
+      target: { value: "Endret krav" },
+    });
+
+    const knapp = screen.getByRole("button", { name: "Generer på nytt" });
+    fireEvent.click(knapp);
+    fireEvent.click(screen.getByRole("button", { name: "Lag ny" }));
+    await vent();
+
+    const kall = gapKall(mock);
+    expect(kall).toHaveLength(2);
+    expect(kall[1][1]?.body).toBe(kall[0][1]?.body);
+    expect(JSON.parse(String(kall[1][1]?.body)).demo).toBe(true);
+    // Skjelettet vises under ny generering, og knappen beholder fokus.
+    expect(panel().querySelector("[data-slot=skeleton]")).not.toBeNull();
+    expect(document.activeElement).toBe(knapp);
+    expect(knapp.getAttribute("aria-disabled")).toBe("true");
+
+    await svar200();
+
+    expect(
+      (document.getElementById("krav-0-tekst") as HTMLTextAreaElement).value,
+    ).toBe(svar.krav[0].tekst);
+    expect(screen.getByRole("tab").textContent).toBe("Gap-analyse og nøkkelord");
+    expect(live()).toBe("Gap-analysen er klar. 3 av 6 krav er oppfylt.");
+    for (const [url] of mock.mock.calls) {
+      expect(["/api/status", "/api/generer/gap"]).toContain(String(url));
+    }
+  });
+
   it("UX-DR24: Tilbake under generering viser forberedelsen med teksten beholdt og fokus på Analyser", async () => {
     await apneEksempelet();
     expect(panel().getAttribute("aria-busy")).toBe("true");
