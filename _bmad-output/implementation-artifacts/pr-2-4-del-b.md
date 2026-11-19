@@ -1,6 +1,6 @@
 # Utkast: PR for story 2.4 del B (måling og leverandørvalg)
 
-> **Utkast, ikke opprettet.** Tittelen og beskrivelsen under er klare til å kopieres inn når Kevin godkjenner push og PR. **Før PR-en kan flettes**, må grenen oppdateres med `main` (23 commits bak). En tørrkjøring (`git merge-tree`) viser konflikter i to dokumentfiler: `_bmad-output/implementation-artifacts/deferred-work.md` og `epic-2-context.md`. Etter flettingen må alle testene kjøres på nytt, fordi `main` har fått story 2.5 og 2.6.
+> **Utkast, ikke opprettet.** Tittelen og beskrivelsen under er klare til å kopieres inn når Kevin godkjenner push og PR. Grenen er oppdatert med `main` (`1ae6c0a`, 2026-11-19), med story 2.5, story 2.6 og testopplegget for 2.8. To konflikter i dokumenter er løst uten at noe fra `main` ble fjernet. Alle testene er kjørt på nytt.
 
 **Tittel:** `Story 2.4 del B: måling og leverandørvalg (OpenAI gpt-4.1-mini, temperatur 0)`
 
@@ -60,7 +60,7 @@ Del B av story 2.4 (AK 2, AD-11) måler Mistral og OpenAI med testsettet og velg
 
 **Kostnaden for alle målingene:** OpenAI ca. 0,88 kr. Mistral ca. 5,8–6,2 kr, med tredjepartspris som ikke er eksakt bekreftet.
 
-**Automatiserte tester:** `npm run lint`, `npm run typecheck`, `npm test` (836 av 836 i 48 filer), `npm run build` og `npm run testsett -- --leverandor openai --mock` er grønne uten nøkkel.
+**Automatiserte tester:** `npm run lint`, `npm run typecheck`, `npm test` (896 av 896 i 52 filer, etter flettingen med `main`), `npm run build` og `npm run testsett -- --leverandor openai --mock` er grønne uten nøkkel.
 
 ## Kjente avvik
 

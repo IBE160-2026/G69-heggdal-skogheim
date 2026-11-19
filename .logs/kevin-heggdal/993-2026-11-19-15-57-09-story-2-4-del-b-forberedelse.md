@@ -656,3 +656,27 @@ Kevin og Sondre valgte løsning 2: å vurdere fasiten for «Gode samarbeidsevner
 ### Åpne punkter
 - Kevin og Sondre tar en dokumentert beslutning om fasiten for «Gode samarbeidsevner» (A, B eller C i beslutningsgrunnlaget). SM-1 er ikke bestått til da.
 - Grenen oppdateres med `main` (to konflikter i dokumenter) før PR-en, etter Kevins godkjenning.
+
+## 2026-11-19 kl. 23:21 — Kevin Heggdal
+
+### Oppgave
+Kevin godkjente å oppdatere grenen for story 2.4 med siste `main` lokalt og løse de to konfliktene i dokumentene. Innholdet fra begge sider skulle bevares, og ingenting av Sondres arbeid skulle overskrives eller fjernes. Etterpå skulle lint, typecheck, testene og build kjøres, det skulle sjekkes at ingen hemmeligheter er sporet og at arbeidskopien er ren, og sesjonsloggen skulle oppdateres. Det skulle ikke gjøres betalte kall, ingen push, PR eller fletting til `main`, og ikke noe arbeid på story 2.7. Ved konflikter som krevde en faglig beslutning, skulle jeg stoppe og spørre.
+
+### Plan
+- Flettingen er en ren git-operasjon og ble gjort uten `bmad-build`, som ikke er ment for slike operasjoner.
+- Kommandoene var `git fetch origin` og deretter `git merge --no-ff --no-commit origin/main`.
+- Hver konflikt ble lest før den ble løst, og diffen mot `main` ble sjekket for linjer fra `main` som var endret eller fjernet.
+
+### Resultat
+- **`deferred-work.md`:** begge sider hadde lagt til punkter på slutten. Alt er beholdt: punktene fra del B først, så seksjonene fra `main` (gjennomgangen av PR #14 og story 2.5). Punktet fra `main` om modellversjonen i rapporten (NFR-10) har fått en statuslinje om at det er løst i `082386e`. Diffen mot `main` er bare tillegg.
+- **`epic-2-context.md`:** en generert kontekstfil som begge sider hadde laget på nytt. Versjonen fra `main` er beholdt, fordi den er nyest og har med 2.5 og 2.6. Vår versjon hadde ikke noe eget innhold. Ingen faglig beslutning var nødvendig.
+- **`generer.test.ts`:** flettet automatisk. Importen har både `main` sin og `LISTETEGN_FORST`.
+- **Sprint-status:** 2-4 er `in-progress`, 2-5 og 2-6 er `done` (fra `main`), og 2-7 og 2-8 er `backlog`.
+- **Kontrollene:** etter `npm ci` er lint, typecheck, `npm test` (896 av 896 i 52 filer), build og begge tørrkjøringene grønne.
+- **Hemmeligheter:** ingen. `.env.local` er ignorert, og bare `.env.example` er sporet.
+- **Flettecommit:** `1ae6c0a`. Grenen er nå 0 commits bak og 41 foran `origin/main`.
+- **PR-utkastet** (`pr-2-4-del-b.md`) er oppdatert med flettingen og det nye antallet tester.
+
+### Åpne punkter
+- PR-en kan opprettes når Kevin godkjenner push.
+- Beslutningen om fasiten i par 3 (SM-1) gjenstår, og det samme gjør B4, roteringen av nøklene, Sondres bekreftelser og del C.
