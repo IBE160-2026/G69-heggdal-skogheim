@@ -271,3 +271,38 @@ Kevin ba om en analyse av hvorfor Mistral Medium 3.5 feilet SM-3 på par 1 og pa
   - Mistral Medium 3.5: 12 kall, ca. 1 kr.
   - OpenAI `gpt-4.1-mini`: 1 kall i kontrollen og 12 i målingen, ca. 0,3 kr. Krever nøkkelen og Sondres bekreftelse av vilkårene.
 - Risiko i runde 2: de strengere reglene kan presse et ekstra krav under fasiten, særlig i par 3.
+
+## 2026-11-19 kl. 21:32 — Kevin Heggdal
+
+### Oppgave
+Kevin godkjente runde 2 med Mistral Medium 3.5 (`mistral-medium-2604`): høyst 12 betalte kall, prompten fra runde 2, samme kodeversjon gjennom hele målingen og ingen nye forsøk. Før målingen skulle det sjekkes at arbeidstreet var rent, at testene var grønne og at grensen på 2 USD fortsatt gjaldt. Etterpå skulle runde 1 og runde 2 sammenlignes, SM-3, SM-2, NFR-4 og NFR-5 kontrolleres, og det skulle vurderes om krav nå ble vurdert for strengt eller for svakt. Det skulle ikke gjøres andre betalte kall, ingen push eller fletting og ingen endringer i Vercel.
+
+### Plan
+- **Forutsetningene:**
+  - `git status` var tom på `28da462`.
+  - Lint og typecheck var grønne, og `npm test` ga 797 av 797.
+  - Tørrkjøringen ga 12 av 12.
+  - Grensen kan bare leses i konsollen, så Kevins bekreftelse fra samme kveld ble lagt til grunn. Forbruket i dag var høyst ca. 0,16 USD, og med det verste tilfellet for runde 2 blir det høyst ca. 0,93 USD.
+- **Målingen:** `npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --pris-inn 14.53 --pris-ut 72.65`, kjørt én gang.
+- **Vurderingen:** hver kjøring ble vurdert mot fasiten og sjekklisten, og resultatene ble ført inn i [vurdering-2-4-leverandorvalg-runde-2.md](../../_bmad-output/implementation-artifacts/vurdering-2-4-leverandorvalg-runde-2.md), med en tabell som sammenligner rundene.
+
+### Resultat
+- **Rapporten:** `testsett-rapporter/2026-11-19-2129-mistral-mistral-medium-2604.md`, commit `28da462`.
+  - 12 av 12 kjøringer ga status 200, med 0 feil.
+  - Varigheten var 4430–6038 ms (NFR-4), og output var 801–978 tokens.
+  - Kostnaden var 1,1352 kr (0,0946 kr per gap-kjøring, ca. 0,38 kr per full kjøring) etter tredjepartsprisen.
+- **Sammenlignet med runde 1:** tilfellene av krav over fasiten gikk ned fra 9 til 2, og kjøringene som består SM-3, gikk opp fra 3 til 8 av 12 (par 2 K2 og K3 avklares).
+  - **Rettet:** «Nøyaktig og pålitelig» (par 1), «Selvstendig og ansvarsbevisst» (par 4), stillingen «IT-brukerstøtte» og det samlede kravet i par 2 K1.
+  - **Fortsatt over fasiten:** par 1 «Gode digitale ferdigheter» er `O` i K1 og K3, med belegget Office «grunnleggende».
+  - **For strengt:** par 1 «Kundeorientert» er `D` i alle tre (fasiten: `O`), fordi modellen krever erfaring «i en bankkontekst».
+  - **Ikke for strengt:** par 4 «Serviceinnstilt» er fortsatt `O`, og par 3 er uendret (ett krav under fasiten).
+  - **Fortsatt delt:** par 2 i K2 og K3.
+- **Kriteriene:**
+  - SM-3 og SM-1 (gap) er `N` (par 1 K1 og K3).
+  - SM-2, NFR-4 og NFR-5 er `J`. NFR-5 har små feil: «hun» i stedet for du-form, «lære det opp» og «en introduksjonskurs».
+  - Kostnaden er `J`.
+- **Commit:** `d5b0988`, med rapporten, vurderingen for runde 2 og kjøreboka. Runde 1 er uendret.
+
+### Åpne punkter
+- OpenAI `gpt-4.1-mini` måles i runde 2 på samme commit `28da462` når nøkkelen fra Sondre er kommet. Det krever Kevins godkjenning.
+- Mistral feiler SM-3 på par 1 i runde 2. Valget etter AD-11 tas når OpenAI er målt. Består heller ikke OpenAI, vurderes en runde 3 (en regel om at kravet vurderes slik det står, uten krav om samme bransje, og en strengere regel for nivå).
