@@ -9,14 +9,21 @@ import {
   Info,
   type LucideIcon,
 } from "lucide-react";
-import type { MouseEvent, ReactNode } from "react";
+import { useRef, type MouseEvent, type ReactNode } from "react";
 
+import { FEILMELDINGER } from "@/components/feilmeldinger";
+import { ProvEksempelKnapp } from "@/components/ProvEksempelKnapp";
+import { KATEGORINAVN } from "@/components/gapTekst";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 import type { Feilkode } from "@/lib/kontrakt/feil";
 import type { GapAnalyse, Kategori, Krav } from "@/lib/kontrakt/gap";
 import { cn } from "@/lib/utils";
 import { useOkt } from "@/lib/okt/OktProvider";
+import type { RedigerbartFelt } from "@/lib/okt/tilstand";
 
 // All tekst fra API-et vises som ren tekst (NFR-9): bare som barn i JSX, aldri som HTML.
 
@@ -29,21 +36,21 @@ const KATEGORIER: {
 }[] = [
   {
     kategori: "oppfylt",
-    navn: "Oppfylt",
+    navn: KATEGORINAVN.oppfylt,
     ikon: CircleCheck,
     merke: "bg-oppfylt-bg text-oppfylt",
     kant: "border-l-oppfylt",
   },
   {
     kategori: "delvis",
-    navn: "Delvis oppfylt",
+    navn: KATEGORINAVN.delvis,
     ikon: CircleDashed,
     merke: "bg-delvis-bg text-delvis",
     kant: "border-l-delvis",
   },
   {
     kategori: "mangler",
-    navn: "Mangler",
+    navn: KATEGORINAVN.mangler,
     ikon: Circle,
     merke: "bg-mangler-bg text-mangler",
     kant: "border-l-mangler",
@@ -68,24 +75,41 @@ function FastRaad() {
   );
 }
 
-const SPRAAKMODELLEN_SVARTE_IKKE =
-  "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen.";
+// FR-22, AD-8: feilen fra tabellen i en Alert med role="alert", aldri som toast.
+// Live-regionen gjentar den ikke.
+function Feil({ feilkode }: { feilkode: Feilkode }) {
+  const { startGenerering } = useOkt();
+  const varsel = useRef<HTMLDivElement>(null);
+  const { tekst, provIgjen, provEksempel } = FEILMELDINGER[feilkode];
 
-// Til story 2.5, som lager hele meldingstabellen og *Prøv igjen*.
-function feilmelding(feilkode: Feilkode | null): ReactNode {
-  switch (feilkode) {
-    case "ugyldig_svar":
-      return "Svaret fra språkmodellen kunne ikke brukes. Prøv igjen.";
-    case "grense_naadd":
-      return (
-        <>
-          Appen har nådd grensen for bruk akkurat nå. Prøv igjen senere, eller
-          bruk <em>Prøv med eksempel</em>.
-        </>
-      );
-    default:
-      return SPRAAKMODELLEN_SVARTE_IKKE;
+  function provPaaNytt() {
+    // Fanepanelet (`tabIndex={-1}`) får fokus, siden knappen forsvinner med feilen
+    // (UX-DR24). Samme kjøring sendes på nytt, og teksten i feltene berøres ikke.
+    const panel = varsel.current?.closest<HTMLElement>("[role=tabpanel]");
+    startGenerering("gap");
+    panel?.focus();
   }
+
+  return (
+    <Alert ref={varsel} variant="destructive">
+      <CircleAlert aria-hidden="true" />
+      <AlertDescription>{tekst}</AlertDescription>
+      {provIgjen ? (
+        <Button
+          type="button"
+          variant="outline"
+          size="lg"
+          className="col-start-2 mt-2 h-11 justify-self-start px-4 text-foreground lg:h-9"
+          onClick={provPaaNytt}
+        >
+          Prøv igjen
+        </Button>
+      ) : null}
+      {provEksempel ? (
+        <ProvEksempelKnapp className="col-start-2 mt-2 justify-self-start text-foreground" />
+      ) : null}
+    </Alert>
+  );
 }
 
 function Kategorimerke({
@@ -202,6 +226,46 @@ function Belegg({ belegg }: { belegg: string[] }) {
   );
 }
 
+// FR-18, UX-DR13: et redigerbart tekstfelt med synlig etikett. Feltet vokser med
+// innholdet, og endringen lagres i økten mens brukeren skriver. Det står ikke i et
+// skjema, så Enter sender ingenting.
+function Tekstfelt({
+  id,
+  etikett,
+  skjult,
+  verdi,
+  className,
+  feltKlasse,
+  onEndre,
+}: {
+  id: string;
+  etikett: string;
+  // Kravnummeret for skjermleser, så feltene i ulike kort kan skilles fra hverandre.
+  skjult: string;
+  verdi: string;
+  className?: string;
+  feltKlasse?: string;
+  onEndre: (verdi: string) => void;
+}) {
+  return (
+    <div className={cn("mt-3 flex flex-col gap-1", className)}>
+      <Label htmlFor={id} className="text-label font-normal text-muted-foreground">
+        {etikett}
+        {/* Et nummer skilles fra etiketten med mellomrom, et komma står inntil. */}
+        {skjult.startsWith(",") ? null : " "}
+        <span className="sr-only">{skjult}</span>
+      </Label>
+      <Textarea
+        id={id}
+        value={verdi}
+        rows={1}
+        className={cn("min-h-0", feltKlasse)}
+        onChange={(hendelse) => onEndre(hendelse.target.value)}
+      />
+    </div>
+  );
+}
+
 function Tekstdel({ etikett, children }: { etikett: string; children: ReactNode }) {
   return (
     <div className="mt-3">
@@ -211,13 +275,32 @@ function Tekstdel({ etikett, children }: { etikett: string; children: ReactNode 
   );
 }
 
-function Kravkort({ krav, kant }: { krav: Krav; kant: string }) {
+function Kravkort({
+  krav,
+  indeks,
+  kant,
+}: {
+  krav: Krav;
+  indeks: number;
+  kant: string;
+}) {
+  const { dispatch } = useOkt();
   const visBelegg = !krav.nedgradert && krav.belegg.length > 0;
+  const endre = (felt: RedigerbartFelt) => (verdi: string) =>
+    dispatch({ type: "kravRedigert", indeks, felt, verdi });
 
   return (
     <li className={cn("rounded-lg border border-l-4 bg-card px-4 py-3.5", kant)}>
       <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1.5">
-        <p className="font-semibold">{krav.tekst}</p>
+        <Tekstfelt
+          id={`krav-${indeks}-tekst`}
+          etikett="Krav"
+          skjult={String(indeks + 1)}
+          verdi={krav.tekst}
+          className="mt-0 min-w-48 flex-1"
+          feltKlasse="font-semibold"
+          onEndre={endre("tekst")}
+        />
         <Kategorimerke kategori={krav.kategori} />
       </div>
       {krav.nedgradert ? (
@@ -227,17 +310,30 @@ function Kravkort({ krav, kant }: { krav: Krav; kant: string }) {
         </p>
       ) : null}
       {visBelegg ? <Belegg belegg={krav.belegg} /> : null}
-      {krav.kategori === "delvis" && krav.forklaring ? (
-        <Tekstdel etikett="Hvorfor delvis">{krav.forklaring}</Tekstdel>
+      {krav.kategori === "delvis" ? (
+        <Tekstfelt
+          id={`krav-${indeks}-forklaring`}
+          etikett="Hvorfor delvis"
+          skjult={`, krav ${indeks + 1}`}
+          verdi={krav.forklaring ?? ""}
+          onEndre={endre("forklaring")}
+        />
       ) : null}
       {krav.kategori === "mangler" ? (
         krav.nedgradert ? (
+          // Det faste rådet er tekst fra koden og kan ikke redigeres.
           <Tekstdel etikett="Råd">
             <FastRaad />
           </Tekstdel>
-        ) : krav.raad ? (
-          <Tekstdel etikett="Råd">{krav.raad}</Tekstdel>
-        ) : null
+        ) : (
+          <Tekstfelt
+            id={`krav-${indeks}-raad`}
+            etikett="Råd"
+            skjult={`, krav ${indeks + 1}`}
+            verdi={krav.raad ?? ""}
+            onEndre={endre("raad")}
+          />
+        )
       ) : null}
     </li>
   );
@@ -247,8 +343,11 @@ function Kravgrupper({ krav }: { krav: Krav[] }) {
   return (
     <>
       {KATEGORIER.map(({ kategori, kant }) => {
-        // Annonsens rekkefølge innen gruppen. Tomme grupper vises ikke.
-        const gruppe = krav.filter((k) => k.kategori === kategori);
+        // Annonsens rekkefølge innen gruppen. Tomme grupper vises ikke. Indeksen i
+        // `krav` følger med, så en redigering treffer riktig krav.
+        const gruppe = krav
+          .map((k, indeks) => ({ k, indeks }))
+          .filter(({ k }) => k.kategori === kategori);
         if (gruppe.length === 0) return null;
 
         return (
@@ -261,8 +360,8 @@ function Kravgrupper({ krav }: { krav: Krav[] }) {
               <Kategorimerke kategori={kategori} className="text-section-title" />
             </h3>
             <ul className="flex flex-col gap-2.5">
-              {gruppe.map((k, nr) => (
-                <Kravkort key={nr} krav={k} kant={kant} />
+              {gruppe.map(({ k, indeks }) => (
+                <Kravkort key={indeks} krav={k} indeks={indeks} kant={kant} />
               ))}
             </ul>
           </section>
@@ -355,8 +454,8 @@ function Treffmaler({ analyse }: { analyse: GapAnalyse }) {
   );
 }
 
-// Fanen *Gap-analyse og nøkkelord* (FR-7, FR-8, FR-10–FR-13). Ingenting kan redigeres
-// ennå (story 2.6).
+// Fanen *Gap-analyse og nøkkelord* (FR-7, FR-8, FR-10–FR-13, FR-18). Kravtekst,
+// forklaring og råd kan redigeres. Verktøylinjen står i `Resultat`.
 export function GapAnalyseFane() {
   const gap = useOkt().tilstand.innhold.resultatdeler.gap;
 
@@ -365,12 +464,7 @@ export function GapAnalyseFane() {
   }
 
   if (gap.status === "feil") {
-    return (
-      <Alert variant="destructive">
-        <CircleAlert aria-hidden="true" />
-        <AlertDescription>{feilmelding(gap.feilkode)}</AlertDescription>
-      </Alert>
-    );
+    return <Feil feilkode={gap.feilkode ?? "llm_feil"} />;
   }
 
   const analyse = gap.redigert ?? gap.generert;

@@ -12,9 +12,7 @@ import {
 import { apiMock, demoSvar } from "@/testhjelp/gap";
 
 import { GapAnalyseFane } from "./GapAnalyseFane";
-
-const FAST_RAAD =
-  "Fant ikke belegg for dette i CV-teksten. Har du denne erfaringen, trykk Endre CV-tekst og legg den inn.";
+import { FAST_RAAD } from "./gapTekst";
 
 let svar: GapAnalyse;
 
@@ -88,7 +86,9 @@ describe("GapAnalyseFane, ferdig", () => {
   it("FR-8: kravene står i annonsens rekkefølge innen gruppen", () => {
     visSvar();
 
-    const tekster = kort().map((k) => k.querySelector("p")?.textContent);
+    const tekster = kort().map(
+      (k) => (k.querySelector("textarea") as HTMLTextAreaElement).value,
+    );
     expect(tekster).toEqual([
       "Kundeorientert og trives med å hjelpe andre",
       "Erfaring med kontanthåndtering",
@@ -136,7 +136,7 @@ describe("GapAnalyseFane, ferdig", () => {
   it("UX-DR13: hvert krav har kategorien med ord", () => {
     visSvar();
 
-    expect(kort().map((k) => k.querySelector("span")?.textContent)).toEqual([
+    expect(kort().map((k) => k.querySelector("span.rounded-full")?.textContent)).toEqual([
       "Oppfylt",
       "Oppfylt",
       "Oppfylt",
@@ -175,17 +175,125 @@ describe("GapAnalyseFane, ferdig", () => {
     expect(nedgradert.textContent).toContain(
       "Nedgradert: fant ikke belegg i CV-en",
     );
-    expect(nedgradert.textContent).toContain(FAST_RAAD);
+    // Skjermteksten og kopiteksten er den samme.
+    expect(nedgradert.querySelector("p.text-sm")?.textContent).toBe(FAST_RAAD);
     expect(nedgradert.textContent).not.toContain("Påstå");
     expect(nedgradert.querySelector("figure")).toBeNull();
   });
 
-  it("FR-18: ingenting i fanen kan redigeres", () => {
+  it("FR-18: kravtekst, forklaring og råd er tekstfelt med synlige etiketter", () => {
+    visSvar();
+    const alle = kort();
+
+    // Synlig tekst uten kravnummeret, som bare er for skjermleser.
+    const etiketter = (k: Element) =>
+      Array.from(k.querySelectorAll("textarea")).map((felt) => {
+        const etikett = document.querySelector(`label[for="${felt.id}"]`)!;
+        const kopi = etikett.cloneNode(true) as Element;
+        kopi.querySelector(".sr-only")?.remove();
+        return kopi.textContent?.trim();
+      });
+    expect(etiketter(alle[0])).toEqual(["Krav"]);
+    expect(etiketter(alle[3])).toEqual(["Krav", "Hvorfor delvis"]);
+    expect(etiketter(alle[5])).toEqual(["Krav", "Råd"]);
+    expect(
+      (screen.getByLabelText("Hvorfor delvis, krav 2") as HTMLTextAreaElement).value,
+    ).toBe(svar.krav[1].forklaring);
+    expect((screen.getByLabelText("Råd, krav 6") as HTMLTextAreaElement).value).toBe(
+      svar.krav[5].raad,
+    );
+    // Feltet vokser med innholdet, og det finnes ingen Lagre-knapp eller skjema.
+    for (const felt of document.querySelectorAll("textarea")) {
+      expect(felt.className).toContain("field-sizing-content");
+      expect(felt.closest("form")).toBeNull();
+    }
+    expect(screen.queryByRole("button", { name: /Lagre/ })).toBeNull();
+    expect(document.querySelectorAll("input, [contenteditable]")).toHaveLength(0);
+  });
+
+  it("UX-DR13: hvert felt har kravnummeret i navnet, så kortene kan skilles med skjermleser", () => {
     visSvar();
 
+    svar.krav.forEach((_, nr) => {
+      expect(screen.getByLabelText(`Krav ${nr + 1}`).id).toBe(`krav-${nr}-tekst`);
+    });
+    expect(screen.getByLabelText("Hvorfor delvis, krav 2").id).toBe(
+      "krav-1-forklaring",
+    );
+    expect(screen.getByLabelText("Råd, krav 6").id).toBe("krav-5-raad");
     expect(
-      document.querySelectorAll("textarea, input, [contenteditable]"),
-    ).toHaveLength(0);
+      document.querySelector('label[for="krav-0-tekst"] .sr-only')?.textContent,
+    ).toBe("1");
+  });
+
+  it("FR-18: endringer i «Hvorfor delvis» og «Råd» treffer sitt eget felt, og kravteksten står", () => {
+    visSvar();
+
+    const forklaring = document.getElementById("krav-1-forklaring") as HTMLTextAreaElement;
+    const raad = document.getElementById("krav-5-raad") as HTMLTextAreaElement;
+    fireEvent.change(forklaring, { target: { value: "Ny forklaring" } });
+    fireEvent.change(raad, { target: { value: "Nytt råd" } });
+
+    expect(forklaring.value).toBe("Ny forklaring");
+    expect(raad.value).toBe("Nytt råd");
+    expect(
+      (document.getElementById("krav-1-tekst") as HTMLTextAreaElement).value,
+    ).toBe(svar.krav[1].tekst);
+    expect(
+      (document.getElementById("krav-5-tekst") as HTMLTextAreaElement).value,
+    ).toBe(svar.krav[5].tekst);
+  });
+
+  it("FR-18: en endring vises med en gang og treffer riktig krav, mens kategori og belegg står", () => {
+    visSvar();
+
+    // Krav 3 i annonsen (indeks 3) står i gruppen Oppfylt eller Delvis oppfylt.
+    const felt = document.getElementById("krav-3-tekst") as HTMLTextAreaElement;
+    fireEvent.change(felt, { target: { value: "Ny tekst" } });
+
+    expect(felt.value).toBe("Ny tekst");
+    const endret = felt.closest("li")!;
+    expect(endret.querySelector("span.rounded-full")?.textContent).toBe(
+      { oppfylt: "Oppfylt", delvis: "Delvis oppfylt", mangler: "Mangler" }[
+        svar.krav[3].kategori
+      ],
+    );
+    expect(endret.querySelectorAll("blockquote")).toHaveLength(
+      svar.krav[3].belegg.length,
+    );
+    expect(
+      (document.getElementById("krav-0-tekst") as HTMLTextAreaElement).value,
+    ).toBe(svar.krav[0].tekst);
+    expect(document.body.textContent).toContain(`${svar.treffprosent} %`);
+  });
+
+  it("FR-18: det faste rådet for et nedgradert krav er ikke et tekstfelt", () => {
+    visSvar({
+      ...svar,
+      krav: [
+        {
+          tekst: "Førerkort klasse B",
+          kategori: "mangler",
+          belegg: [],
+          nedgradert: true,
+        },
+      ],
+    });
+
+    expect(screen.queryByLabelText(/^Råd/)).toBeNull();
+    expect(kort()[0].querySelectorAll("textarea")).toHaveLength(1);
+    expect(kort()[0].textContent).toContain(FAST_RAAD);
+  });
+
+  it("FR-18: en tom forklaring står som et tomt felt, så det kan fylles inn", () => {
+    visSvar({
+      ...svar,
+      krav: [{ ...svar.krav[1], forklaring: undefined }],
+    });
+
+    expect(
+      (screen.getByLabelText("Hvorfor delvis, krav 1") as HTMLTextAreaElement).value,
+    ).toBe("");
   });
 
   it("NFR-9: tekst fra API-et vises som ren tekst", () => {
@@ -259,19 +367,58 @@ describe("GapAnalyseFane, laster og feil", () => {
     },
   );
 
-  it.each<[Feilkode | null, string]>([
-    ["llm_feil", "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen."],
-    ["llm_tidsavbrudd", "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen."],
-    ["demo_krever_nokkel", "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen."],
-    ["ugyldig_svar", "Svaret fra språkmodellen kunne ikke brukes. Prøv igjen."],
+  const SVARTE_IKKE =
+    "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen.";
+
+  it.each<[Feilkode | null, string, string[]]>([
+    ["llm_feil", SVARTE_IKKE, ["Prøv igjen"]],
+    ["llm_tidsavbrudd", SVARTE_IKKE, ["Prøv igjen"]],
+    // En feil uten kode behandles som llm_feil.
+    [null, SVARTE_IKKE, ["Prøv igjen"]],
+    [
+      "ugyldig_svar",
+      "Svaret fra språkmodellen kunne ikke brukes. Prøv igjen.",
+      ["Prøv igjen"],
+    ],
     [
       "grense_naadd",
       "Appen har nådd grensen for bruk akkurat nå. Prøv igjen senere, eller bruk Prøv med eksempel.",
+      ["Prøv med eksempel"],
     ],
-  ])("AD-8: %s gir Alert med role=alert", (feilkode, melding) => {
-    vis({ status: "feil", feilkode });
+    [
+      "demo_krever_nokkel",
+      "Full analyse av din egen CV krever en API-nøkkel. Prøv eksempelet for å se hvordan resultatet ser ut.",
+      ["Prøv med eksempel"],
+    ],
+    [
+      "for_lang_tekst",
+      "Teksten er for lang til å analyseres. CV-en kan være maks 15 000 tegn og annonsen maks 8 000. Gå tilbake og kort ned teksten.",
+      [],
+    ],
+    [
+      "for_kort_tekst",
+      "Teksten er for kort til å analyseres. Annonsen må være minst 200 tegn. Gå tilbake og legg til mer.",
+      [],
+    ],
+    [
+      "ugyldig_inndata",
+      "Teksten kunne ikke sendes til analyse. Gå tilbake og trykk Analyser på nytt.",
+      [],
+    ],
+  ])(
+    "UX-DR20: %s gir Alert med role=alert, meldingen og knappene fra tabellen",
+    (feilkode, melding, knapper) => {
+      vis({ status: "feil", feilkode });
 
-    expect(screen.getByRole("alert").textContent).toBe(melding);
-    expect(screen.queryByRole("button")).toBeNull();
-  });
+      const varsel = screen.getByRole("alert");
+      const beskrivelse = varsel.querySelector("[data-slot=alert-description]");
+      expect(beskrivelse?.textContent).toBe(melding);
+      expect(
+        screen.queryAllByRole("button").map((knapp) => knapp.textContent),
+      ).toEqual(knapper);
+      for (const knapp of screen.queryAllByRole("button")) {
+        expect(varsel.contains(knapp)).toBe(true);
+      }
+    },
+  );
 });

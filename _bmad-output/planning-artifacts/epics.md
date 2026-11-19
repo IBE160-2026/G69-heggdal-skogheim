@@ -554,7 +554,7 @@ slik at jeg kan ta med meg resultatet videre.
 
 **Gitt** en redigert gap-analyse
 **Når** brukeren trykker *Generer på nytt*
-**Så** vises dialogen «Lage nytt Gap-analyse og nøkkelord? …» med *Avbryt* og *Lag ny*, og etter bekreftelse går én ny generering til serveren, med samme grunnlag (`kjoring`), og `gapVersjon` øker
+**Så** vises dialogen «Lage ny gap-analyse? …» med *Avbryt* og *Lag ny*, og etter bekreftelse går én ny generering til serveren, med samme grunnlag (`kjoring`), og `gapVersjon` øker
 **Og** under generering har begge knappene `aria-disabled="true"`
 
 **Gitt** demomodus
@@ -687,7 +687,7 @@ slik at jeg kan gjøre det til mitt eget.
 
 **Gitt** et redigert brev
 **Når** brukeren trykker *Generer på nytt*
-**Så** vises dialogen «Lage nytt Søknadsbrev? Redigeringene dine i Søknadsbrev blir overskrevet. …», og etter bekreftelse går én ny generering med samme grunnlag som første gang, mens andre faner ikke berøres
+**Så** vises dialogen «Lage nytt søknadsbrev? Redigeringene dine i Søknadsbrev blir overskrevet. …», og etter bekreftelse går én ny generering med samme grunnlag som første gang, mens andre faner ikke berøres
 **Og** i demomodus vises det lagrede brevet igjen uten kall til språkmodellen
 
 **Gitt** et ferdig brev

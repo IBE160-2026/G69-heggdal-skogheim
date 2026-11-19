@@ -100,7 +100,20 @@ export type OktHandling =
       kjoringId: number;
       gapVersjon: number;
       feilkode: Feilkode;
-    };
+    }
+  | {
+      type: "kravRedigert";
+      indeks: number;
+      felt: RedigerbartFelt;
+      verdi: string;
+    }
+  | { type: "kopiert" };
+
+// FR-18: bare disse tekstene i et krav kan redigeres. Kategori, belegg og `nedgradert`
+// er låst, og det samme er treffprosent og nøkkelord.
+export type RedigerbartFelt = "tekst" | "forklaring" | "raad";
+
+export const KOPIERT = "Kopiert.";
 
 export const startTilstand: OktTilstand = {
   okt: { bekreftetPersonvern: false, modus: null, leverandor: null },
@@ -289,6 +302,38 @@ function medGap(
   };
 }
 
+// AD-6, FR-18: første endring lager `redigert` som en kopi av `generert`. Bare det ene
+// feltet i det ene kravet endres. Det faste rådet for nedgraderte krav kan ikke redigeres.
+function medRedigering(
+  tilstand: OktTilstand,
+  handling: { indeks: number; felt: RedigerbartFelt; verdi: string },
+): OktTilstand {
+  const gap = tilstand.innhold.resultatdeler.gap;
+  const analyse = gap?.status === "ferdig" ? (gap.redigert ?? gap.generert) : null;
+  const krav = analyse?.krav[handling.indeks];
+  if (!gap || !analyse || !krav) return tilstand;
+  if (handling.felt === "raad" && krav.nedgradert) return tilstand;
+  if ((krav[handling.felt] ?? "") === handling.verdi) return tilstand;
+
+  const redigert: GapAnalyse = {
+    ...analyse,
+    krav: analyse.krav.map((k, nr) =>
+      nr === handling.indeks ? { ...k, [handling.felt]: handling.verdi } : k,
+    ),
+  };
+
+  return {
+    ...tilstand,
+    innhold: {
+      ...tilstand.innhold,
+      resultatdeler: {
+        ...tilstand.innhold.resultatdeler,
+        gap: { ...gap, redigert },
+      },
+    },
+  };
+}
+
 function medCvFil(tilstand: OktTilstand, cvFil: CvFil | null): OktTilstand {
   return { ...tilstand, innhold: { ...tilstand.innhold, cvFil } };
 }
@@ -436,6 +481,13 @@ export function reducer(
           null,
         ),
         kunngjoring: null,
+      };
+    case "kravRedigert":
+      return medRedigering(tilstand, handling);
+    case "kopiert":
+      return {
+        ...tilstand,
+        kunngjoring: kunngjor(tilstand.kunngjoring, [KOPIERT]),
       };
   }
 }

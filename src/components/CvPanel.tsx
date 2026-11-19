@@ -3,6 +3,7 @@
 import { LoaderCircle, TriangleAlert } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import { FEILMELDINGER } from "@/components/feilmeldinger";
 import { SpraakMerknad } from "@/components/SpraakMerknad";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -43,10 +44,9 @@ export function CvPanel() {
   const limerInn = useRef(false);
   const felt = useRef<HTMLTextAreaElement>(null);
 
-  // `nr` øker ved hver avvisning, så samme melding monteres på nytt og leses opp igjen.
-  const [avvist, setAvvist] = useState<{ tekst: string; nr: number } | null>(
-    null,
-  );
+  // Antall avvisninger på rad, eller 0. `avvist` øker ved hver avvisning, så samme
+  // melding monteres på nytt og leses opp igjen.
+  const [avvist, setAvvist] = useState(0);
   const [drar, setDrar] = useState(false);
   const skalFokusereVelg = useRef(false);
   const velgKnapp = useRef<HTMLButtonElement>(null);
@@ -89,22 +89,21 @@ export function CvPanel() {
     };
   }, []);
 
-  function avvis(tekst: string) {
-    setAvvist((forrige) => ({ tekst, nr: (forrige?.nr ?? 0) + 1 }));
+  function avvis() {
+    setAvvist((forrige) => forrige + 1);
     velgKnapp.current?.focus();
   }
 
   // Filen leses bare i nettleseren og sendes aldri til serveren (FR-2).
   async function velgFil(fil: File) {
     const nr = ++lesing.current;
-    const melding = avvisCvFil(fil);
-    if (melding) {
+    if (avvisCvFil(fil)) {
       // En fil som leses nå, slippes, så «Leser CV-en …» ikke blir stående.
       if (cvFil) dispatch({ type: "cvFilByttet" });
-      avvis(melding);
+      avvis();
       return;
     }
-    setAvvist(null);
+    setAvvist(0);
 
     dispatch({ type: "cvFilLeses", navn: fil.name });
     const svar = await lesCvFil(fil);
@@ -112,7 +111,7 @@ export function CvPanel() {
 
     if (svar.type === "avvist") {
       dispatch({ type: "cvFilByttet" });
-      avvis(svar.melding);
+      avvis();
       return;
     }
     skalFokusere.current = true;
@@ -183,14 +182,14 @@ export function CvPanel() {
             eller dra filen hit. PDF, DOCX eller TXT, maks 5 MB
           </p>
         </div>
-        {avvist ? (
+        {avvist > 0 ? (
           <p
-            key={avvist.nr}
+            key={avvist}
             id={AVVIST_ID}
             role="alert"
             className="mt-2 text-sm text-destructive"
           >
-            {avvist.tekst}
+            {FEILMELDINGER.fil_avvist.tekst}
           </p>
         ) : null}
         {cvFil?.tilstand === "leser" ? (
@@ -256,7 +255,7 @@ export function CvPanel() {
               lesing.current++;
               skalFokusereVelg.current = true;
               setValgtInnliming(false);
-              setAvvist(null);
+              setAvvist(0);
               dispatch({ type: "cvFilByttet" });
             }}
           >
@@ -266,7 +265,7 @@ export function CvPanel() {
       ) : null}
       {lesefeil ? (
         <p id={LESEFEIL_ID} className="mt-2 text-sm text-destructive">
-          Klarte ikke å lese filen. Lim inn CV-teksten i stedet.
+          {FEILMELDINGER.fil_kan_ikke_leses.tekst}
         </p>
       ) : null}
       {fjernet > 0 ? (
@@ -279,8 +278,7 @@ export function CvPanel() {
         <Alert id={VARSEL_ID} role={undefined} className="mt-3">
           <TriangleAlert aria-hidden="true" />
           <AlertDescription className="text-foreground">
-            Fant nesten ikke tekst i filen. Den kan være skannet eller tom. Lim
-            inn teksten selv i feltet under.
+            {FEILMELDINGER.nesten_ingen_tekst.tekst}
           </AlertDescription>
         </Alert>
       ) : null}
