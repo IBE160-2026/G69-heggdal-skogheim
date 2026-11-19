@@ -2,6 +2,24 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+## Status 2026-11-19 (runde 2 forberedt)
+
+- **Beslutning (Kevin, 2026-11-19):** prompten rettes etter runde 1, før OpenAI er målt. Begge leverandørene måles i runde 2 på samme prompt, og valget tas etter AD-11 på runde 2. Det erstatter planen under («B3 avgjør nå valget» og «Hvis runde 2»). Grunnlaget er SM-2: feiler én kjøring, rettes prompten, og alt kjøres på nytt. Runde 1 og rapportene fra den står uendret.
+- **Prompten i runde 2:** [`spec-2-4-del-b-runde-2-kategori-og-sammensatte-krav.md`](spec-2-4-del-b-runde-2-kategori-og-sammensatte-krav.md). Årsaksanalysen står i spec-en. Steg 1–3 i `GAP_INSTRUKS` følger nå FR-8 og FR-7 nøyaktig. Det gjelder definisjonene, sammensatte krav og alternativer, egenvurdering, lavere nivå, ett krav per listepunkt og forkortelser i stillingen. Koden, skjemaet og fasiten er ikke endret.
+- **Kopien for runde 2:** [`vurdering-2-4-leverandorvalg-runde-2.md`](vurdering-2-4-leverandorvalg-runde-2.md).
+- **Målingen i runde 2** krever Kevins godkjenning. Arbeidstreet må være rent, og `npm test` og tørrkjøringen med `--mock` må være grønne. Prisene er de samme som i runde 1.
+
+  ```bash
+  # Mistral Medium 3.5: 12 kall, forventet ca. 1,0 kr, øvre grense ca. 7,4 kr uten mva (innenfor grensen på 2 USD)
+  npm run testsett -- --leverandor mistral --modell mistral-medium-2604 --pris-inn 14.53 --pris-ut 72.65
+  # OpenAI gpt-4.1-mini: kontroll på par 2 (1 kall), deretter 12 kall, forventet ca. 0,3 kr
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50 --par par-2-it-support --ganger 1
+  npm run testsett -- --leverandor openai --modell gpt-4.1-mini --pris-inn 3.87 --pris-ut 15.50
+  ```
+
+  Alle tre kjøres på samme commit, med prompten fra runde 2. OpenAI krever nøkkelen og Sondres bekreftelse av vilkårene. Mistral kan måles først.
+- **Hva runde 2 skal vise:** ingen krav over fasiten (SM-3), og høyst ett krav under fasiten per par (FR-8). Det er en risiko at de strengere reglene presser et krav under fasiten til, for eksempel i par 3, der ett krav allerede lå under i runde 1. Det sjekkes i vurderingen.
+
 ## Status 2026-11-19 (etter B2)
 
 - **B2 er gjort** (godkjent av Kevin): `testsett-rapporter/2026-11-19-2057-mistral-mistral-medium-2604.md`.

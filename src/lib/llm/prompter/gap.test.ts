@@ -91,11 +91,52 @@ describe("prompten for gap-analysen", () => {
       "stillingen med vanlig skrift",
       /stillingen med vanlig skrift, med stor forbokstav.*behold forkortelser og egennavn slik de står/,
     ],
+    [
+      "stillingen: forkortelser med store bokstaver, også i sammensatte ord",
+      /forkortelse som uttales bokstav for bokstav, skrives med store bokstaver, også når den er første del av et sammensatt ord/,
+    ],
+    ["FR-7: hvert punkt i en liste er ett krav", /Hvert punkt i en liste i annonsen er ett krav/],
+    ["FR-7: et punkt med flere ting deles ikke opp", /er fortsatt ett krav\. Del det ikke opp i flere krav/],
+    ["FR-8: oppfylt dekker direkte hele kravet", /"oppfylt": CV-teksten har konkret erfaring, utdanning eller dokumentasjon som direkte dekker hele kravet/],
+    ["FR-8: delvis ved beslektet erfaring, del av kravet eller egenvurdering", /"delvis": CV-teksten har overførbar eller beslektet erfaring, dekker bare en del av kravet, eller kravet står bare som brukerens egenvurdering/],
+    ["FR-8: hver del av et sammensatt krav må være dokumentert", /Har kravet flere deler som alle kreves, må hver del være dokumentert\. Er bare noen av delene dokumentert, er kravet "delvis"/],
+    ["FR-8: for alternativer er ett av dem nok", /Er delene alternativer \(for eksempel «eller»\), er det nok at ett av dem er dokumentert/],
+    ["FR-8: egenvurdering gir høyst delvis", /bare har egenvurdering som grunnlag, er høyst "delvis"/],
+    ["FR-8: konkret erfaring som viser egenskapen, er dokumentasjon", /Konkret erfaring eller utdanning i CV-teksten som viser egenskapen, er dokumentasjon/],
+    ["FR-8: lavere nivå i CV-teksten gir høyst delvis", /Sier CV-teksten selv at nivået er lavere enn det kravet ber om, er kravet høyst "delvis"/],
+    ["FR-8: nivå som ikke er oppgitt, nedgraderes ikke automatisk", /Er nivået ikke oppgitt, vurder det CV-teksten konkret viser/],
   ])("%s står i systeminstruksen", (_navn, monster) => {
     expect(GAP_INSTRUKS).toMatch(monster);
   });
 
-  it.each(["Arbeidsoppgaver", "en fordel", "førerkort", "(for eksempel IT)", "nattskift"])(
+  it("FR-8: reglene for oppfylt står etter kategoriene og før tvilsregelen", () => {
+    const kategorier = GAP_INSTRUKS.indexOf('"mangler": CV-teksten dokumenterer ikke kravet');
+    const regler = GAP_INSTRUKS.indexOf('Disse reglene begrenser "oppfylt"');
+    const tvil = GAP_INSTRUKS.indexOf("Er du i tvil, velg alltid den svakeste kategorien");
+
+    expect(kategorier).toBeGreaterThan(0);
+    expect(regler).toBeGreaterThan(kategorier);
+    expect(tvil).toBeGreaterThan(regler);
+  });
+
+  it.each([
+    "Arbeidsoppgaver",
+    "en fordel",
+    "førerkort",
+    "(for eksempel IT)",
+    "nattskift",
+    // Runde 2: ordene fra kravene og CV-ene som feilet i runde 1, så reglene ikke er laget etter fasiten.
+    "grunnleggende",
+    // «nøyaktig» alene er ikke med, fordi prompten bruker ordet om antallet («nøyaktig én kategori»).
+    "nøyaktig og",
+    "pålitelig",
+    "selvstendig",
+    "ansvarsbevisst",
+    "digitale ferdigheter",
+    "Windows",
+    "Microsoft 365",
+    "kveldsvakt",
+  ])(
     "SM-1: systeminstruksen har ikke eksempelet %j fra testdataene",
     (tekst) => {
       expect(GAP_INSTRUKS.toLowerCase()).not.toContain(tekst.toLowerCase());
