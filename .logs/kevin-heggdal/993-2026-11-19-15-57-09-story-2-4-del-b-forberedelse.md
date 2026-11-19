@@ -231,3 +231,43 @@ Før målingen hadde Kevin sjekket Usage: 1 fakturerbart kall og 0,01 USD for `m
 - «It-brukerstøtte»: forkortelser i stillingen. Vurder en retting etter runde 1.
 - B4 (manuell test i appen) og del C (kjøreboka for del C) gjenstår.
 
+## 2026-11-19 kl. 21:21 — Kevin Heggdal
+
+### Oppgave
+Kevin ba om en analyse av hvorfor Mistral Medium 3.5 feilet SM-3 på par 1 og par 4, og hvorfor «Windows og Microsoft 365» ble delt i to krav. Feilene skulle rettes i en egen, dokumentert runde 2 med `bmad-build`, uten å endre fasiten, vurderingsreglene eller akseptansekriteriene. Det skulle ikke gjøres betalte kall, ingen endringer i Vercel og ingen push eller fletting. Runde 1 skulle stå uendret.
+
+### Plan
+- Arbeidet fulgte `bmad-build`.
+  - **Steg 1:** konteksten for epic 2 var eldre enn planleggingsdokumentene og ble laget på nytt med en subagent.
+  - **Steg 2:** årsaksanalyse og den korte ruten («oneshot»), fordi endringen er liten, ingenting er irreversibelt, og Kevin hadde avgjort runde 2.
+  - **Gjennomgang:** én gjennomgang med Blind Hunter.
+- Spec-en: [spec-2-4-del-b-runde-2-kategori-og-sammensatte-krav.md](../../_bmad-output/implementation-artifacts/spec-2-4-del-b-runde-2-kategori-og-sammensatte-krav.md).
+- **Kevins beslutning 2026-11-19:** prompten rettes nå, og begge leverandørene måles i runde 2 på samme prompt. Det erstatter planen om at B3 alene skulle avgjøre valget. Grunnlaget er SM-2.
+
+### Resultat
+- **Årsakene:**
+  - **Kategoriene:** steg 3 i `GAP_INSTRUKS` gjenga ikke FR-8. Prompten sa «dokumenterer kravet» der FR-8 sier «direkte dekker», og regelen om egenvurdering manglet. Prompten sa heller ingenting om sammensatte krav eller om et lavere nivå enn kravet.
+  - **De delte kravene:** «ett krav per punkt» kunne leses som én kvalifikasjon per krav.
+  - **«It-brukerstøtte»:** regelen om forkortelser virket ikke når hele overskriften står med store bokstaver.
+  - **Ikke årsaker:** koden (pipelinen nedgraderer bare, og 0 belegg ble fjernet), skjemaet og fasiten.
+- **Prompten** (`src/lib/llm/prompter/gap.ts`):
+  - definisjonene av «oppfylt» og «delvis» fra FR-8
+  - «Disse reglene begrenser "oppfylt"»: alle deler av et sammensatt krav må være dokumentert, men for alternativer er ett av dem nok
+  - egenvurdering gir høyst «delvis», mens konkret erfaring eller utdanning som viser egenskapen, er dokumentasjon
+  - et nivå som CV-teksten selv oppgir som lavere, gir høyst «delvis», mens et nivå som ikke er oppgitt, vurderes ut fra det CV-teksten konkret viser
+  - hvert listepunkt er ett krav og deles ikke opp
+  - forkortelser i stillingen skrives med store bokstaver
+- **Testene** (`gap.test.ts`): et mønster for hver ny regel, en test av rekkefølgen og ord fra kravene som feilet i den negative lista.
+- **Gjennomgangen:** 9 funn. Seks er rettet (alternativer, egenvurdering kombinert med erfaring, dokumentasjonen, målingen som godkjenning, overskriften og «nøyaktig og»). Tre er avvist med begrunnelse i spec-en.
+- **Kontrollene:** lint, typecheck, `npm test` (797 av 797 i 48 filer), build og tørrkjøringen (12 av 12) er grønne.
+- **Dokumentasjonen:**
+  - ny [vurdering-2-4-leverandorvalg-runde-2.md](../../_bmad-output/implementation-artifacts/vurdering-2-4-leverandorvalg-runde-2.md)
+  - kjøreboka for del B har fått en statusdel for runde 2 med kommandoene
+  - runde 1 og rapportene fra B2 er uendret
+- **Commit:** `af5f4dd` (lokal). Ingen betalte kall. 2-4 står fortsatt som `in-progress`.
+
+### Åpne punkter
+- Målingen i runde 2 krever Kevins godkjenning:
+  - Mistral Medium 3.5: 12 kall, ca. 1 kr.
+  - OpenAI `gpt-4.1-mini`: 1 kall i kontrollen og 12 i målingen, ca. 0,3 kr. Krever nøkkelen og Sondres bekreftelse av vilkårene.
+- Risiko i runde 2: de strengere reglene kan presse et ekstra krav under fasiten, særlig i par 3.
