@@ -12,6 +12,10 @@
 - [ ] 2026-11-19 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Story 2.4: juster prompten (bare kvalifikasjoner som krav, ingen duplikater, ingen listetegn først i belegg, stilling i vanlig skrift) og mål mot fasitene
 - [ ] 2026-11-19 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Lag Mistral-nøkkel (betalt plan) til målingen i 2.4
 - [ ] 2026-11-19 [story-2-5-forstaaelige-feil](981-2026-11-19-15-45-54-story-2-5-forstaaelige-feil.md) — Story 2.4/produksjon: oppbrukt kreditt gir Prøv igjen uten henvisning til Prøv med eksempel (deferred-work.md)
+- [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Test 2.6 i nettleseren før fletting: rediger et krav, Kopier og lim inn, Generer på nytt med og uten redigering, tastatur alene og 320 px
+- [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Story 5.2: sjekk med NVDA/VoiceOver om vellykket kopiering leses opp to ganger (toast «Kopiert» og live-regionen «Kopiert.»)
+- [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — En mislykket Generer på nytt sletter den forrige analysen (deferred-work.md)
+- [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Vurder ordlyden «Lage nytt Gap-analyse og nøkkelord?» i dialogen (malen i EXPERIENCE.md gir feil kjønn)
 
 ## Løst
 
