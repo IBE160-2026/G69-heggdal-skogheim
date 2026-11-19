@@ -2,7 +2,7 @@
 title: 'Story 2.4 del A: Testsettskriptet for leverandørvalget'
 type: 'feature'
 created: '2026-11-19'
-status: 'done'
+status: 'in-progress'
 baseline_commit: '9f457869ced87878744ab066a2228011a7ee4b1c'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -95,6 +95,33 @@ context:
 - Given `npm run testsett -- --leverandor mistral --mock` uten nøkkel, when skriptet kjøres, then skrives en rapport med 12 kjøringer, og ingen nettverkskall skjer.
 - Given `npm test`, when testene kjøres, then er skripttestene med, og ingen av dem kaller et ekte API eller trenger nøkkel.
 - Given rapporten, when den leses, then har hver kjøring kategori og belegg per krav, nedgraderte krav, nøkkelord funnet og ikke funnet, treffprosent, input- og output-tokens, varighet og kostnad, og hvert par har gjennomsnittlig kostnad og lengste varighet.
+
+### Review Findings
+
+Code review of PR #14 by Sondre, 2026-11-19 (blind, edge cases, verification gap, acceptance audit).
+
+- [ ] [Review][Patch] Switch the default OpenAI model to `gpt-4.1-mini` [src/lib/llm/leverandor.ts:15, scripts/testsett/argumenter.ts:27, README.md:43] — decided by Sondre 2026-11-19: `gpt-5-mini` returns 404 `model_not_found` for an unverified organization and ignores `temperature`; `gpt-4.1-mini` works without verification and accepts temperature (AD-3). Update the test that locks in `gpt-5-mini`.
+- [ ] [Review][Patch] A run where every call fails exits 0, records no cause and is saved like a real measurement [scripts/kjor-testsett.ts:199-204] — record a sanitised cause per failed run (error class and HTTP status, caught in the `medTokens` wrapper before `generer` turns it into `llm_feil`), print a warning, and return 1 when all runs fail.
+- [ ] [Review][Patch] Extra or duplicated requirements are not flagged [scripts/testsett/rapport.ts] — per run, show «N krav (fasiten har M)» and mark requirements whose text repeats; the manual test showed the model listing job tasks as requirements and one requirement twice.
+- [ ] [Review][Patch] Average cost labelled «minst» [scripts/testsett/kostnad.ts:25-28, scripts/testsett/rapport.ts:147,213] — an average over the known runs is not a lower bound; label it as the average of the N runs with known cost, and keep «minst» only for the total.
+- [x] [Review][Defer] Report stores only the requested model name, not the model id the provider answered with [scripts/testsett/rapport.ts] — deferred: `mistral-medium-latest` is an alias, so two reports can measure different models (NFR-10); needs `LlmSvar` to carry the response model id.
+- [x] [Review][Defer] Windows drive-letter fix in the script guard is never exercised by CI [scripts/kjor-testsett.ts] — deferred: CI runs on Ubuntu; move the comparison to an exported helper with a unit test.
+
+**Rejected:**
+- `false` — A throw in `generer` loses all paid runs: `generer` catches every error and returns `{ feil }`, so the loop never sees an exception.
+- `false` — Token capture keeps only the last call: `generer` calls the client once per run.
+- `false` — Spec `status: done` contradicts sprint status: the spec covers del A only and is done; story 2.4 stays `in-progress` for del B and C (fixing it would edit the spec).
+- `low` — `kommando.test.ts` uses an internal tsx path and runs in CI: works today, a few seconds per run.
+- `low` — Price 0 accepted for a real run: unlikely typo; the header shows the prices used.
+- `low` — No JSON output for comparing providers: enhancement, not a defect.
+- `low` — No per-requirement agreement table across the three runs: enhancement; the spec chose manual assessment.
+- `low` — Cap test hard-codes 8000 twice: cosmetic.
+- `low` — Report write failure after paid runs loses the measurement: unlikely; fix adds a fallback path.
+- `low` — Guard misses behind symlinks, junctions or subst drives: unlikely setup.
+- `low` — A `--modell` ending in `-mock` gets gitignored: unlikely name.
+- `low` — Price typed with thousands separator (`1.000`): prices per million tokens are small decimals.
+- `low` — Run truncated at the output cap with 0/0 tokens goes unflagged: maybe-false, would only be low.
+- `low` — `?raw` loader content not observable in output: harmless for measurement.
 
 ## Implementation Notes
 
