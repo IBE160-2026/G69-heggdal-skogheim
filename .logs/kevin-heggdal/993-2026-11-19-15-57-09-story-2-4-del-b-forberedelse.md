@@ -680,3 +680,33 @@ Kevin godkjente å oppdatere grenen for story 2.4 med siste `main` lokalt og lø
 ### Åpne punkter
 - PR-en kan opprettes når Kevin godkjenner push.
 - Beslutningen om fasiten i par 3 (SM-1) gjenstår, og det samme gjør B4, roteringen av nøklene, Sondres bekreftelser og del C.
+
+## 2026-11-19 kl. 23:26 — Kevin Heggdal
+
+### Oppgave
+Kevin godkjente push av grenen for story 2.4 og en PR mot `main` med `pr-2-4-del-b.md` som grunnlag, men ikke fletting. PR-en skulle si tydelig:
+- at SM-1 ikke er bestått (9 av 12), og at avviket i par 3 er åpent
+- at OpenAI `gpt-4.1-mini` med temperatur 0 er valgt etter AD-11 og etter enighet med Sondre
+- at del C, den manuelle testen, roteringen av nøklene og bekreftelsen av OpenAI-vilkårene gjenstår
+
+Det skulle sjekkes at PR-en ikke har hemmeligheter, og at den bare har endringer fra story 2.4.
+
+### Plan
+- **Innholdet:** `git diff --name-status origin/main...HEAD` ble sjekket fil for fil. README-en, PRD-en og `issues.md` ble lest.
+- **Hemmeligheter:** diffen ble søkt gjennom etter nøkkelmønstre.
+- **Push:** `git push -u origin story-2.4-del-b-maaling-og-valg`.
+- **PR-en:** `gh` er ikke installert. Et forsøk på å lage PR-en gjennom GitHub-API-et med tokenet fra Git Credential Manager ble avvist av tillatelsene, og jeg prøvde ikke å omgå det.
+
+### Resultat
+- **Innholdet i PR-en (42 commits, 0 bak `main`):** bare arbeid fra story 2.4.
+  - spec-ene og vurderingene for del B, kjørebøkene, beslutningsgrunnlaget og PR-utkastet
+  - 12 testsettrapporter
+  - `scripts/testsett/*` og `src/lib/llm/*` (prompten, adapterne, temperaturen) og `src/lib/pipeline/generer*` (listetegn i belegg)
+  - README-en (standardmodellen `gpt-4.1-mini` og lenken til kjøreboka), PRD §10.1, `deferred-work.md` og Kevins logg
+  - Ingenting fra andre stories, siden 2.5 og 2.6 kom inn via `main` og ikke er en del av diffen.
+- **Hemmeligheter:** ingen. Bare `.env.example` er sporet.
+- **Pushet:** `origin/story-2.4-del-b-maaling-og-valg`.
+- **PR-en er ikke opprettet.** Beskrivelsen er klar, med valget «etter enighet mellom Kevin og Sondre», SM-1 IKKE bestått og det som gjenstår. Kevin må opprette PR-en selv (lenke og fremgangsmåte står i oppsummeringen), eller gi tillatelse til et annet verktøy.
+
+### Åpne punkter
+- Opprett PR-en mot `main` med beskrivelsen fra `pr-2-4-del-b.md` (fra «## Sammendrag» og ned). Den skal ikke flettes før Sondre har gått gjennom den.

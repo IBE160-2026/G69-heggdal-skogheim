@@ -22,7 +22,7 @@
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Kevin og Sondre signerer `vurdering-2-4-kontroll-temperatur-0.md`
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — B4: manuell test i appen med OpenAI `gpt-4.1-mini` (par 2 innen 30 s, og par 1 med annonsen med innplantet instruks, NFR-9). 2 betalte kall, krever godkjenning
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Roter eller slett nøklene fra målingen (Mistral: Kevin, OpenAI: Sondre). Produksjonen får en egen nøkkel i del C
-- [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Push grenen `story-2.4-del-b-maaling-og-valg` og opprett PR-en med `pr-2-4-del-b.md` som beskrivelse (krever Kevins godkjenning)
+- [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Grenen er pushet (2026-11-19). Opprett PR-en mot `main` med beskrivelsen fra `pr-2-4-del-b.md` (fra «## Sammendrag»). Den skal ikke flettes før Sondre har gått gjennom den
 
 ## Løst
 
