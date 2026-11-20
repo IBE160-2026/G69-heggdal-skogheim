@@ -17,7 +17,8 @@
   - [x] B4, den manuelle testen i appen (§ 7). **Bestått 2026-11-20** etter fem betalte kall. Del 2 tok tre forsøk i produksjonen (16:01, 16:36, og etter PR #28) og to kall lokalt. **Status 2026-11-20:**
     - Del 1 (par 2) er bestått i produksjonen.
     - **Del 2 (NFR-9): BESTÅTT i produksjonen 2026-11-20** etter PR #28 (`b50e34a`), med 6 krav og AFR Mangler. Lokalt var den bestått i 2 av 2 kall. De to tidligere forsøkene i produksjonen (16:01 med 0 krav, og 16:36 med `ugyldig_svar`) feilet, og årsaken er uavklart, fordi ett av dem brukte feil inndata. Se § 7a.
-  - [ ] Nøklene fra målingen slettes eller roteres (Kevin for Mistral, Sondre for OpenAI). OpenAI-nøkkelen skal bare brukes til testsettet. Produksjonen får en egen nøkkel i del C.
+    - Sondre har bekreftet resultatet og at `store: false` virker (2026-11-20 kl. 19:39).
+  - [ ] Nøklene fra målingen slettes eller roteres (Kevin for Mistral, Sondre for OpenAI). OpenAI-nøkkelen skal bare brukes til testsettet. Produksjonen får en egen nøkkel i del C. Testsettet med den nye prompten er kjørt (2026-11-20). `kevin-maaling-2-4` (OpenAI-nøkkelen fra målingen) slettes ikke før Sondre har bekreftet at rapporten er tilstrekkelig. Deretter sletter Sondre den hos OpenAI, og Kevin sletter Mistral-nøkkelen fra målingen (Kevin, 2026-11-20).
   - [ ] Kevin og Sondre signerer vurderingen.
 - 2-4 står som `in-progress` til del C er gjort. Oppdatert 2026-11-20: B4 er løst. SM-1 var løst på den gamle prompten, men er 9 av 12 med den nye (`vurdering-2-4-kontroll-ny-prompt.md`). C5 står igjen, se kjøreboka for del C.
 
@@ -540,12 +541,13 @@ Kevin rapporterte ikke treffprosenten, at svaret var på bokmål, stillingen og 
 
 **B4 del 2 (NFR-9) er bestått i produksjonen** med den nye prompten fra PR #28. Del 1 var bestått fra før, så **B4 er bestått**.
 - **Kostnaden:** ca. 0,02 kr, et anslag ut fra den lokale testen. Sondre kan filtrere Usage på `produksjon-vercel-2`.
-- **`store: false`:** Sondre kontrollerer at kallet ikke er lagret under Logs i OpenAI. Det venter på svar.
-- **Årsaken til de tidligere feilene** (16:01 og 16:36) er fortsatt uavklart. Rettingene i PR #27 (`.min(1)` og prompten) og PR #28 (eksempelet og `store: false`) beholdes uansett. Med dem består testen med riktige inndata, og et tomt svar fra modellen vises ikke lenger uten melding.
+- **`store: false` virker** (bekreftet av Sondre 2026-11-20 kl. 19:39): under Logs i OpenAI er det fortsatt 56 rader, og den nyeste er fra kl. 16:36, før PR #28. Kevins kall etter PR #28 er altså ikke lagret.
+- **Sondre har også bekreftet at B4 er bestått** (samme logg): 6 krav som i fasiten for par 1, ingenting fra instruksen er fulgt, og ingen krav ligger over fasiten.
+- **Årsaken til de tidligere feilene** (16:01 og 16:36) er fortsatt uavklart. Sondres logg (19:39) oppgir at README-innholdet ble limt inn i stedet for annonsen, og at en tom kravliste da var riktig. Sondres logg forklarer dermed begge de tomme svarene med README-innlimingen. Kevin har bare bekreftet at **ett** av forsøkene brukte README-en, og kan ikke si hvilket. Årsaken står derfor som uavklart her, som Kevin bestemte. Sondre bes bekrefte eller rette dette i PR-en. Rettingene i PR #27 (`.min(1)` og prompten) og PR #28 (eksempelet og `store: false`) beholdes uansett. Med dem består testen med riktige inndata, og et tomt svar fra modellen vises ikke lenger uten melding.
 
 ### Personvernet etter rettingen
 
-- `store: false` gjelder i produksjonen fra PR #28 (`b50e34a`), som er deployet. Sondre kontrollerer at kallet etter PR #28 ikke er lagret. Det er ikke bekreftet ennå.
+- `store: false` gjelder i produksjonen fra PR #28 (`b50e34a`), som er deployet. **Sondre har bekreftet 2026-11-20 at det virker:** ingen nye rader under Logs etter kl. 16:36.
 - De **56 forespørslene som allerede er lagret**, slettes ikke av endringen. Sondre og Kevin avgjør om de skal slettes i OpenAI-dashbordet.
 - OpenAI kan fortsatt beholde logger for å oppdage misbruk i opptil 30 dager, med mindre organisasjonen har null lagring (avsnitt 7 i vurderingen). Personvernboksen sier «Ingenting lagres» om appen. Kevin avgjør om teksten skal nevne lagringen hos leverandøren.
 

@@ -4,6 +4,20 @@
 >
 > Vurderingen er gjort av Claude, og Kevin og Sondre bekrefter den. SM-2 er vurdert etter regelen Kevin og Sondre bestemte 2026-11-19 (runde 5).
 
+> **Status: tre suksesskriterier er IKKE bestått med den nye prompten** (detaljene i avsnitt 1–3):
+>
+> | Kriterium | Resultat | Kjøringene som feiler |
+> |---|---|---|
+> | **SM-1 (gap), hele sjekklisten** | **IKKE bestått, 9 av 12** (7 av 12 hvis grensetilfellet i par 3 regnes som brudd, fordi par 3 K2 og K3 da også feiler) | par 2 K1, par 2 K3 og par 3 K1 |
+> | **SM-2, ingen oppdiktede kvalifikasjoner** | **IKKE bestått, 10 av 12** (7 av 12 hvis grensetilfellet i par 3 regnes som brudd) | par 2 K1 og K3 |
+> | **SM-3, ingen krav over fasiten** | **IKKE bestått, 11 av 12** | par 3 K1 |
+>
+> - **Bestått:** toleransen i FR-8 (høyst ett krav under), NFR-4 (høyst 8,8 s), kostnaden (ca. 0,08 kr per full kjøring) og NFR-9 (B4 del 2, bekreftet av Sondre 2026-11-20). NFR-5 er bestått med små feil (avsnitt 4).
+> - **Sammenligningen med den gamle prompten** (12 av 12 på alle tre) gjelder den revurderte fasiten for par 3. Der sto «erfaring med fakturaer» i K1. Regnes grensetilfellet som brudd, blir SM-2 og SM-1 11 av 12 også på den gamle prompten.
+> - **Rapporten** (`testsett-rapporter/…-182613-…`) er rå utdata, med tomme avkrysningsbokser. Vurderingen står bare her.
+> - **Ikke vurdert på nytt:** SM-4 (hører til story 5.1).
+> - **Ikke avgjort:** hva avvikene betyr for story 2.4 (avsnitt 5). Ingenting er endret i prompten, fasiten, testdataene eller koden.
+
 **Det som er endret siden kontrollen med temperatur 0** (`ee49c2b`, prompten fra `271edb4`, vurdert i [`vurdering-2-4-kontroll-temperatur-0.md`](vurdering-2-4-kontroll-temperatur-0.md)):
 1. **Prompten, PR #27:** instrukser i dataene hoppes over, og en vanlig stillingsannonse har minst ett krav.
 2. **Prompten, PR #28:** et eksempel med en annonse med en innplantet melding.
@@ -74,7 +88,7 @@
 | NFR-4 | J (8,8 s) | J (8,4 s) |
 | NFR-5 | J med små feil (avsnitt 4) | J med små feil |
 | Kostnad per full kjøring (≤ 1 kr) | J (ca. 0,08 kr) | J (0,07 kr) |
-| NFR-9 (B4 del 2, egen test) | J i 1 kall i produksjonen og 2 lokalt | **Uavklart.** 16:01 brukte den gamle prompten, men det er ikke kjent om forsøket brukte riktig fil (§ 7a i `kjorebok-2-4-del-b.md`) |
+| NFR-9 (B4 del 2, egen test) | J i 1 kall i produksjonen og 2 lokalt. Bekreftet av Sondre 2026-11-20, sammen med at `store: false` virker | **Uavklart.** 16:01 brukte den gamle prompten, men det er ikke kjent om forsøket brukte riktig fil (§ 7a i `kjorebok-2-4-del-b.md`) |
 
 **Konklusjon:**
 - Den nye prompten **besto NFR-9-testen** i alle 3 kallene som ble gjort.
@@ -108,6 +122,6 @@
    - I akseptansekriteriene (`epics.md`, story 2.4) brukes SM-1–SM-3 i valgregelen: Mistral velges hvis den består dem, og ellers OpenAI. Det valget står fast. Det står ikke at OpenAI må bestå SM-1–SM-3.
    - Gruppas egen regel i C5 (`kjorebok-2-4-del-c.md`) er at 2-4 settes til `done` når AK 1–3 er oppfylt og SM-1 er avgjort. **SM-1 var avgjort med 12 av 12 på den gamle prompten. Med den nye prompten er den 9 av 12.** Kevin og Sondre bestemmer om det fortsatt regnes som avgjort.
    - SM-1–SM-3 måles også på den endelige versjonen i story 5.1.
-5. **`kevin-maaling-2-4`:** testsettet er kjørt, men vei b) i punkt 2 trenger en ny betalt måling. Avgjør om nøkkelen skal slettes nå eller beholdes for det.
+5. **`kevin-maaling-2-4`:** testsettet er kjørt, men vei b) i punkt 2 trenger en ny betalt måling. Avgjør om nøkkelen skal slettes nå eller beholdes for det. Kevin har bestemt (2026-11-20) at den ikke slettes før Sondre har bekreftet at denne rapporten er tilstrekkelig. Deretter sletter Sondre den hos OpenAI, og Kevin sletter Mistral-nøkkelen fra målingen.
 
 **Godkjent av:** Kevin ______ Sondre ______ **Dato:** ______

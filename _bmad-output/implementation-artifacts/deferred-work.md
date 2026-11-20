@@ -109,3 +109,7 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-4-del-c-resultat-c3-c4-og-sm-4.md`
   summary: SM-4 is not met with the chosen setup (OpenAI `gpt-4.1-mini`, temperature 0): 67 %, 67 %, 69 % and 92 % of the expected keywords extracted for pairs 1–4 (74 % overall), against the 80 % target; follow up in epic 3 (ATS, FR-17) and story 5.1.
   evidence: Section 8 of `vurdering-2-4-kontroll-temperatur-0.md`, counted manually from `testsett-rapporter/2026-11-19-225914-openai-gpt-4.1-mini.md`. The missing keywords are mostly job tasks (periodeavslutning, fakturering, årsoppgjør, førstelinje). Hypothesis, not verified: the round 1 prompt change (`246e58b`, only qualifications are requirements) also narrowed the keywords. Decide whether the prompt or the answer-key lists should change.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-gjennomgang-for-pr-b4-resultat.md`
+  summary: Update the SM-1 line in prd.md (§10.1, around line 459). It still says SM-1 is not passed because par 3 gave 9 of 12, and a future epic-context recompile would bring that stale status back.
+  evidence: Solution B gave 12 of 12 on the old prompt, and the new prompt gives 9 of 12 across par 2 and par 3. Editing the PRD belongs to C5 in kjorebok-2-4-del-c.md.
