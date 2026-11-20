@@ -1,5 +1,7 @@
 # Utkast: PR for story 2.4 del C (forberedelsen av produksjonen)
 
+> **Rettelse 2026-11-20 (etter flettingen):** nøkkelen for produksjonen ligger bare i Vercel (bekreftet av Sondre). Det finnes ingen kopi og ingen passordbehandler. Forbruket i OpenAI kan filtreres per API-nøkkel. SM-1 er løst etter flettingen: fasiten for par 3 er revurdert (løsning B), og SM-1 er 12 av 12. Teksten under er beholdt slik den var i PR-en.
+>
 > **Utkast, ikke opprettet.** Tittelen og beskrivelsen under er klare til å kopieres inn når Kevin godkjenner push og PR. Grenen er `story-2.4-del-c-produksjon`, laget fra `main` `0292337`. `origin/main` (`e9a70d8`, bare Sondres sesjonslogg) er flettet inn i grenen uten konflikter (`9388b91`, 2026-11-20). Alle endringene er committet.
 
 **Tittel:** `Story 2.4 del C: vilkår, kreditt og sjekkliste før produksjonen (OpenAI)`

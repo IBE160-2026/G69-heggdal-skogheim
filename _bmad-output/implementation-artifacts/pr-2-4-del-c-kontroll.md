@@ -1,5 +1,7 @@
 # Utkast: PR for story 2.4 del C, resultatet fra produksjonen (C3 og C4)
 
+> **Rettelse 2026-11-20 (etter flettingen):** nøkkelen for produksjonen ligger bare i Vercel (bekreftet av Sondre). Det finnes ingen kopi og ingen passordbehandler. Forbruket i OpenAI kan filtreres per API-nøkkel. SM-1 er løst etter flettingen: fasiten for par 3 er revurdert (løsning B), og SM-1 er 12 av 12. Teksten under er beholdt slik den var i PR-en.
+>
 > **Utkast.** Tittelen og beskrivelsen under kopieres inn når PR-en opprettes. Grenen er `story-2.4-del-c-kontroll`, laget fra `main` `f5747f5`, med `main` `3e70acc` flettet inn (`f04f941`). Den er ikke bak `origin/main`.
 
 **Tittel:** `Story 2.4 del C: resultatet fra produksjonen (C3 og C4) og en manuell vurdering av SM-4`
