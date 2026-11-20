@@ -66,7 +66,7 @@ Utgangspunktet er uendret. Produksjonen står fortsatt i demomodus uten nøkkel 
 4. [ ] Deploy produksjonen på nytt (Redeploy av siste produksjonsdeploy fra `main`), så variablene tas i bruk.
 5. [x] Avgjør om `GRENSE_PER_MINUTT` og `GRENSE_PER_DOGN` skal settes, eller om standardverdiene fra AD-9 gjelder (krever Kevins beslutning). **Avgjort 2026-11-20 (Kevin):** standardverdiene i koden gjelder: 10 per minutt og 200 per UTC-døgn (`src/lib/pipeline/grense.ts`). Variablene settes ikke i Vercel. De vurderes på nytt før brukertesten i 2.8 og i epic 3.
 
-Sondre har sagt (2026-11-20) at han lager nøkkelen for produksjonen og legger inn variablene i Vercel. Punkt 1–4 er ikke startet.
+Sondre har sagt (2026-11-20) at han lager nøkkelen for produksjonen og legger inn variablene i Vercel. Punkt 1–4 er ikke startet. Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-4-c3-sondre.md) (godkjent av Kevin 2026-11-20). Kravet er at grunnlaget for overføringen til USA er bekreftet i DPA-en før Redeploy.
 
 ## C4. Kontroll i produksjonen
 
