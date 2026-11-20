@@ -34,7 +34,7 @@
 
 > **Gjort 2026-11-20:** Sondre har laget en egen nøkkel for produksjonen og lagret den sikkert, utenfor GitHub. Navnet, prosjektet, eieren og rettighetene meldes i punkt 7. Stegene under er beholdt som dokumentasjon.
 >
-> **Avvik:** stegene sier at nøkkelen bare skal ligge i Vercel. Slett kopien etter punkt 2, eller la den ligge bare i en passordbehandler. Kevin og Sondre avgjør dette.
+> **Avvik:** stegene sier at nøkkelen bare skal ligge i Vercel. **Avgjort 2026-11-20 (Kevin):** Sondre oppbevarer nøkkelen sikkert i en passordbehandler, ikke i en vanlig fil. Den skal aldri deles i chat, kode eller GitHub.
 
 I [platform.openai.com](https://platform.openai.com), med organisasjonen som har kreditten på 5 USD:
 

@@ -66,7 +66,7 @@ Utgangspunktet er uendret. Produksjonen står fortsatt i demomodus uten nøkkel 
 ## C3. Nøkkelen for produksjonen og Vercel (krever godkjenning)
 
 1. [x] Lag en **egen API-nøkkel for produksjonen** hos den valgte leverandøren. Bruk ikke nøkkelen fra målingen. Gi den et navn, for eksempel `g69-produksjon`. **Laget av Sondre (bekreftet 2026-11-20)** og lagret sikkert, utenfor GitHub.
-  - **Avvik fra sjekklisten:** sjekklisten sa at nøkkelen bare skal ligge i Vercel. Kopien bør slettes etter punkt 2, eller ligge bare i en passordbehandler. Det avgjør Kevin og Sondre.
+  - **Avvik fra sjekklisten:** sjekklisten sa at nøkkelen bare skal ligge i Vercel. **Avgjort 2026-11-20 (Kevin):** Sondre oppbevarer nøkkelen sikkert i en passordbehandler, ikke i en vanlig fil. Den skal aldri deles i chat, kode eller GitHub.
   - **Ikke kjent ennå:** navnet, prosjektet (eget `g69-produksjon` eller ikke), eieren og rettighetene (*Restricted* eller *All*). Sondre melder dette etter punkt 7 i sjekklisten.
 2. [ ] Sett i Vercel → `g69-cv-assistent` → Settings → Environment Variables, **bare for Production** (ikke Preview eller Development):
    - `LLM_LEVERANDOR`: `mistral` eller `openai`.
