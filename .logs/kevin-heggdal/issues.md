@@ -23,6 +23,7 @@
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — B4: manuell test i appen med OpenAI `gpt-4.1-mini` (par 2 innen 30 s, og par 1 med annonsen med innplantet instruks, NFR-9). 2 betalte kall, krever godkjenning
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Roter eller slett nøklene fra målingen (Mistral: Kevin, OpenAI: Sondre). Produksjonen får en egen nøkkel i del C
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Grenen er pushet (2026-11-19). Opprett PR-en mot `main` med beskrivelsen fra `pr-2-4-del-b.md` (fra «## Sammendrag»). Den skal ikke flettes før Sondre har gått gjennom den
+- [ ] 2026-11-20 [story-2-4-del-c-produksjon](992-2026-11-20-12-41-17-story-2-4-del-c-produksjon.md) — Kevin avgjør om OpenAI-prosjektet også skal ha en grense for forbruket i tillegg til kreditten på ca. 5 USD uten påfylling (C2 i kjøreboka for del C)
 
 ## Løst
 
