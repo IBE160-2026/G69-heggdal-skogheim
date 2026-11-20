@@ -7,7 +7,7 @@
 > **Oppdatert 2026-11-20 etter C3 og C4 (Kevin og Sondre):**
 > - PR #22 er flettet (`f5747f5`).
 > - C3 er gjort, og produksjonen er i ekte modus med OpenAI `gpt-4.1-mini`.
-> - **C4:** de gratis kontrollene og den betalte kontrollen med par 2 er bestått, og bokmål er bekreftet av Kevin. Forbruket er bekreftet av Sondre på ukenivå, og kostnaden er et anslag. Kriteriet per nøkkel og per dag er ikke lest direkte, så punktet venter på at Kevin godtar avviket (se C4).
+> - **C4:** de gratis kontrollene og den betalte kontrollen med par 2 er bestått, og bokmål er bekreftet av Kevin. Forbruket er bekreftet av Sondre på ukenivå, og kostnaden er et anslag. Kriteriet per nøkkel og per dag er ikke lest direkte. Kevin godtok avviket 2026-11-20, så punktet er fullført med forbehold (se C4).
 > - C5 står igjen, og SM-1 er fortsatt et åpent avvik. SM-4 er ikke oppfylt, men det hører til story 5.1. Story 2.4 er ikke ferdig.
 >
 > **Avtalt rekkefølge (Sondre og Kevin, 2026-11-20):**
@@ -120,8 +120,8 @@ Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-
   - Alle seks kravene har samme kategori som i fasiten: 1 Oppfylt, 3 Delvis oppfylt og 2 Mangler.
   - Treffprosenten var 25 % (2 av 8 nøkkelord), mot 11 % i fasiten. Det er forklart i avsnitt 8 i `vurdering-2-4-kontroll-temperatur-0.md` (SM-4). Testsettet med temperatur 0 ga samme treffprosent (25 %, 2 av 8) i alle tre kjøringene. Listen med nøkkelord fra produksjonen er ikke notert.
   - Analysen dekker også del 1 av B4 (par 2 innen 30 s).
-- [ ] Forbruket i konsollen etter analysen stemmer med forventet kostnad. **Bekreftet av Sondre 2026-11-20, på ukenivå.** Kostnaden for analysen er et anslag.
-  - **Status:** punktet krysses av når Kevin godtar avviket fra kriteriet (se under). Det står i `issues.md`.
+- [x] Forbruket i konsollen etter analysen stemmer med forventet kostnad. **Fullført med forbehold 2026-11-20:** bekreftet av Sondre på ukenivå, og avviket er godtatt av Kevin. Kostnaden for analysen er et anslag.
+  - **Status:** Kevin godtok avviket fra kriteriet 2026-11-20 (se under). Usage viser det samlede forbruket for alle nøklene, ikke forbruket for produksjonsnøkkelen for seg.
   - **Usage for hele uka, alle nøklene til sammen:** 54 kall, ca. 154 000 tokens og 0,09 USD. Uka dekker all bruk siden kreditten ble kjøpt 2026-11-19.
   - **API-feil:** 5 av kallene. To av dem er *trolig* forsøkene med feil nøkkel for produksjonen, men det er ikke sikkert. En nøkkel som er lagt inn feil, kan ikke alltid knyttes til organisasjonen, og da vises forsøket ikke i Usage. Hvor de tre andre feilene kommer fra, er ikke kjent (kanskje fra målingene i del B).
   - **Analysen med par 2:** anslagsvis 0,002 USD. Den vises ikke for seg med to desimaler.
@@ -134,7 +134,7 @@ Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-
     - høyst 0,01 USD for dagen
     - at de to forsøkene med feil nøkkel ikke er fakturert
 
-    Usage viser ikke forbruket per nøkkel eller per dag, så de to første delene er ikke lest direkte. At de to forsøkene som feilet, ikke er fakturert, er heller ikke bekreftet direkte. De feilet på under 1 s, og summen for uka gir ikke rom for noen merkbar kostnad. **Kevin avgjør om avviket godtas.**
+    Usage viser ikke forbruket per nøkkel eller per dag, så de to første delene er ikke lest direkte. At de to forsøkene som feilet, ikke er fakturert, er heller ikke bekreftet direkte. De feilet på under 1 s, og summen for uka gir ikke rom for noen merkbar kostnad. **Godtatt av Kevin 2026-11-20.**
   - **Lærdom:** et eget prosjekt i OpenAI for produksjonen (forslaget i punkt 1 i sjekklisten) ville gjort det mulig å lese forbruket for seg. Det står som et åpent punkt før brukertesten i 2.8.
   - **«Spend limit» i OpenAI** står på 100 USD (ca. 969 kr), ifølge Sondre. Det er langt over 200 kr, og det er ikke notert om det er grensen for organisasjonen eller for prosjektet. Det harde taket etter PRD NFR-3 er den forhåndsbetalte kreditten uten automatisk påfylling, og den er 5 USD. Grensen på 100 USD kan derfor ikke slippe gjennom mer enn kreditten. Se Kevins åpne beslutning i C2.
 

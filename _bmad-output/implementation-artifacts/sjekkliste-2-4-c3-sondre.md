@@ -9,7 +9,7 @@
 > - Den første nøkkelen var lagt inn feil og ga 502. Sondre har erstattet den med `produksjon-vercel-2` og slettet den gamle.
 > - **Punkt 6:** `kevin-maaling-2-4` beholdes til B4 del 2 er gjort.
 > - **Punkt 7:** navnet på nøkkelen er meldt. Prosjektet, eieren og rettighetene er ikke meldt.
-> - **Forbruket** er bekreftet av Sondre 2026-11-20 på ukenivå: 0,09 USD for hele uka, på tvers av nøklene. Analysen med par 2 kostet anslagsvis 0,002 USD. Kriteriet per nøkkel og per dag er ikke lest direkte, og punktet venter på at Kevin godtar avviket. Se C4 i kjøreboka.
+> - **Forbruket** er bekreftet av Sondre 2026-11-20 på ukenivå: 0,09 USD for hele uka, på tvers av nøklene. Analysen med par 2 kostet anslagsvis 0,002 USD. Kriteriet per nøkkel og per dag er ikke lest direkte, og Kevin godtok avviket 2026-11-20, så punktet er fullført med forbehold. Se C4 i kjøreboka.
 > - Avkrysningsboksene i punkt 1–5 under er beholdt som dokumentasjon av fremgangsmåten. Status står her og i kjøreboka.
 >
 > **Lærdom:** `/api/status` viser bare at en nøkkel *finnes*, ikke at den er gyldig. En ugyldig nøkkel gir 502 (`llm_feil`) først ved et kall. Neste gang en nøkkel byttes, skal den betalte kontrollen gjøres rett etter Redeploy.
