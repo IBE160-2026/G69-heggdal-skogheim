@@ -15,6 +15,8 @@
 - [ ] 2026-11-19 [kevin-nokkel-og-todelte-krav](979-2026-11-19-21-42-57-kevin-nokkel-og-todelte-krav.md) — Story 2.4 (Kevin): regelen for krav med to deler (Delvis oppfylt når én del er dekket) inn i gap-prompten, og fasitene sjekkes
 - [ ] 2026-11-19 [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md) — 1.6 i Safari: fødselsnummer med to trykk (krever Mac eller iPhone)
 - [ ] 2026-11-19 [testopplegg-brukertest-2-8](977-2026-11-19-22-13-05-testopplegg-brukertest-2-8.md) — Finn tre medstudenter utenfor gruppen og avtal tid til brukertesten (2.8), se testopplegget
+- [ ] 2026-11-19 [openai-vilkaar-og-kreditt](976-2026-11-20-12-58-08-openai-vilkaar-og-kreditt.md) — SM-1 ikke bestått (9 av 12, to krav i par 3 under fasit). Løses før innleveringen: fasiten eller modellen?
+- [ ] 2026-11-19 [openai-vilkaar-og-kreditt](976-2026-11-20-12-58-08-openai-vilkaar-og-kreditt.md) — Når 2.4 er flettet: egen produksjonsnøkkel og miljøvariabler i Vercel (bare Production), og sjekk at demobanneret er borte
 
 ## Løst
 
