@@ -4,7 +4,7 @@
 >
 > Vurderingen er gjort av Claude, og Kevin og Sondre bekrefter den. SM-2 er vurdert etter regelen Kevin og Sondre bestemte 2026-11-19 (runde 5).
 
-> **Status: tre suksesskriterier er IKKE bestått med den nye prompten** (detaljene i avsnitt 1–3):
+> **Status: tre suksesskriterier er IKKE bestått med den nye prompten** (detaljene i avsnitt 1–3, og modellens svar ordrett, med tidligere forekomster, i avsnitt 2a):
 >
 > | Kriterium | Resultat | Kjøringene som feiler |
 > |---|---|---|
@@ -76,6 +76,52 @@
 - **Par 3 K1 og K3, «Strukturert og nøyaktig» = D:** «… kan indikere noe av dette». Det er ikke et brudd.
 
 **SM-2: N (10 av 12)**, fordi par 2 K1 og K3 bryter regelen. Hvis grensetilfellet i par 3 regnes som brudd, blir det 7 av 12.
+
+## 2a. Kravene som feilet, ordrett, og om de forekom før PR #28
+
+Lagt til 2026-11-21 for Sondres gjennomgang. Sitatene er kopiert ordrett:
+- modellens svar fra rapportene i `testsett-rapporter/` (den nye er `2026-11-20-182613-openai-gpt-4.1-mini.md`, de tidligere står i tabellen under)
+- CV-tekstene fra `testdata/par-2-it-support/cv.txt` og `testdata/par-3-regnskap/cv.txt`
+- fasiten fra `testdata/par-*/fasit.md`
+
+Linjenummeret er raden i rapporten. K1, K2 og K3 er kjøring 1, 2 og 3 for paret. Ingenting er endret i prompten, fasiten eller koden.
+
+### Kravene som feilet med den nye prompten
+
+| Par og kjøring | Krav | Modellens kategori | Fasiten | Modellens forklaring, ordrett | Det CV-en faktisk har | Feiler |
+|---|---|---|---|---|---|---|
+| Par 2 K1 (linje 198) | Erfaring med brukerstøtte eller kundeservice | D | D | «CV-teksten viser erfaring med brukerstøtte som studentassistent, men ikke kundeservice.» | «Studentassistent (deltid), Høgskolen i Molde», «Hjalp førsteårsstudenter med oppgaver i introduksjonsfaget i programmering», «Holdt to veiledningstimer i uken» | **SM-2** (og SM-1) |
+| Par 2 K3 (linje 248) | Erfaring med brukerstøtte eller kundeservice | D | D | «CV-teksten viser erfaring med brukerstøtte som studentassistent, men ikke direkte kundeservice.» | Samme som over | **SM-2** (og SM-1) |
+| Par 2 K1 (linje 197) | God forståelse av Windows og Microsoft 365 | D | D | «CV-teksten viser forståelse av Windows, men nevner ikke Microsoft 365.» | «Operativsystemer: Windows og Linux (brukt i studiet)» | **SM-2** (og SM-1) |
+| Par 2 K3 (linje 247) | God forståelse av Windows og Microsoft 365 | D | D | «CV-teksten viser forståelse av Windows, men nevner ikke Microsoft 365.» | Samme som over | **SM-2** (og SM-1) |
+| Par 3 K1 (linje 331) | Gode samarbeidsevner | **D** | M | «Du har erfaring som kundeservicemedarbeider, noe som kan tyde på samarbeidsevner, men det er ikke konkret dokumentert.» Belegget er «Kundeservicemedarbeider (deltid)» | «Kundeservicemedarbeider (deltid), Testtelefon AS, Ålesund» (2024–2026). Samarbeid er ikke nevnt | **SM-3** (og SM-1) |
+
+- **Den forbudte påstanden i SM-2** er «CV-teksten viser erfaring med brukerstøtte som studentassistent» i par 2 K1 og K3. CV-en sier ingenting om brukerstøtte, bare om stillingen som studentassistent og hjelp og veiledning til studenter. Fasiten for par 2 sier: «Veiledning av studenter ligner brukerstøtte, men er ikke IT-support». Det er samme type påstand som Kevin og Sondre bestemte 2026-11-19 at bryter SM-2 og FR-27.
+- **Par 2 K2** har det riktig: «CV-teksten viser erfaring som studentassistent med veiledning, men ikke direkte brukerstøtte eller kundeservice.» (linje 223) og «CV-teksten viser erfaring med Windows, men ikke med Microsoft 365.» (linje 222).
+- **Grensetilfellet, ikke regnet som brudd:** par 3 «Erfaring med bokføring og avstemminger» har «Du har erfaring med fakturaer, men …» i alle tre kjøringene (linje 329, 354 og 379). CV-en har «Besvarte kundehenvendelser om fakturaer og abonnement».
+- **Innenfor toleransen, ikke et brudd:** par 3 K2 «Strukturert og nøyaktig» er Mangler (linje 355), ett under fasiten (D).
+
+### Feil av samme type i målingene før PR #28
+
+Alle målingene under er OpenAI `gpt-4.1-mini` med prompten **før** PR #27 og PR #28. Kontrollkallet i runde 3 ble overskrevet av den fulle målingen, så det kan ikke sjekkes (`vurdering-2-4-leverandorvalg-runde-3.md`). Fasiten for par 3 ga «Gode samarbeidsevner» D fram til revurderingen 2026-11-20, så D var ikke et brudd da.
+
+| Feilen | Runde 3 (`2026-11-19-2220-…`, prompten fra `1ad9821`, temperatur 0,2) | Runde 4 (`2026-11-19-223737-…`, `5346bee`, 0,2) | Runde 5 (`2026-11-19-225200-…`, `271edb4`, 0,2) | Kontrollen (`2026-11-19-225914-…`, `271edb4`, 0) |
+|---|---|---|---|---|
+| **«Brukerstøtte» om studentassistenten** (SM-2 når det står i forklaringen, SM-3 når kategorien er Oppfylt) | Ingen forklaring, men kategorien er **Oppfylt** i K1 og K2, over fasiten (linje 198 og 223) | K1: «Erfaringen er med brukerstøtte i studiet, men ikke spesifikt i kundeservice.» (linje 198). **Det er denne setningen som ga regelen** fra 2026-11-19 | K1: **Oppfylt** uten forklaring, over fasiten (linje 198) | Ikke funnet. K3: «… som er beslektet med brukerstøtte, men ikke direkte brukerstøtte eller kundeservice.» (linje 248). Det er riktig, og runde 4 og 5 har samme ordlyd i K3 (linje 248) |
+| **«Forståelse av Windows» (SM-2)** | K1 og K3: «CV-en viser god forståelse av Windows …» og «CV-en dokumenterer god forståelse av Windows …» (linje 197 og 247) | Alle tre: «CV-en dokumenterer god forståelse av Windows, men ikke Microsoft 365.» (linje 197, 222 og 247) | Ikke funnet («erfaring med Windows») | Ikke funnet («erfaring med Windows») |
+| **«Gode samarbeidsevner» D med kundeservicejobben som belegg (SM-3 med revurdert fasit)** | Alle tre (linje 331, 356 og 381), for eksempel «Samarbeidsevner er kun indirekte dokumentert gjennom arbeidserfaring, ikke konkret beskrevet.» | K3: «Samarbeidsevner er ikke eksplisitt dokumentert, men kan antas fra arbeidserfaring.» (linje 381) | K2: «… men gode samarbeidsevner er egenvurdering uten konkret dokumentasjon.» (linje 356) | Ikke funnet. Mangler i alle tre |
+| **«Erfaring med fakturaer» (grensetilfellet; bare uttrykket «erfaring med fakturaer» telles, ikke «erfaring med kundehenvendelser om fakturaer»)** | Alle tre (linje 329, 354 og 379), for eksempel «CV-en dokumenterer erfaring med fakturaer, men ikke spesifikt bokføring og avstemminger.» | K3 (linje 379) | K2 og K3 (linje 354 og 379) | K1: «Du har erfaring med fakturaer, men det står ikke noe om bokføring eller avstemminger.» (linje 329) |
+
+**Hva tabellen viser:**
+- **«Erfaring med fakturaer»** har stått i alle målingene, også i kontrollen. Den ble ikke regnet som brudd i noen av dem.
+- **Alle de tre feilene har forekommet før**, med prompter uten eksempelblokken og uten reglene fra PR #27:
+  - **Selve setningen om brukerstøtte (SM-2)** sto bare i runde 4 K1. Den ble grunnlaget for regelen om CV-ens egne ord i `271edb4`, og med den prompten forekom den ikke (runde 5 og kontrollen). Med den nye prompten er den tilbake i K1 og K3.
+  - **Kategorien Oppfylt for brukerstøtte (SM-3)** forekom i runde 3 og runde 5. Runde 5 hadde **nøyaktig samme prompt som kontrollen** (`271edb4`, bare temperaturen var annerledes).
+  - **«Samarbeidsevner» D** forekom i runde 3, 4 og 5 (også i runde 5 K2, med samme prompt som kontrollen). Mistral gjorde det samme i de samme rundene, for eksempel `2026-11-19-2222-mistral-mistral-medium-2604.md` linje 331, 356 og 381. Den gamle fasiten sa «kundeservice gir et utgangspunkt».
+- **«Forståelse av Windows»** forekom i runde 3 og 4, før regelen om CV-ens egne ord kom i `271edb4`. Med den regelen forsvant den i runde 5 og i kontrollen. Nå er den tilbake i K1 og K3.
+- **Bare kontrollen** (én kjøring med 3 forsøk per par, temperatur 0) var fri for de tre feilene: setningen om brukerstøtte, «forståelse av Windows» og «samarbeidsevner» over fasiten. Grensetilfellet «erfaring med fakturaer» sto der også (K1).
+- Tabellen viser altså **ikke** at eksempelblokken fra PR #28 er årsaken. Den viser heller ikke at den ikke er det. Testsettet er ikke kjørt med bare PR #27, så endringene fra PR #27 og PR #28 kan ikke skilles. Avvikene kan også skyldes at en endret prompt gir andre svar med temperatur 0.
+- Kevin og Sondre går gjennom avvikene før det gjøres flere endringer (2026-11-21).
 
 ## 3. Kriteriene
 

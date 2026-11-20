@@ -38,6 +38,35 @@ Denne PR-en inneholder **bare dokumentasjon og én testrapport**. Prompten, fasi
   - Tredje person i stedet for du-form i par 4.
 - **Årsaken er ikke vist.** Det er én kjøring med 3 forsøk per par. Det kan skyldes prompten, men også tilfeldig variasjon.
 
+### Den forbudte påstanden i SM-2, ordrett (lagt til 2026-11-21)
+
+Fra `testsett-rapporter/2026-11-20-182613-openai-gpt-4.1-mini.md`, par 2, kravet «Erfaring med brukerstøtte eller kundeservice»:
+- **K1** (linje 198): «CV-teksten viser erfaring med brukerstøtte som studentassistent, men ikke kundeservice.»
+- **K3** (linje 248): «CV-teksten viser erfaring med brukerstøtte som studentassistent, men ikke direkte kundeservice.»
+- **CV-en har** «Studentassistent (deltid), Høgskolen i Molde», «Hjalp førsteårsstudenter med oppgaver i introduksjonsfaget i programmering» og «Holdt to veiledningstimer i uken». Brukerstøtte er ikke nevnt.
+
+Det andre SM-2-bruddet, i samme kjøringer, gjelder kravet «God forståelse av Windows og Microsoft 365»:
+- **K1** (linje 197) og **K3** (linje 247): «CV-teksten viser forståelse av Windows, men nevner ikke Microsoft 365.»
+- **CV-en har** «Windows og Linux (brukt i studiet)».
+
+Alle kravene som feilet, ordrett per kjøring, står i **avsnitt 2a** i `vurdering-2-4-kontroll-ny-prompt.md`.
+
+### Feilene har forekommet før PR #28
+
+Avsnitt 2a har en tabell med rapportfil og linje for rundene 3, 4 og 5 og kontrollen. Alle brukte prompter uten eksempelblokken og uten reglene fra PR #27:
+
+| Feilen | Forekom før |
+|---|---|
+| Setningen om «brukerstøtte» (SM-2) | Bare runde 4 K1. Det er setningen som ga regelen fra 2026-11-19, og den forekom ikke med `271edb4` |
+| «Brukerstøtte» Oppfylt, over fasiten (SM-3) | Runde 3 K1 og K2, og runde 5 K1 |
+| «Forståelse av Windows» | Runde 3 (K1 og K3) og runde 4 (alle tre), før regelen om CV-ens egne ord |
+| «Gode samarbeidsevner» D med kundeservicejobben som belegg | Runde 3 (alle tre), runde 4 K3 og runde 5 K2, og hos Mistral i de samme rundene. Fasiten var D den gang, så det var ikke et brudd da |
+| «Erfaring med fakturaer» (grensetilfellet) | Alle rundene og kontrollen |
+
+- **Runde 5 hadde samme prompt som kontrollen** (`271edb4`), bare med temperatur 0,2 i stedet for 0.
+- **Bare kontrollen**, én kjøring med temperatur 0, var fri for de tre feilene (brukerstøtte, Windows og samarbeidsevner). Grensetilfellet sto der også.
+- Det viser ikke at eksempelblokken er årsaken, og heller ikke at den ikke er det. **Ingenting er endret** før Kevin og Sondre har gått gjennom avvikene.
+
 ## Ferdig i denne PR-en
 
 - **B4 i produksjonen** (`8a59382`): § 7a i `kjorebok-2-4-del-b.md` har resultatet etter PR #28. Det er 6 krav (3 O, 2 D og 1 M for AFR), tok ca. 9 s og brukte riktig fil.
