@@ -2,7 +2,15 @@
 
 > **Valget er tatt 2026-11-19: OpenAI `gpt-4.1-mini` med temperatur 0** (Kevin og Sondre, AD-11). Del C gjelder derfor OpenAI. `LLM_LEVERANDOR=openai`, `LLM_MODELL=gpt-4.1-mini`, `OPENAI_API_KEY` (en egen nøkkel for produksjonen) bare i Production. Personvernboksen skal vise «CV-teksten sendes til OpenAI i USA. Det betyr at opplysningene overføres ut av EØS.», og `/api/status` skal gi `tredjeland: true`. Sondre må bekrefte innstillingene for deling av data og avtalegrunnlaget (DPA) før produksjonsbruk (avsnitt 7 i `vurdering-2-4-kontroll-temperatur-0.md`). Det er bekreftet 2026-11-20, se C1. Merk: SM-1 er ikke bestått (par 3) og må løses før innleveringen.
 >
-> **Status 2026-11-20: påbegynt** på grenen `story-2.4-del-c-produksjon`. Utgangspunktet er kontrollert på nytt, og grensene og `MAKS_UTDATA_TOKENS` er avgjort (C3 punkt 5 og C5). C1 og C2 er bekreftet av Sondre 2026-11-20. Unntaket er punktet om grensen for forbruket i C2, som er Kevins beslutning. C3–C4 er ikke startet, og ingenting er endret i Vercel.
+> **Status 2026-11-20: påbegynt** på grenen `story-2.4-del-c-produksjon`. Utgangspunktet er kontrollert på nytt, og grensene og `MAKS_UTDATA_TOKENS` er avgjort (C3 punkt 5 og C5). C1 og C2 er bekreftet av Sondre 2026-11-20. Unntaket er punktet om grensen for forbruket i C2, som er Kevins beslutning. Grunnlaget for overføringen til USA er kontrollert i DPA-en (punkt 4.1: SCC eller art. 45, også DPF). Hvilket av dem som brukes, er ikke kontrollert. Nøkkelen for produksjonen er laget (C3 punkt 1). C3 punkt 2–4 og C4 er ikke startet, og ingenting er endret i Vercel.
+>
+> **Avtalt rekkefølge (Sondre og Kevin, 2026-11-20):**
+> 1. PR-en for del C gjøres ferdig.
+> 2. Sondre går gjennom PR-en og fletter den til `main`.
+> 3. Sondre legger inn variablene i Vercel, bare for Production (C3 punkt 2–3), og tar en Redeploy etter Kevins «gå» (C3 punkt 4).
+> 4. Kevin og Sondre tar kontrollene i C4 sammen.
+>
+> PR-en inneholder derfor bare dokumentasjon og én kommentar i koden. Resultatet fra C3 og C4 kommer etter flettingen.
 >
 > **Forberedt 2026-11-19.** Del C begynner først når del B har valgt leverandøren etter AD-11 og Kevin og Sondre har signert [`vurdering-2-4-leverandorvalg-runde-1.md`](vurdering-2-4-leverandorvalg-runde-1.md) (eller en senere runde). **Hver endring i Vercel og hvert betalt kall i produksjonen krever Kevins godkjenning.** Ingen nøkler skrives i chat, git eller logger.
 
@@ -57,7 +65,9 @@ Utgangspunktet er uendret. Produksjonen står fortsatt i demomodus uten nøkkel 
 
 ## C3. Nøkkelen for produksjonen og Vercel (krever godkjenning)
 
-1. [ ] Lag en **egen API-nøkkel for produksjonen** hos den valgte leverandøren. Bruk ikke nøkkelen fra målingen. Gi den et navn, for eksempel `g69-produksjon`.
+1. [x] Lag en **egen API-nøkkel for produksjonen** hos den valgte leverandøren. Bruk ikke nøkkelen fra målingen. Gi den et navn, for eksempel `g69-produksjon`. **Laget av Sondre (bekreftet 2026-11-20)** og lagret sikkert, utenfor GitHub.
+  - **Avvik fra sjekklisten:** sjekklisten sa at nøkkelen bare skal ligge i Vercel. Kopien bør slettes etter punkt 2, eller ligge bare i en passordbehandler. Det avgjør Kevin og Sondre.
+  - **Ikke kjent ennå:** navnet, prosjektet (eget `g69-produksjon` eller ikke), eieren og rettighetene (*Restricted* eller *All*). Sondre melder dette etter punkt 7 i sjekklisten.
 2. [ ] Sett i Vercel → `g69-cv-assistent` → Settings → Environment Variables, **bare for Production** (ikke Preview eller Development):
    - `LLM_LEVERANDOR`: `mistral` eller `openai`.
    - `LLM_MODELL`: det datobestemte navnet fra vurderingen (for eksempel `mistral-medium-2604` eller `gpt-4.1-mini`).
@@ -66,7 +76,12 @@ Utgangspunktet er uendret. Produksjonen står fortsatt i demomodus uten nøkkel 
 4. [ ] Deploy produksjonen på nytt (Redeploy av siste produksjonsdeploy fra `main`), så variablene tas i bruk.
 5. [x] Avgjør om `GRENSE_PER_MINUTT` og `GRENSE_PER_DOGN` skal settes, eller om standardverdiene fra AD-9 gjelder (krever Kevins beslutning). **Avgjort 2026-11-20 (Kevin):** standardverdiene i koden gjelder: 10 per minutt og 200 per UTC-døgn (`src/lib/pipeline/grense.ts`). Variablene settes ikke i Vercel. De vurderes på nytt før brukertesten i 2.8 og i epic 3.
 
-Sondre har sagt (2026-11-20) at han lager nøkkelen for produksjonen og legger inn variablene i Vercel. Punkt 1–4 er ikke startet. Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-4-c3-sondre.md) (godkjent av Kevin 2026-11-20). Kravet er at grunnlaget for overføringen til USA er bekreftet i DPA-en før Redeploy.
+Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-4-c3-sondre.md) (godkjent av Kevin 2026-11-20).
+- Kravet var at Sondre skulle kontrollere grunnlaget for overføringen til USA i DPA-en før Redeploy. Det er gjort 2026-11-20.
+  - Punkt 4.1 dekker overføringen med SCC eller GDPR art. 45 (også DPF).
+  - Ikke kontrollert: hvilket av grunnlagene som faktisk brukes, om OpenAI er sertifisert under DPF, og datoen for versjonen av DPA-en.
+- Punkt 1 er gjort.
+- Punkt 2–4 gjøres etter at PR-en for del C er flettet, i den avtalte rekkefølgen.
 
 ## C4. Kontroll i produksjonen
 
@@ -86,4 +101,9 @@ Sondre har sagt (2026-11-20) at han lager nøkkelen for produksjonen og legger i
   - Taket vurderes på nytt i epic 3.
 - [ ] Nøklene fra målingen er slettet eller rotert hos leverandørene, og de er fjernet fra `.env.local` hvis de ikke skal brukes videre lokalt.
 - [ ] Sesjonsloggen har resultatet, `LLM_MODELL` og commit (AK 2), og `issues.md` er oppdatert.
-- [ ] Først når AK 1–3 er oppfylt: 2-4 settes til `done` i `sprint-status.yaml`, og PR-en for del C går til gjennomgang hos Sondre (del B er allerede merget, PR #21). Push og PR krever Kevins godkjenning.
+- [ ] Først når AK 1–3 er oppfylt og SM-1 er avgjort: 2-4 settes til `done` i `sprint-status.yaml`.
+- [ ] **PR-ene:**
+  - PR-en for del C (dokumentasjonen fram til C3, `pr-2-4-del-c.md`) går til gjennomgang hos Sondre **før** C3, etter den avtalte rekkefølgen.
+  - Resultatet fra C3 og C4, og senere statusen `done`, kommer i en egen PR etterpå.
+  - Del B er allerede merget (PR #21).
+  - Push og PR krever Kevins godkjenning.

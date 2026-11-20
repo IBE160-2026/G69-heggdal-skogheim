@@ -10,6 +10,7 @@ OpenAI `gpt-4.1-mini` er valgt (Kevin og Sondre, AD-11). Vilkårene for OpenAI m
 - Deling av data og trening er av.
 - DPA-en er lest og gjelder automatisk når tjenestene brukes. Ifølge Sondre er OpenAI Ireland Ltd. avtaleparten i EØS.
 - 5 USD i kreditt (6,25 USD inkl. 25 % mva., ca. 60 kr) er kjøpt én gang 2026-11-19, og automatisk påfylling er av.
+- Grunnlaget for overføringen: punkt 4.1 i DPA-en (SCC eller GDPR art. 45, også DPF). Se avsnitt 7 i vurderingen.
 
 I tabellen for OpenAI under er kolonnen «Må bekreftes i kontoen» dermed lukket for radene «Trening på API-data», «Databehandleravtale (DPA)» og «Forhåndsbetaling og påfylling». At DPA-en «inngås via et skjema», er erstattet av bekreftelsen.
 

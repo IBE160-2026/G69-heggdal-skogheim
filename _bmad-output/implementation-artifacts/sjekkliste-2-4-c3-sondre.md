@@ -2,18 +2,39 @@
 
 > **Godkjent av Kevin 2026-11-20.** Ikke start før Kevin har gitt beskjed. Hvert steg merket 🔒 krever Kevins godkjenning i forkant. Grunnlaget er C3 og C4 i [`kjorebok-2-4-del-c.md`](kjorebok-2-4-del-c.md), AD-12 (nøkkelen bare i Production, ingen `NEXT_PUBLIC_`) og AD-11 (personvernteksten bygges bare fra `/api/status`).
 
+> **Status 2026-11-20 (Sondre, gitt videre av Kevin):** punkt 0 og punkt 1 er gjort. Punkt 2–7 er ikke startet.
+
+## Avtalt rekkefølge (Sondre og Kevin, 2026-11-20)
+
+1. PR-en for del C gjøres ferdig (dokumentasjonen og denne sjekklisten).
+2. Sondre går gjennom PR-en og fletter den til `main`.
+   - Vercel lager trolig en ny produksjonsdeploy ved flettingen. Det er ikke kontrollert.
+   - Produksjonen står da fortsatt i demomodus, fordi variablene ikke er satt ennå.
+3. Sondre legger inn variablene, bare for Production (punkt 2–3), og tar en Redeploy (punkt 4) etter Kevins «gå».
+4. Kevin og Sondre tar kontrollene i C4 sammen (punkt 5). Etterpå kommer nøklene fra del B (punkt 6).
+
 **Regelen for nøkkelen:** nøkkelen skrives bare ett sted, i Vercel. Den skal ikke i chat, Discord, e-post, git, skjermbilder, logger eller `.env`-filer. Del heller ikke deler av den, som de siste tegnene. Si bare at den er lagt inn, og hva den heter.
 
 ## 0. Før du starter
 
-- [ ] Kevin har godkjent denne sjekklisten og gitt beskjed om at C3 kan starte.
-- [ ] **Grunnlaget for overføringen til USA (personvern):** les avsnittet om internasjonale overføringer i [DPA-en](https://openai.com/policies/data-processing-addendum/). Svar Kevin på dette:
+- [x] Kevin har godkjent denne sjekklisten (2026-11-20). Punkt 2–4 starter etter flettingen av PR-en for del C.
+- [x] **Grunnlaget for overføringen til USA (personvern): kontrollert i DPA-en 2026-11-20.** Ikke kontrollert: hvilket av grunnlagene som faktisk brukes (SCC eller DPF), om OpenAI er sertifisert under DPF, og datoen for versjonen.
+  - Svaret: punkt 4.1 i DPA-en beskriver overføringer ut av EØS med SCC eller en beslutning om tilstrekkelig beskyttelsesnivå etter GDPR art. 45, også EU–U.S. Data Privacy Framework.
+  - Avtaleparten er OpenAI Ireland Ltd.
+  - DPA-en gjelder automatisk.
+  - Datoen for versjonen er ikke notert.
+
+  Opprinnelig spørsmål (spørsmålet om datoen for versjonen er fortsatt åpent): les avsnittet om internasjonale overføringer i [DPA-en](https://openai.com/policies/data-processing-addendum/). Svar Kevin på dette:
   - Hvilket grunnlag gjelder: standard personvernbestemmelser (SCC), EU–US Data Privacy Framework (DPF) eller begge?
   - Hvilken dato har versjonen du leste («Last updated» eller «Effective»)?
 
   Det er ikke bekreftet ennå, og det trengs i personverndokumentasjonen (FR-5, PRD §6). **Krav (Kevin, 2026-11-20):** grunnlaget skal være bekreftet før produksjonsoppsettet aktiveres, altså før Redeploy i punkt 4. Fra da av sendes ekte CV-tekst til OpenAI.
 
 ## 1. Lag en egen API-nøkkel for produksjonen (C3.1)
+
+> **Gjort 2026-11-20:** Sondre har laget en egen nøkkel for produksjonen og lagret den sikkert, utenfor GitHub. Navnet, prosjektet, eieren og rettighetene meldes i punkt 7. Stegene under er beholdt som dokumentasjon.
+>
+> **Avvik:** stegene sier at nøkkelen bare skal ligge i Vercel. Slett kopien etter punkt 2, eller la den ligge bare i en passordbehandler. Kevin og Sondre avgjør dette.
 
 I [platform.openai.com](https://platform.openai.com), med organisasjonen som har kreditten på 5 USD:
 
@@ -53,7 +74,7 @@ Vercel → prosjektet `g69-cv-assistent` → *Settings* → *Environment Variabl
 
 ## 4. Redeploy (C3.4) 🔒
 
-Variablene tas først i bruk ved en ny deploy. Gjør dette **bare når grunnlaget for overføringen er bekreftet (punkt 0) og Kevin har sagt «gå»**, og helst samme dag som de gratis kontrollene:
+Variablene tas først i bruk ved en ny deploy. Det gjelder også om flettingen av PR-en allerede har gitt en ny produksjonsdeploy, fordi den ble laget før variablene fantes. Gjør dette **bare når grunnlaget for overføringen er bekreftet (punkt 0) og Kevin har sagt «gå»**, og helst samme dag som de gratis kontrollene:
 
 - [ ] *Deployments* → den siste **Production**-deployen fra `main` → *Redeploy*.
 - [ ] Gi Kevin beskjed når deployen står som *Ready*. Si bare «Redeploy ferdig», og send aldri nøkkelen.
@@ -91,5 +112,6 @@ Når du er ferdig, send en kort melding uten nøkkel:
 - Navnet på nøkkelen og prosjektet, og hvilke rettigheter du valgte (*Restricted* eller *All*).
 - At de tre variablene ligger bare i Production, og at `OPENAI_API_KEY` er *Sensitive*.
 - At Preview og Development ikke har noen nøkkel.
-- Svaret om grunnlaget for overføringen (punkt 0).
+- Datoen for versjonen av DPA-en, hvis du har den (resten av punkt 0 er besvart).
+- Om kopien av nøkkelen utenfor Vercel er slettet, eller hvor den ligger (bare som «passordbehandler» eller lignende, ikke selve nøkkelen).
 - Om nøkkelen fra målingen er slettet eller rotert.

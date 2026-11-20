@@ -124,7 +124,9 @@ Verdien er allerede 0 i `src/lib/llm/felles.ts` (`ee49c2b`). Hvis Kevin og Sondr
 **Bekreftet 2026-11-20 av Sondre** (kontoen er hans, og bekreftelsen er gitt videre av Kevin). Feltene i kolonnen «Må bekreftes» er dermed lukket:
 - **Trening på API-data: J** ([your data](https://developers.openai.com/api/docs/guides/your-data), lest 2026-11-19). Deling er slått av i organisasjonen (Sondre, 2026-11-20).
 - **DPA: J** ([data-processing-addendum](https://openai.com/policies/data-processing-addendum/), lest av Sondre, bekreftet 2026-11-20). Den gjelder automatisk når tjenestene brukes, og den må ikke inngås separat. Ifølge Sondre er OpenAI Ireland Ltd. avtaleparten for kunder i EØS. Datoen for versjonen han leste, er ikke notert. Datoene 2025-12-01 og 2026-01-01 over kommer fra et nettsøk.
-- **Grunnlaget for overføringen til USA** (SCC i DPA-en, eller EU–US Data Privacy Framework) er ikke bekreftet ut over nettsøket. Det står som eget åpent punkt for personverndokumentasjonen.
+- **Grunnlaget for overføringen til USA** er bekreftet av Sondre 2026-11-20 (gitt videre av Kevin). Punkt 4.1 i DPA-en beskriver overføringer ut av EØS med standard personvernbestemmelser (SCC) eller en beslutning om tilstrekkelig beskyttelsesnivå etter GDPR art. 45, også EU–U.S. Data Privacy Framework.
+  - **Ikke kontrollert:** hvilket av grunnlagene som faktisk brukes, og om OpenAI er sertifisert under DPF.
+  - Grunnlaget skal med i refleksjonsrapporten (PRD §6). Det står som et åpent punkt.
 - **Land:** at avtaleparten er irsk, endrer ikke hvor behandlingen skjer (USA, se raden over). Personvernteksten om USA og at opplysningene går ut av EØS står derfor fast, og den kontrolleres i produksjonen i del C (C4).
 - **Kreditten:** 5 USD (6,25 USD inkl. 25 % mva., ca. 60 kr), kjøpt én gang 2026-11-19. Det er ikke fylt på senere, og automatisk påfylling er av. Beløpet er under 200 kr inkl. mva.
 
