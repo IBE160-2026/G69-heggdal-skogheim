@@ -24,8 +24,12 @@ export const TEMPERATUR = 0;
 
 // Taket på utdata, så et svar som løper løpsk, ikke faktureres til tidsgrensen.
 // Resonneringsmodeller teller resonnering som utdata, og et avkuttet svar gir
-// `ugyldig_svar`. Verdien vurderes på nytt etter målingen i story 2.4, ut fra
-// høyeste `outputTokens` i testsettrapporten.
+// `ugyldig_svar`. Vurdert 2026-11-20 etter målingene i story 2.4 og beholdt: med OpenAI
+// gpt-4.1-mini og temperatur 0 var høyeste `outputTokens` 608 i 12 kjøringer på de fire
+// testparene (vurdering-2-4-kontroll-temperatur-0.md). Testparene er mye kortere enn
+// `ANNONSE_MAKS` (8000 tegn), og et lavere tak kan kutte svaret for en lang annonse med
+// mange krav. Et svar som bruker hele taket, koster ca. 0,12 kr for utdata (15,50 kr per
+// million tokens). Vurderes på nytt i epic 3, når brev, CV og ATS kommer.
 export const MAKS_UTDATA_TOKENS = 8000;
 
 // Skjemaet modellen får. Strikt JSON-skjema krever at alle felt finnes, så
