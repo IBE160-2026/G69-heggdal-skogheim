@@ -2,6 +2,8 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
+> **Oppdatert 2026-11-20 (SM-1):** fasiten for par 3 er revurdert (løsning B i [`beslutningsgrunnlag-2-4-fasit-par-3.md`](beslutningsgrunnlag-2-4-fasit-par-3.md)). «Gode samarbeidsevner» er nå Mangler, og SM-1 er 12 av 12 i kontrollen med temperatur 0, uten ny måling. Det som står under om SM-1 (9 av 12), er fra før beslutningen. Se avsnitt 6 i `vurdering-2-4-kontroll-temperatur-0.md`.
+
 ## Status 2026-11-19 (leverandøren er valgt)
 
 - **Valget (Kevin, bekreftet av Sondre, 2026-11-19): OpenAI `gpt-4.1-mini` med temperatur 0, etter AD-11.** Mistral består ikke (Large 4 feilet NFR-4, Medium 3.5 feilet SM-3). Begrunnelse og vilkår med kilder: avsnitt 5 og 7 i [`vurdering-2-4-kontroll-temperatur-0.md`](vurdering-2-4-kontroll-temperatur-0.md).

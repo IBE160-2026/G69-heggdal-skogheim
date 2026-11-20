@@ -16,7 +16,26 @@
 | Erfaring med Tripletex eller Visma | Mangler | – |
 | Erfaring med bokføring og avstemminger | Delvis oppfylt | Finansregnskap fra studiet, men ingen praktisk erfaring |
 | Strukturert og nøyaktig | Delvis oppfylt | Ikke direkte dokumentert; kan argumenteres via registrering i kundesystem og bacheloroppgave |
-| Gode samarbeidsevner | Delvis oppfylt | Ikke direkte dokumentert; kundeservice gir et utgangspunkt |
+| Gode samarbeidsevner | Mangler | – (revurdert 2026-11-20, se under) |
+
+## Revurdering etter målingen (2026-11-20)
+
+Kategorien for «Gode samarbeidsevner» er endret fra **Delvis oppfylt** til **Mangler**. Endringen er besluttet av Kevin og Sondre (løsning B i `_bmad-output/implementation-artifacts/beslutningsgrunnlag-2-4-fasit-par-3.md`).
+
+**Endringen er gjort etter målingene i story 2.4.** Den er en faglig revurdering av fasiten ut fra kildene, ikke en tilpasning til det modellen svarte. De opprinnelige måleresultatene står uendret.
+
+**Begrunnelse:**
+- **Annonsen** har «Gode samarbeidsevner» som et eget punkt under kvalifikasjonene, uten utdyping.
+- **CV-en** nevner verken samarbeid, team eller kolleger. Kundeservice er beskrevet som «Besvarte kundehenvendelser om fakturaer og abonnement». Det er kontakt med kunder, ikke samarbeid med kolleger. Det finnes heller ingen egenvurdering.
+- **FR-8:**
+  - Delvis oppfylt krever «overførbar eller beslektet erfaring, eller […] egenvurdering». Ingen av delene er dokumentert.
+  - Mangler gjelder når kravet «ikke er dokumentert i CV-teksten».
+  - Tvilsregelen sier at den svakeste kategorien velges ved tvil.
+- Den gamle begrunnelsen («Ikke direkte dokumentert; kundeservice gir et utgangspunkt») beskrev selv et krav som ikke er dokumentert.
+
+**Uendret:**
+- «Strukturert og nøyaktig» er fortsatt **Delvis oppfylt**, fordi registrering i kundesystemet og en selvstendig bacheloroppgave er beslektet erfaring.
+- Nøkkelordene, treffprosenten (8 %) og de forbudte påstandene er ikke endret.
 
 ## Forventede nøkkelord
 bokføring, avstemming, periodeavslutning, fakturering, årsoppgjør, skattemelding, Excel, Tripletex, Visma, regnskapssystem, strukturert, nøyaktig, samarbeid

@@ -1,5 +1,7 @@
 # Utkast: PR for story 2.4 del B (måling og leverandørvalg)
 
+> **Merknad 2026-11-20 (etter flettingen av PR #21):** SM-1 er løst ved at fasiten for par 3 er revurdert (løsning B i `beslutningsgrunnlag-2-4-fasit-par-3.md`). SM-1 er 12 av 12 i kontrollen med temperatur 0. Teksten under er beholdt slik den var i PR-en.
+
 > **Utkast, ikke opprettet.** Tittelen og beskrivelsen under er klare til å kopieres inn når Kevin godkjenner push og PR. Grenen er oppdatert med `main` (`1ae6c0a`, 2026-11-19), med story 2.5, story 2.6 og testopplegget for 2.8. To konflikter i dokumenter er løst uten at noe fra `main` ble fjernet. Alle testene er kjørt på nytt.
 
 **Tittel:** `Story 2.4 del B: måling og leverandørvalg (OpenAI gpt-4.1-mini, temperatur 0)`

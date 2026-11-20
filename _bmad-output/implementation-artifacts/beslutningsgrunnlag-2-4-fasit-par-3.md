@@ -1,5 +1,7 @@
 # Beslutningsgrunnlag: fasiten for par 3 (story 2.4 del B)
 
+> **Avgjort 2026-11-20: løsning B** (Kevin og Sondre). «Gode samarbeidsevner» er endret til `M` i `testdata/par-3-regnskap/fasit.md`, og «Strukturert og nøyaktig» er fortsatt `D`. Se avsnitt 5. Statusen under er fra før beslutningen.
+
 > **Status 2026-11-19: ikke avgjort.** Kevin og Sondre har valgt løsning 2: å vurdere fasiten for «Gode samarbeidsevner» på nytt. Dokumentet samler det som står i CV-en, i annonsen og i fasiten for de to kravene der det valgte oppsettet (OpenAI `gpt-4.1-mini`, temperatur 0) avviker fra fasiten. **Fasiten er ikke endret. SM-1 er IKKE bestått (9 av 12 kjøringer), og avviket står åpent til Kevin og Sondre har tatt en dokumentert beslutning.**
 
 Kilder:
@@ -120,11 +122,11 @@ CV-en har **ingen profil eller egenvurdering**. Ordene «strukturert», «nøyak
 ## 5. Beslutningen
 
 - [ ] A: fasiten beholdes
-- [ ] B: «Gode samarbeidsevner» endres til `M`
+- [x] B: «Gode samarbeidsevner» endres til `M`
 - [ ] C: begge endres til `M`
 
 **Begrunnelse:**
 
->
+> CV-en dokumenterer verken samarbeid med kolleger, teamarbeid eller en egenvurdering av samarbeidsevner. Kundeservice er beskrevet som kontakt med kunder («Besvarte kundehenvendelser …»). Etter FR-8 er kravet da ikke dokumentert (Mangler), og tvilsregelen peker samme vei. Den gamle begrunnelsen i fasiten («Ikke direkte dokumentert») beskrev selv et krav som ikke er dokumentert. «Strukturert og nøyaktig» beholdes som `D`, fordi registrering i kundesystemet og bacheloroppgaven er beslektet erfaring. Endringen er gjort etter målingen. Det står i fasiten, i avsnitt 6 i `vurdering-2-4-kontroll-temperatur-0.md` og i sesjonsloggen (`.logs/kevin-heggdal/992-…-story-2-4-del-c-produksjon.md`, 2026-11-20).
 
-**Besluttet av:** Kevin ______ Sondre ______ **Dato:** ______
+**Besluttet av:** Kevin og Sondre (Sondres godkjenning gitt videre av Kevin) **Dato:** 2026-11-20
