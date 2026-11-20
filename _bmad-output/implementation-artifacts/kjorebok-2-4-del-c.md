@@ -8,7 +8,7 @@
 > - PR #22 er flettet (`f5747f5`).
 > - C3 er gjort, og produksjonen er i ekte modus med OpenAI `gpt-4.1-mini`.
 > - **C4:** de gratis kontrollene og den betalte kontrollen med par 2 er bestått, og bokmål er bekreftet av Kevin. Forbruket er bekreftet av Sondre på ukenivå, og kostnaden er et anslag. Kriteriet per nøkkel og per dag er ikke lest direkte. Kevin godtok avviket 2026-11-20, så punktet er fullført med forbehold (se C4).
-> - C5 står igjen. **B4 del 2 (NFR-9) er IKKE bestått** (2026-11-20). Første forsøk ga en tom gap-analyse med 0 krav. Etter rettingen i PR #27 ga andre forsøk `ugyldig_svar`. Se § 7a i `kjorebok-2-4-del-b.md`. SM-1 er løst 2026-11-20 ved at fasiten for par 3 er revurdert (løsning B), og er 12 av 12. SM-4 er ikke oppfylt, men det hører til story 5.1. Story 2.4 er ikke ferdig.
+> - C5 står igjen. **B4 del 2 (NFR-9) er IKKE bestått** (2026-11-20). Første forsøk ga en tom gap-analyse med 0 krav. Etter rettingen i PR #27 ga andre forsøk `ugyldig_svar`. Etter rettingen 2 er testen **bestått lokalt**, og bekreftelsen i produksjonen gjenstår. Se § 7a i `kjorebok-2-4-del-b.md`. SM-1 er løst 2026-11-20 ved at fasiten for par 3 er revurdert (løsning B), og er 12 av 12. SM-4 er ikke oppfylt, men det hører til story 5.1. Story 2.4 er ikke ferdig.
 >
 > **Avtalt rekkefølge (Sondre og Kevin, 2026-11-20):**
 > 1. PR-en for del C gjøres ferdig.

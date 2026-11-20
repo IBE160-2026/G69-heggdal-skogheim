@@ -121,7 +121,7 @@ describe("adapterne", () => {
       provider: expect.stringContaining("openai"),
       modelId: "gpt-4.1-mini",
     });
-    expect(valg.providerOptions).toEqual({ openai: { strictJsonSchema: true } });
+    expect(valg.providerOptions).toEqual({ openai: { strictJsonSchema: true, store: false } });
     expect(valg.temperature).toBe(0);
     expect(valg.maxRetries).toBe(0);
     expect(valg.maxOutputTokens).toBe(MAKS_UTDATA_TOKENS);
