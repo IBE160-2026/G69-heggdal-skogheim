@@ -4,8 +4,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import { Demomodus } from "@/components/Demomodus";
 import { Kunngjoring } from "@/components/Kunngjoring";
+import { TemaRad } from "@/components/TemaBryter";
 import { Toaster } from "@/components/ui/sonner";
 import { OktProvider } from "@/lib/okt/OktProvider";
+import { TEMA_SKRIPT } from "@/lib/temaSkript";
 
 import "./globals.css";
 
@@ -29,10 +31,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="nb"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      // Skriptet i <head> kan sette klassen dark før React tar over.
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: TEMA_SKRIPT }} />
+      </head>
       <body className="min-h-full flex flex-col">
         <OktProvider>
           <Demomodus />
+          <TemaRad />
           {children}
           <Kunngjoring />
           {/* UX-DR11: toast bare for kopiering, øverst på midten på alle skjermer. */}

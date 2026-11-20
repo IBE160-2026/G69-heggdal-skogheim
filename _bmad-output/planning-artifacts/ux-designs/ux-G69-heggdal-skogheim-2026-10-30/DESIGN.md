@@ -144,6 +144,33 @@ shadcn/ui arves nesten uendret. Denne fila beskriver bare avvikene: én primærf
 
 Alle tekstpar oppfyller WCAG 2.1 AA (4,5:1). Kanter og fokusring oppfyller 3:1. Ingen tekst vises med redusert opasitet.
 
+## Mørk modus
+
+Lagt til 2026-11-20 (Sondre), se `.memlog.md`. Appen følger innstillingen på maskinen (`prefers-color-scheme`) fra første tegning: et lite skript i `<head>` setter klassen `dark` på `<html>` før siden tegnes, så den ikke blinker hvit. En bryter i en egen rad over innholdet, høyre side, bytter mellom lys og mørk for denne fanen. Uten valg følger appen maskinen, også om den endres mens fanen er åpen. Ingenting lagres (FR-5, NFR-1): en ny fane eller ny lasting følger maskinen igjen. Uten JavaScript er temaet lyst.
+
+**Bryteren** er en vanlig knapp med `aria-pressed` (sann i mørk modus) og etiketten «Mørk modus» for skjermleser. Ikonet er `Moon` i lys og `Sun` i mørk, med `aria-hidden`. Den er 44 × 44 px under 1024 px og 32 × 32 px på PC. Den har ingen egen kunngjøring. Toasten følger temaet.
+
+Mørke verdier (står i `.dark` i `globals.css`, regnet etter WCAG):
+
+| Token | Verdi | Kontrast |
+|---|---|---|
+| `background` / `foreground` | `#0F172A` / `#F1F5F9` | 16,3:1 |
+| `card`, `popover` / `*-foreground` | `#1E293B` / `#F1F5F9` | 13,4:1 |
+| `primary` / `primary-foreground` | `#93C5FD` / `#0F172A` | 9,9:1. Primær på kort 8,1:1 |
+| `primary-soft` | `#1E3A5F` | primær på den 6,4:1 |
+| `secondary`, `muted`, `accent` / `*-foreground` | `#273449` / `#F1F5F9` | |
+| `muted-foreground` | `#94A3B8` | 7,0:1 på bakgrunn, 5,7:1 på kort, 4,9:1 på `#273449` |
+| `border` | `#334155` | |
+| `input` | `#64748B` | 3,1:1 på kort, 3,8:1 på bakgrunn |
+| `ring` | `#93C5FD` | 9,9:1 |
+| `destructive` | `#FCA5A5` | 7,7:1 på kort |
+| `oppfylt` / `-bg` | `#86EFAC` / `#14321F` | 9,9:1 |
+| `delvis` / `-bg` | `#FCD34D` / `#3A2C06` | 9,4:1 |
+| `mangler` / `-bg` | `#FDBA74` / `#43200C` | 8,6:1 |
+| `belegg` / `-bg` | `#E2E8F0` / `#273449` | 10,2:1 |
+
+Kategorienes betydning er den samme: Oppfylt grønn, Delvis oppfylt gul, Mangler rustoransje. Deaktivert primærknapp (50 % primær på bakgrunnen, tekst i `foreground`) har 4,8:1.
+
 ## Typography
 
 Geist Sans fra shadcn brukes for alt. Rollene:

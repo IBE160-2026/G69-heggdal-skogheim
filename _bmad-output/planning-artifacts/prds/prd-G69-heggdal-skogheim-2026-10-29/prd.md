@@ -381,7 +381,7 @@ Med i MVP er alt i §4 og §5, i rekkefølgen grunnmur (4.1, 4.7) → 4.2 → 4.
 | Før/etter-visning av CV-forbedringer | Senere | Krever mer UI. Forslagene viser allerede belegget |
 | Spørsmål til brukeren når noe mangler | Senere | Gir en ekstra runde med generering og mer kostnad |
 | Eksempel på godt norsk søknadsbrev | Senere | Må skrives og kvalitetssikres for seg |
-| Mørk modus | Senere | Ikke viktig for kjerneflyten |
+| Mørk modus | Senere → **lagt til 2026-11-20** | Ikke viktig for kjerneflyten. Lagt til etter ønske fra Sondre som et tillegg utenfor epics: følger maskinen, bryter som ikke lagrer noe (`spec-mork-modus.md`, DESIGN.md «Mørk modus») |
 
 ## 8. Suksessmål
 

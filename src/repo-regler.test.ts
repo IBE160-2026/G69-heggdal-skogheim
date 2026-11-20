@@ -127,4 +127,41 @@ describe("tema", () => {
     }
     expect(css).not.toContain("outline-ring/50");
   });
+
+  it("UX-DR1: den mørke paletten står i .dark i globals.css", () => {
+    const css = readFileSync("src/app/globals.css", "utf8");
+    const dark = css.match(/\n\.dark \{([^}]*)\}/)?.[1] ?? "";
+
+    for (const token of [
+      "--background: #0f172a",
+      "--foreground: #f1f5f9",
+      "--card: #1e293b",
+      "--card-foreground: #f1f5f9",
+      "--popover: #1e293b",
+      "--popover-foreground: #f1f5f9",
+      "--primary: #93c5fd",
+      "--primary-foreground: #0f172a",
+      "--primary-soft: #1e3a5f",
+      "--secondary: #273449",
+      "--secondary-foreground: #f1f5f9",
+      "--muted: #273449",
+      "--muted-foreground: #94a3b8",
+      "--accent: #273449",
+      "--accent-foreground: #f1f5f9",
+      "--border: #334155",
+      "--input: #64748b",
+      "--ring: #93c5fd",
+      "--destructive: #fca5a5",
+      "--oppfylt: #86efac",
+      "--oppfylt-bg: #14321f",
+      "--delvis: #fcd34d",
+      "--delvis-bg: #3a2c06",
+      "--mangler: #fdba74",
+      "--mangler-bg: #43200c",
+      "--belegg: #e2e8f0",
+      "--belegg-bg: #273449",
+    ]) {
+      expect(dark).toContain(token);
+    }
+  });
 });
