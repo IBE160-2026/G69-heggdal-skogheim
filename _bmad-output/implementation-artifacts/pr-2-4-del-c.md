@@ -1,6 +1,6 @@
 # Utkast: PR for story 2.4 del C (forberedelsen av produksjonen)
 
-> **Utkast, ikke opprettet.** Tittelen og beskrivelsen under er klare til å kopieres inn når Kevin godkjenner push og PR. Grenen er `story-2.4-del-c-produksjon`, laget fra `main` `0292337`. `origin/main` har siden fått én commit (`e9a70d8`, bare Sondres sesjonslogg), og en prøvefletting gir ingen konflikter. Grenen trenger ikke oppdateres før PR-en, men den kan flettes med `main` hvis Kevin vil. Alle endringene er committet før push.
+> **Utkast, ikke opprettet.** Tittelen og beskrivelsen under er klare til å kopieres inn når Kevin godkjenner push og PR. Grenen er `story-2.4-del-c-produksjon`, laget fra `main` `0292337`. `origin/main` (`e9a70d8`, bare Sondres sesjonslogg) er flettet inn i grenen uten konflikter (`9388b91`, 2026-11-20). Alle endringene er committet.
 
 **Tittel:** `Story 2.4 del C: vilkår, kreditt og sjekkliste før produksjonen (OpenAI)`
 
@@ -22,7 +22,7 @@ Flettingen til `main` gir trolig en ny produksjonsdeploy. Det er ikke kontroller
 
 > **Story 2.4 er ikke ferdig.** C3 (variablene og Redeploy), C4 (kontrollene i produksjonen) og C5 står igjen. **SM-1 er fortsatt IKKE bestått (9 av 12 kjøringer, par 3).** Avviket er åpent, og fasiten er ikke endret. 2-4 står som `in-progress` i `sprint-status.yaml`.
 
-## Endringer
+## Ferdig i denne PR-en
 
 - **Kode:** bare kommentaren til `MAKS_UTDATA_TOKENS` i `src/lib/llm/felles.ts` (`d055d98`). Verdien er fortsatt 8000, og kommentaren dokumenterer vurderingen 2026-11-20. Høyeste antall output-tokens var 608 i 12 kjøringer, og verdien vurderes på nytt i epic 3.
 - **Beslutninger (Kevin, 2026-11-20):** `GRENSE_PER_MINUTT` 10 og `GRENSE_PER_DOGN` 200 gjelder som standardverdier i koden (AD-9). De settes ikke i Vercel.
@@ -45,31 +45,36 @@ Flettingen til `main` gir trolig en ny produksjonsdeploy. Det er ikke kontroller
 
 ## Testresultater
 
-Kjørt 2026-11-20 på grenen, med alle endringene:
-- `git diff --check`: rent
+Kjørt 2026-11-20 på grenen etter flettingen med `main` (`9388b91`):
+- `git diff --check` mot `main`: rent
 - `npm run lint` og `npm run typecheck`: grønne
 - `npm test`: 896 av 896 (52 filer)
 - `npm run build`: grønn
+- Søk etter hemmeligheter i de nye linjene mot `main` (`sk-`, `sk-proj-`, Bearer, private nøkler og andre kjente mønstre): ingen treff. `.env.local` er ignorert, og `.env.example` har bare tomme verdier.
 
 Ingen betalte kall i del C. `/api/status` i produksjonen ble kontrollert gratis 2026-11-20 og ga `demo`, Mistral AI og `arn1`.
 
-## Det som gjenstår etter flettingen
+## Det som gjenstår etter flettingen (ikke en del av denne PR-en)
+
+Ingen av punktene under er markert som ferdige. Story 2.4 står som `in-progress`.
 
 1. **C3** (Sondre, etter Kevins «gå»), punkt 2–4 i sjekklisten:
    - `LLM_LEVERANDOR=openai`, `LLM_MODELL=gpt-4.1-mini` og `OPENAI_API_KEY` (Sensitive), bare i Production
    - en kontroll av at Preview og Development ikke har noen nøkkel
    - Redeploy
 2. **C4:** gratis kontroller av `/api/status`, personvernboksen og Preview. Deretter én betalt analyse med par 2 (krever godkjenning) og en kontroll av forbruket.
-3. **Nøklene fra del B** roteres eller slettes. De trekker trolig fra samme kreditt.
-   - **B4** (par 2 innen 30 s, og par 1 med annonsen med innplantet instruks) kan tas i produksjonen sammen med den betalte kontrollen i C4. Det avgjør Kevin.
-   - **Kevins beslutning i C2:** om OpenAI-prosjektet også skal ha en egen grense for forbruket.
-4. **C5:**
+3. **Nøklene:**
+   - Nøklene fra del B roteres eller slettes. De trekker trolig fra samme kreditt.
+   - Kevin og Sondre avgjør om kopien av nøkkelen for produksjonen utenfor Vercel slettes, eller ligger bare i en passordbehandler.
+4. **B4** (par 2 innen 30 s, og par 1 med annonsen med innplantet instruks) kan tas i produksjonen sammen med den betalte kontrollen i C4. Det avgjør Kevin.
+5. **Kevins beslutning i C2:** om OpenAI-prosjektet også skal ha en egen grense for forbruket.
+6. **C5:**
    - avsnitt 5 og 7 i vurderingen signeres
    - PRD §10.1 merkes som løst
    - sesjonsloggen
    - 2-4 settes til `done` først når AK 1–3 er oppfylt og SM-1 er avgjort
-5. **SM-1:** fasiten for «Gode samarbeidsevner» i par 3 (løsning 2, `beslutningsgrunnlag-2-4-fasit-par-3.md`).
-6. **Refleksjonsrapporten** (PRD §6): tredjelandsoverføringen og grunnlaget for den.
+7. **SM-1, åpent avvik:** fasiten for «Gode samarbeidsevner» i par 3 (løsning 2, `beslutningsgrunnlag-2-4-fasit-par-3.md`).
+8. **Refleksjonsrapporten** (PRD §6): tredjelandsoverføringen og grunnlaget for den.
 
 ## Personvern og hemmeligheter
 
