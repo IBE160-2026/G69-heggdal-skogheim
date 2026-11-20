@@ -43,10 +43,12 @@ export const nokkelordSvar = z.object({
   kravIndeks: z.number().nullable(),
 });
 
+// En annonse har minst ett krav. En tom liste gir `ugyldig_svar` i pipelinen, så den
+// ikke vises som en tom gap-analyse (B4 del 2 i story 2.4, NFR-9).
 export const gapSvar = z.object({
   stilling: z.string(),
   arbeidsgiver: z.string(),
-  krav: z.array(kravSvar),
+  krav: z.array(kravSvar).min(1),
   nokkelord: z.array(nokkelordSvar),
 });
 

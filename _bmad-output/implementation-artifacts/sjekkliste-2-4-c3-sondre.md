@@ -44,11 +44,11 @@
 
 > **Gjort 2026-11-20:** Sondre har laget en egen nøkkel for produksjonen og lagret den sikkert, utenfor GitHub. Navnet, prosjektet, eieren og rettighetene meldes i punkt 7. Stegene under er beholdt som dokumentasjon.
 >
-> **Avvik:** stegene sier at nøkkelen bare skal ligge i Vercel. **Avgjort 2026-11-20 (Kevin):** Sondre oppbevarer nøkkelen sikkert i en passordbehandler, ikke i en vanlig fil. Den skal aldri deles i chat, kode eller GitHub.
+> **Oppbevaring (rettet 2026-11-20, bekreftet av Sondre):** nøkkelen ligger **bare i Vercel**, slik stegene sier. Det som sto her tidligere, om en kopi og en passordbehandler, er erstattet.
 
 I [platform.openai.com](https://platform.openai.com), med organisasjonen som har kreditten på 5 USD:
 
-- [ ] **Valgfritt, men anbefalt:** lag et eget prosjekt, `g69-produksjon` (prosjektvelgeren øverst → *Create project*). Da kan forbruket i produksjonen leses for seg under Usage, og det gjør kontrollen av forbruket i C4 enklere. Kreditten ligger på organisasjonen og deles uansett.
+- [ ] **Valgfritt, men anbefalt:** lag et eget prosjekt, `g69-produksjon` (prosjektvelgeren øverst → *Create project*). Da kan forbruket i produksjonen leses for seg under Usage. *Oppdatert 2026-11-20: det trengs ikke, fordi Usage kan filtreres per API-nøkkel (Sondre).* Kreditten ligger på organisasjonen og deles uansett.
 - [ ] Gå til *API keys* (under Settings, eller under prosjektet) → *Create new secret key*.
   - **Navn:** `g69-produksjon`
   - **Prosjekt:** `g69-produksjon`, eller prosjektet du bruker
@@ -104,7 +104,7 @@ Kevin (eller Claude på Kevins vegne) tar disse kontrollene rett etter Redeploy.
 - [ ] En forhåndsvisning (Preview) skal fortsatt svare `"modus":"demo"` på `/api/status`. Åpne den i nettleseren mens du er logget inn, hvis forhåndsvisningene er beskyttet.
 - [ ] Lista i Vercel viser fortsatt de tre variablene bare i Production, og `OPENAI_API_KEY` er merket *Sensitive*.
 
-**Den betalte kontrollen** (én analyse med `par-2-it-support`, ca. 0,02 kr) krever en egen godkjenning fra Kevin og gjøres etter de gratis kontrollene. Etter den sjekker Sondre forbruket under *Usage*. Med et eget prosjekt kan forbruket filtreres på `g69-produksjon`.
+**Den betalte kontrollen** (én analyse med `par-2-it-support`, ca. 0,02 kr) krever en egen godkjenning fra Kevin og gjøres etter de gratis kontrollene. Etter den sjekker Sondre forbruket under *Usage*. Forbruket kan filtreres per API-nøkkel, på `produksjon-vercel-2` (Sondre, 2026-11-20). Det trengs ikke et eget prosjekt.
 
 ## 6. Nøklene fra målingen i del B
 
@@ -123,5 +123,5 @@ Når du er ferdig, send en kort melding uten nøkkel:
 - At de tre variablene ligger bare i Production, og at `OPENAI_API_KEY` er *Sensitive*.
 - At Preview og Development ikke har noen nøkkel.
 - Datoen for versjonen av DPA-en, hvis du har den (resten av punkt 0 er besvart).
-- Om kopien av nøkkelen utenfor Vercel er slettet, eller hvor den ligger (bare som «passordbehandler» eller lignende, ikke selve nøkkelen).
+- At nøkkelen bare ligger i Vercel (bekreftet 2026-11-20).
 - Om nøkkelen fra målingen er slettet eller rotert.

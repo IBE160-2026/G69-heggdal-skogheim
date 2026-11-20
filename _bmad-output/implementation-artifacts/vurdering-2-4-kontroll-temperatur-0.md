@@ -31,6 +31,11 @@
 
 Med temperatur 0 er kategoriene **identiske i alle tre kjøringene** for hvert par. Bare ordlyden i forklaringene og rådene varierer litt.
 
+> **Fasiten er revurdert 2026-11-20 (løsning B, avsnitt 6):** «Gode samarbeidsevner» i par 3 er nå **M**. Tabellen over viser fasiten slik den var da målingen ble gjort, og den er ikke endret. Mot den nye fasiten blir dette annerledes:
+> - Kjøringene med temperatur 0 (`M` ×3) er **lik fasiten**.
+> - Runde 5 K2 og runde 4 K3 (`D`) ligger **over fasiten**.
+> - Runde 5 K1 og K3 og runde 4 K1 og K2 (`M`) er lik fasiten.
+
 ## 2. Kriteriene
 
 | Kriterium | T = 0 | Runde 5 | Runde 4 |
@@ -43,11 +48,21 @@ Med temperatur 0 er kategoriene **identiske i alle tre kjøringene** for hvert p
 | NFR-5 | J (små feil: setninger uten subjekt, «It-brukerstøtte») | J (små feil) | J med forbehold |
 | Kostnad per full kjøring (≤ 1 kr) | J (0,07 kr) | J (0,07 kr) | J (0,07 kr) |
 
+**Mot den revurderte fasiten (2026-11-20, løsning B):** tabellen over er vurdert mot fasiten slik den var da målingen ble gjort, og den er ikke endret. Mot den nye fasiten («Gode samarbeidsevner» = M) blir det slik:
+
+| Kriterium | T = 0 | Runde 5 | Runde 4 |
+|---|---|---|---|
+| **SM-3** | **J (12 av 12)**, uendret | N, uendret (par 2 K1), og nå også par 3 K2 | **N** (par 3 K3: `D` over fasiten) |
+| **FR-8, høyst ett under** | **J.** Par 3 har ett krav under («Strukturert og nøyaktig») | J. Par 3 K3 har nå bare ett krav under | J |
+| **SM-1 (gap)** | **J (12 av 12)**, var 9 av 12 | N (10 av 12, uendret antall): par 2 K1 og nå par 3 K2, ikke lenger par 3 K3 | **N (10 av 12)**, var 11 av 12: par 2 K1 og nå også par 3 K3 |
+
+Resten av sjekklisten for par 3 var bestått i kontrollen med temperatur 0. Det eneste punktet som feilet, var toleransen. SM-1 er derfor 12 av 12 uten ny måling. Rundene 1–5 vurderes ikke på nytt, se avsnitt 6.
+
 **Om SM-3 og «høyst ett under»:** PRD-en definerer SM-3 som «ingen annonsekrav over fasit, og Mangler er alltid Mangler». «Høyst ett annonsekrav per testpar får lavere kategori» er også en konsekvens av FR-8, og sjekklisten har den på samme linje («Ingen krav over fasiten, høyst ett under»), merket SM-1 og SM-3 i malen. I vurderingene for rundene 3–5 er to krav under fasiten regnet som en feil på den linjen. Med den strenge definisjonen i PRD-en består OpenAI SM-3 med temperatur 0, men feiler punktet i sjekklisten om toleranse (SM-1) i par 3.
 
 ## 3. Feil som gjenstår med temperatur 0
 
-1. **Par 3, for strengt** (samme i alle tre kjøringene): «Strukturert og nøyaktig» og «Gode samarbeidsevner» er `M` mot `D` i fasiten. Fasiten bygger på beslektet erfaring (registrering i kundesystem, bacheloroppgave, kundeservice). Regelen «ingen deler dokumentert, men beslektet erfaring = delvis» ble ikke fulgt. Feilen går i den forsiktige retningen, og rådene er ærlige, men to krav under fasiten bryter toleransen i FR-8.
+1. **Par 3, for strengt** (samme i alle tre kjøringene). *Etter at fasiten ble revurdert 2026-11-20, er bare «Strukturert og nøyaktig» under fasiten. «Gode samarbeidsevner» er M i fasiten nå, se avsnitt 6.* Teksten fra før revurderingen: «Strukturert og nøyaktig» og «Gode samarbeidsevner» er `M` mot `D` i fasiten. Fasiten bygger på beslektet erfaring (registrering i kundesystem, bacheloroppgave, kundeservice). Regelen «ingen deler dokumentert, men beslektet erfaring = delvis» ble ikke fulgt. Feilen går i den forsiktige retningen, og rådene er ærlige, men to krav under fasiten bryter toleransen i FR-8.
 2. **Stillingen** er «It-brukerstøtte – deltid for student» i alle kjøringene og alle rundene med OpenAI, ikke «IT-…».
 3. **Kravtekstene** har med «(en fordel)» og «(påkrevd)» fra annonsen (kosmetisk).
 4. **Små språkfeil i forklaringene:** setninger uten subjekt («Har erfaring som studentassistent …»), og i tidligere runder særskriving («Tysk kunnskapsnivået»).
@@ -84,9 +99,26 @@ Verdien er allerede 0 i `src/lib/llm/felles.ts` (`ee49c2b`). Hvis Kevin og Sondr
   - NFR-4: **J**
   - NFR-5: **J**
   - Kostnad: **J**
-  - **SM-1: IKKE BESTÅTT (9 av 12 kjøringer).** Se avsnitt 6.
+  - **SM-1:** IKKE BESTÅTT (9 av 12 kjøringer) mot fasiten da målingen ble gjort. **Bestått (12 av 12)** mot fasiten slik den ble revurdert 2026-11-20 (løsning B). Se avsnitt 6.
 
-## 6. SM-1 er ikke bestått: par 3 (åpent punkt, må løses før innleveringen)
+## 6. SM-1 og par 3: løst ved at fasiten er revurdert (løsning B, 2026-11-20)
+
+> **Beslutning 2026-11-20 (Kevin og Sondre, løsning B i [`beslutningsgrunnlag-2-4-fasit-par-3.md`](beslutningsgrunnlag-2-4-fasit-par-3.md)):**
+> - «Gode samarbeidsevner» i `testdata/par-3-regnskap/fasit.md` er endret fra **D** til **M**.
+> - «Strukturert og nøyaktig» er fortsatt **D**.
+> - Endringen er en faglig revurdering etter målingen. Begrunnelsen kommer fra CV-en, annonsen og FR-8, og står i fasiten.
+> - Ingen nye målinger er kjørt.
+>
+> **Konsekvensene:**
+> - **Valgt oppsett (T = 0):** SM-1 er **12 av 12**, og SM-3 er fortsatt J. Par 3 har ett krav under fasiten («Strukturert og nøyaktig»), og det tillater FR-8.
+> - **Tidligere kjøringer som ga D for samarbeid, ligger nå over fasiten:**
+>   - OpenAI: runde 3 (K1–K3), runde 4 K3 og runde 5 K2
+>   - Mistral: rundene 2–5 (12 av 12)
+>
+>   De er historiske. Resultatene og vurderingene for rundene 1–5 står uendret og vurderes ikke på nytt.
+> - **Valget av leverandør (AD-11) er uendret.** Mistral Medium 3.5 feilet allerede SM-3 (og SM-1) i alle rundene, og Mistral Large 4 feilet NFR-4. Endringen gjør bare Medium 3.5 svakere.
+> - **Signaturene:** Sondres godkjenning av løsning B er gitt videre av Kevin. Avsnitt 6 sa tidligere at endringen skulle signeres av begge. Signaturene på denne vurderingen («Godkjent av» i avsnitt 7) gjenstår i C5.
+> - Det som står under, er teksten fra før beslutningen. Den beholdes som dokumentasjon.
 
 **Feilen:** med temperatur 0 får «Strukturert og nøyaktig» og «Gode samarbeidsevner» i par 3 `M` i alle tre kjøringene, mens fasiten har `D`. Det er to krav under fasiten. FR-8 tillater høyst ett, så punktet «Ingen krav over fasiten, høyst ett under» i sjekklisten feiler, og SM-1 er 9 av 12.
 

@@ -8,7 +8,7 @@
 > - PR #22 er flettet (`f5747f5`).
 > - C3 er gjort, og produksjonen er i ekte modus med OpenAI `gpt-4.1-mini`.
 > - **C4:** de gratis kontrollene og den betalte kontrollen med par 2 er bestått, og bokmål er bekreftet av Kevin. Forbruket er bekreftet av Sondre på ukenivå, og kostnaden er et anslag. Kriteriet per nøkkel og per dag er ikke lest direkte. Kevin godtok avviket 2026-11-20, så punktet er fullført med forbehold (se C4).
-> - C5 står igjen, og SM-1 er fortsatt et åpent avvik. SM-4 er ikke oppfylt, men det hører til story 5.1. Story 2.4 er ikke ferdig.
+> - C5 står igjen. **B4 del 2 (NFR-9) er IKKE bestått** (2026-11-20): gap-analysen ble tom, med 0 krav, se § 7a i `kjorebok-2-4-del-b.md`. SM-1 er løst 2026-11-20 ved at fasiten for par 3 er revurdert (løsning B), og er 12 av 12. SM-4 er ikke oppfylt, men det hører til story 5.1. Story 2.4 er ikke ferdig.
 >
 > **Avtalt rekkefølge (Sondre og Kevin, 2026-11-20):**
 > 1. PR-en for del C gjøres ferdig.
@@ -72,7 +72,7 @@ Utgangspunktet er uendret. Produksjonen står fortsatt i demomodus uten nøkkel 
 ## C3. Nøkkelen for produksjonen og Vercel (krever godkjenning)
 
 1. [x] Lag en **egen API-nøkkel for produksjonen** hos den valgte leverandøren. Bruk ikke nøkkelen fra målingen. Gi den et navn, for eksempel `g69-produksjon`. **Laget av Sondre (bekreftet 2026-11-20)** og lagret sikkert, utenfor GitHub.
-  - **Avvik fra sjekklisten:** sjekklisten sa at nøkkelen bare skal ligge i Vercel. **Avgjort 2026-11-20 (Kevin):** Sondre oppbevarer nøkkelen sikkert i en passordbehandler, ikke i en vanlig fil. Den skal aldri deles i chat, kode eller GitHub.
+  - **Oppbevaring (rettet 2026-11-20, bekreftet av Sondre og gitt videre av Kevin):** nøkkelen for produksjonen ligger **bare i Vercel**, slik sjekklisten sier. Den skal aldri deles i chat, kode eller GitHub. Det som sto her tidligere, om at Sondre lagret en kopi og om en passordbehandler, er erstattet.
   - **Navnet (2026-11-20):** først `produksjon-vercel`. Den ble erstattet av **`produksjon-vercel-2`** (se hendelsen under).
   - **Ikke kjent ennå:** prosjektet, eieren og rettighetene (*Restricted* eller *All*). Sondre melder dette etter punkt 7 i sjekklisten.
 2. [x] Sett i Vercel → `g69-cv-assistent` → Settings → Environment Variables, **bare for Production** (ikke Preview eller Development):
@@ -89,7 +89,7 @@ Utgangspunktet er uendret. Produksjonen står fortsatt i demomodus uten nøkkel 
 **Hendelse 2026-11-20, nøkkelen var lagt inn feil:**
 - De to første forsøkene på den betalte kontrollen ga HTTP 502 på under 1 s, fordi den første nøkkelen (`produksjon-vercel`) var lagt inn feil.
 - Sondre laget en ny nøkkel, `produksjon-vercel-2`, oppdaterte `OPENAI_API_KEY` i Production, slettet den gamle nøkkelen og tok en ny Redeploy. Det tredje forsøket gikk bra.
-- Den nye nøkkelen oppbevares i en passordbehandler (Kevins beslutning).
+- Den nye nøkkelen ligger bare i Vercel (bekreftet av Sondre 2026-11-20).
 - At de to forsøkene som feilet, ikke ble fakturert, er ikke bekreftet direkte. Se avviket under forbruket i C4.
 - **Kilde:** tilbakemeldingen fra Kevin og Sondre 2026-11-20. Årsaken («lagt inn feil») er ikke kontrollert i loggen for funksjonen i Vercel. Sondres logg (`975-…`) slutter ved de gratis kontrollene.
 - **Lærdom:** `/api/status` viser bare at en nøkkel *finnes*, ikke at den er gyldig. En ugyldig nøkkel viser seg først ved et kall (502, `llm_feil`). Neste gang en nøkkel byttes, skal den betalte kontrollen gjøres rett etter Redeploy.
@@ -121,7 +121,7 @@ Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-
   - Treffprosenten var 25 % (2 av 8 nøkkelord), mot 11 % i fasiten. Det er forklart i avsnitt 8 i `vurdering-2-4-kontroll-temperatur-0.md` (SM-4). Testsettet med temperatur 0 ga samme treffprosent (25 %, 2 av 8) i alle tre kjøringene. Listen med nøkkelord fra produksjonen er ikke notert.
   - Analysen dekker også del 1 av B4 (par 2 innen 30 s).
 - [x] Forbruket i konsollen etter analysen stemmer med forventet kostnad. **Fullført med forbehold 2026-11-20:** bekreftet av Sondre på ukenivå, og avviket er godtatt av Kevin. Kostnaden for analysen er et anslag.
-  - **Status:** Kevin godtok avviket fra kriteriet 2026-11-20 (se under). Usage viser det samlede forbruket for alle nøklene, ikke forbruket for produksjonsnøkkelen for seg.
+  - **Status:** Kevin godtok avviket fra kriteriet 2026-11-20 (se under). Tallene Sondre oppga, er det samlede forbruket for alle nøklene, ikke forbruket for produksjonsnøkkelen for seg. **Tillegg 2026-11-20:** Sondre har bekreftet at forbruket i OpenAI kan filtreres per API-nøkkel. Senere kontroller kan derfor lese `produksjon-vercel-2` for seg, uten et eget prosjekt.
   - **Usage for hele uka, alle nøklene til sammen:** 54 kall, ca. 154 000 tokens og 0,09 USD. Uka dekker all bruk siden kreditten ble kjøpt 2026-11-19.
   - **API-feil:** 5 av kallene. To av dem er *trolig* forsøkene med feil nøkkel for produksjonen, men det er ikke sikkert. En nøkkel som er lagt inn feil, kan ikke alltid knyttes til organisasjonen, og da vises forsøket ikke i Usage. Hvor de tre andre feilene kommer fra, er ikke kjent (kanskje fra målingene i del B).
   - **Analysen med par 2:** anslagsvis 0,002 USD. Den vises ikke for seg med to desimaler.
@@ -134,8 +134,8 @@ Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-
     - høyst 0,01 USD for dagen
     - at de to forsøkene med feil nøkkel ikke er fakturert
 
-    Usage viser ikke forbruket per nøkkel eller per dag, så de to første delene er ikke lest direkte. At de to forsøkene som feilet, ikke er fakturert, er heller ikke bekreftet direkte. De feilet på under 1 s, og summen for uka gir ikke rom for noen merkbar kostnad. **Godtatt av Kevin 2026-11-20.**
-  - **Lærdom:** et eget prosjekt i OpenAI for produksjonen (forslaget i punkt 1 i sjekklisten) ville gjort det mulig å lese forbruket for seg. Det står som et åpent punkt før brukertesten i 2.8.
+    Tallene ble gitt for hele uka og samlet for alle nøklene, så de to første delene er ikke lest direkte. Usage kan filtreres per nøkkel (Sondre, 2026-11-20), men det ble ikke gjort i denne kontrollen. At de to forsøkene som feilet, ikke er fakturert, er heller ikke bekreftet direkte. De feilet på under 1 s, og summen for uka gir ikke rom for noen merkbar kostnad. **Godtatt av Kevin 2026-11-20.**
+  - **Lærdom (oppdatert 2026-11-20):** forbruket kan filtreres per API-nøkkel (Sondre), så det trengs ikke et eget prosjekt. Ved neste kontroll, for eksempel B4 del 2 eller 2.8, filtreres det på `produksjon-vercel-2`.
   - **«Spend limit» i OpenAI** står på 100 USD (ca. 969 kr), ifølge Sondre. Det er langt over 200 kr, og det er ikke notert om det er grensen for organisasjonen eller for prosjektet. Det harde taket etter PRD NFR-3 er den forhåndsbetalte kreditten uten automatisk påfylling, og den er 5 USD. Grensen på 100 USD kan derfor ikke slippe gjennom mer enn kreditten. Se Kevins åpne beslutning i C2.
 
 ## C5. Dokumentasjonen og avslutningen
@@ -148,7 +148,7 @@ Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-
   - Taket vurderes på nytt i epic 3.
 - [ ] Nøklene fra målingen er slettet eller rotert hos leverandørene, og de er fjernet fra `.env.local` hvis de ikke skal brukes videre lokalt.
 - [ ] Sesjonsloggen har resultatet, `LLM_MODELL` og commit (AK 2), og `issues.md` er oppdatert.
-- [ ] Først når AK 1–3 er oppfylt og SM-1 er avgjort: 2-4 settes til `done` i `sprint-status.yaml`.
+- [ ] Først når AK 1–3 er oppfylt og SM-1 er avgjort (avgjort 2026-11-20: løsning B, SM-1 12 av 12): 2-4 settes til `done` i `sprint-status.yaml`.
 - [ ] **PR-ene:**
   - PR-en for del C (dokumentasjonen fram til C3, `pr-2-4-del-c.md`) går til gjennomgang hos Sondre **før** C3, etter den avtalte rekkefølgen.
   - Resultatet fra C3 og C4, og senere statusen `done`, kommer i en egen PR etterpå.
