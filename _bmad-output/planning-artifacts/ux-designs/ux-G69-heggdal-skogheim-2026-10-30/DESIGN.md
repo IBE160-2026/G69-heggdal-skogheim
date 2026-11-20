@@ -3,28 +3,28 @@ name: AI CV & Job Application Assistant
 description: Ærlig gap-analyse og søknadshjelp for studenter på norsk. shadcn/ui på Next.js og Tailwind; denne fila beskriver bare avvikene fra shadcn sine standarder.
 status: final
 created: 2026-10-30
-updated: 2026-10-30
+updated: 2026-11-20
 colors:
   # Overstyringer oppå shadcn. Alt som ikke står her (foreground, muted,
   # border, card, popover) arves. Tokenene under er satt eksplisitt fordi
   # standardverdiene i shadcn er for svake for tilgjengelighet.
-  background: '#FAFAF7'
-  foreground: '#1C1917'
+  background: '#F8FAFC'
+  foreground: '#0F172A'
   muted-foreground: '#5F6B7A'
-  input: '#8A857C'
-  ring: '#1F5F5B'
+  input: '#7C8796'
+  ring: '#1E4E8C'
   destructive: '#B91C1C'
-  primary: '#1F5F5B'
+  primary: '#1E4E8C'
   primary-foreground: '#FFFFFF'
-  primary-soft: '#E6F0EF'
+  primary-soft: '#E8EEF8'
   oppfylt: '#1C6B3C'
   oppfylt-bg: '#E7F4EC'
   delvis: '#7A5200'
   delvis-bg: '#FDF3DC'
   mangler: '#9A3412'
   mangler-bg: '#FDEDE5'
-  belegg: '#3F3A33'
-  belegg-bg: '#F5F3EE'
+  belegg: '#334155'
+  belegg-bg: '#F1F5F9'
 typography:
   # Geist Sans fra shadcn for alle roller. Bare rollene under overstyres.
   page-title:
@@ -129,20 +129,47 @@ shadcn/ui arves nesten uendret. Denne fila beskriver bare avvikene: én primærf
 
 ## Colors
 
-- **Primær grønnblå (`#1F5F5B`)** brukes på primærknapper, aktiv fane, lenker, fokusring og kanten på belegg og forslagskort. Den er rolig og tillitvekkende uten å ligne en bank. Kontrast 7,4:1 mot hvitt.
-- **Primær myk (`#E6F0EF`)** er bakgrunnen for funne nøkkelord og demobanneret.
-- **Bakgrunn (`#FAFAF7`)** er en varm off-white som gjør hvite kort og tekstfelt tydelige.
-- **Dempet tekst (`#5F6B7A`)** brukes til etiketter, tellere, merket «Nedgradert» og årsaken under deaktivert *Analyser*. Kontrast 5,2:1 mot bakgrunnen og 4,9:1 mot belegg-bakgrunnen. Den skal ikke lysnes.
-- **Feltkant (`#8A857C`)** er kanten på alle tekstfelt, opplastingsfeltet og stiplede nøkkelordbrikker. Kontrast 3,5:1 mot bakgrunnen og 3,7:1 mot hvitt (WCAG 1.4.11). Kanten er det som skiller redigerbar tekst fra låst tekst.
-- **Fokusring (`#1F5F5B`)** er 2 px heltrukken med 2 px avstand. shadcn sin halvgjennomsiktige standardring brukes ikke.
+- **Primær blå (`#1E4E8C`)** brukes på primærknapper, aktiv fane, lenker, fokusring og kanten på belegg og forslagskort. Den er profesjonell og tillitvekkende. Kontrast 8,3:1 mot hvitt og 8,0:1 mot bakgrunnen. Endret fra grønnblå `#1F5F5B` 2026-11-20 (Sondre), se `.memlog.md`.
+- **Primær myk (`#E8EEF8`)** er bakgrunnen for funne nøkkelord og demobanneret. Primær på primær myk: 7,1:1.
+- **Bakgrunn (`#F8FAFC`)** er en kjølig off-white som gjør hvite kort og tekstfelt tydelige. Tekst (`#0F172A`) har 17,1:1 mot bakgrunnen.
+- **Dempet tekst (`#5F6B7A`)** brukes til etiketter, tellere, merket «Nedgradert» og årsaken under deaktivert *Analyser*. Kontrast 5,2:1 mot bakgrunnen og 5,0:1 mot belegg-bakgrunnen. Den skal ikke lysnes.
+- **Feltkant (`#7C8796`)** er kanten på alle tekstfelt, opplastingsfeltet og stiplede nøkkelordbrikker. Kontrast 3,5:1 mot bakgrunnen og 3,6:1 mot hvitt (WCAG 1.4.11). Kanten er det som skiller redigerbar tekst fra låst tekst.
+- **Fokusring (`#1E4E8C`)** er 2 px heltrukken med 2 px avstand. shadcn sin halvgjennomsiktige standardring brukes ikke.
 - **Kategorifargene** brukes bare på kategorimerker og venstrekanten på kravkort, aldri som pynt eller advarsel:
   - **Oppfylt** `#1C6B3C` på `#E7F4EC` (5,8:1)
   - **Delvis oppfylt** `#7A5200` på `#FDF3DC` (6,3:1)
   - **Mangler** `#9A3412` på `#FDEDE5` (6,4:1). Rustrød, ikke feilrød: at noe mangler, er ærlig informasjon, ikke en feil.
-- **Belegg** `#3F3A33` på `#F5F3EE` (10,2:1) brukes bare til sitater fra CV-teksten.
+- **Belegg** `#334155` på `#F1F5F9` (9,5:1) brukes bare til sitater fra CV-teksten.
 - **Feil (`#B91C1C`)** er forbeholdt feilmeldinger, ugyldige felt og tellere over grensen. Kontrast 6,5:1 mot hvitt. Den brukes aldri på kategorien Mangler.
 
 Alle tekstpar oppfyller WCAG 2.1 AA (4,5:1). Kanter og fokusring oppfyller 3:1. Ingen tekst vises med redusert opasitet.
+
+## Mørk modus
+
+Lagt til 2026-11-20 (Sondre), se `.memlog.md`. Appen følger innstillingen på maskinen (`prefers-color-scheme`) fra første tegning: et lite skript i `<head>` setter klassen `dark` på `<html>` før siden tegnes, så den ikke blinker hvit. En bryter i en egen rad over innholdet, høyre side, bytter mellom lys og mørk for denne fanen. Uten valg følger appen maskinen, også om den endres mens fanen er åpen. Ingenting lagres (FR-5, NFR-1): en ny fane eller ny lasting følger maskinen igjen. Uten JavaScript er temaet lyst.
+
+**Bryteren** er en vanlig knapp med `aria-pressed` (sann i mørk modus) og etiketten «Mørk modus» for skjermleser. Ikonet er `Moon` i lys og `Sun` i mørk, med `aria-hidden`. Den er 44 × 44 px under 1024 px og 32 × 32 px på PC. Den har ingen egen kunngjøring. Toasten følger temaet.
+
+Mørke verdier (står i `.dark` i `globals.css`, regnet etter WCAG):
+
+| Token | Verdi | Kontrast |
+|---|---|---|
+| `background` / `foreground` | `#0F172A` / `#F1F5F9` | 16,3:1 |
+| `card`, `popover` / `*-foreground` | `#1E293B` / `#F1F5F9` | 13,4:1 |
+| `primary` / `primary-foreground` | `#93C5FD` / `#0F172A` | 9,9:1. Primær på kort 8,1:1 |
+| `primary-soft` | `#1E3A5F` | primær på den 6,4:1 |
+| `secondary`, `muted`, `accent` / `*-foreground` | `#273449` / `#F1F5F9` | |
+| `muted-foreground` | `#94A3B8` | 7,0:1 på bakgrunn, 5,7:1 på kort, 4,9:1 på `#273449` |
+| `border` | `#334155` | |
+| `input` | `#64748B` | 3,1:1 på kort, 3,8:1 på bakgrunn |
+| `ring` | `#93C5FD` | 9,9:1 |
+| `destructive` | `#FCA5A5` | 7,7:1 på kort |
+| `oppfylt` / `-bg` | `#86EFAC` / `#14321F` | 9,9:1 |
+| `delvis` / `-bg` | `#FCD34D` / `#3A2C06` | 9,4:1 |
+| `mangler` / `-bg` | `#FDBA74` / `#43200C` | 8,6:1 |
+| `belegg` / `-bg` | `#E2E8F0` / `#273449` | 10,2:1 |
+
+Kategorienes betydning er den samme: Oppfylt grønn, Delvis oppfylt gul, Mangler rustoransje. Deaktivert primærknapp (50 % primær på bakgrunnen, tekst i `foreground`) har 4,8:1.
 
 ## Typography
 

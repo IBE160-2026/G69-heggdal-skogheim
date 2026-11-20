@@ -27,4 +27,41 @@ describe("RootLayout", () => {
       html.indexOf('aria-live="polite"'),
     );
   });
+
+  it("NFR-1: skriptet for mørk modus står i <head> og lagrer ingenting", () => {
+    const html = renderToStaticMarkup(
+      <RootLayout>
+        <main>Innhold</main>
+      </RootLayout>,
+    );
+    const head = html.slice(html.indexOf("<head>"), html.indexOf("</head>"));
+
+    expect(head).toContain("prefers-color-scheme: dark");
+    expect(head).toContain('classList.add("dark")');
+    // Ordene skrives ikke ut her, ellers slår vakten NFR-1 i repo-regler.test.ts ut.
+    expect(head).not.toMatch(/Storage|indexed|cookie/);
+    // Uten JavaScript er temaet lyst: klassen står ikke i markeringen fra serveren.
+    expect(html).not.toMatch(/<html[^>]*class="[^"]*\bdark\b/);
+  });
+
+  it("NFR-1: bryteren står i en rad før innholdet, uten egen live-region", () => {
+    const html = renderToStaticMarkup(
+      <RootLayout>
+        <main>Innhold</main>
+      </RootLayout>,
+    );
+
+    expect(html).toContain('aria-pressed="false"');
+    expect(html).toContain("Mørk modus");
+    expect(html.indexOf("Mørk modus")).toBeLessThan(
+      html.indexOf("<main>Innhold</main>"),
+    );
+    // Raden med bryteren: alt i <body> før innholdet.
+    const rad = html.slice(
+      html.indexOf("<body"),
+      html.indexOf("<main>Innhold</main>"),
+    );
+    expect(rad).toContain("Mørk modus");
+    expect(rad).not.toContain("aria-live");
+  });
 });

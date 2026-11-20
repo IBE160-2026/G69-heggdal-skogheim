@@ -94,23 +94,23 @@ describe("tema", () => {
     const css = readFileSync("src/app/globals.css", "utf8");
 
     for (const token of [
-      "--background: #fafaf7",
-      "--foreground: #1c1917",
+      "--background: #f8fafc",
+      "--foreground: #0f172a",
       "--muted-foreground: #5f6b7a",
-      "--input: #8a857c",
-      "--ring: #1f5f5b",
+      "--input: #7c8796",
+      "--ring: #1e4e8c",
       "--destructive: #b91c1c",
-      "--primary: #1f5f5b",
+      "--primary: #1e4e8c",
       "--primary-foreground: #ffffff",
-      "--primary-soft: #e6f0ef",
+      "--primary-soft: #e8eef8",
       "--oppfylt: #1c6b3c",
       "--oppfylt-bg: #e7f4ec",
       "--delvis: #7a5200",
       "--delvis-bg: #fdf3dc",
       "--mangler: #9a3412",
       "--mangler-bg: #fdede5",
-      "--belegg: #3f3a33",
-      "--belegg-bg: #f5f3ee",
+      "--belegg: #334155",
+      "--belegg-bg: #f1f5f9",
       "--text-page-title:",
       "--text-section-title:",
       "--text-letter:",
@@ -126,5 +126,42 @@ describe("tema", () => {
       expect(css).toContain(token);
     }
     expect(css).not.toContain("outline-ring/50");
+  });
+
+  it("UX-DR1: den mørke paletten står i .dark i globals.css", () => {
+    const css = readFileSync("src/app/globals.css", "utf8");
+    const dark = css.match(/\n\.dark \{([^}]*)\}/)?.[1] ?? "";
+
+    for (const token of [
+      "--background: #0f172a",
+      "--foreground: #f1f5f9",
+      "--card: #1e293b",
+      "--card-foreground: #f1f5f9",
+      "--popover: #1e293b",
+      "--popover-foreground: #f1f5f9",
+      "--primary: #93c5fd",
+      "--primary-foreground: #0f172a",
+      "--primary-soft: #1e3a5f",
+      "--secondary: #273449",
+      "--secondary-foreground: #f1f5f9",
+      "--muted: #273449",
+      "--muted-foreground: #94a3b8",
+      "--accent: #273449",
+      "--accent-foreground: #f1f5f9",
+      "--border: #334155",
+      "--input: #64748b",
+      "--ring: #93c5fd",
+      "--destructive: #fca5a5",
+      "--oppfylt: #86efac",
+      "--oppfylt-bg: #14321f",
+      "--delvis: #fcd34d",
+      "--delvis-bg: #3a2c06",
+      "--mangler: #fdba74",
+      "--mangler-bg: #43200c",
+      "--belegg: #e2e8f0",
+      "--belegg-bg: #273449",
+    ]) {
+      expect(dark).toContain(token);
+    }
   });
 });
