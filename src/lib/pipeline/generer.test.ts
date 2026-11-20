@@ -475,6 +475,8 @@ describe("grenser på svaret", () => {
     Array.from({ length: n }, (_, i) => ({ tekst: `ord${i}`, kravIndeks: null }));
 
   it.each([
+    ["0 krav (B4 del 2, NFR-9)", { krav: krav(0), nokkelord: [] }],
+    ["0 krav med nøkkelord", { krav: krav(0), nokkelord: nokkelord(3) }],
     ["31 krav", { krav: krav(31), nokkelord: [] }],
     ["11 belegg på ett krav", { krav: krav(1, Array(11).fill("Windows")), nokkelord: [] }],
     ["41 nøkkelord", { krav: krav(1), nokkelord: nokkelord(41) }],
@@ -490,6 +492,19 @@ describe("grenser på svaret", () => {
     });
 
     expect(svar).toEqual({ status: 502, json: { feil: { kode: "ugyldig_svar" } } });
+  });
+
+  it("B4 del 2, AD-10: et svar uten krav logges som ugyldig_svar med tokenene, så kostnaden synes", async () => {
+    await egenCv(EKTE_ENV, {
+      klienter: klienter(klientMed({ stilling: "", arbeidsgiver: "", krav: [], nokkelord: [] })),
+    });
+
+    expect(logglinjer().at(-1)).toMatchObject({
+      status: 502,
+      feilkode: "ugyldig_svar",
+      inputTokens: 120,
+      outputTokens: 80,
+    });
   });
 
   it("FR-12: grensen på 40 nøkkelord gjelder etter dedupliseringen", async () => {
