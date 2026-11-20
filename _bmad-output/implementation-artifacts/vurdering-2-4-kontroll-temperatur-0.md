@@ -123,11 +123,65 @@ Verdien er allerede 0 i `src/lib/llm/felles.ts` (`ee49c2b`). Hvis Kevin og Sondr
 
 **Bekreftet 2026-11-20 av Sondre** (kontoen er hans, og bekreftelsen er gitt videre av Kevin). Feltene i kolonnen «Må bekreftes» er dermed lukket:
 - **Trening på API-data: J** ([your data](https://developers.openai.com/api/docs/guides/your-data), lest 2026-11-19). Deling er slått av i organisasjonen (Sondre, 2026-11-20).
-- **DPA: J** ([data-processing-addendum](https://openai.com/policies/data-processing-addendum/), lest av Sondre, bekreftet 2026-11-20). Den gjelder automatisk når tjenestene brukes, og den må ikke inngås separat. Ifølge Sondre er OpenAI Ireland Ltd. avtaleparten for kunder i EØS. Datoen for versjonen han leste, er ikke notert. Datoene 2025-12-01 og 2026-01-01 over kommer fra et nettsøk.
+- **DPA: J** ([data-processing-addendum](https://openai.com/policies/data-processing-addendum/), lest av Sondre, bekreftet 2026-11-20). Den gjelder automatisk når tjenestene brukes, og den må ikke inngås separat. Ifølge Sondre er OpenAI Ireland Ltd. avtaleparten for kunder i EØS. Ifølge Sondres logg (2026-11-20) gjelder versjonen fra 2026-01-01. Det stemmer med nettsøket, som også nevnte 2025-12-01 som datoen da den ble oppdatert.
 - **Grunnlaget for overføringen til USA** er bekreftet av Sondre 2026-11-20 (gitt videre av Kevin). Punkt 4.1 i DPA-en beskriver overføringer ut av EØS med standard personvernbestemmelser (SCC) eller en beslutning om tilstrekkelig beskyttelsesnivå etter GDPR art. 45, også EU–U.S. Data Privacy Framework.
+  - Ifølge Sondres logg (`975-2026-11-20-14-29-16-produksjon-c3-c4.md`) gjelder DPA-en fra 2026-01-01, og SCC-ene er EU-kommisjonens fra 4. juni 2021.
   - **Ikke kontrollert:** hvilket av grunnlagene som faktisk brukes, og om OpenAI er sertifisert under DPF.
   - Grunnlaget skal med i refleksjonsrapporten (PRD §6). Det står som et åpent punkt.
 - **Land:** at avtaleparten er irsk, endrer ikke hvor behandlingen skjer (USA, se raden over). Personvernteksten om USA og at opplysningene går ut av EØS står derfor fast, og den kontrolleres i produksjonen i del C (C4).
 - **Kreditten:** 5 USD (6,25 USD inkl. 25 % mva., ca. 60 kr), kjøpt én gang 2026-11-19. Det er ikke fylt på senere, og automatisk påfylling er av. Beløpet er under 200 kr inkl. mva.
 
 **Godkjent av:** Kevin ______ Sondre ______ **Dato:** ______
+
+## 8. SM-4: manuell vurdering av nøkkelordene (2026-11-20, gratis)
+
+**Kravet (PRD SM-4):** «Minst 80 % av de forventede nøkkelordene er hentet ut, og enhetstestene for treffprosent er grønne.» SM-4 står i AK for **story 5.1** (`epics.md`, linje 784), ikke i 2.4, som realiserer SM-1, SM-2, SM-3 og SM-8 (`epics.md`, story 2.4). Vurderingen er en kontroll av det valgte oppsettet, ikke en godkjenning.
+
+**Grunnlaget:**
+- Nøkkelordene modellen hentet ut i kontrollen med temperatur 0 (`testsett-rapporter/2026-11-19-225914-openai-gpt-4.1-mini.md`), sammenlignet med «Forventede nøkkelord» i hver `testdata/par-*/fasit.md`.
+- Ingen nye kall. Ingen endring i prompten, koden eller fasitene.
+
+**Regelen for den manuelle tellingen:**
+- Et nøkkelord fra fasiten regnes som hentet ut når et av modellens nøkkelord er det samme ordet eller en form av det: bøyning, sammensetning med samme stamme, eller en presisering (for eksempel «førerkort klasse B» for «førerkort»).
+- Synonymer og omskrivinger regnes ikke med, men står som tvilstilfeller.
+- Rapportens egen telling er automatisk og kaller seg «hjelp, ikke vurdering».
+
+| Par | Fasiten (antall) | Hentet ut, manuelt | Tvilstilfeller | Ikke hentet ut | Automatisk i rapporten |
+|---|---|---|---|---|---|
+| 1 Butikk/bank | 9 | 6 (kundeorientert, digitale ferdigheter, kontanthåndtering, nøyaktig, pålitelig, økonomi ← «økonomistudent») = **67 %** | «hjelpe kunder» for kundeservice, bare i K1 og K3 (K2 har «hjelpe andre»). Med tvilstilfellet: 7 av 9 = 78 % i K1 og K3 | nettbank, mobilbank, kundeservice (tvilstilfelle) | 56 % |
+| 2 IT-support | 9 | 6 (brukerstøtte, Windows, Microsoft 365, ITIL, kommunikasjon ← «kommunikasjonsevner», førerkort ← «førerkort klasse B») = **67 %** | – | førstelinje, saksbehandlingssystem, oppsett av PC | 44 % |
+| 3 Regnskap | 13 | 9 (bokføring, avstemming ← «avstemminger», Excel, Tripletex, Visma, regnskapssystem ← «regnskapssystemer», strukturert, nøyaktig, samarbeid ← «samarbeidsevner») = **69 %** | – | periodeavslutning, fakturering, årsoppgjør, skattemelding | 46 % |
+| 4 Hotell | 12 | 11 (alle unntatt resepsjon, booking ← «bookingsystemer») = **92 %** | – | resepsjon | 83 % |
+| **Til sammen** | 43 | 32 = **74 %** (33 = 77 % med tvilstilfellet, K1 og K3) | | | |
+
+Tellingen er den samme i alle tre kjøringene for hvert par. Unntaket er par 1 K2:
+- K2 har «hjelpe andre», ikke «hjelpe kunder», så tvilstilfellet faller bort der.
+- K2 har «AFR» i stedet for «finansiell rådgiver». Det påvirker ikke tellingen.
+
+**Vurdering: SM-4 er IKKE oppfylt.**
+- Bare par 4 når 80 %.
+- Par 1–3 ligger på 67–69 %, og alle er under 80 %. Det gjelder også par 1 med tvilstilfellet (78 %).
+- Til sammen er det 74 %.
+- Den andre delen av kravet er oppfylt. Enhetstesten for treffprosent (`src/lib/kjerne/treffprosent.test.ts`) bruker fasitlistene og gir 22, 11, 8 og 33 % for par 1–4. Den er grønn i `npm test` 2026-11-20 på grenen `story-2.4-del-c-kontroll` (896 av 896).
+
+**Hva som mangler, og en mulig årsak (en hypotese, ikke undersøkt):**
+- Det som mangler, er for det meste arbeidsoppgaver og begreper fra stillingen, ikke kvalifikasjoner:
+  - par 3: periodeavslutning, fakturering, årsoppgjør, skattemelding
+  - par 2: førstelinje, saksbehandlingssystem, oppsett av PC
+  - par 1: nettbank, mobilbank og eventuelt kundeservice
+  - par 4: resepsjon
+- Prompten ble i runde 1 endret slik at bare kvalifikasjoner er **krav** (`246e58b`). Det kan ha smittet over på nøkkelordene. Det må undersøkes før prompten endres.
+
+**Treffprosenten i par 2: 25 % i produksjonen, mot 11 % i fasiten.**
+- Fasitens 11 % er regnet ut fra fasitens egne 9 nøkkelord (1 av 9). Det er et mål for enhetstesten av selve beregningen.
+- Appen regner treffprosenten fra nøkkelordene modellen henter ut.
+  - I testsettet med temperatur 0 var det 8 nøkkelord. 2 av dem ble funnet i CV-en, «IT-utdanning» og «Windows», som gir 25 % i alle tre kjøringene.
+  - Produksjonen ga samme treffprosent, 25 % (2 av 8). Listen fra produksjonen er ikke notert, så det er ikke kontrollert om det var de samme nøkkelordene.
+- Beregningen er altså ikke feil, og produksjonen ga samme treffprosent som målingen.
+- «IT-utdanning» får treff etter regelen i FR-12, fordi «IT» og «UTDANNING» begge står i CV-en. CV-en har en bachelor i IT, så treffet er ærlig (SM-C1).
+- Forskjellen kommer av at listen modellen henter ut, ikke dekker fasiten (SM-4).
+
+**Videre:**
+- Ingen endring i 2.4.
+- Avviket er ført som kjent i `deferred-work.md` og `issues.md`. Det følges opp i epic 3, fordi ATS bruker nøkkelordene (FR-17), og i story 5.1.
+- Kevin og Sondre avgjør der om det er prompten eller fasitlistene som må endres.

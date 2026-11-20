@@ -103,3 +103,9 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-6-redigere-kopiere-og-generere-gap-analysen-paa-nytt.md`
   summary: A failed *Generer på nytt* discards the previous gap analysis, because `genereringStartet` nulls `generert` and `redigert` before the new answer arrives.
   evidence: `src/lib/okt/tilstand.ts` genereringStartet (from story 2.2) clears both; on error the tab shows only the alert with *Prøv igjen*. CV text and ad are kept. Consider keeping the previous result until the new one succeeds.
+
+## Deferred from: story 2.4 del C, manual SM-4 assessment (2026-11-20)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-4-del-c-resultat-c3-c4-og-sm-4.md`
+  summary: SM-4 is not met with the chosen setup (OpenAI `gpt-4.1-mini`, temperature 0): 67 %, 67 %, 69 % and 92 % of the expected keywords extracted for pairs 1–4 (74 % overall), against the 80 % target; follow up in epic 3 (ATS, FR-17) and story 5.1.
+  evidence: Section 8 of `vurdering-2-4-kontroll-temperatur-0.md`, counted manually from `testsett-rapporter/2026-11-19-225914-openai-gpt-4.1-mini.md`. The missing keywords are mostly job tasks (periodeavslutning, fakturering, årsoppgjør, førstelinje). Hypothesis, not verified: the round 1 prompt change (`246e58b`, only qualifications are requirements) also narrowed the keywords. Decide whether the prompt or the answer-key lists should change.

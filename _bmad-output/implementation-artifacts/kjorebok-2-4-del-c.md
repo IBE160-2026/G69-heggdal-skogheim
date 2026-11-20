@@ -2,7 +2,14 @@
 
 > **Valget er tatt 2026-11-19: OpenAI `gpt-4.1-mini` med temperatur 0** (Kevin og Sondre, AD-11). Del C gjelder derfor OpenAI. `LLM_LEVERANDOR=openai`, `LLM_MODELL=gpt-4.1-mini`, `OPENAI_API_KEY` (en egen nøkkel for produksjonen) bare i Production. Personvernboksen skal vise «CV-teksten sendes til OpenAI i USA. Det betyr at opplysningene overføres ut av EØS.», og `/api/status` skal gi `tredjeland: true`. Sondre må bekrefte innstillingene for deling av data og avtalegrunnlaget (DPA) før produksjonsbruk (avsnitt 7 i `vurdering-2-4-kontroll-temperatur-0.md`). Det er bekreftet 2026-11-20, se C1. Merk: SM-1 er ikke bestått (par 3) og må løses før innleveringen.
 >
-> **Status 2026-11-20: påbegynt** på grenen `story-2.4-del-c-produksjon`. Utgangspunktet er kontrollert på nytt, og grensene og `MAKS_UTDATA_TOKENS` er avgjort (C3 punkt 5 og C5). C1 og C2 er bekreftet av Sondre 2026-11-20. Unntaket er punktet om grensen for forbruket i C2, som er Kevins beslutning. Grunnlaget for overføringen til USA er kontrollert i DPA-en (punkt 4.1: SCC eller art. 45, også DPF). Hvilket av dem som brukes, er ikke kontrollert. Nøkkelen for produksjonen er laget (C3 punkt 1). C3 punkt 2–4 og C4 er ikke startet, og ingenting er endret i Vercel.
+> **Status 2026-11-20: påbegynt.** Forberedelsen ble gjort på grenen `story-2.4-del-c-produksjon` (PR #22), og resultatet fra C3 og C4 er dokumentert på `story-2.4-del-c-kontroll`. Utgangspunktet er kontrollert på nytt, og grensene og `MAKS_UTDATA_TOKENS` er avgjort (C3 punkt 5 og C5). C1 og C2 er bekreftet av Sondre 2026-11-20. Unntaket er punktet om grensen for forbruket i C2, som er Kevins beslutning. Grunnlaget for overføringen til USA er kontrollert i DPA-en (punkt 4.1: SCC eller art. 45, også DPF). Hvilket av dem som brukes, er ikke kontrollert.
+>
+> **Oppdatert 2026-11-20 etter C3 og C4 (Kevin og Sondre):**
+> - PR #22 er flettet (`f5747f5`).
+> - C3 er gjort, og produksjonen er i ekte modus med OpenAI `gpt-4.1-mini`.
+> - I C4 er de gratis kontrollene bestått. Den betalte kontrollen med par 2 er bestått **med forbehold**: at svaret var på bokmål, er ikke bekreftet.
+> - **Forbruket venter på bekreftelse fra Sondre.**
+> - C5 står igjen, og SM-1 er fortsatt et åpent avvik. SM-4 er ikke oppfylt, men det hører til story 5.1. Story 2.4 er ikke ferdig.
 >
 > **Avtalt rekkefølge (Sondre og Kevin, 2026-11-20):**
 > 1. PR-en for del C gjøres ferdig.
@@ -67,29 +74,57 @@ Utgangspunktet er uendret. Produksjonen står fortsatt i demomodus uten nøkkel 
 
 1. [x] Lag en **egen API-nøkkel for produksjonen** hos den valgte leverandøren. Bruk ikke nøkkelen fra målingen. Gi den et navn, for eksempel `g69-produksjon`. **Laget av Sondre (bekreftet 2026-11-20)** og lagret sikkert, utenfor GitHub.
   - **Avvik fra sjekklisten:** sjekklisten sa at nøkkelen bare skal ligge i Vercel. **Avgjort 2026-11-20 (Kevin):** Sondre oppbevarer nøkkelen sikkert i en passordbehandler, ikke i en vanlig fil. Den skal aldri deles i chat, kode eller GitHub.
-  - **Ikke kjent ennå:** navnet, prosjektet (eget `g69-produksjon` eller ikke), eieren og rettighetene (*Restricted* eller *All*). Sondre melder dette etter punkt 7 i sjekklisten.
-2. [ ] Sett i Vercel → `g69-cv-assistent` → Settings → Environment Variables, **bare for Production** (ikke Preview eller Development):
+  - **Navnet (2026-11-20):** først `produksjon-vercel`. Den ble erstattet av **`produksjon-vercel-2`** (se hendelsen under).
+  - **Ikke kjent ennå:** prosjektet, eieren og rettighetene (*Restricted* eller *All*). Sondre melder dette etter punkt 7 i sjekklisten.
+2. [x] Sett i Vercel → `g69-cv-assistent` → Settings → Environment Variables, **bare for Production** (ikke Preview eller Development):
    - `LLM_LEVERANDOR`: `mistral` eller `openai`.
    - `LLM_MODELL`: det datobestemte navnet fra vurderingen (for eksempel `mistral-medium-2604` eller `gpt-4.1-mini`).
    - `MISTRAL_API_KEY` eller `OPENAI_API_KEY`: bare nøkkelen til den valgte leverandøren. Merk den som Sensitive.
-3. [ ] Sjekk at ingen av variablene har prefikset `NEXT_PUBLIC_` (AD-12), og at Preview fortsatt ikke har nøkkel.
-4. [ ] Deploy produksjonen på nytt (Redeploy av siste produksjonsdeploy fra `main`), så variablene tas i bruk.
+   **Gjort 2026-11-20 (Sondre, kontrollert sammen med Kevin):** `LLM_LEVERANDOR=openai` og `LLM_MODELL=gpt-4.1-mini` (Config), og `OPENAI_API_KEY` (Secret), alle bare i Production. Lista var tom fra før.
+3. [x] Sjekk at ingen av variablene har prefikset `NEXT_PUBLIC_` (AD-12), og at Preview fortsatt ikke har nøkkel. **Gjort 2026-11-20:**
+   - Ingen `NEXT_PUBLIC_`.
+   - Preview og Development har ingen variabler.
+   - Forhåndsvisningen for PR #22 svarer `demo` (C4).
+4. [x] Deploy produksjonen på nytt (Redeploy av siste produksjonsdeploy fra `main`), så variablene tas i bruk. **Gjort 2026-11-20 (Sondre),** to ganger (se hendelsen under).
+
+**Hendelse 2026-11-20, nøkkelen var lagt inn feil:**
+- De to første forsøkene på den betalte kontrollen ga HTTP 502 på under 1 s, fordi den første nøkkelen (`produksjon-vercel`) var lagt inn feil.
+- Sondre laget en ny nøkkel, `produksjon-vercel-2`, oppdaterte `OPENAI_API_KEY` i Production, slettet den gamle nøkkelen og tok en ny Redeploy. Det tredje forsøket gikk bra.
+- Den nye nøkkelen oppbevares i en passordbehandler (Kevins beslutning).
+- At de to forsøkene som feilet, ikke ble fakturert, er en del av bekreftelsen av forbruket i C4.
+- **Kilde:** tilbakemeldingen fra Kevin og Sondre 2026-11-20. Årsaken («lagt inn feil») er ikke kontrollert i loggen for funksjonen i Vercel. Sondres logg (`975-…`) slutter ved de gratis kontrollene.
+- **Lærdom:** `/api/status` viser bare at en nøkkel *finnes*, ikke at den er gyldig. En ugyldig nøkkel viser seg først ved et kall (502, `llm_feil`). Neste gang en nøkkel byttes, skal den betalte kontrollen gjøres rett etter Redeploy.
 5. [x] Avgjør om `GRENSE_PER_MINUTT` og `GRENSE_PER_DOGN` skal settes, eller om standardverdiene fra AD-9 gjelder (krever Kevins beslutning). **Avgjort 2026-11-20 (Kevin):** standardverdiene i koden gjelder: 10 per minutt og 200 per UTC-døgn (`src/lib/pipeline/grense.ts`). Variablene settes ikke i Vercel. De vurderes på nytt før brukertesten i 2.8 og i epic 3.
 
 Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-4-c3-sondre.md) (godkjent av Kevin 2026-11-20).
 - Kravet var at Sondre skulle kontrollere grunnlaget for overføringen til USA i DPA-en før Redeploy. Det er gjort 2026-11-20.
   - Punkt 4.1 dekker overføringen med SCC eller GDPR art. 45 (også DPF).
-  - Ikke kontrollert: hvilket av grunnlagene som faktisk brukes, om OpenAI er sertifisert under DPF, og datoen for versjonen av DPA-en.
+  - Ikke kontrollert: hvilket av grunnlagene som faktisk brukes, og om OpenAI er sertifisert under DPF. Datoen for versjonen står i Sondres logg, se under.
 - Punkt 1 er gjort.
-- Punkt 2–4 gjøres etter at PR-en for del C er flettet, i den avtalte rekkefølgen.
+- Punkt 2–4 er gjort 2026-11-20 etter at PR #22 ble flettet, i den avtalte rekkefølgen.
+- Fra Sondres logg (`975-2026-11-20-14-29-16-produksjon-c3-c4.md`):
+  - DPA-en gjelder fra 2026-01-01.
+  - SCC-ene er fra 4. juni 2021.
+  - Underbehandlerne står på platform.openai.com/subprocessors.
 
 ## C4. Kontroll i produksjonen
 
-- [ ] **Gratis:** `GET https://g69-cv-assistent.vercel.app/api/status` gir `modus: "ekte"` og riktig leverandør. Mistral skal gi `Mistral AI`, `Frankrike` og `tredjeland: false`. OpenAI skal gi `OpenAI`, `USA` og `tredjeland: true`. `X-Vercel-Id` skal starte med `arn1`.
-- [ ] **Gratis:** personvernboksen viser «CV-teksten sendes til Mistral AI i Frankrike.», eller for OpenAI «CV-teksten sendes til OpenAI i USA. Det betyr at opplysningene overføres ut av EØS.» (`src/lib/okt/personvern.ts`).
-- [ ] **Gratis:** en forhåndsvisning (Preview) står fortsatt i demomodus.
-- [ ] **Betalt, krever godkjenning:** én analyse med `par-2-it-support` i produksjonen gir en gap-analyse på bokmål innen 30 s (NFR-4). Noter tiden.
-- [ ] Forbruket i konsollen etter analysen stemmer med forventet kostnad.
+- [x] **Gratis:** `GET https://g69-cv-assistent.vercel.app/api/status` gir `modus: "ekte"` og riktig leverandør. Mistral skal gi `Mistral AI`, `Frankrike` og `tredjeland: false`. OpenAI skal gi `OpenAI`, `USA` og `tredjeland: true`. `X-Vercel-Id` skal starte med `arn1`. **Bestått 2026-11-20:** `{"modus":"ekte","leverandor":{"navn":"OpenAI","land":"USA","tredjeland":true}}`, og `X-Vercel-Id` starter med `arn1`.
+- [x] **Gratis:** personvernboksen viser «CV-teksten sendes til Mistral AI i Frankrike.», eller for OpenAI «CV-teksten sendes til OpenAI i USA. Det betyr at opplysningene overføres ut av EØS.» (`src/lib/okt/personvern.ts`). **Bestått 2026-11-20:**
+  - Teksten for OpenAI vises.
+  - Demobanneret er borte.
+  - Siden gjør ingen kall til `/api/generer` når den åpnes, så ingenting genereres automatisk.
+- [x] **Gratis:** en forhåndsvisning (Preview) står fortsatt i demomodus. **Bestått 2026-11-20:** forhåndsvisningen for PR #22 svarer `"modus":"demo"` med Mistral som standard.
+- [ ] **Betalt, krever godkjenning:** én analyse med `par-2-it-support` i produksjonen gir en gap-analyse på bokmål innen 30 s (NFR-4). Noter tiden. **Bestått 2026-11-20 med forbehold** (godkjent av Kevin, tredje forsøk, se hendelsen i C3). Punktet krysses av når bokmål er bekreftet. Kilden er tilbakemeldingen fra Kevin og Sondre.
+  - HTTP 200 på **8,4 s**.
+  - At svaret var på bokmål (NFR-5), er ikke notert uttrykkelig i tilbakemeldingen. **Kevin bekrefter.**
+  - Alle seks kravene har samme kategori som i fasiten: 1 Oppfylt, 3 Delvis oppfylt og 2 Mangler.
+  - Treffprosenten var 25 % (2 av 8 nøkkelord), mot 11 % i fasiten. Det er forklart i avsnitt 8 i `vurdering-2-4-kontroll-temperatur-0.md` (SM-4). Testsettet med temperatur 0 ga samme treffprosent (25 %, 2 av 8) i alle tre kjøringene. Listen med nøkkelord fra produksjonen er ikke notert.
+  - Analysen dekker også del 1 av B4 (par 2 innen 30 s).
+- [ ] Forbruket i konsollen etter analysen stemmer med forventet kostnad. **Venter på bekreftelse fra Sondre.** Kriteriet (Kevin, 2026-11-20):
+  - Under *Usage* eller *Activity* er det ett vellykket kall med `produksjon-vercel-2`.
+  - Kostnaden for dagen er høyst 0,01 USD (forventet ca. 0,002 USD, og Usage avrunder til 0,01 USD).
+  - De to forsøkene med feil nøkkel er ikke fakturert.
 
 ## C5. Dokumentasjonen og avslutningen
 
