@@ -16,10 +16,12 @@
 - [ ] 2026-11-19 [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md) — 1.6 i Safari: fødselsnummer med to trykk (krever Mac eller iPhone)
 - [ ] 2026-11-19 [testopplegg-brukertest-2-8](977-2026-11-19-22-13-05-testopplegg-brukertest-2-8.md) — Finn tre medstudenter utenfor gruppen og avtal tid til brukertesten (2.8), se testopplegget
 - [ ] 2026-11-19 [openai-vilkaar-og-kreditt](976-2026-11-20-12-58-08-openai-vilkaar-og-kreditt.md) — SM-1 ikke bestått (9 av 12, to krav i par 3 under fasit). Løses før innleveringen: fasiten eller modellen?
-- [ ] 2026-11-19 [openai-vilkaar-og-kreditt](976-2026-11-20-12-58-08-openai-vilkaar-og-kreditt.md) — Når 2.4 er flettet: egen produksjonsnøkkel og miljøvariabler i Vercel (bare Production), og sjekk at demobanneret er borte
+- [ ] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — Den betalte kontrollen i C4 (par 2) etter Kevins godkjenning, og sjekk av forbruket under Usage
+- [ ] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — Kopien av produksjonsnøkkelen utenfor Vercel: slett den, eller la den ligge bare i en passordbehandler (avgjøres med Kevin)
 
 ## Løst
 
+- [x] 2026-11-19 [openai-vilkaar-og-kreditt](976-2026-11-20-12-58-08-openai-vilkaar-og-kreditt.md) — Når 2.4 er flettet: egen produksjonsnøkkel og miljøvariabler i Vercel (bare Production), og sjekk at demobanneret er borte (løst 2026-11-20: C3 gjort og de gratis kontrollene i C4 bestått, se [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md))
 - [x] 2026-11-19 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Lag Mistral-nøkkel (betalt plan) til målingen i 2.4 (løst 2026-11-19: Kevin har kjørt fire målerunder med Mistral Medium 3.5; produksjonen ser ut til å bli OpenAI)
 - [x] 2026-11-19 [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md) — Demosvaret: avgjør ny tekst for AFR-rådet i gap.json («kontrollsteget» er et internt ord, brukeren ser Endre CV-tekst) (løst 2026-11-19: ny tekst med Endre CV-tekst, grenen demosvar-raad-afr)
 - [x] 2026-11-18 [story-2-1-gap-analyse-api](985-2026-11-18-19-15-43-story-2-1-gap-analyse-api.md) — Les tonen i råd- og forklaringstekstene i src/lib/llm/demo-svar/gap.json (løst 2026-11-19: lest, se [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md); ny tekst for AFR-rådet er eget punkt)
