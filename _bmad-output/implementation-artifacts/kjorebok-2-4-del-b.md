@@ -2,7 +2,7 @@
 
 > **Forhåndsundersøkt 2026-11-19, ikke bekreftet.** Opplysninger om vilkår, priser og modellnavn står med kilde og dato i [`vilkaar-og-priser-2-4.md`](vilkaar-og-priser-2-4.md) og må bekreftes i kontoen. Ingen måleresultater står her. De føres inn i [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md).
 
-> **Oppdatert 2026-11-20 (SM-1):** fasiten for par 3 er revurdert (løsning B i [`beslutningsgrunnlag-2-4-fasit-par-3.md`](beslutningsgrunnlag-2-4-fasit-par-3.md)). «Gode samarbeidsevner» er nå Mangler, og SM-1 er 12 av 12 i kontrollen med temperatur 0, uten ny måling. Det som står under om SM-1 (9 av 12), er fra før beslutningen. Se avsnitt 6 i `vurdering-2-4-kontroll-temperatur-0.md`.
+> **Oppdatert 2026-11-20 (SM-1):** fasiten for par 3 er revurdert (løsning B i [`beslutningsgrunnlag-2-4-fasit-par-3.md`](beslutningsgrunnlag-2-4-fasit-par-3.md)). «Gode samarbeidsevner» er nå Mangler, og SM-1 er 12 av 12 i kontrollen med temperatur 0, uten ny måling. Det som står under om SM-1 (9 av 12), er fra før beslutningen. **Med den nye prompten fra PR #27 og PR #28 er SM-1 9 av 12 igjen**, av andre grunner: se «Testsettet med den nye prompten» i § 7a og `vurdering-2-4-kontroll-ny-prompt.md`. Se avsnitt 6 i `vurdering-2-4-kontroll-temperatur-0.md`.
 
 ## Status 2026-11-19 (leverandøren er valgt)
 
@@ -19,7 +19,7 @@
     - **Del 2 (NFR-9): BESTÅTT i produksjonen 2026-11-20** etter PR #28 (`b50e34a`), med 6 krav og AFR Mangler. Lokalt var den bestått i 2 av 2 kall. De to tidligere forsøkene i produksjonen (16:01 med 0 krav, og 16:36 med `ugyldig_svar`) feilet, og årsaken er uavklart, fordi ett av dem brukte feil inndata. Se § 7a.
   - [ ] Nøklene fra målingen slettes eller roteres (Kevin for Mistral, Sondre for OpenAI). OpenAI-nøkkelen skal bare brukes til testsettet. Produksjonen får en egen nøkkel i del C.
   - [ ] Kevin og Sondre signerer vurderingen.
-- 2-4 står som `in-progress` til del C er gjort. Oppdatert 2026-11-20: SM-1 og B4 er løst, og C5 står igjen, se kjøreboka for del C.
+- 2-4 står som `in-progress` til del C er gjort. Oppdatert 2026-11-20: B4 er løst. SM-1 var løst på den gamle prompten, men er 9 av 12 med den nye (`vurdering-2-4-kontroll-ny-prompt.md`). C5 står igjen, se kjøreboka for del C.
 
 ## Status 2026-11-19 (kontroll med temperatur 0, målingene avsluttet)
 
@@ -548,6 +548,24 @@ Kevin rapporterte ikke treffprosenten, at svaret var på bokmål, stillingen og 
 - `store: false` gjelder i produksjonen fra PR #28 (`b50e34a`), som er deployet. Sondre kontrollerer at kallet etter PR #28 ikke er lagret. Det er ikke bekreftet ennå.
 - De **56 forespørslene som allerede er lagret**, slettes ikke av endringen. Sondre og Kevin avgjør om de skal slettes i OpenAI-dashbordet.
 - OpenAI kan fortsatt beholde logger for å oppdage misbruk i opptil 30 dager, med mindre organisasjonen har null lagring (avsnitt 7 i vurderingen). Personvernboksen sier «Ingenting lagres» om appen. Kevin avgjør om teksten skal nevne lagringen hos leverandøren.
+
+### Testsettet med den nye prompten (2026-11-20)
+
+Kjørt etter godkjenning fra Kevin og Sondre, med høyst 12 kall. Det ble brukt nøyaktig **12**, med `kevin-maaling-2-4`, OpenAI `gpt-4.1-mini` og temperatur 0. Commit `85ab227` har samme kode som produksjonen (`b50e34a`).
+
+- **Rapport:** `testsett-rapporter/2026-11-20-182613-openai-gpt-4.1-mini.md`.
+- **Resultat:** 12 av 12 med HTTP 200, 0 feil, høyst 8,8 s.
+- **Kostnad:** 0,2456 kr (0,0205 kr per kall), uten mva.
+
+**Vurderingen** står i [`vurdering-2-4-kontroll-ny-prompt.md`](vurdering-2-4-kontroll-ny-prompt.md):
+- **SM-3:** N (11 av 12). I par 3 K1 er «Gode samarbeidsevner» D, over den revurderte fasiten.
+- **SM-2:** N (10 av 12) etter regelen Kevin og Sondre bestemte 2026-11-19. I par 2 K1 og K3 står det «viser erfaring med brukerstøtte» og «forståelse av Windows», med annonsens ord om brukeren. «Erfaring med fakturaer» i par 3 er et grensetilfelle som må avklares.
+- **SM-1 (gap):** N (9 av 12): par 2 K1, par 2 K3 og par 3 K1.
+- **Toleransen i FR-8** (høyst ett under) er J, men punktet i sjekklisten feiler i par 3 K1, fordi et krav ligger over. NFR-4 og kostnaden er J. NFR-5 er J med små feil, blant annet at stillingen i par 4 har mistet «– deltid».
+
+**Den nye prompten besto NFR-9-testen, men gir dårligere resultater på SM-1–SM-3** enn kontrollen med den gamle prompten, som hadde 12 av 12 med revurdert fasit. Par 3 varierer mellom kjøringene. Om endringen i prompten er årsaken, er ikke vist.
+
+Ingenting er endret. Beslutningene står i avsnitt 5 i vurderingen.
 
 ## 8. Utfylling av malen
 
