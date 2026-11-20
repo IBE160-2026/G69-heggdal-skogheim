@@ -6,6 +6,21 @@
 
 OpenAI `gpt-4.1-mini` er valgt (Kevin og Sondre, AD-11). Vilkårene for OpenAI med offisielle kilder og det Sondre må bekrefte (deling av data, DPA, behandling utenfor EØS), står i avsnitt 7 i [`vurdering-2-4-kontroll-temperatur-0.md`](vurdering-2-4-kontroll-temperatur-0.md).
 
+**Bekreftet i kontoen 2026-11-20 (Sondre, gitt videre av Kevin):**
+- Deling av data og trening er av.
+- DPA-en er lest og gjelder automatisk når tjenestene brukes. Ifølge Sondre er OpenAI Ireland Ltd. avtaleparten i EØS.
+- 5 USD i kreditt (6,25 USD inkl. 25 % mva., ca. 60 kr) er kjøpt én gang 2026-11-19, og automatisk påfylling er av.
+
+I tabellen for OpenAI under er kolonnen «Må bekreftes i kontoen» dermed lukket for radene «Trening på API-data», «Databehandleravtale (DPA)» og «Forhåndsbetaling og påfylling». At DPA-en «inngås via et skjema», er erstattet av bekreftelsen.
+
+De andre radene er ikke dekket av bekreftelsen:
+- **Land og region:** USA, etter siden om data residency (lest 2026-11-19).
+- **Betalt plan:** at kreditten ligger på API-kontoen, er ikke uttrykkelig bekreftet.
+- **Grense for forbruket:** Kevins beslutning, se C2.
+- **Pris:** lest 2026-11-19, se over.
+
+Kildene merket «ikke verifisert» er ikke lest på nytt av oss. Se C1 og C2 i [`kjorebok-2-4-del-c.md`](kjorebok-2-4-del-c.md).
+
 ## Kontrollert 2026-11-19 (B1)
 
 Kildene under ble åpnet og lest 2026-11-19. Resultatet er ført inn i avsnitt 1 i [`vurdering-2-4-leverandorvalg-runde-1.md`](vurdering-2-4-leverandorvalg-runde-1.md), som gjelder foran tabellene lenger ned der de er uenige.
@@ -15,7 +30,7 @@ Kildene under ble åpnet og lest 2026-11-19. Resultatet er ført inn i avsnitt 1
 - **Mistral, land:** data ligger i EØS som standard ([help 347629](https://help.mistral.ai/en/articles/347629-where-do-you-store-my-data-or-my-organization-s-data)). Appen bruker standardendepunktet `api.mistral.ai`.
 - **Mistral, pris for Medium 3.5:** fortsatt ikke på noen offentlig side fra Mistral. Den må bekreftes i konsollen.
 - **OpenAI, trening:** API-data brukes ikke til trening som standard ([developers.openai.com: your data](https://developers.openai.com/api/docs/guides/your-data)). Logger for misbruk lagres i opptil 30 dager.
-- **OpenAI, DPA:** openai.com svarer 403 på automatiske oppslag, så siden er ikke lest direkte. Ifølge nettsøk er DPA-en oppdatert 2025-12-01 og gjeldende fra 2026-01-01, og den inngås via et skjema. Sondre må bekrefte det i nettleser.
+- **OpenAI, DPA:** openai.com svarer 403 på automatiske oppslag, så siden er ikke lest direkte. Ifølge nettsøk er DPA-en oppdatert 2025-12-01 og gjeldende fra 2026-01-01, og den inngås via et skjema. Sondre må bekrefte det i nettleser. **Erstattet 2026-11-20:** Sondre har lest DPA-en, og den gjelder automatisk når tjenestene brukes. Den må ikke inngås via et skjema. Datoen for versjonen han leste, er ikke notert.
 - **OpenAI, land:** USA. Behandling i EU krever godkjenning via salg ([docs: data residency](https://developers.openai.com/api/docs/guides/data-residency)).
 - **OpenAI, pris for `gpt-4.1-mini`:** 0,40 USD inn, 0,10 USD cached input og 1,60 USD ut per million tokens ([developers.openai.com: pricing](https://developers.openai.com/api/docs/pricing)). Det bekrefter tallet under, som var oppgitt etter hukommelsen.
 - **Kurs:** 9,6866 kr per USD og 10,6475 kr per EUR (Norges Bank, 2026-11-19).
@@ -27,7 +42,7 @@ Kriteriene kommer fra PRD §6 (vilkår først), AD-11 (ingen trening på API-dat
 | Leverandør | Ansvarlig | Budsjett | Påfylling |
 |---|---|---|---|
 | Mistral | Kevin | 10 USD i forhåndsbetalt kreditt (kjøpt 2026-11-19) | Automatisk påfylling slått av (Kevin, 2026-11-19) |
-| OpenAI | Sondre | ca. 5 USD i forhåndsbetalt kreditt (planlagt). Kontoen er opprettet, men beløpet er ikke oppgitt her | Automatisk påfylling slått av, og delingen under Data controls er slått av (Sondres logg 2026-11-19) |
+| OpenAI | Sondre | 5 USD i forhåndsbetalt kreditt, kjøpt én gang 2026-11-19 (6,25 USD inkl. 25 % mva., ca. 60 kr. Bekreftet av Sondre 2026-11-20) | Automatisk påfylling slått av, og delingen under Data controls er slått av (Sondres logg 2026-11-19) |
 
 Taket for begge til sammen er under 200 kr (epic 2, kostnad). **Taket gjelder beløpet som faktisk belastes, med mva.** Kreditten kan bli belastet med mva. (Mistral trekker kreditten med mva., se avsnittet om Mistral). I øvre del av spennet kan 10 EUR + 5 USD med 25 % mva. komme over 200 kr. Beløpet hos Mistral må derfor fastsettes når kursen er kjent, slik at summen med mva. holder seg under taket. Her oppgis verken valutakurs eller beløp i kroner. Før kursen og datoen inn i avsnitt 0 i vurderingsmalen, med kilde (for eksempel Norges Banks valutakurser), den dagen kreditten kjøpes.
 
