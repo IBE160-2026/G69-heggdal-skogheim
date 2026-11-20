@@ -2,7 +2,17 @@
 
 > **Godkjent av Kevin 2026-11-20.** Ikke start før Kevin har gitt beskjed. Hvert steg merket 🔒 krever Kevins godkjenning i forkant. Grunnlaget er C3 og C4 i [`kjorebok-2-4-del-c.md`](kjorebok-2-4-del-c.md), AD-12 (nøkkelen bare i Production, ingen `NEXT_PUBLIC_`) og AD-11 (personvernteksten bygges bare fra `/api/status`).
 
-> **Status 2026-11-20 (Sondre, gitt videre av Kevin):** punkt 0 og punkt 1 er gjort. Punkt 2–7 er ikke startet.
+> **Status 2026-11-20 (Kevin og Sondre):**
+> - Punkt 0–5 er gjort.
+> - Variablene ligger bare i Production, og Redeploy er tatt.
+> - De gratis kontrollene og den betalte kontrollen med par 2 er bestått. Bokmål er bekreftet av Kevin 2026-11-20. Se C3 og C4 i [`kjorebok-2-4-del-c.md`](kjorebok-2-4-del-c.md).
+> - Den første nøkkelen var lagt inn feil og ga 502. Sondre har erstattet den med `produksjon-vercel-2` og slettet den gamle.
+> - **Punkt 6:** `kevin-maaling-2-4` beholdes til B4 del 2 er gjort.
+> - **Punkt 7:** navnet på nøkkelen er meldt. Prosjektet, eieren og rettighetene er ikke meldt.
+> - **Forbruket** er bekreftet av Sondre 2026-11-20 på ukenivå: 0,09 USD for hele uka, på tvers av nøklene. Analysen med par 2 kostet anslagsvis 0,002 USD. Kriteriet per nøkkel og per dag er ikke lest direkte, og Kevin godtok avviket 2026-11-20, så punktet er fullført med forbehold. Se C4 i kjøreboka.
+> - Avkrysningsboksene i punkt 1–5 under er beholdt som dokumentasjon av fremgangsmåten. Status står her og i kjøreboka.
+>
+> **Lærdom:** `/api/status` viser bare at en nøkkel *finnes*, ikke at den er gyldig. En ugyldig nøkkel gir 502 (`llm_feil`) først ved et kall. Neste gang en nøkkel byttes, skal den betalte kontrollen gjøres rett etter Redeploy.
 
 ## Avtalt rekkefølge (Sondre og Kevin, 2026-11-20)
 
@@ -34,7 +44,7 @@
 
 > **Gjort 2026-11-20:** Sondre har laget en egen nøkkel for produksjonen og lagret den sikkert, utenfor GitHub. Navnet, prosjektet, eieren og rettighetene meldes i punkt 7. Stegene under er beholdt som dokumentasjon.
 >
-> **Avvik:** stegene sier at nøkkelen bare skal ligge i Vercel. Slett kopien etter punkt 2, eller la den ligge bare i en passordbehandler. Kevin og Sondre avgjør dette.
+> **Avvik:** stegene sier at nøkkelen bare skal ligge i Vercel. **Avgjort 2026-11-20 (Kevin):** Sondre oppbevarer nøkkelen sikkert i en passordbehandler, ikke i en vanlig fil. Den skal aldri deles i chat, kode eller GitHub.
 
 I [platform.openai.com](https://platform.openai.com), med organisasjonen som har kreditten på 5 USD:
 
