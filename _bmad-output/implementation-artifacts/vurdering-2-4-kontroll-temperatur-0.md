@@ -100,6 +100,8 @@ Verdien er allerede 0 i `src/lib/llm/felles.ts` (`ee49c2b`). Hvis Kevin og Sondr
   - NFR-5: **J**
   - Kostnad: **J**
   - **SM-1:** IKKE BESTÅTT (9 av 12 kjøringer) mot fasiten da målingen ble gjort. **Bestått (12 av 12)** mot fasiten slik den ble revurdert 2026-11-20 (løsning B). Se avsnitt 6.
+  - **NFR-9 (B4 del 2):** bestått i produksjonen 2026-11-20 etter PR #28 (`b50e34a`). Årsaken til de to tidligere feilene er uavklart, fordi ett av forsøkene brukte feil inndata. Se § 7a i `kjorebok-2-4-del-b.md`.
+  - **Merk:** prompten er endret etter denne målingen (PR #27 og PR #28). Tallene over gjelder prompten fra `271edb4`. Testsettet med den nye prompten er ikke kjørt ennå.
 
 ## 6. SM-1 og par 3: løst ved at fasiten er revurdert (løsning B, 2026-11-20)
 

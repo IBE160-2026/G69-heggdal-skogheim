@@ -1,5 +1,7 @@
 # Utkast: PR for story 2.4, avslutningen (SM-1, B4 del 2 og dokumentasjon)
 
+> **Merknad 2026-11-20 (etter flettingen):** B4 del 2 er **bestått i produksjonen etter PR #28** (`b50e34a`), med 6 krav og AFR Mangler, se § 7a i `kjorebok-2-4-del-b.md`. Ett av de to tidligere forsøkene (16:01 eller 16:36) brukte ved en feil README-innholdet som annonse, så **årsaken til feilene er uavklart**. Utsagn under om at modellen «nektet» på grunn av instruksen, er ikke bekreftet. Teksten under er beholdt slik den var i PR-en.
+>
 > **Utkast, ikke opprettet.** Tittelen og beskrivelsen under kopieres inn når Kevin godkjenner push og PR. Grenen er `story-2.4-avslutning`, laget fra `main` `39d59d9`, med `origin/main` `d368937` flettet inn uten konflikter (Sondres README, farger og mørk modus).
 
 **Tittel:** `Story 2.4: SM-1 løst med revurdert fasit, B4 del 2 rettet (instrukser og tom kravliste), og rettinger i dokumentasjonen`
