@@ -75,6 +75,7 @@
 }
 
 :root {
+  color-scheme: light;
   --background: #f8fafc;
   --foreground: #0f172a;
   --card: oklch(1 0 0);
@@ -118,25 +119,36 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* Mørk modus (DESIGN.md, «Mørk modus»). Tekstpar >= 4,5:1, kanter og fokus >= 3:1. */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  color-scheme: dark;
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card: #1e293b;
+  --card-foreground: #f1f5f9;
+  --popover: #1e293b;
+  --popover-foreground: #f1f5f9;
+  --primary: #93c5fd;
+  --primary-soft: #1e3a5f;
+  --primary-foreground: #0f172a;
+  --secondary: #273449;
+  --secondary-foreground: #f1f5f9;
+  --muted: #273449;
+  --muted-foreground: #94a3b8;
+  --accent: #273449;
+  --accent-foreground: #f1f5f9;
+  --destructive: #fca5a5;
+  --border: #334155;
+  --input: #64748b;
+  --ring: #93c5fd;
+  --oppfylt: #86efac;
+  --oppfylt-bg: #14321f;
+  --delvis: #fcd34d;
+  --delvis-bg: #3a2c06;
+  --mangler: #fdba74;
+  --mangler-bg: #43200c;
+  --belegg: #e2e8f0;
+  --belegg-bg: #273449;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);

@@ -3,11 +3,16 @@
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 import { CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon } from "lucide-react"
 
-// Appen har bare lyst tema, så `next-themes` fra shadcn-malen er tatt bort.
+import { useMorkModus } from "@/components/TemaBryter"
+
+// Temaet følger klassen `dark` på <html> (TemaBryter), så `next-themes` fra
+// shadcn-malen trengs ikke.
 const Toaster = ({ ...props }: ToasterProps) => {
+  const mork = useMorkModus()
+
   return (
     <Sonner
-      theme="light"
+      theme={mork ? "dark" : "light"}
       className="toaster group"
       icons={{
         success: (
