@@ -13,9 +13,12 @@ Denne PR-en tar story 2.4 et stykke nærmere ferdig:
 - B4 del 2 (NFR-9), som feilet i produksjonen, dokumenteres og rettes.
 - Dokumentasjonen om produksjonsnøkkelen og forbruket rettes.
 
-> **Story 2.4 er ikke ferdig.** **Prompten er endret etter målingen.** Testsettet og B4 del 2 må kjøres på nytt (betalte kall, krever godkjenning) før SM-1–SM-3 og NFR-9 gjelder den nye prompten. C5 står også igjen. 2-4 står som `in-progress`.
+> **Story 2.4 er ikke ferdig.**
+> - **B4 del 2 (NFR-9) er IKKE bestått ennå.** Testen feilet i produksjonen 2026-11-20 med 0 krav. Rettingen i denne PR-en er bare testet med enhetstester, ikke mot modellen.
+> - **Den nye prompten må testes i produksjonen etter Sondres gjennomgang** (Kevins beslutning, 2026-11-20). Først etter flettingen kjøres B4 del 2 på nytt, i produksjonen. Testsettet kjøres også på nytt, så SM-1–SM-3 gjelder den nye prompten. Begge krever betalte kall og godkjenning.
+> - C5 står også igjen. 2-4 står som `in-progress`.
 
-> **Om flettingen:** flettingen til `main` deployer trolig produksjonen. Produksjonen bruker da den nye prompten før den er målt. Kevin og Sondre avgjør om testsettet og B4 del 2 skal kjøres på grenen før flettingen (lokalt med `kevin-maaling-2-4`, som er beholdt for dette) eller rett etter.
+> **Om flettingen:** flettingen til `main` deployer trolig produksjonen. Fra da av bruker produksjonen den nye prompten, som ikke er målt ennå, til testene over er kjørt. Det er valgt med vilje: testen skal skje i produksjonen. Hvis B4 del 2 eller testsettet feiler, er en ny retting eller en tilbakeføring av prompten neste steg.
 
 ## Ferdig i denne PR-en
 
@@ -42,8 +45,10 @@ Denne PR-en tar story 2.4 et stykke nærmere ferdig:
 
 ## Det som gjenstår (ikke en del av denne PR-en)
 
-1. **Testsettet på nytt** med den nye prompten: OpenAI `gpt-4.1-mini`, T = 0, 12 kall, ca. 0,22 kr. Gjelder SM-1–SM-3. Krever godkjenning.
-2. **B4 del 2 på nytt:** 1 kall, ca. 0,02 kr. Forventet resultat er de seks kravene i fasiten for par 1 med AFR som Mangler. 502 `ugyldig_svar` betyr at testen ikke er bestått. Krever godkjenning. Etterpå slettes `kevin-maaling-2-4` og nøkkelen fra målingen hos Mistral.
+Ingen av punktene under er markert som ferdige.
+
+1. **B4 del 2 på nytt i produksjonen etter flettingen** (fortsatt IKKE bestått): 1 kall, ca. 0,02 kr. Forventet resultat er de seks kravene i fasiten for par 1 med AFR som Mangler. 502 `ugyldig_svar` betyr at testen ikke er bestått. Krever godkjenning.
+2. **Testsettet på nytt** med den nye prompten: OpenAI `gpt-4.1-mini`, T = 0, 12 kall, ca. 0,22 kr. Gjelder SM-1–SM-3. Krever godkjenning. Etter punkt 1 og 2 slettes `kevin-maaling-2-4` og nøkkelen fra målingen hos Mistral.
 3. **Kevins beslutninger:**
    - om en annonse uten krav skal få en egen melding, uten *Prøv igjen*, i stedet for `ugyldig_svar`
    - om fanen skal vise en melding for en tom analyse
