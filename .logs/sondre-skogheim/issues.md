@@ -17,11 +17,11 @@
 - [ ] 2026-11-19 [testopplegg-brukertest-2-8](977-2026-11-19-22-13-05-testopplegg-brukertest-2-8.md) — Finn tre medstudenter utenfor gruppen og avtal tid til brukertesten (2.8), se testopplegget
 - [ ] 2026-11-19 [openai-vilkaar-og-kreditt](976-2026-11-20-12-58-08-openai-vilkaar-og-kreditt.md) — SM-1 ikke bestått (9 av 12, to krav i par 3 under fasit). Løses før innleveringen: fasiten eller modellen?
 - [ ] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — SM-4: treffprosenten i produksjonen for par 2 er 25 % mot 11 % i fasiten (modellen henter andre nøkkelord). Kevin vurderer
-- [ ] 2026-11-19 [farger-og-mork-modus](973-2026-11-20-16-18-51-farger-og-mork-modus.md) — Manuell sjekk av mørk modus i forhåndsvisningen før fletting (Windows i mørk modus, ingen hvit blink, bryter med tastatur)
 - [ ] 2026-11-19 [farger-og-mork-modus](973-2026-11-20-16-18-51-farger-og-mork-modus.md) — Kevin, 2.4: B4 del 2 ga 0 av 0 krav. Rett prompten (krav hentes ut selv om annonsen har instrukser) og skjemaet (.min(1) på krav), og kjør én ny betalt test
 
 ## Løst
 
+- [x] 2026-11-19 [farger-og-mork-modus](973-2026-11-20-16-18-51-farger-og-mork-modus.md) — Manuell sjekk av mørk modus i forhåndsvisningen før fletting (Windows i mørk modus, ingen hvit blink, bryter med tastatur) (løst 2026-11-20: Sondre testet i forhåndsvisningen, PR #26 flettet)
 - [x] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — Kopien av produksjonsnøkkelen utenfor Vercel: slett den, eller la den ligge bare i en passordbehandler (avgjøres med Kevin) (løst 2026-11-20: den gamle nøkkelen er slettet, og den nye, produksjon-vercel-2, ble limt rett inn i Vercel)
 - [x] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — Den betalte kontrollen i C4 (par 2) etter Kevins godkjenning, og sjekk av forbruket under Usage (løst 2026-11-20: bestått med par 2 (HTTP 200, 8,4 s, kategoriene som fasiten), se [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md))
 - [x] 2026-11-19 [openai-vilkaar-og-kreditt](976-2026-11-20-12-58-08-openai-vilkaar-og-kreditt.md) — Når 2.4 er flettet: egen produksjonsnøkkel og miljøvariabler i Vercel (bare Production), og sjekk at demobanneret er borte (løst 2026-11-20: C3 gjort og de gratis kontrollene i C4 bestått, se [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md))
