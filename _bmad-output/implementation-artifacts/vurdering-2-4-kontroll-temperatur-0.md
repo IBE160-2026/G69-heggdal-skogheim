@@ -94,14 +94,16 @@ Verdien er allerede 0 i `src/lib/llm/felles.ts` (`ee49c2b`). Hvis Kevin og Sondr
   - **Kostnad:** 0,07 kr per full kjøring.
   - **Strukturert svar:** 0 feil i alle målingene.
 - **Status for kriteriene i det valgte oppsettet:**
-  - SM-2: **J**
-  - SM-3 etter PRD-en: **J**
+  - SM-2: **J**, på prompten fra `271edb4`. Med den nye prompten er den N (10 av 12)
+  - SM-3 etter PRD-en: **J**, på prompten fra `271edb4`. Med den nye prompten er den N (11 av 12)
   - NFR-4: **J**
   - NFR-5: **J**
   - Kostnad: **J**
   - **SM-1:** IKKE BESTÅTT (9 av 12 kjøringer) mot fasiten da målingen ble gjort. **Bestått (12 av 12)** mot fasiten slik den ble revurdert 2026-11-20 (løsning B). Se avsnitt 6.
+  - **NFR-9 (B4 del 2):** bestått i produksjonen 2026-11-20 etter PR #28 (`b50e34a`). Årsaken til de to tidligere feilene er uavklart, fordi ett av forsøkene brukte feil inndata. Se § 7a i `kjorebok-2-4-del-b.md`.
+  - **Merk:** prompten er endret etter denne målingen (PR #27 og PR #28). Tallene over gjelder prompten fra `271edb4`. Testsettet med den nye prompten ble kjørt 2026-11-20, og resultatet var dårligere på SM-1–SM-3. Se [`vurdering-2-4-kontroll-ny-prompt.md`](vurdering-2-4-kontroll-ny-prompt.md).
 
-## 6. SM-1 og par 3: løst ved at fasiten er revurdert (løsning B, 2026-11-20)
+## 6. SM-1 og par 3: løst ved at fasiten er revurdert (løsning B, 2026-11-20). Gjelder den gamle prompten
 
 > **Beslutning 2026-11-20 (Kevin og Sondre, løsning B i [`beslutningsgrunnlag-2-4-fasit-par-3.md`](beslutningsgrunnlag-2-4-fasit-par-3.md)):**
 > - «Gode samarbeidsevner» i `testdata/par-3-regnskap/fasit.md` er endret fra **D** til **M**.
