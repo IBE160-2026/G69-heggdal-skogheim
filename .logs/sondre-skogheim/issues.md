@@ -18,6 +18,7 @@
 - [ ] 2026-11-19 [openai-vilkaar-og-kreditt](976-2026-11-20-12-58-08-openai-vilkaar-og-kreditt.md) — SM-1 ikke bestått (9 av 12, to krav i par 3 under fasit). Løses før innleveringen: fasiten eller modellen?
 - [ ] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — SM-4: treffprosenten i produksjonen for par 2 er 25 % mot 11 % i fasiten (modellen henter andre nøkkelord). Kevin vurderer
 - [ ] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — Kevin, 2.4: kjør testsettet på nytt etter prompt-endringen i PR #28 og sjekk at SM-1 og SM-2 fortsatt er bestått
+- [ ] 2026-11-19 [brukertest-2-8](972-2026-11-20-20-38-53-brukertest-2-8.md) — T1 i brukertesten: avklar om kontanthåndtering står i CV-en (Mangler feil eller lest som «du mangler»), og avgjør om svaret teller som ja i SM-10
 
 ## Løst
 
