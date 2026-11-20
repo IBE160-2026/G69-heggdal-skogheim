@@ -5,11 +5,12 @@
 > **Status 2026-11-20 (Kevin og Sondre):**
 > - Punkt 0–5 er gjort.
 > - Variablene ligger bare i Production, og Redeploy er tatt.
-> - De gratis kontrollene og den betalte kontrollen med par 2 er bestått med forbehold (bokmål er ikke bekreftet). Se C3 og C4 i [`kjorebok-2-4-del-c.md`](kjorebok-2-4-del-c.md).
+> - De gratis kontrollene og den betalte kontrollen med par 2 er bestått. Bokmål er bekreftet av Kevin 2026-11-20. Se C3 og C4 i [`kjorebok-2-4-del-c.md`](kjorebok-2-4-del-c.md).
 > - Den første nøkkelen var lagt inn feil og ga 502. Sondre har erstattet den med `produksjon-vercel-2` og slettet den gamle.
 > - **Punkt 6:** `kevin-maaling-2-4` beholdes til B4 del 2 er gjort.
 > - **Punkt 7:** navnet på nøkkelen er meldt. Prosjektet, eieren og rettighetene er ikke meldt.
-> - **Gjenstår:** bekreftelsen av forbruket under *Usage* eller *Activity* (Sondre).
+> - **Forbruket** er bekreftet av Sondre 2026-11-20 på ukenivå: 0,09 USD for hele uka, på tvers av nøklene. Analysen med par 2 kostet anslagsvis 0,002 USD. Kriteriet per nøkkel og per dag er ikke lest direkte, og punktet venter på at Kevin godtar avviket. Se C4 i kjøreboka.
+> - Avkrysningsboksene i punkt 1–5 under er beholdt som dokumentasjon av fremgangsmåten. Status står her og i kjøreboka.
 >
 > **Lærdom:** `/api/status` viser bare at en nøkkel *finnes*, ikke at den er gyldig. En ugyldig nøkkel gir 502 (`llm_feil`) først ved et kall. Neste gang en nøkkel byttes, skal den betalte kontrollen gjøres rett etter Redeploy.
 

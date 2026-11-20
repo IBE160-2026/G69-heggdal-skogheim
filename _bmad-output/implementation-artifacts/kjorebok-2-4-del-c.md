@@ -7,8 +7,7 @@
 > **Oppdatert 2026-11-20 etter C3 og C4 (Kevin og Sondre):**
 > - PR #22 er flettet (`f5747f5`).
 > - C3 er gjort, og produksjonen er i ekte modus med OpenAI `gpt-4.1-mini`.
-> - I C4 er de gratis kontrollene bestått. Den betalte kontrollen med par 2 er bestått **med forbehold**: at svaret var på bokmål, er ikke bekreftet.
-> - **Forbruket venter på bekreftelse fra Sondre.**
+> - **C4:** de gratis kontrollene og den betalte kontrollen med par 2 er bestått, og bokmål er bekreftet av Kevin. Forbruket er bekreftet av Sondre på ukenivå, og kostnaden er et anslag. Kriteriet per nøkkel og per dag er ikke lest direkte, så punktet venter på at Kevin godtar avviket (se C4).
 > - C5 står igjen, og SM-1 er fortsatt et åpent avvik. SM-4 er ikke oppfylt, men det hører til story 5.1. Story 2.4 er ikke ferdig.
 >
 > **Avtalt rekkefølge (Sondre og Kevin, 2026-11-20):**
@@ -58,7 +57,7 @@ Utgangspunktet er uendret. Produksjonen står fortsatt i demomodus uten nøkkel 
 > - 5 USD i kreditt er kjøpt én gang, 2026-11-19. Med 25 % mva. ble beløpet 6,25 USD, ca. 60 kr (6,25 × 9,6866 kr per USD, Norges Bank 2026-11-19).
 > - Det er ikke fylt på senere, og automatisk påfylling er slått av.
 > - Beløpet er under grensen på 200 kr inkl. mva.
-> - **Saldoen nå er ikke notert.** Målingene med OpenAI i del B er trukket fra samme kreditt (anslagsvis 1–2 kr), så det som er igjen, er litt under 5 USD.
+> - **Saldoen (anslag, 2026-11-20):** Usage viser 0,09 USD (ca. 0,87 kr) for all bruk siden kjøpet, både målingene i del B og produksjonen. Det som er igjen, er ca. 4,91 USD (ca. 47,6 kr uten mva.). Det tidligere anslaget på 1–2 kr for del B var for høyt.
 > - Ifølge OpenAIs hjelpesider utløper kreditten etter ett år, altså rundt 2026-11-19 året etter. Det er ikke verifisert (`vilkaar-og-priser-2-4.md`).
 > - **Samme organisasjon og samme kreditt:** nøkkelen for produksjonen (C3) og nøkkelen fra målingen trekker trolig fra samme kreditt. Nøkkelen fra målingen bør derfor roteres eller slettes før eller like etter C3, så den ikke kan bruke av det harde taket for produksjonen (punktet står i `issues.md`).
 >
@@ -68,7 +67,7 @@ Utgangspunktet er uendret. Produksjonen står fortsatt i demomodus uten nøkkel 
   - **Mistral (Kevin):** 10 USD, påfylling av, og organisasjonen har en grense på 2 USD per måned (bekreftet 2026-11-19). Brukes ikke i produksjonen.
   - **OpenAI (Sondre), brukes i produksjonen:** 5 USD (6,25 USD inkl. 25 % mva., ca. 60 kr), kjøpt én gang 2026-11-19. Påfylling er av (bekreftet 2026-11-20).
 - [ ] Det er notert om grensen for forbruket også skal gjelde produksjonen, eller om den skal økes (krever Kevins beslutning). 2 USD (ca. 19,4 kr uten mva) rekker til ca. 230 gap-analyser med Medium 3.5 (0,0844 kr per analyse, 9,6866 kr per USD), eller ca. 57 fulle kjøringer når brev, CV og ATS kommer i epic 3 (× 4).
-  - **For OpenAI (åpent, Kevins beslutning):** om prosjektet også skal ha en grense for forbruket. Den månedlige grensen hos OpenAI gjelder ifølge `vilkaar-og-priser-2-4.md` den automatiske påfyllingen, ikke bruken av API-et. Kreditten på 5 USD er det harde taket. Med hele beløpet på 5 USD rekker den til ca. 2600 gap-analyser eller ca. 690 fulle kjøringer etter de målte kostnadene uten mva. Saldoen nå er litt lavere.
+  - **For OpenAI (åpent, Kevins beslutning):** om prosjektet også skal ha en grense for forbruket. «Spend limit» står i dag på 100 USD (Sondre, 2026-11-20), se C4. Ifølge `vilkaar-og-priser-2-4.md` gjelder den månedlige grensen hos OpenAI den automatiske påfyllingen, ikke bruken av API-et. Det er ikke kontrollert om grensen på 100 USD er den samme innstillingen. Kreditten på 5 USD er det harde taket. Med en saldo på ca. 4,91 USD rekker den til ca. 2 570 gap-analyser eller ca. 680 fulle kjøringer etter de målte kostnadene uten mva.
 
 ## C3. Nøkkelen for produksjonen og Vercel (krever godkjenning)
 
@@ -91,7 +90,7 @@ Utgangspunktet er uendret. Produksjonen står fortsatt i demomodus uten nøkkel 
 - De to første forsøkene på den betalte kontrollen ga HTTP 502 på under 1 s, fordi den første nøkkelen (`produksjon-vercel`) var lagt inn feil.
 - Sondre laget en ny nøkkel, `produksjon-vercel-2`, oppdaterte `OPENAI_API_KEY` i Production, slettet den gamle nøkkelen og tok en ny Redeploy. Det tredje forsøket gikk bra.
 - Den nye nøkkelen oppbevares i en passordbehandler (Kevins beslutning).
-- At de to forsøkene som feilet, ikke ble fakturert, er en del av bekreftelsen av forbruket i C4.
+- At de to forsøkene som feilet, ikke ble fakturert, er ikke bekreftet direkte. Se avviket under forbruket i C4.
 - **Kilde:** tilbakemeldingen fra Kevin og Sondre 2026-11-20. Årsaken («lagt inn feil») er ikke kontrollert i loggen for funksjonen i Vercel. Sondres logg (`975-…`) slutter ved de gratis kontrollene.
 - **Lærdom:** `/api/status` viser bare at en nøkkel *finnes*, ikke at den er gyldig. En ugyldig nøkkel viser seg først ved et kall (502, `llm_feil`). Neste gang en nøkkel byttes, skal den betalte kontrollen gjøres rett etter Redeploy.
 5. [x] Avgjør om `GRENSE_PER_MINUTT` og `GRENSE_PER_DOGN` skal settes, eller om standardverdiene fra AD-9 gjelder (krever Kevins beslutning). **Avgjort 2026-11-20 (Kevin):** standardverdiene i koden gjelder: 10 per minutt og 200 per UTC-døgn (`src/lib/pipeline/grense.ts`). Variablene settes ikke i Vercel. De vurderes på nytt før brukertesten i 2.8 og i epic 3.
@@ -115,16 +114,29 @@ Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-
   - Demobanneret er borte.
   - Siden gjør ingen kall til `/api/generer` når den åpnes, så ingenting genereres automatisk.
 - [x] **Gratis:** en forhåndsvisning (Preview) står fortsatt i demomodus. **Bestått 2026-11-20:** forhåndsvisningen for PR #22 svarer `"modus":"demo"` med Mistral som standard.
-- [ ] **Betalt, krever godkjenning:** én analyse med `par-2-it-support` i produksjonen gir en gap-analyse på bokmål innen 30 s (NFR-4). Noter tiden. **Bestått 2026-11-20 med forbehold** (godkjent av Kevin, tredje forsøk, se hendelsen i C3). Punktet krysses av når bokmål er bekreftet. Kilden er tilbakemeldingen fra Kevin og Sondre.
+- [x] **Betalt, krever godkjenning:** én analyse med `par-2-it-support` i produksjonen gir en gap-analyse på bokmål innen 30 s (NFR-4). Noter tiden. **Bestått 2026-11-20** (godkjent av Kevin, tredje forsøk, se hendelsen i C3). Kilden er tilbakemeldingen fra Kevin og Sondre.
   - HTTP 200 på **8,4 s**.
-  - At svaret var på bokmål (NFR-5), er ikke notert uttrykkelig i tilbakemeldingen. **Kevin bekrefter.**
+  - Svaret var på bokmål (NFR-5), bekreftet av Kevin 2026-11-20.
   - Alle seks kravene har samme kategori som i fasiten: 1 Oppfylt, 3 Delvis oppfylt og 2 Mangler.
   - Treffprosenten var 25 % (2 av 8 nøkkelord), mot 11 % i fasiten. Det er forklart i avsnitt 8 i `vurdering-2-4-kontroll-temperatur-0.md` (SM-4). Testsettet med temperatur 0 ga samme treffprosent (25 %, 2 av 8) i alle tre kjøringene. Listen med nøkkelord fra produksjonen er ikke notert.
   - Analysen dekker også del 1 av B4 (par 2 innen 30 s).
-- [ ] Forbruket i konsollen etter analysen stemmer med forventet kostnad. **Venter på bekreftelse fra Sondre.** Kriteriet (Kevin, 2026-11-20):
-  - Under *Usage* eller *Activity* er det ett vellykket kall med `produksjon-vercel-2`.
-  - Kostnaden for dagen er høyst 0,01 USD (forventet ca. 0,002 USD, og Usage avrunder til 0,01 USD).
-  - De to forsøkene med feil nøkkel er ikke fakturert.
+- [ ] Forbruket i konsollen etter analysen stemmer med forventet kostnad. **Bekreftet av Sondre 2026-11-20, på ukenivå.** Kostnaden for analysen er et anslag.
+  - **Status:** punktet krysses av når Kevin godtar avviket fra kriteriet (se under). Det står i `issues.md`.
+  - **Usage for hele uka, alle nøklene til sammen:** 54 kall, ca. 154 000 tokens og 0,09 USD. Uka dekker all bruk siden kreditten ble kjøpt 2026-11-19.
+  - **API-feil:** 5 av kallene. To av dem er *trolig* forsøkene med feil nøkkel for produksjonen, men det er ikke sikkert. En nøkkel som er lagt inn feil, kan ikke alltid knyttes til organisasjonen, og da vises forsøket ikke i Usage. Hvor de tre andre feilene kommer fra, er ikke kjent (kanskje fra målingene i del B).
+  - **Analysen med par 2:** anslagsvis 0,002 USD. Den vises ikke for seg med to desimaler.
+  - **Kontroll av at tallene henger sammen** (forenlig innenfor avrundingen, ikke en bekreftelse):
+    - Usage avrunder til 0,01 USD, så 0,09 USD betyr 0,085–0,095 USD.
+    - 54 − 5 = 49 vellykkede kall × ca. 0,0019 USD (0,0185 kr per gap-analyse, målt) ≈ 0,093 USD. Det antar at alle kallene var gap-analyser, og det var de i del B og i produksjonen.
+    - Tokenene peker samme vei. 154 000 / 54 ≈ 2 850 tokens per kall, mens et målt kall bruker ca. 2 200–2 650 tokens inn og 490–610 ut. Med samme fordeling (ca. 128 000 inn og 26 000 ut) blir kostnaden ca. 0,051 + 0,042 ≈ 0,09 USD (0,40 og 1,60 USD per million tokens). Fordelingen mellom inn og ut er ikke lest i Usage.
+  - **Avvik fra kriteriet** (Kevin, 2026-11-20), som var:
+    - ett vellykket kall med `produksjon-vercel-2`
+    - høyst 0,01 USD for dagen
+    - at de to forsøkene med feil nøkkel ikke er fakturert
+
+    Usage viser ikke forbruket per nøkkel eller per dag, så de to første delene er ikke lest direkte. At de to forsøkene som feilet, ikke er fakturert, er heller ikke bekreftet direkte. De feilet på under 1 s, og summen for uka gir ikke rom for noen merkbar kostnad. **Kevin avgjør om avviket godtas.**
+  - **Lærdom:** et eget prosjekt i OpenAI for produksjonen (forslaget i punkt 1 i sjekklisten) ville gjort det mulig å lese forbruket for seg. Det står som et åpent punkt før brukertesten i 2.8.
+  - **«Spend limit» i OpenAI** står på 100 USD (ca. 969 kr), ifølge Sondre. Det er langt over 200 kr, og det er ikke notert om det er grensen for organisasjonen eller for prosjektet. Det harde taket etter PRD NFR-3 er den forhåndsbetalte kreditten uten automatisk påfylling, og den er 5 USD. Grensen på 100 USD kan derfor ikke slippe gjennom mer enn kreditten. Se Kevins åpne beslutning i C2.
 
 ## C5. Dokumentasjonen og avslutningen
 
