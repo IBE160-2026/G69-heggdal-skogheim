@@ -113,3 +113,4 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-4-gjennomgang-for-pr-b4-resultat.md`
   summary: Update the SM-1 line in prd.md (§10.1, around line 459). It still says SM-1 is not passed because par 3 gave 9 of 12, and a future epic-context recompile would bring that stale status back.
   evidence: Solution B gave 12 of 12 on the old prompt, and the new prompt gives 9 of 12 across par 2 and par 3. Editing the PRD belongs to C5 in kjorebok-2-4-del-c.md.
+  status: Updated 2026-11-22 on `story-2.4-c5-dokumentasjon` (`spec-2-4-c5-dokumentasjon-og-beslutningsark.md`). §10.1 now gives both results and says that none of SM-1–SM-3 is passed with the prompt in production. The epic 2 context (`epic-2-context.md`) is now older than the PRD, so the next `bmad-build` for epic 2 will compile it again.

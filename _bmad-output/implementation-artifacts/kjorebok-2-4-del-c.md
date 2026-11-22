@@ -10,6 +10,13 @@
 > - **C4:** de gratis kontrollene og den betalte kontrollen med par 2 er bestått, og bokmål er bekreftet av Kevin. Forbruket er bekreftet av Sondre på ukenivå, og kostnaden er et anslag. Kriteriet per nøkkel og per dag er ikke lest direkte. Kevin godtok avviket 2026-11-20, så punktet er fullført med forbehold (se C4).
 > - C5 står igjen. **B4 del 2 (NFR-9) er BESTÅTT i produksjonen** (2026-11-20) etter PR #28 (`b50e34a`): 6 krav, 3 O, 2 D og 1 M (AFR), på ca. 9 s. De to tidligere forsøkene (16:01 med 0 krav, og 16:36 med `ugyldig_svar`) feilet, og årsaken er uavklart, fordi ett av dem ved en feil brukte README-innholdet. Se § 7a i `kjorebok-2-4-del-b.md`. Sondre har bekreftet B4 og at `store: false` virker (2026-11-20 kl. 19:39: ingen nye rader under Logs i OpenAI etter kl. 16:36). SM-1 ble 12 av 12 med den revurderte fasiten (løsning B) på den gamle prompten. Med den nye prompten fra PR #27 og PR #28 er SM-1 9 av 12, SM-2 10 av 12 og SM-3 11 av 12. Det må avgjøres, se `vurdering-2-4-kontroll-ny-prompt.md`. SM-4 er ikke oppfylt, men det hører til story 5.1. Story 2.4 er ikke ferdig.
 >
+> **Oppdatert 2026-11-22 (Claude, på oppdrag fra Kevin, grenen `story-2.4-c5-dokumentasjon`):**
+> - **PR #29** (B4-resultatet og testsettet med den nye prompten) er flettet til `main` (`50a7e36`).
+> - **PR #30 fra `story-2.4-b4-resultat`** med avviksanalysen (avsnitt 2a i `vurdering-2-4-kontroll-ny-prompt.md`) er til gjennomgang hos Sondre. Den er ikke flettet.
+> - **Sondres åpne spørsmål** står samlet i [`beslutningsark-2-4-sondre.md`](beslutningsark-2-4-sondre.md). De kjente svakhetene står i [`kjente-svakheter-2-4.md`](kjente-svakheter-2-4.md).
+> - **PRD §10.1** er oppdatert med resultatene for begge promptene. Den sier at ingen av SM-1–SM-3 er bestått med prompten i produksjonen.
+> - **Ingenting er endret** i prompten, koden, testdataene, Vercel eller nøklene. 2-4 står fortsatt som `in-progress`.
+>
 > **Avtalt rekkefølge (Sondre og Kevin, 2026-11-20):**
 > 1. PR-en for del C gjøres ferdig.
 > 2. Sondre går gjennom PR-en og fletter den til `main`.
@@ -140,18 +147,21 @@ Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-
 
 ## C5. Dokumentasjonen og avslutningen
 
-- [ ] Avsnitt 5 og 7 i vurderingen er fylt ut og signert av Kevin og Sondre.
-- [ ] PRD §10.1 er merket som løst med dato og lenke til vurderingen (forslaget i avsnitt 7).
+- [ ] Avsnitt 5 og 7 i vurderingen er fylt ut og signert av Kevin og Sondre. **2026-11-22:** begge avsnittene i `vurdering-2-4-kontroll-temperatur-0.md` er fylt ut, men «Godkjent av» i avsnitt 7 er ikke signert. Signaturene er spørsmål 12 i `beslutningsark-2-4-sondre.md`.
+- [ ] PRD §10.1 er merket som løst med dato og lenke til vurderingen (forslaget i avsnitt 7). **2026-11-22:** §10.1 sier nå at valget av leverandør og modell er avgjort, med lenke til vurderingen. Resultatene for begge promptene står der, og at ingen av SM-1–SM-3 er bestått med prompten i produksjonen. Punktet er ikke krysset av, fordi status for SM-1 er åpen og må føres inn i §10.1 når Kevin og Sondre har avgjort den.
 - [x] Forslagene om `STANDARD_MODELL` og `MAKS_UTDATA_TOKENS` er godkjent eller avvist av Kevin, og eventuelle endringer er gjort med `bmad-build`. **2026-11-20:**
   - `STANDARD_MODELL.openai` var allerede `gpt-4.1-mini` (`spec-2-4-del-b-valgt-oppsett.md`).
   - `MAKS_UTDATA_TOKENS` beholdes på 8000 (Kevin). Bare kommentaren i `src/lib/llm/felles.ts` er oppdatert (`spec-2-4-del-c-maks-utdata-tokens.md`).
   - Taket vurderes på nytt i epic 3.
 - [ ] Nøklene fra målingen er slettet eller rotert hos leverandørene, og de er fjernet fra `.env.local` hvis de ikke skal brukes videre lokalt. **2026-11-20 (Kevin):** `kevin-maaling-2-4` (OpenAI-nøkkelen fra målingen) slettes ikke før Sondre har bekreftet at rapporten er tilstrekkelig. Deretter sletter Sondre den hos OpenAI, og Kevin sletter Mistral-nøkkelen fra målingen (Kevin, 2026-11-20).
-- [ ] Sesjonsloggen har resultatet, `LLM_MODELL` og commit (AK 2), og `issues.md` er oppdatert.
+- [x] Sesjonsloggen har resultatet, `LLM_MODELL` og commit (AK 2). **Kontrollert 2026-11-22:** linje 594 i `.logs/kevin-heggdal/993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md` har `LLM_LEVERANDOR=openai`, `LLM_MODELL=gpt-4.1-mini` (`gpt-4.1-mini-2025-04-14` fra leverandøren), `TEMPERATUR=0`, commit `ee49c2b` for kontrollen og begrunnelsen etter AD-11.
+- [ ] `issues.md` er oppdatert for avslutningen. **2026-11-22:** venter til PR #30 fra `story-2.4-b4-resultat` er flettet, fordi `.logs/kevin-heggdal/issues.md` er en del av PR #30.
 - [ ] Først når AK 1–3 er oppfylt og SM-1 er avgjort (avgjort 2026-11-20 med løsning B, SM-1 12 av 12 på den gamle prompten. Med den nye prompten er SM-1 9 av 12, og Kevin og Sondre avgjør om SM-1 fortsatt regnes som avgjort, se avsnitt 5 i `vurdering-2-4-kontroll-ny-prompt.md`): 2-4 settes til `done` i `sprint-status.yaml`.
 - [ ] **PR-ene:**
   - PR-en for del C (dokumentasjonen fram til C3, `pr-2-4-del-c.md`) går til gjennomgang hos Sondre **før** C3, etter den avtalte rekkefølgen.
   - Resultatet fra C3 og C4, og senere statusen `done`, kommer i en egen PR etterpå.
   - Del B er allerede merget (PR #21).
-  - **2026-11-20:** B4-resultatet og testsettet med den nye prompten går til Sondre i en egen PR fra `story-2.4-b4-resultat` (`pr-2-4-b4-resultat.md`). Den fletter ikke statusen `done`.
+  - **2026-11-20:** B4-resultatet og testsettet med den nye prompten går til Sondre i en egen PR fra `story-2.4-b4-resultat` (`pr-2-4-b4-resultat.md`). Den fletter ikke statusen `done`. **Flettet som PR #29** (`50a7e36`).
+  - **2026-11-21/22:** avviksanalysen (avsnitt 2a) er til gjennomgang hos Sondre i PR #30 fra samme gren. Ikke flettet. Merk: linja fra 2026-11-21 i `issues.md` i PR #30 kaller avsnittet «(PR #29)». Det rettes i PR #30 eller etter flettingen.
+  - **2026-11-22:** C5-dokumentasjonen (beslutningsarket, de kjente svakhetene, PRD §10.1 og denne kjøreboka) ligger på `story-2.4-c5-dokumentasjon`. Utkastet til den avsluttende PR-en står i `pr-2-4-c5-avslutning.md`, og den er ikke opprettet.
   - Push og PR krever Kevins godkjenning.
