@@ -100,10 +100,21 @@ context:
 
 Code review of PR #14 by Sondre, 2026-11-19 (blind, edge cases, verification gap, acceptance audit).
 
-- [ ] [Review][Patch] Switch the default OpenAI model to `gpt-4.1-mini` [src/lib/llm/leverandor.ts:15, scripts/testsett/argumenter.ts:27, README.md:43] — decided by Sondre 2026-11-19: `gpt-5-mini` returns 404 `model_not_found` for an unverified organization and ignores `temperature`; `gpt-4.1-mini` works without verification and accepts temperature (AD-3). Update the test that locks in `gpt-5-mini`.
+- [x] [Review][Patch] Switch the default OpenAI model to `gpt-4.1-mini` [src/lib/llm/leverandor.ts:15, scripts/testsett/argumenter.ts:27, README.md:43] — decided by Sondre 2026-11-19: `gpt-5-mini` returns 404 `model_not_found` for an unverified organization and ignores `temperature`; `gpt-4.1-mini` works without verification and accepts temperature (AD-3). Update the test that locks in `gpt-5-mini`.
 - [ ] [Review][Patch] A run where every call fails exits 0, records no cause and is saved like a real measurement [scripts/kjor-testsett.ts:199-204] — record a sanitised cause per failed run (error class and HTTP status, caught in the `medTokens` wrapper before `generer` turns it into `llm_feil`), print a warning, and return 1 when all runs fail.
 - [ ] [Review][Patch] Extra or duplicated requirements are not flagged [scripts/testsett/rapport.ts] — per run, show «N krav (fasiten har M)» and mark requirements whose text repeats; the manual test showed the model listing job tasks as requirements and one requirement twice.
-- [ ] [Review][Patch] Average cost labelled «minst» [scripts/testsett/kostnad.ts:25-28, scripts/testsett/rapport.ts:147,213] — an average over the known runs is not a lower bound; label it as the average of the N runs with known cost, and keep «minst» only for the total.
+- [x] [Review][Patch] Average cost labelled «minst» [scripts/testsett/kostnad.ts:25-28, scripts/testsett/rapport.ts:147,213] — an average over the known runs is not a lower bound; label it as the average of the N runs with known cost, and keep «minst» only for the total.
+- **Status checked 2026-11-22** (`spec-2-4-c5-dokumentasjon-og-beslutningsark.md`, against the code on `main` `50a7e36`):
+  - **Default model, done:** `src/lib/llm/leverandor.ts:17` is `gpt-4.1-mini` (switched in `246e58b`; `374495d` added the comment on the choice). The other places the finding names are also updated:
+    - `scripts/testsett/argumenter.ts:27`
+    - `README.md:44` (was 43)
+    - the test, `src/lib/llm/adaptere.test.ts:134`, which locks `gpt-4.1-mini`
+
+    The remaining `gpt-5-mini` strings in `scripts/testsett/*.test.ts` are test inputs only.
+  - **All runs fail, partly done** (`246e58b`). `scripts/kjor-testsett.ts:244-248` prints a warning and returns 1 when every run fails, and the report is still written. The sanitised cause per failed run (error class and HTTP status) is **not** recorded: `medTokens` (lines 70-91) only captures tokens and the model version. The box stays open.
+  - **Extra or duplicated requirements, not done.** `scripts/testsett/rapport.ts` shows the requirement table per run, but no «N krav (fasiten har M)» and no mark on repeated requirements. The box stays open.
+  - **«minst», done:** `scripts/testsett/kostnad.ts:31-32` (`snittMedUkjente`, `246e58b`) labels the average without «minst», and `kronerMedUkjente` keeps «minst» for the total.
+  - The two open items are code changes and need Kevin's approval. They are listed in `kjente-svakheter-2-4.md` § 8.
 - [x] [Review][Defer] Report stores only the requested model name, not the model id the provider answered with [scripts/testsett/rapport.ts] — deferred: `mistral-medium-latest` is an alias, so two reports can measure different models (NFR-10); needs `LlmSvar` to carry the response model id.
 - [x] [Review][Defer] Windows drive-letter fix in the script guard is never exercised by CI [scripts/kjor-testsett.ts] — deferred: CI runs on Ubuntu; move the comparison to an exported helper with a unit test.
 
