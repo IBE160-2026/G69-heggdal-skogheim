@@ -4,8 +4,13 @@
 >
 > **Ingenting er avgjort her.** Anbefalingene er Claudes forslag. Svarene føres inn av Kevin eller Sondre, med navn og dato i feltet «Svar». Ingen har signert noe.
 >
+> **Oppdatert 2026-11-22 (Claude, på oppdrag fra Kevin, grenen `story-2.4-c5-oppfolging`):**
+> - Sondre har flettet PR #31 (dette arket og C5-dokumentasjonen, `c7c4a68`) og PR #30 (avviksanalysen, `f36568e`) til `main` 2026-11-22 kl. 16:16.
+> - **Svarfeltene er fortsatt tomme.** Flettingen er ført inn som et faktum under spørsmål 1, men den er ikke et svar fra Sondre på noen av spørsmålene. Ingen har signert.
+> - Kevins foreløpige beslutninger fra 2026-11-22 står nederst, under Kevins egne beslutninger.
+>
 > **Grunnlaget:**
-> - PR #30 med avviksanalysen (grenen `story-2.4-b4-resultat`, ikke flettet, avsnitt 2a i `vurdering-2-4-kontroll-ny-prompt.md`)
+> - PR #30 med avviksanalysen (grenen `story-2.4-b4-resultat`, flettet 2026-11-22 som `f36568e`, avsnitt 2a i `vurdering-2-4-kontroll-ny-prompt.md`)
 > - `kjorebok-2-4-del-c.md`
 > - `vurdering-2-4-kontroll-temperatur-0.md`
 > - de kjente svakhetene i [`kjente-svakheter-2-4.md`](kjente-svakheter-2-4.md)
@@ -36,6 +41,7 @@ Gir avsnitt 2a et riktig og tilstrekkelig bilde av kravene som feilet, og av for
 
 - **Alternativer:** a) godkjenne og flette b) be om rettinger
 - **Anbefaling:** a), hvis sitatene stemmer når du leser dem. De er sjekket med skript mot rapportene.
+- **Fakta (2026-11-22):** PR #30 er flettet til `main` av Sondre 2026-11-22 kl. 16:16 (`f36568e`). Dette er ikke Sondres svar. Han fører selv inn om flettingen betyr at avsnitt 2a er godkjent, eller om noe skal rettes.
 - **Svar:** ______
 
 ### 2. Veien videre for SM-1–SM-3 med den nye prompten
@@ -135,7 +141,7 @@ Punkt 4.1 i DPA-en dekker overføringen med SCC eller GDPR art. 45 (EU–U.S. Da
 
 Signer først når svarene over er ført inn:
 - avsnitt 7 i `vurdering-2-4-kontroll-temperatur-0.md` («Godkjent av»)
-- avsnitt 5 i `vurdering-2-4-kontroll-ny-prompt.md` («Godkjent av»), etter at PR #30 er flettet
+- avsnitt 5 i `vurdering-2-4-kontroll-ny-prompt.md` («Godkjent av»), etter at PR #30 er flettet (flettet 2026-11-22)
 
 **Svar:** ______
 
@@ -145,6 +151,11 @@ Signer først når svarene over er ført inn:
 
 Disse trenger ikke Sondre, men de påvirker avslutningen:
 - **C2:** om OpenAI-prosjektet skal ha en egen grense for forbruket. «Spend limit» står på 100 USD. Det harde taket er kreditten på 5 USD uten påfylling.
+  - **Foreløpig beslutning fra Kevin (2026-11-22):** dette avklares med Sondre før noe endres. Ingenting er endret i OpenAI.
+  - **Sondres syn:** ______
+- **De to åpne funnene fra del A** (`spec-2-4-velge-leverandor-ved-maaling.md`, Review Findings): årsaken per kjøring som feiler, og «N krav (fasiten har M)» og like krav.
+  - **Foreløpig beslutning fra Kevin (2026-11-22):** de utsettes til neste relevante kode- og testrunde, og de står åpne til de faktisk er rettet.
+  - Den manuelle kontrollen av rapporten fra 2026-11-20 viser ingen feilede kjøringer, ingen ekstra krav og ingen krav med samme tekst i den målingen (§ 8 i `kjente-svakheter-2-4.md`). Det sier ingenting om SM-1–SM-3, som fortsatt ikke er bestått.
 - **Annonse uten krav:** om den skal ha en egen melding i stedet for `ugyldig_svar`, og om fanen skal vise en melding for en tom analyse. Begge er kodeendringer.
 - **`testdata/robusthet/README.md`:** om den skal ha en merknad om at den ikke er testinndata. Det er en endring i testdata.
 - **`TEMPERATUR`-kommentaren** i `src/lib/llm/felles.ts` (linje 17–22) sier «ingen krav kom over fasiten. SM-1 er likevel ikke bestått, fordi par 3 har to krav under fasiten». Begge delene er utdatert: med den nye prompten er SM-3 11 av 12, og med løsning B var SM-1 12 av 12 på den gamle. Kommentaren rettes når spørsmål 2 er avgjort. Det er en kodeendring, og den står i `issues.md` (2026-11-20).

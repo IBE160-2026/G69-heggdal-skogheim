@@ -12,9 +12,19 @@
 >
 > **Oppdatert 2026-11-22 (Claude, på oppdrag fra Kevin, grenen `story-2.4-c5-dokumentasjon`):**
 > - **PR #29** (B4-resultatet og testsettet med den nye prompten) er flettet til `main` (`50a7e36`).
-> - **PR #30 fra `story-2.4-b4-resultat`** med avviksanalysen (avsnitt 2a i `vurdering-2-4-kontroll-ny-prompt.md`) er til gjennomgang hos Sondre. Den er ikke flettet.
+> - **PR #30 fra `story-2.4-b4-resultat`** med avviksanalysen (avsnitt 2a i `vurdering-2-4-kontroll-ny-prompt.md`) er til gjennomgang hos Sondre. Den er ikke flettet. *(Utdatert: flettet 2026-11-22, se boksen under.)*
 > - **Sondres åpne spørsmål** står samlet i [`beslutningsark-2-4-sondre.md`](beslutningsark-2-4-sondre.md). De kjente svakhetene står i [`kjente-svakheter-2-4.md`](kjente-svakheter-2-4.md).
 > - **PRD §10.1** er oppdatert med resultatene for begge promptene. Den sier at ingen av SM-1–SM-3 er bestått med prompten i produksjonen.
+> - **Ingenting er endret** i prompten, koden, testdataene, Vercel eller nøklene. 2-4 står fortsatt som `in-progress`.
+>
+> **Oppdatert 2026-11-22 etter flettingen (Claude, på oppdrag fra Kevin, grenen `story-2.4-c5-oppfolging`).** Dette erstatter punktet om PR #30 i boksen over:
+> - **PR #31** (C5-dokumentasjonen) er flettet av Sondre 2026-11-22 kl. 16:16 (`c7c4a68`).
+> - **PR #30** (avviksanalysen) er flettet av Sondre 2026-11-22 kl. 16:16 (`f36568e`).
+> - **Beslutningsarket er ikke besvart.** Ingen av svarfeltene til de 12 spørsmålene er fylt ut, og ingen har signert.
+> - **SM-1–SM-3 er fortsatt ikke bestått** med prompten i produksjonen (9, 10 og 11 av 12). Den manuelle kontrollen av rapporten (§ 8 i `kjente-svakheter-2-4.md`) endrer ikke det.
+> - **Kevins foreløpige beslutninger 2026-11-22:**
+>   - De to åpne funnene fra del A utsettes til neste relevante kode- og testrunde, og de står åpne til de er rettet.
+>   - Om OpenAI-prosjektet skal ha en egen grense for forbruket, avklares med Sondre før noe endres (C2).
 > - **Ingenting er endret** i prompten, koden, testdataene, Vercel eller nøklene. 2-4 står fortsatt som `in-progress`.
 >
 > **Avtalt rekkefølge (Sondre og Kevin, 2026-11-20):**
@@ -75,6 +85,7 @@ Utgangspunktet er uendret. Produksjonen står fortsatt i demomodus uten nøkkel 
   - **OpenAI (Sondre), brukes i produksjonen:** 5 USD (6,25 USD inkl. 25 % mva., ca. 60 kr), kjøpt én gang 2026-11-19. Påfylling er av (bekreftet 2026-11-20).
 - [ ] Det er notert om grensen for forbruket også skal gjelde produksjonen, eller om den skal økes (krever Kevins beslutning). 2 USD (ca. 19,4 kr uten mva) rekker til ca. 230 gap-analyser med Medium 3.5 (0,0844 kr per analyse, 9,6866 kr per USD), eller ca. 57 fulle kjøringer når brev, CV og ATS kommer i epic 3 (× 4).
   - **For OpenAI (åpent, Kevins beslutning):** om prosjektet også skal ha en grense for forbruket. «Spend limit» står i dag på 100 USD (Sondre, 2026-11-20), se C4. Ifølge `vilkaar-og-priser-2-4.md` gjelder den månedlige grensen hos OpenAI den automatiske påfyllingen, ikke bruken av API-et. Det er ikke kontrollert om grensen på 100 USD er den samme innstillingen. Kreditten på 5 USD er det harde taket. Med en saldo på ca. 4,91 USD rekker den til ca. 2 570 gap-analyser eller ca. 680 fulle kjøringer etter de målte kostnadene uten mva.
+  - **Foreløpig beslutning fra Kevin (2026-11-22):** om prosjektet skal ha en egen grense for forbruket, avklares med Sondre før noe endres. Ingenting er endret i OpenAI. Punktet står åpent.
 
 ## C3. Nøkkelen for produksjonen og Vercel (krever godkjenning)
 
@@ -155,13 +166,19 @@ Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-
   - Taket vurderes på nytt i epic 3.
 - [ ] Nøklene fra målingen er slettet eller rotert hos leverandørene, og de er fjernet fra `.env.local` hvis de ikke skal brukes videre lokalt. **2026-11-20 (Kevin):** `kevin-maaling-2-4` (OpenAI-nøkkelen fra målingen) slettes ikke før Sondre har bekreftet at rapporten er tilstrekkelig. Deretter sletter Sondre den hos OpenAI, og Kevin sletter Mistral-nøkkelen fra målingen (Kevin, 2026-11-20).
 - [x] Sesjonsloggen har resultatet, `LLM_MODELL` og commit (AK 2). **Kontrollert 2026-11-22:** linje 594 i `.logs/kevin-heggdal/993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md` har `LLM_LEVERANDOR=openai`, `LLM_MODELL=gpt-4.1-mini` (`gpt-4.1-mini-2025-04-14` fra leverandøren), `TEMPERATUR=0`, commit `ee49c2b` for kontrollen og begrunnelsen etter AD-11.
-- [ ] `issues.md` er oppdatert for avslutningen. **2026-11-22:** venter til PR #30 fra `story-2.4-b4-resultat` er flettet, fordi `.logs/kevin-heggdal/issues.md` er en del av PR #30.
+- [ ] `issues.md` er oppdatert for avslutningen. **2026-11-22:** venter til PR #30 fra `story-2.4-b4-resultat` er flettet, fordi `.logs/kevin-heggdal/issues.md` er en del av PR #30. **Oppdatert 2026-11-22 etter flettingen** (`story-2.4-c5-oppfolging`):
+  - Lukket: punktet om de kjente svakhetene, og punktet om SM-1-linjen i PRD §10.1.
+  - Rettet: «(PR #29)» til «(PR #30)».
+  - Lagt til: Kevins foreløpige beslutninger om forbruksgrensen og de to funnene fra del A.
+
+  Punktet krysses ikke av ennå, fordi `issues.md` må oppdateres på nytt når Sondre har svart og story 2.4 avsluttes.
 - [ ] Først når AK 1–3 er oppfylt og SM-1 er avgjort (avgjort 2026-11-20 med løsning B, SM-1 12 av 12 på den gamle prompten. Med den nye prompten er SM-1 9 av 12, og Kevin og Sondre avgjør om SM-1 fortsatt regnes som avgjort, se avsnitt 5 i `vurdering-2-4-kontroll-ny-prompt.md`): 2-4 settes til `done` i `sprint-status.yaml`.
 - [ ] **PR-ene:**
   - PR-en for del C (dokumentasjonen fram til C3, `pr-2-4-del-c.md`) går til gjennomgang hos Sondre **før** C3, etter den avtalte rekkefølgen.
   - Resultatet fra C3 og C4, og senere statusen `done`, kommer i en egen PR etterpå.
   - Del B er allerede merget (PR #21).
   - **2026-11-20:** B4-resultatet og testsettet med den nye prompten går til Sondre i en egen PR fra `story-2.4-b4-resultat` (`pr-2-4-b4-resultat.md`). Den fletter ikke statusen `done`. **Flettet som PR #29** (`50a7e36`).
-  - **2026-11-21/22:** avviksanalysen (avsnitt 2a) er til gjennomgang hos Sondre i PR #30 fra samme gren. Ikke flettet. Merk: linja fra 2026-11-21 i `issues.md` i PR #30 kaller avsnittet «(PR #29)». Det rettes i PR #30 eller etter flettingen.
-  - **2026-11-22:** C5-dokumentasjonen (beslutningsarket, de kjente svakhetene, PRD §10.1 og denne kjøreboka) ligger på `story-2.4-c5-dokumentasjon`. Utkastet til den avsluttende PR-en står i `pr-2-4-c5-avslutning.md`, og den er ikke opprettet.
+  - **2026-11-21/22:** avviksanalysen (avsnitt 2a) er til gjennomgang hos Sondre i PR #30 fra samme gren. Ikke flettet da. Merk: linja fra 2026-11-21 i `issues.md` i PR #30 kaller avsnittet «(PR #29)». Det rettes i PR #30 eller etter flettingen. **Flettet som PR #30** (`f36568e`, 2026-11-22). Henvisningen er rettet på `story-2.4-c5-oppfolging`.
+  - **2026-11-22:** C5-dokumentasjonen (beslutningsarket, de kjente svakhetene, PRD §10.1 og denne kjøreboka) ligger på `story-2.4-c5-dokumentasjon`. Utkastet til den avsluttende PR-en står i `pr-2-4-c5-avslutning.md`, og den er ikke opprettet. **Flettet som PR #31** (`c7c4a68`, 2026-11-22) med tittel A fra utkastet. Den avsluttende PR-en (tittel B) er ikke opprettet.
+  - **2026-11-22:** oppfølgingen etter flettingen ligger på `story-2.4-c5-oppfolging`, laget fra `main` `f36568e`. Den inneholder bare dokumentasjon og er ikke pushet.
   - Push og PR krever Kevins godkjenning.
