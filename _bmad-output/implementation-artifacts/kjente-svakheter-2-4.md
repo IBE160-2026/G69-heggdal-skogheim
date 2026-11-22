@@ -23,7 +23,7 @@ Fra `vurdering-2-4-kontroll-ny-prompt.md` (testsettet 2026-11-20, 12 kjøringer)
 | SM-3 | 11 av 12 | par 3 K1 | «Gode samarbeidsevner» Delvis oppfylt, mot Mangler i den revurderte fasiten |
 
 - På den gamle prompten (`271edb4`, temperatur 0) var alle tre 12 av 12 med den revurderte fasiten (`vurdering-2-4-kontroll-temperatur-0.md`, avsnitt 6).
-- **Årsaken er ikke avklart.** Feilene av samme type forekom også i rundene 3–5 før PR #28. Det står i avsnitt 2a i PR #30 (ikke flettet).
+- **Årsaken er ikke avklart.** Feilene av samme type forekom også i rundene 3–5 før PR #28. Det står i avsnitt 2a i `vurdering-2-4-kontroll-ny-prompt.md` (PR #30, flettet 2026-11-22).
 - **Veien videre avgjøres av Kevin og Sondre:** spørsmål 2 i [`beslutningsark-2-4-sondre.md`](beslutningsark-2-4-sondre.md).
 
 ## 2. Grensetilfeller som ikke er regnet som brudd
@@ -79,6 +79,15 @@ Fra `vurdering-2-4-kontroll-ny-prompt.md`, avsnitt 4:
 - **Rettingen for stasjonsbokstaver på Windows** i skriptvakten testes ikke i CI (`deferred-work.md`).
 
 Status per funn står i Review Findings i `spec-2-4-velge-leverandor-ved-maaling.md`.
+
+**Foreløpig beslutning fra Kevin (2026-11-22):** de to funnene om årsaken per kjøring som feiler og om ekstra eller like krav utsettes til neste relevante kode- og testrunde. Punktet om stasjonsbokstaver var utsatt fra før (`deferred-work.md`) og er ikke en del av beslutningen. De står åpne til de faktisk er rettet (`issues.md`, 2026-11-22).
+
+**Manuell kontroll av rapporten (2026-11-22).** Rapporten er `testsett-rapporter/2026-11-20-182613-openai-gpt-4.1-mini.md`, med testsettet på prompten i produksjonen. Den er kontrollert med et `awk`-skript, uten nye kall (kommandoen står i `spec-2-4-c5-oppfolging-etter-fletting.md`):
+- **Status:** alle 12 kjøringene har status 200, og rapporten har «feil: 0» per par og totalt. Ingen kjøring feilet, så det manglende feltet for årsaken har ikke skjult noe.
+- **Antall krav:** alle 12 kjøringene har 6 krav, det samme som fasiten for alle fire parene.
+- **Like krav:** ingen kjøring har to krav med samme tekst (sammenlignet uten forskjell på store og små bokstaver). Kontrollen fanger ikke krav som sier det samme med andre ord.
+
+**Kontrollen gjelder bare robustheten i målingen. Den sier ingenting om kvaliteten.** SM-1–SM-3 er fortsatt ikke bestått med prompten i produksjonen: 9, 10 og 11 av 12 (avsnitt 1). Antallet krav stemmer, men kategoriene og forklaringene i noen av kravene gjør det ikke.
 
 ## 9. Personvern
 

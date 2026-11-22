@@ -115,6 +115,12 @@ Code review of PR #14 by Sondre, 2026-11-19 (blind, edge cases, verification gap
   - **Extra or duplicated requirements, not done.** `scripts/testsett/rapport.ts` shows the requirement table per run, but no «N krav (fasiten har M)» and no mark on repeated requirements. The box stays open.
   - **«minst», done:** `scripts/testsett/kostnad.ts:31-32` (`snittMedUkjente`, `246e58b`) labels the average without «minst», and `kronerMedUkjente` keeps «minst» for the total.
   - The two open items are code changes and need Kevin's approval. They are listed in `kjente-svakheter-2-4.md` § 8.
+- **Kevin, 2026-11-22 (preliminary decision):** the two open items are deferred to the next relevant code and test round. The boxes stay open until the items are actually fixed (`issues.md`, 2026-11-22). A manual check of `testsett-rapporter/2026-11-20-182613-openai-gpt-4.1-mini.md` found:
+  - every run had status 200 and 6 requirements, equal to the answer key
+  - no run had two requirements with the same text (exact match ignoring case, so paraphrases are not caught)
+  - 0 failures
+
+  So the two gaps hid no failed run and no extra or textually repeated requirement in that measurement. This check says nothing about SM-1–SM-3, which are still not passed.
 - [x] [Review][Defer] Report stores only the requested model name, not the model id the provider answered with [scripts/testsett/rapport.ts] — deferred: `mistral-medium-latest` is an alias, so two reports can measure different models (NFR-10); needs `LlmSvar` to carry the response model id.
 - [x] [Review][Defer] Windows drive-letter fix in the script guard is never exercised by CI [scripts/kjor-testsett.ts] — deferred: CI runs on Ubuntu; move the comparison to an exported helper with a unit test.
 

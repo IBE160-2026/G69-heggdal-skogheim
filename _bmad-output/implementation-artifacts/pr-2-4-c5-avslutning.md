@@ -7,6 +7,8 @@
 > 2. **Senere:** som den avsluttende PR-en, når Sondres svar er ført inn. Da fylles feltene merket **[AVGJØRES]** ut, de avsluttende stegene legges til, og tittel B brukes.
 >
 > PR #30 med avviksanalysen (fra `story-2.4-b4-resultat`) bør flettes først. Den og denne grenen endrer ikke de samme filene.
+>
+> **Oppdatert 2026-11-22:** bruksmåte 1 er brukt. Grenen ble flettet som PR #31 (`c7c4a68`) med tittel A, og PR #30 er flettet (`f36568e`). Utkastet står videre som mal for den avsluttende PR-en med tittel B. Den er ikke opprettet. Avsnittene «Ferdig nå» og «Kontroll» beskriver PR #31 slik den var. Når malen brukes for tittel B, gjelder ikke kontrollpunktet om filene i PR #30 lenger, fordi `.logs/kevin-heggdal/issues.md` endres etter flettingen.
 
 **Tittel A (nå):** `docs(2.4): beslutningsark for Sondre, PRD §10.1, kjørebok C og kjente svakheter (C5)`
 
@@ -58,7 +60,7 @@ Når Sondre har svart på beslutningsarket:
   - avsnitt 7 i `vurdering-2-4-kontroll-temperatur-0.md`
   - avsnitt 5 i `vurdering-2-4-kontroll-ny-prompt.md`
 - [ ] **Nøklene fra målingen** er slettet (Sondre hos OpenAI, Kevin hos Mistral) etter spørsmål 5. Det er krysset av i C5.
-- [ ] **`issues.md` og sesjonsloggen** er oppdatert etter at PR #30 er flettet.
+- [ ] **`issues.md` og sesjonsloggen** er oppdatert etter at PR #30 er flettet. *(2026-11-22: oppdatert etter flettingen på `story-2.4-c5-oppfolging`. Må oppdateres på nytt ved avslutningen.)*
 - [ ] **`sprint-status.yaml`:** `2-4-velge-leverandor-ved-maaling` er satt til `done`. Det skjer først når alt over er gjort.
 
 ## Kontroll
