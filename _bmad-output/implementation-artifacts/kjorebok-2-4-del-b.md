@@ -611,7 +611,7 @@ PR #34 ble flettet (`5de48e0`), og Sondre bekreftet at deployen er Production/Cu
   - 6 krav lik fasiten, AFR Mangler, ingen påstander, instruksen ignorert og alle 8 beleggene ordrett.
   - **Bestått.** Svaret står i `testsett-rapporter/2026-11-23-183949-b4-del-2-produksjon.json`.
 - **Ingen nye forsøk** og ingen endringer i prompten eller koden. Det ble brukt 13 betalte kall til sammen. B4-svaret viser ikke tokens eller kostnad. Anslaget er ca. 0,02 kr, og Sondre kan lese det under Usage for nøkkelen i produksjonen. Commiten i JSON-fila bygger på Sondres kontroll i Vercel.
-- **Avgjort 2026-11-23 (Sondre: «ja, kjør», gitt videre av Kevin):** avvikene godtas som kjente svakheter (`kjente-svakheter-2-4.md` § 1) og måles på nytt i story 5.1. Det blir ingen flere justeringer av prompten. SM-1 er dermed avgjort. Prompten uten eksempelblokken blir i produksjonen. Det følger av beslutningen, men Sondre har ikke svart på det direkte, og Kevin bekrefter det. Alt som gjenstår før `done`, står i «Avslutningspunktene» i C5 i `kjorebok-2-4-del-c.md`.
+- **Avgjort 2026-11-23 (Sondre: «ja, kjør», gitt videre av Kevin):** avvikene godtas som kjente svakheter (`kjente-svakheter-2-4.md` § 1) og måles på nytt i story 5.1. Det blir ingen flere justeringer av prompten. SM-1 er dermed avgjort. Prompten uten eksempelblokken blir i produksjonen (bekreftet av Kevin 2026-11-23). **`store: false` er bekreftet** av Sondre 2026-11-23: den øverste raden under Logs er fortsatt fra 2026-11-20 kl. 16:36 (56 resultater). Alt som gjenstår før `done`, står i «Avslutningspunktene» i C5 i `kjorebok-2-4-del-c.md`.
 
 ## 8. Utfylling av malen
 

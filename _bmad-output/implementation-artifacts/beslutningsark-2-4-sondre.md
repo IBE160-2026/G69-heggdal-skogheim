@@ -150,7 +150,7 @@ Signer først når svarene over er ført inn:
 
 **Svar:** Signeres når målingen i spørsmål 2 er gjort og resultatet er ført inn. (Sondre, 2026-11-23)
 
-**Fakta (2026-11-23, ikke en del av svaret):** målingen er gjort og ført inn i `vurdering-2-4-uten-eksempelblokk.md`. Claude foreslår at også avsnitt 5 i den vurderingen signeres. Det er ikke avtalt.
+**Fakta (2026-11-23, ikke en del av svaret):** målingen er gjort og ført inn i `vurdering-2-4-uten-eksempelblokk.md`. Claude foreslo at også avsnitt 5 i den vurderingen signeres. **Avtalt av Sondre 2026-11-23** (gitt videre av Kevin): alle tre vurderingene signeres.
 
 ---
 

@@ -14,7 +14,7 @@
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Like krav fjernes bare i prompten. Vurder å fjerne dem i koden (alternativ C) hvis målingen viser duplikater (2026-11-22: testsettet med prompten i produksjonen hadde ingen krav med samme tekst i noen av de 12 kjøringene, og 6 krav i alle. Krav som sier det samme med andre ord, er ikke kontrollert. Se § 8 i `kjente-svakheter-2-4.md`)
 
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Prisen for Medium 3.5 er ikke eksakt bekreftet (konsollen viser ingen pris, Usage avrunder til 0,01 USD). Sammenlign forbruket under Usage etter B2 med ca. 0,10 USD
-- [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Kevin og Sondre signerer `vurdering-2-4-kontroll-temperatur-0.md` (oppdatert 2026-11-23: signeres etter Sondres svar på spørsmål 12, nå som målingen er gjort. Inngår i punktet «Avslutningen av 2-4»)
+- [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Kevin og Sondre signerer `vurdering-2-4-kontroll-temperatur-0.md` (oppdatert 2026-11-23: signeres etter Sondres svar på spørsmål 12, nå som målingen er gjort. Inngår i punktet «Avslutningen av 2-4») (oppdatert 2026-11-23: alle tre vurderingene signeres samtidig, etter Sondres beslutning)
 - [ ] 2026-11-19 [story-2-4-del-b-forberedelse](993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md) — Roter eller slett nøklene fra målingen (Mistral: Kevin, OpenAI: Sondre). Produksjonen får en egen nøkkel i del C (2026-11-20: `kevin-maaling-2-4` hos OpenAI beholdes med vilje til B4 del 2 er gjort. Produksjonen bruker `produksjon-vercel-2`) (oppdatert 2026-11-20: B4 er bestått. `kevin-maaling-2-4` beholdes nå til testsettet med den nye prompten er kjørt, og slettes etterpå sammen med nøkkelen hos Mistral, etter godkjenning) (oppdatert 2026-11-20: testsettet er kjørt. Det må avgjøres om nøkkelen slettes nå eller beholdes til en eventuell ny måling, se avsnitt 5 i `vurdering-2-4-kontroll-ny-prompt.md`) (oppdatert 2026-11-20: Kevin har bestemt at `kevin-maaling-2-4` ikke slettes før Sondre har bekreftet at rapporten er tilstrekkelig. Deretter sletter Sondre den hos OpenAI, og Kevin sletter Mistral-nøkkelen) (oppdatert 2026-11-23: målingen er kjørt. Etter spørsmål 5 sletter Sondre `kevin-maaling-2-4`, og Kevin sletter Mistral-nøkkelen og rydder `.env.local`. Kevin har bedt om at det ikke gjøres før han sier fra. Inngår i punktet «Avslutningen av 2-4»)
 - [ ] 2026-11-20 [story-2-4-del-c-produksjon](992-2026-11-20-12-41-17-story-2-4-del-c-produksjon.md) — Kevin avgjør om OpenAI-prosjektet også skal ha en grense for forbruket i tillegg til kreditten på 5 USD (6,25 USD inkl. mva.) uten påfylling (C2 i kjøreboka for del C). Grensen står i dag på 100 USD (Sondre, 2026-11-20), men det harde taket er kreditten (2026-11-22, foreløpig beslutning fra Kevin: om prosjektet skal ha en egen grense for forbruket, avklares med Sondre før noe endres. Ingenting er endret i OpenAI. Se Kevins egne beslutninger i `beslutningsark-2-4-sondre.md`)
 - [ ] 2026-11-20 [story-2-4-del-c-produksjon](992-2026-11-20-12-41-17-story-2-4-del-c-produksjon.md) — Vurder `GRENSE_PER_MINUTT` (10) og `GRENSE_PER_DOGN` (200) på nytt før brukertesten i 2.8, og vurder grensene og `MAKS_UTDATA_TOKENS` (8000) på nytt i epic 3, når brev, CV og ATS kommer
@@ -39,7 +39,14 @@
   - Sondre sletter `kevin-maaling-2-4`.
   - Kevin sletter Mistral-nøkkelen og rydder `.env.local`.
   - Til slutt settes 2-4 til `done`.
+  (oppdatert 2026-11-23:
+  - Kevin har bekreftet prompten i produksjonen.
+  - Sondre har bekreftet `store: false`: øverste rad under Logs er fra 2026-11-20 kl. 16:36, 56 resultater.
+  - Sondre har bestemt at alle tre vurderingene signeres, også `vurdering-2-4-uten-eksempelblokk.md`.
+  - Sesjonsloggen er skrevet (PR #35).
+  - Gjenstår: signaturene, deretter slettingen av nøklene og `.env.local`, og til slutt `done`)
 - [ ] 2026-11-23 [story-2-4-del-c-produksjon](992-2026-11-20-12-41-17-story-2-4-del-c-produksjon.md) — Skriv Sondres regel om «fakturaer» (ikke brudd) inn i fasiten for par 3 (spørsmål 3 i beslutningsarket). Det er en endring i testdata som krever godkjenning, og den er ikke en betingelse for `done`
+- [ ] 2026-11-23 [story-2-4-del-c-produksjon](992-2026-11-20-12-41-17-story-2-4-del-c-produksjon.md) — Refleksjonsrapporten skal fremheve SM-3 tydelig: 9 av 12 med prompten i produksjonen, med tre krav vurdert over fasiten (par 3 K1 og K2 «Gode samarbeidsevner», par 4 K2 «Selvstendig og ansvarsbevisst»). Det er Sondres krav fra 2026-11-23, se § 1 i `kjente-svakheter-2-4.md`
 
 ## Løst
 
