@@ -139,4 +139,4 @@ Prompten i produksjonen, `store: false` og sesjonsloggen er gjort (2026-11-23).
 
 Ingenting er endret i prompten, koden, fasiten, testdataene eller nøklene.
 
-**Godkjent av:** Kevin ______ Sondre ______ **Dato:** ______
+**Godkjent av:** Kevin Heggdal (2026-11-23) Sondre ______ **Dato:** ______
