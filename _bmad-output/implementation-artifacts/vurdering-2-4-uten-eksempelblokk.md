@@ -9,7 +9,7 @@
 > **Avgjort 2026-11-23 (Sondre: «ja, kjør», gitt videre av Kevin):**
 > - **SM-1 er avgjort:** avvikene godtas som kjente svakheter, de dokumenteres, og SM-1–SM-3 måles på nytt i story 5.1. Det er alternativ a i spørsmål 2 i beslutningsarket.
 > - Det blir ingen flere justeringer av prompten og ingen flere betalte kall i story 2.4.
-> - Prompten uten eksempelblokken (`5de48e0`) blir i produksjonen. Det følger av at det ikke blir flere justeringer av prompten. Kevin bekrefter det ved gjennomgangen.
+> - Prompten uten eksempelblokken (`5de48e0`) blir i produksjonen. Kevin bekreftet det 2026-11-23.
 > - Avvikene står i [`kjente-svakheter-2-4.md`](kjente-svakheter-2-4.md) § 1.
 > - Vurderingen er ikke signert (avsnitt 5).
 
@@ -23,7 +23,8 @@
 > | **B4 del 2 (NFR-9), i produksjonen** | **BESTÅTT** (1 kall) | Bestått (1 kall i produksjonen og 2 lokalt) | Uavklart (forsøket kl. 16:01 i produksjonen, med denne prompten) |
 >
 > - **Bestått:** toleransen i FR-8 (høyst ett krav under), NFR-4 (lengste kjøring 11,5 s, kravet er under 30 s), kostnaden (ca. 0,08 kr per full kjøring) og NFR-9 (B4). NFR-5 er bestått med små feil (avsnitt 4).
-> - **Ikke kontrollert ennå:** at `store: false` virker for kallene. Sondre sjekker at det ikke er kommet nye rader under Logs hos OpenAI.
+> - **`store: false` er bekreftet** for kallene: Sondre kontrollerte Logs hos OpenAI 2026-11-23: den øverste raden er fortsatt fra 2026-11-20 kl. 16:36, med 56 resultater, så ingen av kallene fra 2026-11-23 er lagret.
+> - **SM-3 er det alvorligste avviket (Sondre, 2026-11-23): 9 av 12, med tre krav vurdert over fasiten.** Det er den retningen PRD-en og FR-8 ikke tillater («ingen annonsekrav over fasit, og Mangler er alltid Mangler»). Det skal fremheves både her og i refleksjonsrapporten. Kjøringene er par 3 K1 og K2 («Gode samarbeidsevner» Delvis oppfylt mot Mangler) og par 4 K2 («Selvstendig og ansvarsbevisst» Oppfylt mot Delvis oppfylt), se avsnitt 1.
 > - **Én måling er ikke et bevis.** Par 3 varierer mellom kjøringene, også med temperatur 0. Resultatet viser ikke at eksempelblokken var årsaken til avvikene før, og heller ikke det motsatte.
 > - Etter Sondres beslutning (spørsmål 2) blir det ingen flere justeringer av prompten. Avvikene føres som kjente svakheter og måles på nytt i story 5.1.
 
@@ -122,19 +123,19 @@ Kriteriene er de samme som i § 7a i `kjorebok-2-4-del-b.md`:
 **Avgjort 2026-11-23** (Sondre: «ja, kjør», gitt videre av Kevin):
 - **SM-1 er avgjort.** Avvikene godtas som kjente svakheter og måles på nytt i story 5.1. Det er alternativ a i spørsmål 2.
 - **Ingen flere justeringer av prompten** og ingen flere betalte kall i story 2.4.
-- **Prompten uten eksempelblokken blir i produksjonen.** Det følger av beslutningen, men Sondre har ikke svart på det direkte, og Kevin bekrefter det ved gjennomgangen.
+- **Prompten uten eksempelblokken blir i produksjonen** (bekreftet av Kevin 2026-11-23).
   - B4 er bestått med den.
   - Sammenlignet med eksempelblokken er SM-2 bedre (11 mot 10), mens SM-1 og SM-3 er dårligere (8 mot 9, og 9 mot 11).
 - Avvikene, med kjøringene og sitatene, står i `kjente-svakheter-2-4.md` § 1. Oppfølgingen i 5.1 står i `deferred-work.md`.
 
 **Gjenstår før 2-4 kan settes til `done`:** se «Avslutningspunktene» i C5 i `kjorebok-2-4-del-c.md`. Kort fortalt:
-- Kevins bekreftelse av prompten i produksjonen
-- signaturene
-- sesjonsloggen med den nye målingen
-- slettingen av nøklene, som venter på beskjed fra Kevin
+- signaturene på denne og de to andre vurderingene
+- deretter slettingen av nøklene og oppryddingen i `.env.local`
 - den avsluttende PR-en
 
-Signaturen under og en ny bekreftelse av `store: false` er foreslått, men ikke avtalt.
+Prompten i produksjonen, `store: false` og sesjonsloggen er gjort (2026-11-23).
+
+**Avtalt 2026-11-23 (Sondre):** denne vurderingen signeres sammen med de to andre. **`store: false`** er bekreftet: Sondre kontrollerte Logs hos OpenAI 2026-11-23: den øverste raden er fortsatt fra 2026-11-20 kl. 16:36, med 56 resultater, så ingen av kallene fra 2026-11-23 er lagret.
 
 Ingenting er endret i prompten, koden, fasiten, testdataene eller nøklene.
 

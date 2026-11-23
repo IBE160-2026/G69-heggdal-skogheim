@@ -14,7 +14,14 @@
 
 ## 1. Suksesskriteriene som ikke er bestått med prompten i produksjonen
 
-**Oppdatert 2026-11-23, med prompten uten eksempelblokken** (PR #34, `5de48e0`, i produksjonen). Fra [`vurdering-2-4-uten-eksempelblokk.md`](vurdering-2-4-uten-eksempelblokk.md) (testsettet 2026-11-23, 12 kjøringer). **Godtatt som kjente svakheter 2026-11-23** (Sondre: «ja, kjør», gitt videre av Kevin). De måles på nytt i story 5.1:
+**Oppdatert 2026-11-23, med prompten uten eksempelblokken** (PR #34, `5de48e0`, i produksjonen). Fra [`vurdering-2-4-uten-eksempelblokk.md`](vurdering-2-4-uten-eksempelblokk.md) (testsettet 2026-11-23, 12 kjøringer). **Godtatt som kjente svakheter 2026-11-23** (Sondre: «ja, kjør», gitt videre av Kevin). De måles på nytt i story 5.1.
+
+> **SM-3 er det alvorligste avviket (Sondre, 2026-11-23): 9 av 12, med tre krav vurdert over fasiten.** Det er den retningen PRD-en og FR-8 ikke tillater («ingen annonsekrav over fasit, og Mangler er alltid Mangler»). Det skal fremheves både her og i refleksjonsrapporten.
+> - **Par 3 K1 og K2:** «Gode samarbeidsevner» er Delvis oppfylt, mot Mangler i fasiten. Belegget er bare «Kundeservicemedarbeider (deltid)». Et krav fasiten sier Mangler, får altså en høyere kategori.
+> - **Par 4 K2:** «Selvstendig og ansvarsbevisst» er Oppfylt, mot Delvis oppfylt i fasiten. Grunnlaget er erfaring fra kveldsvakter og en egenvurdering.
+> - **Med eksempelblokken** var det ett slikt krav (par 3 K1). Med den gamle prompten var det ingen.
+> - **Ingen av kravene** har gitt en forbudt påstand, og beleggene står i CV-en. Brukeren kan likevel få inntrykk av å dekke et krav bedre enn CV-en viser.
+
 
 | Kriterium | Resultat | Kjøringene | Kort om feilen |
 |---|---|---|---|
