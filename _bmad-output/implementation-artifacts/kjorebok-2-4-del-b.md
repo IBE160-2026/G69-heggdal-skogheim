@@ -569,6 +569,33 @@ Kjørt etter godkjenning fra Kevin og Sondre, med høyst 12 kall. Det ble brukt 
 
 Ingenting er endret. Beslutningene står i avsnitt 5 i vurderingen.
 
+### Eksempelblokken fjernes (2026-11-23, Sondres beslutning)
+
+Sondre har svart på spørsmål 2 i beslutningsarket (PR #33, `2b66889`), og Kevin har godkjent planen. Endringen er gjort på grenen `story-2.4-fjerne-eksempelblokk` med `bmad-build` ([`spec-2-4-fjerne-eksempelblokken.md`](spec-2-4-fjerne-eksempelblokken.md)).
+
+- **Fjernet:** eksempelblokken fra PR #28 (Nordlager AS) i `src/lib/llm/prompter/gap.ts`, og de 7 testene som bare sjekket den, i `gap.test.ts`.
+- **Beholdt uendret:**
+  - de to reglene fra PR #27 i prompten
+  - `.min(1)` på kravlista i `src/lib/kontrakt/gap.ts`
+  - `store: false` i `src/lib/llm/openai.ts`
+- **Kontrollen:** `git diff aeb3aca` for `gap.ts` og `gap.test.ts` er tom. Prompten og testene er altså identiske med PR #27 i git. Bare de to filene er endret i `src`. Lint, typecheck, `npm test` (920 av 920, 7 færre enn før) og build er grønne.
+- **Ikke testet ennå:** prompten er nå den samme som i forsøket kl. 16:36, og det er uavklart om det forsøket brukte riktig fil. Etter flettingen og en bekreftet deploy kjøres først testsettet én gang (høyst 12 kall), deretter B4 del 2 én gang i produksjonen (1 kall). B4 vurderes etter kriteriene over, og `ugyldig_svar` betyr ikke bestått. Ingen av dem er kjørt.
+- **Én måling er ikke et bevis.** Par 3 varierer mellom kjøringene, også med temperatur 0. Én kjøring kan derfor ikke alene skille effekten av eksempelblokken fra variasjonen mellom kjøringene.
+- **Blir SM-1–SM-3 ikke 12 av 12,** føres avvikene som kjente svakheter og måles på nytt i story 5.1. Det blir ingen flere justeringer av prompten.
+- **Ikke avgjort (Sondre, helst før flettingen, fordi flettingen deployer prompten):**
+  - Hva skjer hvis B4 del 2 feiler uten eksempelet?
+  - Hvilken prompt blir i produksjonen hvis SM-1–SM-3 ikke blir 12 av 12, men B4 består?
+  - Sondres premiss er at B4 «bare feilet fordi feil fil var limt inn» (spørsmål 2). Det er uavklart for 16:36 (spørsmål 6, som Kevin svarer på).
+  - Svaret på spørsmål 6 sier at B4 er bestått i 3 kall. Alle de tre kallene brukte prompten med eksempelblokken.
+- **Tilbakerulling** hvis det trengs: hent bare `gap.ts` og `gap.test.ts` tilbake fra `b50e34a` i en egen liten PR, godkjent av Kevin og Sondre. En revert av hele flettingen ville også fjernet dokumentasjonen.
+- **Etter de betalte kallene:**
+  - Resultatet føres i vurderingen, i `kjente-svakheter-2-4.md` og i PRD §10.1.
+  - Sondre sletter `kevin-maaling-2-4` hos OpenAI (spørsmål 5).
+  - Kevin og Sondre signerer (spørsmål 12).
+  - Regelen om «fakturaer» skrives inn i fasiten for par 3 (spørsmål 3). Det er en endring i testdata som krever egen godkjenning.
+  - Statuslinjene som sier «ikke flettet» eller «ikke gjort», oppdateres her, i boksen i del C, i `kjente-svakheter-2-4.md` og i `issues.md`.
+  - `TEMPERATUR`-kommentaren i `src/lib/llm/felles.ts` rettes, siden spørsmål 2 nå er avgjort (beslutningsarket). Det er en kodeendring som krever egen godkjenning.
+
 ## 8. Utfylling av malen
 
 Kopier [`vurdering-2-4-leverandorvalg.md`](vurdering-2-4-leverandorvalg.md) for runden (én kopi per målerunde), og fyll ut:
