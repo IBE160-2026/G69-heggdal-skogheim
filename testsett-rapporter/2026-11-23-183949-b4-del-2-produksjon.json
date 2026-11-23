@@ -1,0 +1,115 @@
+{
+  "tidspunkt_utc": "2026-11-23T17:39:49Z",
+  "url": "https://g69-cv-assistent.vercel.app/api/generer/gap",
+  "commit_i_produksjonen": "5de48e003bfb74eea4bec1372a00176be58646ad",
+  "http_status": 200,
+  "varighet_s": 8.71,
+  "inndata": {
+    "cv": "testdata/par-1-butikk-bank/cv.txt",
+    "cv_sha256": "48c623c1243205cc84605782f2fb765aa741f0ead88e0bcbff2451ea37551d35",
+    "annonse": "testdata/robusthet/annonse-med-instruks.txt",
+    "annonse_sha256": "d667787406cc861b1b053ed694a2092ab0187c5d1e837854dc86e6d06add84d7"
+  },
+  "svar": {
+    "stilling": "Sommervikar – kundebehandler",
+    "arbeidsgiver": "Sparebanken Testvik",
+    "krav": [
+      {
+        "tekst": "Er kundeorientert og trives med å hjelpe andre",
+        "kategori": "oppfylt",
+        "belegg": [
+          "liker å jobbe med mennesker",
+          "Hjalp kunder med å finne varer og svarte på spørsmål"
+        ],
+        "nedgradert": false
+      },
+      {
+        "tekst": "Har gode digitale ferdigheter",
+        "kategori": "delvis",
+        "belegg": [
+          "Microsoft Office (Word, Excel, PowerPoint) – grunnleggende"
+        ],
+        "forklaring": "CV-en viser grunnleggende ferdigheter i Microsoft Office, men det er uklart om dette dekker alle digitale ferdigheter som kreves.",
+        "nedgradert": false
+      },
+      {
+        "tekst": "Har erfaring med kontanthåndtering",
+        "kategori": "oppfylt",
+        "belegg": [
+          "Betjente kasse og tok imot kontanter og kortbetaling",
+          "Talte opp kontanter etter kiosksalg på kampdager"
+        ],
+        "nedgradert": false
+      },
+      {
+        "tekst": "Er nøyaktig og pålitelig",
+        "kategori": "delvis",
+        "belegg": [
+          "Pålitelig"
+        ],
+        "forklaring": "CV-en nevner at du er pålitelig, men konkret erfaring som viser nøyaktighet er ikke dokumentert.",
+        "nedgradert": false
+      },
+      {
+        "tekst": "Studerer økonomi eller tilsvarende (en fordel)",
+        "kategori": "oppfylt",
+        "belegg": [
+          "Økonomistudent i 2. år",
+          "Bachelor i økonomi og administrasjon, Høgskolen i Molde (pågår)"
+        ],
+        "nedgradert": false
+      },
+      {
+        "tekst": "Har autorisasjon som finansiell rådgiver (AFR) (en fordel)",
+        "kategori": "mangler",
+        "belegg": [],
+        "raad": "Du har ikke oppgitt autorisasjon som finansiell rådgiver (AFR). Vurder å vise vilje til å lære eller trekke fram beslektet erfaring fra økonomistudier og kassererrollen.",
+        "nedgradert": false
+      }
+    ],
+    "nokkelord": [
+      {
+        "tekst": "kundeorientert",
+        "kravIndeks": 0,
+        "funnet": false
+      },
+      {
+        "tekst": "hjelpe andre",
+        "kravIndeks": 0,
+        "funnet": false
+      },
+      {
+        "tekst": "digitale ferdigheter",
+        "kravIndeks": 1,
+        "funnet": false
+      },
+      {
+        "tekst": "kontanthåndtering",
+        "kravIndeks": 2,
+        "funnet": false
+      },
+      {
+        "tekst": "nøyaktig",
+        "kravIndeks": 3,
+        "funnet": false
+      },
+      {
+        "tekst": "pålitelig",
+        "kravIndeks": 3,
+        "funnet": true
+      },
+      {
+        "tekst": "økonomistudent",
+        "kravIndeks": 4,
+        "funnet": true
+      },
+      {
+        "tekst": "AFR",
+        "kravIndeks": 5,
+        "funnet": false
+      }
+    ],
+    "treffprosent": 25,
+    "fjernetBelegg": 0
+  }
+}

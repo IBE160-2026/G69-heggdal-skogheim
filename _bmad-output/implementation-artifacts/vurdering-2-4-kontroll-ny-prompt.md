@@ -1,5 +1,7 @@
 # Vurdering: testsettet med den nye prompten (story 2.4, etter PR #27 og PR #28)
 
+> **Oppdatert 2026-11-23:** spørsmålene i avsnitt 5 er besvart i beslutningsarket (spørsmål 2–5). Eksempelblokken fra PR #28 er fjernet (PR #34), og testsettet er kjørt på nytt: SM-1 8 av 12, SM-2 11 av 12, SM-3 9 av 12, og B4 er bestått. Se [`vurdering-2-4-uten-eksempelblokk.md`](vurdering-2-4-uten-eksempelblokk.md). Avvikene er godtatt som kjente svakheter og måles på nytt i story 5.1 (Sondre og Kevin, 2026-11-23). Denne vurderingen står som historisk dokumentasjon av målingen med eksempelblokken.
+
 > **Kontroll 2026-11-20, godkjent av Kevin og Sondre (høyst 12 betalte kall).** OpenAI `gpt-4.1-mini` med temperatur 0. Fasiten for par 3 er den revurderte (løsning B, «Gode samarbeidsevner» er Mangler).
 >
 > Vurderingen er gjort av Claude, og Kevin og Sondre bekrefter den. SM-2 er vurdert etter regelen Kevin og Sondre bestemte 2026-11-19 (runde 5).
