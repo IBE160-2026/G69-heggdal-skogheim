@@ -18,13 +18,14 @@
 - [ ] 2026-11-19 [openai-vilkaar-og-kreditt](976-2026-11-20-12-58-08-openai-vilkaar-og-kreditt.md) — SM-1 ikke bestått (9 av 12, to krav i par 3 under fasit). Løses før innleveringen: fasiten eller modellen?
 - [ ] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — SM-4: treffprosenten i produksjonen for par 2 er 25 % mot 11 % i fasiten (modellen henter andre nøkkelord). Kevin vurderer
 - [ ] 2026-11-19 [brukertest-2-8](972-2026-11-20-20-38-53-brukertest-2-8.md) — Funn fra T1 i brukertesten: «Mangler» leses som «du mangler erfaringen». Vurder om visningen eller rådet skal si at CV-en ikke nevner det
-- [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Kevin, 2.4: fjern eksempelblokken fra PR #28 (egen spec og PR), kjør testsettet og B4 én gang. Ikke 12/12: godta avvikene og mål på nytt i 5.1
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Personvernboksen: én setning om at OpenAI kan beholde teksten i opptil 30 dager for å oppdage misbruk (egen liten PR)
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Sondre: sjekk i DPF-lista om OpenAI er sertifisert, før refleksjonsrapporten
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Sondre: sjekk om OPENAI_API_KEY er merket Sensitive i Vercel
+- [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Refleksjonsrapporten: SM-3 9/12 med prompten i produksjonen (tre krav over fasiten) må stå tydelig
 
 ## Løst
 
+- [x] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Kevin, 2.4: fjern eksempelblokken fra PR #28 (egen spec og PR), kjør testsettet og B4 én gang. Ikke 12/12: godta avvikene og mål på nytt i 5.1 (løst 2026-11-23: PR #34 flettet, målingen ga SM-1 8/12, SM-2 11/12, SM-3 9/12; avvikene godtatt)
 - [x] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — Kevin, 2.4: kjør testsettet på nytt etter prompt-endringen i PR #28 og sjekk at SM-1 og SM-2 fortsatt er bestått (løst 2026-11-23: kjørt av Kevin 2026-11-20, SM-1 9/12, SM-2 10/12, SM-3 11/12; veien videre i beslutningsarket)
 - [x] 2026-11-19 [brukertest-2-8](972-2026-11-20-20-38-53-brukertest-2-8.md) — T1 i brukertesten: avklar om kontanthåndtering står i CV-en (Mangler feil eller lest som «du mangler»), og avgjør om svaret teller som ja i SM-10 (løst 2026-11-20: står ikke i CV-en, Mangler var riktig, teller som ja)
 - [x] 2026-11-19 [farger-og-mork-modus](973-2026-11-20-16-18-51-farger-og-mork-modus.md) — Kevin, 2.4: B4 del 2 ga 0 av 0 krav. Rett prompten (krav hentes ut selv om annonsen har instrukser) og skjemaet (.min(1) på krav), og kjør én ny betalt test (løst 2026-11-20: feil fil var limt inn; B4 bestått i produksjonen med riktig fil, store: false bekreftet)
