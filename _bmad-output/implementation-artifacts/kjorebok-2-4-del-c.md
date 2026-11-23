@@ -27,6 +27,16 @@
 >   - Om OpenAI-prosjektet skal ha en egen grense for forbruket, avklares med Sondre før noe endres (C2).
 > - **Ingenting er endret** i prompten, koden, testdataene, Vercel eller nøklene. 2-4 står fortsatt som `in-progress`.
 >
+> **Oppdatert 2026-11-23 (Claude, på oppdrag fra Kevin, grenen `story-2.4-fjerne-eksempelblokk`):**
+> - **Sondre har svart på beslutningsarket** i PR #33 (`2b66889`). Sondre flettet PR #33 til `main` 2026-11-23 (`7eb7300`).
+> - **Spørsmål 2:**
+>   - Eksempelblokken fra PR #28 fjernes. Reglene fra PR #27 og `store: false` beholdes.
+>   - Etter flettingen kjøres testsettet én gang (høyst 12 kall) og B4 del 2 én gang i produksjonen.
+>   - Blir SM-1–SM-3 ikke 12 av 12, føres avvikene som kjente svakheter og måles på nytt i 5.1.
+> - **Fjerningen** er gjort i [`spec-2-4-fjerne-eksempelblokken.md`](spec-2-4-fjerne-eksempelblokken.md), se «Eksempelblokken fjernes (2026-11-23, Sondres beslutning)» i § 7a i `kjorebok-2-4-del-b.md`. Ingen betalte kall er kjørt.
+> - **De andre svarene i arket** (spørsmål 1 og 3–12, og C2) står i arket i PR #33. Denne boksen følger bare opp spørsmål 2.
+> - **Ikke endret:** nøkler, `.env.local`, testdata, fasiten og personvernboksen. 2-4 står fortsatt som `in-progress`.
+>
 > **Avtalt rekkefølge (Sondre og Kevin, 2026-11-20):**
 > 1. PR-en for del C gjøres ferdig.
 > 2. Sondre går gjennom PR-en og fletter den til `main`.

@@ -10,7 +10,7 @@
 
 **Oppsettet:**
 - OpenAI `gpt-4.1-mini` (`gpt-4.1-mini-2025-04-14`) med temperatur 0, valgt 2026-11-19 etter AD-11.
-- Prompten i produksjonen er den fra PR #27 og PR #28 (`b50e34a`).
+- Prompten i produksjonen er den fra PR #27 og PR #28 (`b50e34a`). Eksempelblokken fra PR #28 fjernes etter Sondres beslutning 2026-11-23, på grenen `story-2.4-fjerne-eksempelblokk`. Den er ikke flettet eller deployet.
 
 ## 1. Suksesskriteriene som ikke er bestått med prompten i produksjonen
 
@@ -70,7 +70,7 @@ Fra `vurdering-2-4-kontroll-ny-prompt.md`, avsnitt 4:
 - **B4 del 2 (NFR-9), en annonse med en innplantet instruks:**
   - Bestått i produksjonen etter PR #28 (`b50e34a`).
   - De to tidligere forsøkene (16:01 med 0 krav, og 16:36 med `ugyldig_svar`) feilet, og årsaken er uavklart. Ett av dem brukte README-innholdet som annonse (§ 7a i `kjorebok-2-4-del-b.md`, spørsmål 6 i beslutningsarket).
-  - Eksempelblokken fra PR #28 er en del av rettingen for B4. Fjernes den (alternativ b i spørsmål 2), må B4 testes på nytt.
+  - Eksempelblokken fra PR #28 er en del av rettingen for B4. Sondre har valgt å fjerne den (alternativ b i spørsmål 2, 2026-11-23), så B4 del 2 testes én gang i produksjonen etter flettingen. Det er ikke gjort.
 
 ## 8. Testsettskriptet (fra gjennomgangen av del A, PR #14)
 

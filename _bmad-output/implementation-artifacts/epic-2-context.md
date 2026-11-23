@@ -29,7 +29,10 @@ Brukeren trykker *Analyser* og får gap-analysen. Hvert krav i annonsen får kat
 - **Ytelse, kostnad og språk:** Gap-analysen er ferdig innen 30 s, og brukeren ser at noe skjer innen 2 s. Mål 1 kr eller mindre per full kjøring. Forhåndsbetalt kreditt under 200 kr uten automatisk påfylling er det harde taket. Svarene er på naturlig bokmål.
 - **Personvern:** Ingenting skrives til database, disk eller nettleserlagring. Bare metadata logges, og ingen IP-adresser.
 - **Leverandørvalg:** Testsettet kjøres tre ganger per testpar mot begge leverandørene. Mistral velges hvis den består gap-delen av sjekklisten, ingen oppdiktning i noen kjøring og bokmålskravet innenfor 1 kr per kjøring. Ellers velges OpenAI. Før valget er ferdig: sjekk vilkårene (ingen trening på API-data, databehandleravtale), sett `LLM_LEVERANDOR`, `LLM_MODELL` og nøkkel i Production på Vercel, og sjekk at personvernboksen viser riktig leverandør og land. Resultat, modell og commit-versjon noteres i sesjonsloggen.
-- **Valgt leverandør:** OpenAI `gpt-4.1-mini` med temperatur 0. Mistral besto ikke SM-3, og Mistral Large 4 feilet ytelseskravet. SM-1 ble 12 av 12 på den gamle prompten etter at fasiten for par 3 ble revurdert (2026-11-20). Med prompten fra PR #27 og PR #28 er SM-1 9 av 12, SM-2 10 av 12 og SM-3 11 av 12 (`vurdering-2-4-kontroll-ny-prompt.md`), og Kevin og Sondre avgjør hva det betyr for 2.4. Personvernboksen i produksjonen viser OpenAI i USA (utenfor EØS). Det som gjenstår, er om boksen skal nevne OpenAIs logger mot misbruk (opptil 30 dager) og om de 56 lagrede forespørslene skal slettes.
+- **Valgt leverandør (avgjort):** OpenAI `gpt-4.1-mini` med temperatur 0. Mistral besto ikke SM-3, og Mistral Large 4 feilet ytelseskravet. Valget av leverandør og modell står ikke lenger åpent. Det som står åpent, er suksesskriteriene med prompten i produksjonen:
+  - Med den eldre prompten (`271edb4`) og fasiten for par 3 revurdert 2026-11-20 ble SM-1, SM-2 og SM-3 alle 12 av 12.
+  - Med prompten fra PR #27 og PR #28 (i produksjonen fra `b50e34a`) er SM-1 9 av 12, SM-2 10 av 12 og SM-3 11 av 12, så ingen av dem er bestått. Årsaken er ikke avklart, og Kevin og Sondre avgjør veien videre (`vurdering-2-4-kontroll-ny-prompt.md`, `beslutningsark-2-4-sondre.md`).
+- **Personverntekst:** Informasjonsteksten er på plass i produksjonen: «CV-teksten sendes til OpenAI i USA. Det betyr at opplysningene overføres ut av EØS.» Grunnlaget for overføringen til tredjeland (SCC eller art. 45 med DPF) er ikke kontrollert og skal med i refleksjonsrapporten.
 - **Brukertest:** Tre medstudenter utenfor gruppen tester med egen CV og annonsen fra par 1, og minst to skal svare ja på «Fant du en erfaring du ikke hadde tenkt på som relevant?». Svarene noteres uten CV-tekst eller navn. Ved færre enn to ja vurderer gruppen endringer i prompt eller visning før epic 3.
 
 ## Technical Decisions
@@ -61,7 +64,7 @@ Brukeren trykker *Analyser* og får gap-analysen. Hvert krav i annonsen får kat
 ## Cross-Story Dependencies
 
 - 2.1 (kontrakt, kjerne, port, mock, pipeline, API) og 2.2 (økt-tilstand og resultatflate) er grunnmuren som 2.3, 2.5, 2.6 og 2.7 utvider.
-- 2.4 krever ekte adaptere fra 2.3. 2.8 krever 2.3 og 2.4 med valgt leverandør (OpenAI) satt opp i produksjon, inkludert ferdig personverntekst, og skal gjøres før epic 3.
+- 2.4 krever ekte adaptere fra 2.3. 2.8 krever 2.3 og 2.4 med valgt leverandør (OpenAI) satt opp i produksjon (personverntekst på plass), og skal gjøres før epic 3.
 - 2.6 innfører redigering, kopiering, ny generering og `gapVersjon`-økning. 2.7 bruker dialogen for redigerte faner og forkastingen av sene svar.
 - Bygger på epic 1: forberedelsessiden, kontrollsteget, `masker`, grenser, `normaliser` og `erDemoeksempel`.
 - Epic 3 og 4 gjenbruker pipelinen, `GapGrunnlag`, feiltabellen, verktøylinjen, dialogene og utdatert-mekanismen herfra.
