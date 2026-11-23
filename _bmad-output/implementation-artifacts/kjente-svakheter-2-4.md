@@ -10,11 +10,23 @@
 
 **Oppsettet:**
 - OpenAI `gpt-4.1-mini` (`gpt-4.1-mini-2025-04-14`) med temperatur 0, valgt 2026-11-19 etter AD-11.
-- Prompten i produksjonen er den fra PR #27 og PR #28 (`b50e34a`). Eksempelblokken fra PR #28 fjernes etter Sondres beslutning 2026-11-23, på grenen `story-2.4-fjerne-eksempelblokk`. Den er ikke flettet eller deployet.
+- Prompten i produksjonen er den fra PR #27, uten eksempelblokken fra PR #28. Den kom med PR #34 (`5de48e0`, Production/Current fra 2026-11-23 kl. 18:05, bekreftet av Sondre). Fram til da var prompten fra PR #27 og PR #28 (`b50e34a`) i produksjonen.
 
 ## 1. Suksesskriteriene som ikke er bestått med prompten i produksjonen
 
-Fra `vurdering-2-4-kontroll-ny-prompt.md` (testsettet 2026-11-20, 12 kjøringer):
+**Oppdatert 2026-11-23, med prompten uten eksempelblokken** (PR #34, `5de48e0`, i produksjonen). Fra [`vurdering-2-4-uten-eksempelblokk.md`](vurdering-2-4-uten-eksempelblokk.md) (testsettet 2026-11-23, 12 kjøringer). **Godtatt som kjente svakheter 2026-11-23** (Sondre: «ja, kjør», gitt videre av Kevin). De måles på nytt i story 5.1:
+
+| Kriterium | Resultat | Kjøringene | Kort om feilen |
+|---|---|---|---|
+| SM-1 | 8 av 12 | par 2 K3, par 3 K1 og K2, par 4 K2 | Summen av bruddene under |
+| SM-2 | 11 av 12 | par 2 K3 | «CV-en viser forståelse av Windows». CV-en sier «Windows og Linux (brukt i studiet)» |
+| SM-3 | 9 av 12 | par 3 K1 og K2, par 4 K2 | «Gode samarbeidsevner» Delvis oppfylt mot Mangler (par 3). «Selvstendig og ansvarsbevisst» Oppfylt mot Delvis oppfylt (par 4) |
+
+- B4 del 2 (NFR-9) er bestått i produksjonen med denne prompten (1 kall).
+- Det blir ingen flere justeringer av prompten i story 2.4 (spørsmål 2, alternativ a). **Story 5.1** kjører testsettet på nytt på den endelige versjonen og sjekker disse kjøringene og feiltypene særskilt (`deferred-work.md`).
+- Feiltypene er: «Mangler» som blir Delvis oppfylt ut fra en beslektet jobb (par 3), en egenvurdering som blir Oppfylt (par 4), og annonsens ord om brukeren («forståelse av Windows», par 2). De to første har forekommet med flere prompter (avsnitt 2a i `vurdering-2-4-kontroll-ny-prompt.md`). Den i par 4 er ny for OpenAI, og Mistral Medium gjorde det samme i runde 1, 4 og 5.
+
+Tabellen under er fra målingen **med** eksempelblokken (`vurdering-2-4-kontroll-ny-prompt.md`, testsettet 2026-11-20, 12 kjøringer):
 
 | Kriterium | Resultat | Kjøringene | Kort om feilen |
 |---|---|---|---|
@@ -24,10 +36,11 @@ Fra `vurdering-2-4-kontroll-ny-prompt.md` (testsettet 2026-11-20, 12 kjøringer)
 
 - På den gamle prompten (`271edb4`, temperatur 0) var alle tre 12 av 12 med den revurderte fasiten (`vurdering-2-4-kontroll-temperatur-0.md`, avsnitt 6).
 - **Årsaken er ikke avklart.** Feilene av samme type forekom også i rundene 3–5 før PR #28. Det står i avsnitt 2a i `vurdering-2-4-kontroll-ny-prompt.md` (PR #30, flettet 2026-11-22).
-- **Veien videre avgjøres av Kevin og Sondre:** spørsmål 2 i [`beslutningsark-2-4-sondre.md`](beslutningsark-2-4-sondre.md).
+- **Veien videre** er avgjort i spørsmål 2 i [`beslutningsark-2-4-sondre.md`](beslutningsark-2-4-sondre.md): eksempelblokken ble fjernet, og det ble én ny måling (tabellen øverst).
 
 ## 2. Grensetilfeller som ikke er regnet som brudd
 
+- **Avgjort 2026-11-23:** «erfaring med fakturaer» er ikke brudd (Sondre, spørsmål 3). Regelen skal skrives inn i fasiten for par 3. I målingen uten eksempelblokken står setningen i K2 og K3, og «Strukturert og nøyaktig» er Mangler i K3 (innenfor toleransen). Teksten under er fra målingen med eksempelblokken.
 - **«Du har erfaring med fakturaer»** i par 3, i alle tre kjøringene. CV-en har «Besvarte kundehenvendelser om fakturaer og abonnement». Setningen har stått i alle rundene og i kontrollen, men ikke i alle kjøringene. Med den gamle prompten sto den bare i K1. K2 og K3 hadde «erfaring med kundehenvendelser om fakturaer» (`vurdering-2-4-kontroll-ny-prompt.md`, avsnitt 2). Hvis den regnes som brudd, blir SM-1 og SM-2 7 av 12 med den nye prompten, og 11 av 12 med den gamle (spørsmål 3 i beslutningsarket).
 - **Par 3 K2, «Strukturert og nøyaktig»,** er Mangler mot Delvis oppfylt i fasiten. Det er innenfor toleransen i FR-8 (høyst ett krav under fasiten).
 
@@ -68,9 +81,9 @@ Fra `vurdering-2-4-kontroll-ny-prompt.md`, avsnitt 4:
 - **Oppbrukt kreditt** gir `llm_feil` med Prøv igjen, uten henvisning til Prøv med eksempel (`deferred-work.md`, fra story 2.5).
 - **Like krav** fjernes bare av prompten, ikke i koden (`issues.md`, del B).
 - **B4 del 2 (NFR-9), en annonse med en innplantet instruks:**
-  - Bestått i produksjonen etter PR #28 (`b50e34a`).
+  - Bestått i produksjonen etter PR #28 (`b50e34a`), og på nytt uten eksempelblokken etter PR #34 (`5de48e0`, 2026-11-23, 1 kall, `vurdering-2-4-uten-eksempelblokk.md` avsnitt 3).
   - De to tidligere forsøkene (16:01 med 0 krav, og 16:36 med `ugyldig_svar`) feilet, og årsaken er uavklart. Ett av dem brukte README-innholdet som annonse (§ 7a i `kjorebok-2-4-del-b.md`, spørsmål 6 i beslutningsarket).
-  - Eksempelblokken fra PR #28 er en del av rettingen for B4. Sondre har valgt å fjerne den (alternativ b i spørsmål 2, 2026-11-23), så B4 del 2 testes én gang i produksjonen etter flettingen. Det er ikke gjort.
+  - Eksempelblokken fra PR #28 er fjernet (alternativ b i spørsmål 2). B4 del 2 er bestått også uten den. Den er testet i ett kall, så den er ikke en garanti mot andre innplantede instrukser.
 
 ## 8. Testsettskriptet (fra gjennomgangen av del A, PR #14)
 
@@ -82,12 +95,12 @@ Status per funn står i Review Findings i `spec-2-4-velge-leverandor-ved-maaling
 
 **Foreløpig beslutning fra Kevin (2026-11-22):** de to funnene om årsaken per kjøring som feiler og om ekstra eller like krav utsettes til neste relevante kode- og testrunde. Punktet om stasjonsbokstaver var utsatt fra før (`deferred-work.md`) og er ikke en del av beslutningen. De står åpne til de faktisk er rettet (`issues.md`, 2026-11-22).
 
-**Manuell kontroll av rapporten (2026-11-22).** Rapporten er `testsett-rapporter/2026-11-20-182613-openai-gpt-4.1-mini.md`, med testsettet på prompten i produksjonen. Den er kontrollert med et `awk`-skript, uten nye kall (kommandoen står i `spec-2-4-c5-oppfolging-etter-fletting.md`):
+**Manuell kontroll av rapporten (2026-11-22).** Rapporten er `testsett-rapporter/2026-11-20-182613-openai-gpt-4.1-mini.md`, med testsettet på prompten som da var i produksjonen (med eksempelblokken). Den er kontrollert med et `awk`-skript, uten nye kall (kommandoen står i `spec-2-4-c5-oppfolging-etter-fletting.md`):
 - **Status:** alle 12 kjøringene har status 200, og rapporten har «feil: 0» per par og totalt. Ingen kjøring feilet, så det manglende feltet for årsaken har ikke skjult noe.
 - **Antall krav:** alle 12 kjøringene har 6 krav, det samme som fasiten for alle fire parene.
 - **Like krav:** ingen kjøring har to krav med samme tekst (sammenlignet uten forskjell på store og små bokstaver). Kontrollen fanger ikke krav som sier det samme med andre ord.
 
-**Kontrollen gjelder bare robustheten i målingen. Den sier ingenting om kvaliteten.** SM-1–SM-3 er fortsatt ikke bestått med prompten i produksjonen: 9, 10 og 11 av 12 (avsnitt 1). Antallet krav stemmer, men kategoriene og forklaringene i noen av kravene gjør det ikke.
+**Kontrollen gjelder bare robustheten i målingen. Den sier ingenting om kvaliteten.** SM-1–SM-3 var ikke bestått med prompten som da var i produksjonen (9, 10 og 11 av 12). Uten eksempelblokken er tallene 8, 11 og 9 av 12 (avsnitt 1). Antallet krav stemmer, men kategoriene og forklaringene i noen av kravene gjør det ikke.
 
 ## 9. Personvern
 

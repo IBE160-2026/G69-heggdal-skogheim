@@ -579,7 +579,7 @@ Sondre har svart på spørsmål 2 i beslutningsarket (PR #33, `2b66889`), og Kev
   - `.min(1)` på kravlista i `src/lib/kontrakt/gap.ts`
   - `store: false` i `src/lib/llm/openai.ts`
 - **Kontrollen:** `git diff aeb3aca` for `gap.ts` og `gap.test.ts` er tom. Prompten og testene er altså identiske med PR #27 i git. Bare de to filene er endret i `src`. Lint, typecheck, `npm test` (920 av 920, 7 færre enn før) og build er grønne.
-- **Ikke testet ennå:** prompten er nå den samme som i forsøket kl. 16:36, og det er uavklart om det forsøket brukte riktig fil. Etter flettingen og en bekreftet deploy kjøres først testsettet én gang (høyst 12 kall), deretter B4 del 2 én gang i produksjonen (1 kall). B4 vurderes etter kriteriene over, og `ugyldig_svar` betyr ikke bestått. Ingen av dem er kjørt.
+- **Ikke testet ennå:** prompten er nå den samme som i forsøket kl. 16:36, og det er uavklart om det forsøket brukte riktig fil. Etter flettingen og en bekreftet deploy kjøres først testsettet én gang (høyst 12 kall), deretter B4 del 2 én gang i produksjonen (1 kall). B4 vurderes etter kriteriene over, og `ugyldig_svar` betyr ikke bestått. Ingen av dem er kjørt. *(Kjørt 2026-11-23, se «Målingen uten eksempelblokken» under.)*
 - **Én måling er ikke et bevis.** Par 3 varierer mellom kjøringene, også med temperatur 0. Én kjøring kan derfor ikke alene skille effekten av eksempelblokken fra variasjonen mellom kjøringene.
 - **Blir SM-1–SM-3 ikke 12 av 12,** føres avvikene som kjente svakheter og måles på nytt i story 5.1. Det blir ingen flere justeringer av prompten.
 - **Ikke avgjort (Sondre, helst før flettingen, fordi flettingen deployer prompten):**
@@ -587,6 +587,7 @@ Sondre har svart på spørsmål 2 i beslutningsarket (PR #33, `2b66889`), og Kev
   - Hvilken prompt blir i produksjonen hvis SM-1–SM-3 ikke blir 12 av 12, men B4 består?
   - Sondres premiss er at B4 «bare feilet fordi feil fil var limt inn» (spørsmål 2). Det er uavklart for 16:36 (spørsmål 6, som Kevin svarer på).
   - Svaret på spørsmål 6 sier at B4 er bestått i 3 kall. Alle de tre kallene brukte prompten med eksempelblokken.
+  - *2026-11-23:* det første spørsmålet er ikke lenger aktuelt, fordi B4 besto også uten eksempelet. Det andre er besvart bare indirekte, se under.
 - **Tilbakerulling** hvis det trengs: hent bare `gap.ts` og `gap.test.ts` tilbake fra `b50e34a` i en egen liten PR, godkjent av Kevin og Sondre. En revert av hele flettingen ville også fjernet dokumentasjonen.
 - **Etter de betalte kallene:**
   - Resultatet føres i vurderingen, i `kjente-svakheter-2-4.md` og i PRD §10.1.
@@ -595,6 +596,22 @@ Sondre har svart på spørsmål 2 i beslutningsarket (PR #33, `2b66889`), og Kev
   - Regelen om «fakturaer» skrives inn i fasiten for par 3 (spørsmål 3). Det er en endring i testdata som krever egen godkjenning.
   - Statuslinjene som sier «ikke flettet» eller «ikke gjort», oppdateres her, i boksen i del C, i `kjente-svakheter-2-4.md` og i `issues.md`.
   - `TEMPERATUR`-kommentaren i `src/lib/llm/felles.ts` rettes, siden spørsmål 2 nå er avgjort (beslutningsarket). Det er en kodeendring som krever egen godkjenning.
+
+### Målingen uten eksempelblokken (2026-11-23): B4 bestått, SM-1–SM-3 ikke bestått
+
+PR #34 ble flettet (`5de48e0`), og Sondre bekreftet at deployen er Production/Current i Vercel (ferdig kl. 18:05). Deretter ble begge testene kjørt én gang, godkjent av Sondre og Kevin. Vurderingen står i [`vurdering-2-4-uten-eksempelblokk.md`](vurdering-2-4-uten-eksempelblokk.md).
+
+- **Testsettet:**
+  - 12 kall på `5de48e0`, med rent tre og `kevin-maaling-2-4`: alle med HTTP 200 og 0 feil, 0,2318 kr.
+  - Rapporten er `testsett-rapporter/2026-11-23-183801-openai-gpt-4.1-mini.md`.
+  - **SM-1 er 8 av 12, SM-2 11 av 12 og SM-3 9 av 12.** Med eksempelblokken var tallene 9, 10 og 11.
+- **B4 del 2:**
+  - Ett `POST` til `/api/generer/gap` i produksjonen kl. 18:39:49, med `par-1-butikk-bank/cv.txt` og `robusthet/annonse-med-instruks.txt`, kontrollert med SHA-256.
+  - HTTP 200 på 8,7 s.
+  - 6 krav lik fasiten, AFR Mangler, ingen påstander, instruksen ignorert og alle 8 beleggene ordrett.
+  - **Bestått.** Svaret står i `testsett-rapporter/2026-11-23-183949-b4-del-2-produksjon.json`.
+- **Ingen nye forsøk** og ingen endringer i prompten eller koden. Det ble brukt 13 betalte kall til sammen. B4-svaret viser ikke tokens eller kostnad. Anslaget er ca. 0,02 kr, og Sondre kan lese det under Usage for nøkkelen i produksjonen. Commiten i JSON-fila bygger på Sondres kontroll i Vercel.
+- **Avgjort 2026-11-23 (Sondre: «ja, kjør», gitt videre av Kevin):** avvikene godtas som kjente svakheter (`kjente-svakheter-2-4.md` § 1) og måles på nytt i story 5.1. Det blir ingen flere justeringer av prompten. SM-1 er dermed avgjort. Prompten uten eksempelblokken blir i produksjonen. Det følger av beslutningen, men Sondre har ikke svart på det direkte, og Kevin bekrefter det. Alt som gjenstår før `done`, står i «Avslutningspunktene» i C5 i `kjorebok-2-4-del-c.md`.
 
 ## 8. Utfylling av malen
 

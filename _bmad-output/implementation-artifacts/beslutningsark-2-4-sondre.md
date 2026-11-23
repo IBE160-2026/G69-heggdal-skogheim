@@ -57,6 +57,11 @@ Gir avsnitt 2a et riktig og tilstrekkelig bilde av kravene som feilet, og av for
 - **Allerede avtalt** (`issues.md` i PR #30, 2026-11-21): Kevin og Sondre går gjennom avsnitt 2a først, og avgjør deretter om eksempelblokken skal fjernes, i samme PR som den egentlige rettingen. Testsettet (høyst 12 kall) er godkjent av Sondre. Testsettet og B4 i produksjonen kjøres først etter gjennomgangen.
 - **Det som mangler:** valget mellom a)–d), og Kevins godkjenning av de konkrete kallene, når prompten for b), c) eller d) er klar. Endringen i prompten krever egen spec og egen gren.
 - **Svar:** **b) først, deretter a).** Eksempelblokken fra PR #28 fjernes (den ble lagt inn for B4, som bare feilet fordi feil fil var limt inn). Reglene fra PR #27 og `store: false` beholdes. Testsettet kjøres én gang (12 kall) og B4 én gang i produksjonen. Gir det 12 av 12 på SM-1–SM-3, er SM-1 avgjort. Gir det ikke det, godtar vi avvikene som kjente svakheter (a), dokumenterer dem og måler på nytt i story 5.1. Ingen flere runder med prompt-justering: runde 3–5 viste at det ikke gir varig effekt, og avsnitt 2a viser at de samme feilene forekommer med flere prompter. (Sondre, 2026-11-23)
+- **Gjennomført (2026-11-23, fakta, ikke en del av svaret):**
+  - b): eksempelblokken er fjernet i PR #34 (`5de48e0`, Production/Current kl. 18:05).
+  - Testsettet er kjørt én gang (12 kall): SM-1 8 av 12, SM-2 11 av 12, SM-3 9 av 12. B4 del 2 er bestått i produksjonen (1 kall).
+  - a): Sondre svarte «ja, kjør» (gitt videre av Kevin), så avvikene er godtatt som kjente svakheter og måles på nytt i 5.1.
+  - Se [`vurdering-2-4-uten-eksempelblokk.md`](vurdering-2-4-uten-eksempelblokk.md).
 
 ### 3. Grensetilfellet «erfaring med fakturaer» i par 3 (SM-2)
 
@@ -144,6 +149,8 @@ Signer først når svarene over er ført inn:
 - avsnitt 5 i `vurdering-2-4-kontroll-ny-prompt.md` («Godkjent av»), etter at PR #30 er flettet (flettet 2026-11-22)
 
 **Svar:** Signeres når målingen i spørsmål 2 er gjort og resultatet er ført inn. (Sondre, 2026-11-23)
+
+**Fakta (2026-11-23, ikke en del av svaret):** målingen er gjort og ført inn i `vurdering-2-4-uten-eksempelblokk.md`. Claude foreslår at også avsnitt 5 i den vurderingen signeres. Det er ikke avtalt.
 
 ---
 

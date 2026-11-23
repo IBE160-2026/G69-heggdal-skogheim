@@ -14,6 +14,8 @@
 
 **Tittel B (avslutningen):** `Story 2.4: C5 fullført, [AVGJØRES: SM-1 avgjort / avvikene godtatt], og 2-4 satt til done`
 
+> **2026-11-23:** SM-1 er avgjort ved at avvikene uten eksempelblokken er godtatt som kjente svakheter (Sondre og Kevin). Tittelen fylles ut når de andre punktene i «Avslutningspunktene» i C5 i `kjorebok-2-4-del-c.md` er gjort. Grenen `story-2.4-avslutning-maaling` har dokumentasjonen av målingen og er ikke den avsluttende PR-en.
+
 ---
 
 ## Formål
