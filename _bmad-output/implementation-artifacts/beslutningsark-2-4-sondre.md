@@ -92,7 +92,7 @@ Regelen i C5 krever at SM-1 er «avgjort».
   - b) beholde den til en eventuell ny måling (alternativ b eller c i spørsmål 2) er gjort
 - **Anbefaling:** b) hvis spørsmål 2 blir b), c) eller d). Ellers a).
 - **Risiko ved b):** ifølge C2 i `kjorebok-2-4-del-c.md` trekker nøkkelen fra målingen trolig fra den samme kreditten på 5 USD som produksjonen, og den «bør roteres eller slettes før eller like etter C3». Et alternativ er å slette den nå og lage en ny nøkkel for målingen når den skal kjøres. Det er Sondres og Kevins valg, og ingen nøkler er endret.
-- **Svar:** **b).** Nøkkelen beholdes til målingen i spørsmål 2 er kjørt, og Sondre sletter den hos OpenAI rett etterpå. Kevin sletter Mistral-nøkkelen og fjerner begge fra `.env.local`. (Sondre, 2026-11-23)
+- **Svar:** **b).** Nøkkelen beholdes til målingen i spørsmål 2 er kjørt, og Sondre sletter den hos OpenAI rett etterpå. Kevin sletter Mistral-nøkkelen og fjerner begge fra `.env.local`. (Sondre, 2026-11-23) **Gjort 2026-11-24:** Sondre har slettet `kevin-maaling-2-4` hos OpenAI, Kevin har slettet Mistral-nøkkelen, og begge verdiene er tømt i `.env.local`.
 
 ### 6. De to tomme svarene i B4 (16:01 og 16:36)
 
