@@ -569,6 +569,8 @@ slik at jeg kan forbedre CV-teksten uten å miste kontrollen.
 
 **Realiserer:** FR-3 (tilbake og ny kjøring), FR-5, FR-21, AD-6 (forkaste sene svar), UX-DR8, UX-DR9, UX-DR18, UX-DR24
 
+**Avhengighet (avtalt med Sondre 2026-11-24):** 2.7 startes først når Sondres retting av en mislykket *Generer på nytt* er flettet til `main`. Den er flettet i PR #41 (`3dee41f`, `spec-generer-paa-nytt-beholder-forrige.md`), og funnet fra gjennomgangen av 2.6 er merket som rettet i `deferred-work.md`. Etter rettingen endrer en generering som feiler, ingenting av det som var der. Analysen, redigeringene (`redigert`) og «· redigert» på fanen står som før, og bare feilmeldingen kommer i tillegg. Dialogen ved *Analyser* og listen over redigerte faner kan derfor bygge på `redigert !== null`, også etter en feil. Rettingen og 2.7 endrer begge `src/lib/okt/tilstand.ts` og `src/components/Resultat.tsx`, og derfor kommer de i denne rekkefølgen.
+
 **Akseptansekriterier:**
 
 **Gitt** resultatsiden
