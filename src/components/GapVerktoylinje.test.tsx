@@ -232,6 +232,18 @@ describe("GapVerktoylinje, Generer på nytt", () => {
     expect(document.activeElement).toBe(generer());
   });
 
+  it("FR-19: etter en feil med en forrige analyse virker Kopier, og Generer på nytt har dialogen", () => {
+    vis({ status: "feil", feilkode: "llm_feil", redigert: redigertSvar() });
+
+    expect(kopierKnapp().getAttribute("aria-disabled")).toBeNull();
+    expect(generer().getAttribute("aria-disabled")).toBeNull();
+
+    fireEvent.click(generer());
+
+    expect(screen.getByRole("alertdialog")).toBeTruthy();
+    expect(gapKall(mock)).toHaveLength(0);
+  });
+
   it("FR-19: Lag ny sender én ny POST, og knappen får fokus tilbake", async () => {
     vis({ redigert: redigertSvar() });
 

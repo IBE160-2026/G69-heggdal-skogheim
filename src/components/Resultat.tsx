@@ -26,8 +26,10 @@ export function Resultat() {
   const { tilstand, dispatch } = useOkt();
   const overskrift = useRef<HTMLHeadingElement>(null);
   const gap = tilstand.innhold.resultatdeler.gap;
-  const analyse = gap ? (gap.redigert ?? gap.generert) : null;
   const genererer = !gap || gap.status === "venter" || gap.status === "genererer";
+  // FR-19: under en ny generering ligger den forrige analysen bare i tilstanden.
+  const analyse = genererer ? null : (gap.redigert ?? gap.generert);
+  const redigert = !genererer && gap.redigert !== null;
 
   // Fokus til «Resultat» når siden åpnes (UX-DR24).
   useEffect(() => {
@@ -84,7 +86,7 @@ export function Resultat() {
             <TabsTrigger value="gap" className="h-11 flex-none px-3 lg:h-9">
               {FANENAVN_GAP}
               {/* UX-DR10: synlig og lest opp som en del av fanenavnet. */}
-              {gap?.redigert ? " · redigert" : null}
+              {redigert ? " · redigert" : null}
               {genererer ? (
                 <>
                   <Loader2
@@ -105,8 +107,9 @@ export function Resultat() {
             className="pt-4 text-base"
           >
             {/* Verktøylinjen står fast over innholdet, så knappen beholder fokus under
-                ny generering. Ved feil har varselet *Prøv igjen* i stedet. */}
-            {gap?.status === "feil" ? null : <GapVerktoylinje />}
+                ny generering. Ved feil uten en forrige analyse har varselet *Prøv igjen*
+                i stedet. */}
+            {gap?.status === "feil" && !analyse ? null : <GapVerktoylinje />}
             <GapAnalyseFane />
           </TabsContent>
         </Tabs>

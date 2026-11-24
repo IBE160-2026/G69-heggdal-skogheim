@@ -31,7 +31,9 @@ export function GapVerktoylinje() {
   const [apen, setApen] = useState(false);
   const gap = tilstand.innhold.resultatdeler.gap;
   const analyse = gap ? (gap.redigert ?? gap.generert) : null;
-  const opptatt = gap?.status !== "ferdig" || !analyse;
+  // Etter en feil står den forrige analysen igjen, og knappene virker på den.
+  const opptatt =
+    (gap?.status !== "ferdig" && gap?.status !== "feil") || !analyse;
   const erRedigert = gap?.redigert != null;
 
   async function kopier() {

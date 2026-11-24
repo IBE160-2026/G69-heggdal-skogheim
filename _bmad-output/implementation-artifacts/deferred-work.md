@@ -102,7 +102,7 @@
   evidence: A provider 429 `insufficient_quota` maps to `llm_feil` on purpose (NFR-3); the pipeline test shows the demo still works, but the UI does not point there.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-6-redigere-kopiere-og-generere-gap-analysen-paa-nytt.md`
   summary: A failed *Generer på nytt* discards the previous gap analysis, because `genereringStartet` nulls `generert` and `redigert` before the new answer arrives.
-  evidence: `src/lib/okt/tilstand.ts` genereringStartet (from story 2.2) clears both; on error the tab shows only the alert with *Prøv igjen*. CV text and ad are kept. Consider keeping the previous result until the new one succeeds.
+  evidence: `src/lib/okt/tilstand.ts` genereringStartet (from story 2.2) clears both; on error the tab shows only the alert with *Prøv igjen*. CV text and ad are kept. Consider keeping the previous result until the new one succeeds. **Fixed 2026-11-24** in `spec-generer-paa-nytt-beholder-forrige.md`.
 
 ## Deferred from: story 2.4 del C, manual SM-4 assessment (2026-11-20)
 
