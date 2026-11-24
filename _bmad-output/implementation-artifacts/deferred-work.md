@@ -99,7 +99,7 @@
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-5-forstaaelige-feil-uten-tap-av-data.md`
   summary: When the provider credit is used up, the user gets `llm_feil` with *Prøv igjen* (which cannot help) and no pointer to *Prøv med eksempel*; decide in 2.4/production whether to detect quota exhaustion or add the example button to `llm_feil`.
-  evidence: A provider 429 `insufficient_quota` maps to `llm_feil` on purpose (NFR-3); the pipeline test shows the demo still works, but the UI does not point there.
+  evidence: A provider 429 `insufficient_quota` maps to `llm_feil` on purpose (NFR-3); the pipeline test shows the demo still works, but the UI does not point there. **Fixed 2026-11-24** in `spec-oppbrukt-kreditt.md`.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-6-redigere-kopiere-og-generere-gap-analysen-paa-nytt.md`
   summary: A failed *Generer på nytt* discards the previous gap analysis, because `genereringStartet` nulls `generert` and `redigert` before the new answer arrives.
   evidence: `src/lib/okt/tilstand.ts` genereringStartet (from story 2.2) clears both; on error the tab shows only the alert with *Prøv igjen*. CV text and ad are kept. Consider keeping the previous result until the new one succeeds. **Fixed 2026-11-24** in `spec-generer-paa-nytt-beholder-forrige.md`.

@@ -63,7 +63,7 @@ Merkevarestemmen står i `DESIGN.md` (Brand & Style). Her er reglene for mikrote
 | «Analyser» | «Start KI-magien» |
 | «Du dekker 3 av 6 krav. 2 er delvis oppfylt.» | «Flott! Du er en sterk kandidat!» |
 | «Står ikke i CV-en din. Har du denne erfaringen? Trykk *Endre CV-tekst* og legg den inn.» | «Du mangler dette.» |
-| «Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen.» | «Noe gikk galt.» |
+| «Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen, eller bruk *Prøv med eksempel*.» (endret 2026-11-24, `spec-oppbrukt-kreditt.md`) | «Noe gikk galt.» |
 | «Veiledende treff, ikke en ATS-score.» | «Din ATS-score: 22 %» |
 | «Skriver søknadsbrevet …» | «Tenker …» |
 
@@ -116,10 +116,10 @@ Visuell utforming står i `DESIGN.md` (Components).
 | Genererer fane | Resultat | Skjelett og en synlig tekst om hva som skjer, for eksempel «Skriver søknadsbrevet …». Brukeren kan bytte fane. |
 | Venter på gap-analysen | *Søknadsbrev*, *CV-forbedringer*, *ATS-forslag* | «Venter på gap-analysen …», og genereringen starter av seg selv når den er klar. |
 | Gap-analysen feilet | De tre andre fanene | «Denne delen bygger på gap-analysen. Prøv gap-analysen på nytt først.» med knapp til fanen. |
-| Feil eller tidsavbrudd fra språkmodellen | Fanen det gjelder | `Alert` med feilmelding og *Prøv igjen*. Tekstene og andre faner er urørt (FR-22). |
+| Feil eller tidsavbrudd fra språkmodellen | Fanen det gjelder | `Alert` med feilmelding, *Prøv igjen* og *Prøv med eksempel* (se raden om kreditt under). Tekstene og andre faner er urørt (FR-22). |
 | Ugyldig svar fra språkmodellen | Fanen det gjelder | Som over: «Svaret fra språkmodellen kunne ikke brukes. Prøv igjen.» |
 | Grensen for bruk er nådd | Forberedelse eller fane | «Appen har nådd grensen for bruk akkurat nå. Prøv igjen senere, eller bruk *Prøv med eksempel*.» Ingen *Prøv igjen*-knapp (NFR-3). |
-| Kreditten hos leverandøren er brukt opp | Fanen det gjelder | Som feil fra språkmodellen (`llm_feil`), ikke som grensen for bruk. *Prøv med eksempel* virker fortsatt (NFR-3). |
+| Kreditten hos leverandøren er brukt opp | Fanen det gjelder | Som feil fra språkmodellen (`llm_feil`), ikke som grensen for bruk: «Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen, eller bruk *Prøv med eksempel*.» med *Prøv igjen* og *Prøv med eksempel*. Feil og tidsavbrudd fra språkmodellen viser samme tekst og begge knappene, siden *Prøv igjen* ikke hjelper når kreditten er brukt opp, mens *Prøv med eksempel* virker (NFR-3). Endret 2026-11-24 (`spec-oppbrukt-kreditt.md`). |
 | Egen CV uten nøkkel (`demo_krever_nokkel`) | Fane | «Full analyse av din egen CV krever en API-nøkkel. Prøv eksempelet for å se hvordan resultatet ser ut.» med knappen *Prøv med eksempel*. Ingen *Prøv igjen*-knapp. Samme tekst som varselet i forberedelsen. |
 | Serveren avviser teksten som for lang (`for_lang_tekst`) | Fane | «Teksten er for lang til å analyseres. CV-en kan være maks 15 000 tegn og annonsen maks 8 000. Gå tilbake og kort ned teksten.» Ingen *Prøv igjen*-knapp. |
 | Serveren avviser teksten som for kort (`for_kort_tekst`) | Fane | «Teksten er for kort til å analyseres. Annonsen må være minst 200 tegn. Gå tilbake og legg til mer.» Ingen *Prøv igjen*-knapp. |
@@ -217,7 +217,7 @@ Kontrast står i `DESIGN.md`. Alle tekstpar er AA, og kanter og fokusring er min
 8. Hun åpner *Søknadsbrev*. «Skriver søknadsbrevet …», og så kommer brevet med *Bygger på* under. Hun endrer en setning og trykker *Kopier*.
 9. Hun lukker fanen. Ingenting ligger igjen.
 
-**Feil:** Språkmodellen svarer ikke i steg 5. Fanen viser «Språkmodellen svarte ikke. Teksten din er tatt vare på.» og *Prøv igjen*. CV-teksten og annonsen er urørt.
+**Feil:** Språkmodellen svarer ikke i steg 5. Fanen viser «Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen, eller bruk *Prøv med eksempel*.» med *Prøv igjen* og *Prøv med eksempel* (endret 2026-11-24, `spec-oppbrukt-kreditt.md`). CV-teksten og annonsen er urørt.
 
 **Variant, erfaring som mangler:** Ida kommer på at hun også hjelper kunder med betalingsterminalen i butikken, noe som ikke står i CV-en. Hun trykker *Endre CV-tekst*, legger det inn og trykker *Analyser*. Hun har redigert brevet, så dialogen sier «Redigeringene dine i Søknadsbrev blir overskrevet.» Hun bekrefter, og en ny kjøring starter. Hadde hun ombestemt seg før hun endret teksten, kunne hun trykket *Tilbake til resultatet*.
 

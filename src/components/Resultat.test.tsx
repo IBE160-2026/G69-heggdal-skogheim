@@ -178,7 +178,7 @@ describe("Resultat", () => {
     await svarFeil(new Response("<html>", { status: 504 }));
 
     expect(screen.getByRole("alert").textContent).toContain(
-      "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen.",
+      "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen, eller bruk Prøv med eksempel.",
     );
     expect(screen.getByRole("button", { name: "Prøv igjen" })).toBeTruthy();
   });
@@ -187,12 +187,12 @@ describe("Resultat", () => {
     [
       "504 uten JSON",
       () => new Response("Gateway Timeout", { status: 504 }),
-      "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen.",
+      "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen, eller bruk Prøv med eksempel.",
     ],
     [
       "svar som ikke er JSON",
       () => new Response("<html>", { status: 500 }),
-      "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen.",
+      "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen, eller bruk Prøv med eksempel.",
     ],
     [
       "ugyldig_svar",
@@ -225,7 +225,7 @@ describe("Resultat", () => {
     await vent();
 
     expect(screen.getByRole("alert").textContent).toContain(
-      "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen.",
+      "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen, eller bruk Prøv med eksempel.",
     );
     expect(screen.getByRole("button", { name: "Prøv igjen" })).toBeTruthy();
   });
@@ -238,6 +238,56 @@ describe("Resultat", () => {
 
     expect(screen.queryByRole("button", { name: "Prøv igjen" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Prøv med eksempel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Bruk eksempelet" }));
+    expect(gapKall(mock)).toHaveLength(2);
+    await svar200();
+
+    expect(screen.queryByRole("alert")).toBeNull();
+    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe(
+      "Sommervikar – kundebehandler",
+    );
+  });
+
+  it("NFR-3: llm_feil på egen tekst (for eksempel oppbrukt kreditt) har både Prøv igjen og Prøv med eksempel, og Prøv med eksempel viser eksempelet", async () => {
+    mock = apiMock(
+      () =>
+        new Promise<Response>((ferdig) => {
+          svarNa = ferdig;
+        }),
+      "ekte",
+    );
+    vi.stubGlobal("fetch", mock);
+    await act(async () => {
+      render(
+        <OktProvider>
+          <Home />
+          <Kunngjoring />
+        </OktProvider>,
+      );
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Lim inn CV-teksten" }));
+    fireEvent.change(screen.getByLabelText("CV-tekst"), {
+      target: { value: "Kari Nordmann\nButikkmedarbeider i fem år." },
+    });
+    fireEvent.change(screen.getByLabelText("Annonse"), {
+      target: { value: "Vi søker en kundebehandler. ".repeat(10) },
+    });
+    fireEvent.click(screen.getByRole("checkbox"));
+    fireEvent.click(document.getElementById(ANALYSER_ID)!);
+    await vent();
+    expect(JSON.parse(String(gapKall(mock)[0][1]?.body)).demo).not.toBe(true);
+
+    await svarFeil(Response.json({ feil: { kode: "llm_feil" } }, { status: 502 }));
+
+    const varsel = screen.getByRole("alert");
+    expect(
+      Array.from(varsel.querySelectorAll("button")).map((k) => k.textContent),
+    ).toEqual(["Prøv igjen", "Prøv med eksempel"]);
+    fireEvent.click(
+      Array.from(varsel.querySelectorAll("button")).find(
+        (k) => k.textContent === "Prøv med eksempel",
+      )!,
+    );
     fireEvent.click(screen.getByRole("button", { name: "Bruk eksempelet" }));
     expect(gapKall(mock)).toHaveLength(2);
     await svar200();
@@ -303,7 +353,9 @@ describe("Resultat", () => {
 
     const varsel = screen.getByRole("alert");
     expect(varsel.textContent).toContain("Språkmodellen svarte ikke.");
-    expect(varsel.querySelector("button")).toBeNull();
+    expect(
+      Array.from(varsel.querySelectorAll("button")).map((k) => k.textContent),
+    ).toEqual(["Prøv med eksempel"]);
     expect(
       (document.getElementById("krav-0-tekst") as HTMLTextAreaElement).value,
     ).toBe("Endret krav");

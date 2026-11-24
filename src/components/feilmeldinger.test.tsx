@@ -14,11 +14,11 @@ function tekst(nokkel: keyof typeof FEILMELDINGER): string {
 }
 
 const SVARTE_IKKE =
-  "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen.";
+  "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen, eller bruk Prøv med eksempel.";
 
 const FORVENTET: [keyof typeof FEILMELDINGER, string, boolean, boolean][] = [
-  ["llm_feil", SVARTE_IKKE, true, false],
-  ["llm_tidsavbrudd", SVARTE_IKKE, true, false],
+  ["llm_feil", SVARTE_IKKE, true, true],
+  ["llm_tidsavbrudd", SVARTE_IKKE, true, true],
   ["ugyldig_svar", "Svaret fra språkmodellen kunne ikke brukes. Prøv igjen.", true, false],
   [
     "grense_naadd",

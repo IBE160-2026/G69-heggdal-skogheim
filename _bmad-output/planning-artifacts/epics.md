@@ -516,7 +516,7 @@ slik at jeg ikke mister teksten min.
 
 **Gitt** én meldingstabell i UI-et
 **Når** en fane får `llm_feil`, `llm_tidsavbrudd` eller `ugyldig_svar`
-**Så** vises en `Alert` med `role="alert"` i fanen, med en melding som sier hva som skjedde og hva brukeren kan gjøre (for eksempel «Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen.»), og en *Prøv igjen*-knapp som gir fokus til fanepanelet
+**Så** vises en `Alert` med `role="alert"` i fanen, med en melding som sier hva som skjedde og hva brukeren kan gjøre (for eksempel «Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen, eller bruk *Prøv med eksempel*.»), en *Prøv igjen*-knapp som gir fokus til fanepanelet og, ved `llm_feil` og `llm_tidsavbrudd`, en *Prøv med eksempel*-knapp (endret 2026-11-24, `spec-oppbrukt-kreditt.md`)
 **Og** CV-teksten, annonsen og andre faner er urørt
 
 **Gitt** `grense_naadd`

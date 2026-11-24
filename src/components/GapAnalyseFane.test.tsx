@@ -368,13 +368,13 @@ describe("GapAnalyseFane, laster og feil", () => {
   );
 
   const SVARTE_IKKE =
-    "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen.";
+    "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen, eller bruk Prøv med eksempel.";
 
   it.each<[Feilkode | null, string, string[]]>([
-    ["llm_feil", SVARTE_IKKE, ["Prøv igjen"]],
-    ["llm_tidsavbrudd", SVARTE_IKKE, ["Prøv igjen"]],
+    ["llm_feil", SVARTE_IKKE, ["Prøv igjen", "Prøv med eksempel"]],
+    ["llm_tidsavbrudd", SVARTE_IKKE, ["Prøv igjen", "Prøv med eksempel"]],
     // En feil uten kode behandles som llm_feil.
-    [null, SVARTE_IKKE, ["Prøv igjen"]],
+    [null, SVARTE_IKKE, ["Prøv igjen", "Prøv med eksempel"]],
     [
       "ugyldig_svar",
       "Svaret fra språkmodellen kunne ikke brukes. Prøv igjen.",
@@ -430,7 +430,9 @@ describe("GapAnalyseFane, laster og feil", () => {
     vis({ status: "feil", feilkode: "llm_feil", generert: svar, redigert });
 
     const varsel = screen.getByRole("alert");
-    expect(varsel.querySelector("button")).toBeNull();
+    expect(
+      Array.from(varsel.querySelectorAll("button")).map((k) => k.textContent),
+    ).toEqual(["Prøv med eksempel"]);
     const felt = document.getElementById("krav-0-tekst") as HTMLTextAreaElement;
     expect(felt.value).toBe("Endret");
     expect(
