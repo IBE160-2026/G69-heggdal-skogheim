@@ -421,4 +421,37 @@ describe("GapAnalyseFane, laster og feil", () => {
       }
     },
   );
+
+  it("FR-19: feil med en forrige analyse viser varselet uten Prøv igjen og analysen under", () => {
+    const redigert: GapAnalyse = {
+      ...svar,
+      krav: svar.krav.map((k, nr) => (nr === 0 ? { ...k, tekst: "Endret" } : k)),
+    };
+    vis({ status: "feil", feilkode: "llm_feil", generert: svar, redigert });
+
+    const varsel = screen.getByRole("alert");
+    expect(varsel.querySelector("button")).toBeNull();
+    const felt = document.getElementById("krav-0-tekst") as HTMLTextAreaElement;
+    expect(felt.value).toBe("Endret");
+    expect(
+      varsel.compareDocumentPosition(felt) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it("FR-22: feil med en forrige analyse beholder Prøv med eksempel når koden gir den", () => {
+    vis({ status: "feil", feilkode: "grense_naadd", generert: svar });
+
+    const varsel = screen.getByRole("alert");
+    expect(
+      Array.from(varsel.querySelectorAll("button")).map((k) => k.textContent),
+    ).toEqual(["Prøv med eksempel"]);
+    expect(document.getElementById("krav-0-tekst")).not.toBeNull();
+  });
+
+  it("FR-19: under en ny generering vises skjelettet, ikke den forrige analysen", () => {
+    vis({ status: "genererer", generert: svar });
+
+    expect(document.querySelector("[data-slot=skeleton]")).not.toBeNull();
+    expect(document.getElementById("krav-0-tekst")).toBeNull();
+  });
 });

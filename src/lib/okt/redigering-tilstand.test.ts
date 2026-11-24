@@ -121,19 +121,153 @@ describe("kravRedigert", () => {
     expect(rediger(startTilstand, 0, "tekst", "x")).toBe(startTilstand);
   });
 
-  it("AD-6: en ny generering tømmer både generert og redigert", () => {
+  it("FR-19: en ny generering beholder forrige analyse og redigeringer til svaret kommer", () => {
     const redigert = rediger(ferdig(), 0, "tekst", "Endret");
-    const neste = reducer(redigert, {
-      type: "genereringStartet",
-      resultatdel: "gap",
+    const forrige = redigert.innhold.resultatdeler.gap!;
+    const merke = {
+      resultatdel: "gap" as const,
       kjoringId: redigert.innhold.kjoring!.id,
       gapVersjon: 2,
+    };
+    const startet = reducer(redigert, { type: "genereringStartet", ...merke });
+    const gap = startet.innhold.resultatdeler.gap!;
+
+    expect(gap.status).toBe("genererer");
+    expect(gap.generert).toBe(forrige.generert);
+    expect(gap.redigert).toBe(forrige.redigert);
+    expect(startet.innhold.gapVersjon).toBe(2);
+  });
+
+  it("FR-19: en mislykket ny generering beholder forrige analyse og redigeringer", () => {
+    const redigert = rediger(ferdig(), 0, "tekst", "Endret");
+    const forrige = redigert.innhold.resultatdeler.gap!;
+    const merke = {
+      resultatdel: "gap" as const,
+      kjoringId: redigert.innhold.kjoring!.id,
+      gapVersjon: 2,
+    };
+    const startet = reducer(redigert, { type: "genereringStartet", ...merke });
+    const feilet = reducer(startet, {
+      type: "genereringFeilet",
+      ...merke,
+      feilkode: "llm_feil",
+    });
+    const gap = feilet.innhold.resultatdeler.gap!;
+
+    expect(gap.status).toBe("feil");
+    expect(gap.feilkode).toBe("llm_feil");
+    expect(gap.generert).toBe(forrige.generert);
+    expect(gap.redigert).toBe(forrige.redigert);
+    expect(feilet.kunngjoring).toBeNull();
+  });
+
+  it("FR-19: etter en mislykket ny generering kan analysen fortsatt redigeres", () => {
+    const redigert = rediger(ferdig(), 0, "tekst", "Endret");
+    const merke = {
+      resultatdel: "gap" as const,
+      kjoringId: redigert.innhold.kjoring!.id,
+      gapVersjon: 2,
+    };
+    const startet = reducer(redigert, { type: "genereringStartet", ...merke });
+    const feilet = reducer(startet, {
+      type: "genereringFeilet",
+      ...merke,
+      feilkode: "llm_feil",
+    });
+    const neste = rediger(feilet, 1, "tekst", "Etter feilen");
+    const gap = neste.innhold.resultatdeler.gap!;
+
+    expect(gap.status).toBe("feil");
+    expect(gap.redigert!.krav[0].tekst).toBe("Endret");
+    expect(gap.redigert!.krav[1].tekst).toBe("Etter feilen");
+    // Under genereringen kan ingenting redigeres.
+    expect(rediger(startet, 1, "tekst", "Under")).toBe(startet);
+  });
+
+  it("FR-19: en vellykket ny generering erstatter analysen og nullstiller redigeringene", () => {
+    const redigert = rediger(ferdig(), 0, "tekst", "Endret");
+    const merke = {
+      resultatdel: "gap" as const,
+      kjoringId: redigert.innhold.kjoring!.id,
+      gapVersjon: 2,
+    };
+    const startet = reducer(redigert, { type: "genereringStartet", ...merke });
+    const nytt: GapAnalyse = { ...svar, stilling: "Ny stilling" };
+    const ferdigIgjen = reducer(startet, {
+      type: "genereringFerdig",
+      ...merke,
+      data: nytt,
+    });
+    const gap = ferdigIgjen.innhold.resultatdeler.gap!;
+
+    expect(gap.status).toBe("ferdig");
+    expect(gap.generert).toBe(nytt);
+    expect(gap.redigert).toBeNull();
+  });
+
+  it("FR-19: et svar for en eldre gap-versjon endrer ikke den beholdte analysen", () => {
+    const redigert = rediger(ferdig(), 0, "tekst", "Endret");
+    const kjoringId = redigert.innhold.kjoring!.id;
+    const startet = reducer(redigert, {
+      type: "genereringStartet",
+      resultatdel: "gap",
+      kjoringId,
+      gapVersjon: 2,
+    });
+
+    expect(
+      reducer(startet, {
+        type: "genereringFeilet",
+        resultatdel: "gap",
+        kjoringId,
+        gapVersjon: 1,
+        feilkode: "llm_feil",
+      }),
+    ).toBe(startet);
+  });
+
+  it("FR-19: et sent genereringFerdig for en eldre gap-versjon endrer ikke den beholdte analysen", () => {
+    const redigert = rediger(ferdig(), 0, "tekst", "Endret");
+    const forrige = redigert.innhold.resultatdeler.gap!;
+    const kjoringId = redigert.innhold.kjoring!.id;
+    const startet = reducer(redigert, {
+      type: "genereringStartet",
+      resultatdel: "gap",
+      kjoringId,
+      gapVersjon: 2,
+    });
+    const neste = reducer(startet, {
+      type: "genereringFerdig",
+      resultatdel: "gap",
+      kjoringId,
+      gapVersjon: 1,
+      data: { ...svar, stilling: "Sent svar" },
     });
     const gap = neste.innhold.resultatdeler.gap!;
 
-    expect(gap.generert).toBeNull();
-    expect(gap.redigert).toBeNull();
-    expect(neste.innhold.gapVersjon).toBe(2);
+    expect(neste).toBe(startet);
+    expect(gap.generert).toBe(forrige.generert);
+    expect(gap.redigert).toBe(forrige.redigert);
+  });
+
+  it("FR-19: Tilbake etter en mislykket ny generering fjerner den beholdte analysen", () => {
+    const redigert = rediger(ferdig(), 0, "tekst", "Endret");
+    const merke = {
+      resultatdel: "gap" as const,
+      kjoringId: redigert.innhold.kjoring!.id,
+      gapVersjon: 2,
+    };
+    const startet = reducer(redigert, { type: "genereringStartet", ...merke });
+    const feilet = reducer(startet, {
+      type: "genereringFeilet",
+      ...merke,
+      feilkode: "llm_feil",
+    });
+    expect(feilet.innhold.resultatdeler.gap!.redigert).not.toBeNull();
+
+    const tilbake = reducer(feilet, { type: "tilbakeTrykket" });
+
+    expect(tilbake.innhold.resultatdeler.gap).toBeNull();
   });
 
   it("UX-DR23: redigering endrer ikke live-regionen", () => {

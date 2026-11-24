@@ -309,7 +309,11 @@ function medRedigering(
   handling: { indeks: number; felt: RedigerbartFelt; verdi: string },
 ): OktTilstand {
   const gap = tilstand.innhold.resultatdeler.gap;
-  const analyse = gap?.status === "ferdig" ? (gap.redigert ?? gap.generert) : null;
+  // Etter en feil står den forrige analysen igjen og kan fortsatt redigeres.
+  const analyse =
+    gap?.status === "ferdig" || gap?.status === "feil"
+      ? (gap.redigert ?? gap.generert)
+      : null;
   const krav = analyse?.krav[handling.indeks];
   if (!gap || !analyse || !krav) return tilstand;
   if (handling.felt === "raad" && krav.nedgradert) return tilstand;
@@ -439,13 +443,14 @@ export function reducer(
       if (kjoring?.id !== handling.kjoringId || !resultatdeler.gap) {
         return tilstand;
       }
+      // FR-19: den forrige analysen og redigeringene beholdes til et nytt svar kommer,
+      // så en feil ikke tar dem med seg. Under genereringen vises de ikke.
       return medGap(
         tilstand,
         {
+          ...resultatdeler.gap,
           status: "genererer",
           feilkode: null,
-          generert: null,
-          redigert: null,
           gapVersjon: handling.gapVersjon,
         },
         ANALYSERER,
@@ -464,24 +469,25 @@ export function reducer(
         },
         gapKlarTekst(handling.data),
       );
-    case "genereringFeilet":
-      if (!gjelder(tilstand, handling)) return tilstand;
+    case "genereringFeilet": {
+      const gap = tilstand.innhold.resultatdeler.gap;
+      if (!gap || !gjelder(tilstand, handling)) return tilstand;
       // Feilen vises med role="alert" i fanen, ikke i live-regionen, og meldingen om
-      // at analysen pågår, fjernes.
+      // at analysen pågår, fjernes. En forrige analyse står igjen med redigeringene.
       return {
         ...medGap(
           tilstand,
           {
+            ...gap,
             status: "feil",
             feilkode: handling.feilkode,
-            generert: null,
-            redigert: null,
             gapVersjon: handling.gapVersjon,
           },
           null,
         ),
         kunngjoring: null,
       };
+    }
     case "kravRedigert":
       return medRedigering(tilstand, handling);
     case "kopiert":

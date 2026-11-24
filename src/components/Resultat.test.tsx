@@ -280,6 +280,64 @@ describe("Resultat", () => {
     expect(screen.queryByRole("button", { name: "Generer på nytt" })).toBeNull();
   });
 
+  it("FR-19: når Generer på nytt feiler, står den redigerte analysen igjen under varselet", async () => {
+    await apneEksempelet();
+    await svar200();
+    fireEvent.change(document.getElementById("krav-0-tekst")!, {
+      target: { value: "Endret krav" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Generer på nytt" }));
+    fireEvent.click(screen.getByRole("button", { name: "Lag ny" }));
+    await vent();
+
+    // Under genereringen ser alt ut som før: skjelett, spinner og ikke «· redigert».
+    expect(panel().querySelector("[data-slot=skeleton]")).not.toBeNull();
+    expect(document.getElementById("krav-0-tekst")).toBeNull();
+    expect(screen.queryByRole("heading", { level: 2 })).toBeNull();
+    expect(screen.getByRole("tab").textContent).toBe(
+      "Gap-analyse og nøkkelord, genereres",
+    );
+
+    await svarFeil(Response.json({ feil: { kode: "llm_feil" } }, { status: 502 }));
+
+    const varsel = screen.getByRole("alert");
+    expect(varsel.textContent).toContain("Språkmodellen svarte ikke.");
+    expect(varsel.querySelector("button")).toBeNull();
+    expect(
+      (document.getElementById("krav-0-tekst") as HTMLTextAreaElement).value,
+    ).toBe("Endret krav");
+    expect(
+      varsel.compareDocumentPosition(document.getElementById("krav-0-tekst")!) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe(
+      svar.stilling,
+    );
+    expect(screen.getByRole("tab").textContent).toBe(
+      "Gap-analyse og nøkkelord · redigert",
+    );
+    expect(panel().getAttribute("aria-busy")).toBeNull();
+    expect(live()).not.toContain("svarte ikke");
+    const generer = screen.getByRole("button", { name: "Generer på nytt" });
+    expect(generer.getAttribute("aria-disabled")).toBeNull();
+    expect(
+      screen.getByRole("button", { name: "Kopier" }).getAttribute("aria-disabled"),
+    ).toBeNull();
+
+    // Ny generering herfra går gjennom dialogen, og et svar erstatter analysen.
+    fireEvent.click(generer);
+    fireEvent.click(screen.getByRole("button", { name: "Lag ny" }));
+    await vent();
+    await svar200();
+
+    expect(screen.queryByRole("alert")).toBeNull();
+    expect(
+      (document.getElementById("krav-0-tekst") as HTMLTextAreaElement).value,
+    ).toBe(svar.krav[0].tekst);
+    expect(screen.getByRole("tab").textContent).toBe("Gap-analyse og nøkkelord");
+  });
+
   it("FR-24: i demomodus gir Generer på nytt demosvaret igjen, og fetch går bare til egne ruter", async () => {
     await apneEksempelet();
     await svar200();

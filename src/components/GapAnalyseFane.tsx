@@ -76,11 +76,20 @@ function FastRaad() {
 }
 
 // FR-22, AD-8: feilen fra tabellen i en Alert med role="alert", aldri som toast.
-// Live-regionen gjentar den ikke.
-function Feil({ feilkode }: { feilkode: Feilkode }) {
+// Live-regionen gjentar den ikke. Står en forrige analyse under varselet, har det ikke
+// *Prøv igjen*: *Generer på nytt* i verktøylinjen gjør det samme med dialogen.
+function Feil({
+  feilkode,
+  medForrige = false,
+}: {
+  feilkode: Feilkode;
+  medForrige?: boolean;
+}) {
   const { startGenerering } = useOkt();
   const varsel = useRef<HTMLDivElement>(null);
-  const { tekst, provIgjen, provEksempel } = FEILMELDINGER[feilkode];
+  const melding = FEILMELDINGER[feilkode];
+  const { tekst, provEksempel } = melding;
+  const provIgjen = melding.provIgjen && !medForrige;
 
   function provPaaNytt() {
     // Fanepanelet (`tabIndex={-1}`) får fokus, siden knappen forsvinner med feilen
@@ -463,15 +472,17 @@ export function GapAnalyseFane() {
     return <Laster />;
   }
 
-  if (gap.status === "feil") {
-    return <Feil feilkode={gap.feilkode ?? "llm_feil"} />;
-  }
-
   const analyse = gap.redigert ?? gap.generert;
-  if (!analyse) return null;
+  const feil =
+    gap.status === "feil" ? (
+      <Feil feilkode={gap.feilkode ?? "llm_feil"} medForrige={analyse !== null} />
+    ) : null;
+  if (!analyse) return feil;
 
+  // FR-19: etter en mislykket ny generering står varselet over den forrige analysen.
   return (
     <div>
+      {feil ? <div className="mb-4">{feil}</div> : null}
       <Oppsummering krav={analyse.krav} />
       <Kravgrupper krav={analyse.krav} />
       <Treffmaler analyse={analyse} />
