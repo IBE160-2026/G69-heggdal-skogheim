@@ -17,14 +17,16 @@
 - [ ] 2026-11-19 [openai-vilkaar-og-kreditt](976-2026-11-20-12-58-08-openai-vilkaar-og-kreditt.md) — SM-1 ikke bestått (9 av 12, to krav i par 3 under fasit). Løses før innleveringen: fasiten eller modellen?
 - [ ] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — SM-4: treffprosenten i produksjonen for par 2 er 25 % mot 11 % i fasiten (modellen henter andre nøkkelord). Kevin vurderer
 - [ ] 2026-11-19 [brukertest-2-8](972-2026-11-20-20-38-53-brukertest-2-8.md) — Funn fra T1 i brukertesten: «Mangler» leses som «du mangler erfaringen». Vurder om visningen eller rådet skal si at CV-en ikke nevner det
-- [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Personvernboksen: én setning om at OpenAI kan beholde teksten i opptil 30 dager for å oppdage misbruk (egen liten PR)
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Sondre: sjekk i DPF-lista om OpenAI er sertifisert, før refleksjonsrapporten
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Sondre: sjekk om OPENAI_API_KEY er merket Sensitive i Vercel
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Refleksjonsrapporten: SM-3 9/12 med prompten i produksjonen (tre krav over fasiten) må stå tydelig
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Tomme signaturlinjer i rundevurderingene 1–5 og vurdering-2-4-leverandorvalg.md: avklar med Kevin om de skal signeres
+- [ ] 2026-11-19 [personvernboks-misbrukslogger](970-2026-11-24-12-32-42-personvernboks-misbrukslogger.md) — Sjekk personvernboksen i Vercel-forhåndsvisningen (lys/mørk, mobil) før PR #38 flettes
+- [ ] 2026-11-19 [personvernboks-misbrukslogger](970-2026-11-24-12-32-42-personvernboks-misbrukslogger.md) — Kildesjekk at Mistral beholder API-trafikk i 30 dager for misbruk (deferred-work.md)
 
 ## Løst
 
+- [x] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Personvernboksen: én setning om at OpenAI kan beholde teksten i opptil 30 dager for å oppdage misbruk (egen liten PR) (løst 2026-11-24: PR #38)
 - [x] 2026-11-19 [kevin-nokkel-og-todelte-krav](979-2026-11-19-21-42-57-kevin-nokkel-og-todelte-krav.md) — Slett Kevins OpenAI-nøkkel (kevin-maaling-2-4) når målingen i 2.4 er ferdig (løst 2026-11-24: slettet av Sondre etter signaturene)
 - [x] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Kevin, 2.4: fjern eksempelblokken fra PR #28 (egen spec og PR), kjør testsettet og B4 én gang. Ikke 12/12: godta avvikene og mål på nytt i 5.1 (løst 2026-11-23: PR #34 flettet, målingen ga SM-1 8/12, SM-2 11/12, SM-3 9/12; avvikene godtatt)
 - [x] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — Kevin, 2.4: kjør testsettet på nytt etter prompt-endringen i PR #28 og sjekk at SM-1 og SM-2 fortsatt er bestått (løst 2026-11-23: kjørt av Kevin 2026-11-20, SM-1 9/12, SM-2 10/12, SM-3 11/12; veien videre i beslutningsarket)
