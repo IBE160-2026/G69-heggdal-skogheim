@@ -21,10 +21,17 @@ export type Feilmelding = {
   provEksempel: boolean;
 };
 
+// *Prøv igjen* beholdes for feil som går over. *Prøv med eksempel* er lagt til
+// fordi oppbrukt kreditt hos leverandøren også kommer hit som `llm_feil`.
 const SPRAAKMODELLEN_SVARTE_IKKE: Feilmelding = {
-  tekst: "Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen.",
+  tekst: (
+    <>
+      Språkmodellen svarte ikke. Teksten din er tatt vare på. Prøv igjen, eller
+      bruk <em>Prøv med eksempel</em>.
+    </>
+  ),
   provIgjen: true,
-  provEksempel: false,
+  provEksempel: true,
 };
 
 // AD-8, FR-22: den ene tabellen over feilmeldinger i UI-et. Mikroteksten følger
