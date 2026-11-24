@@ -453,7 +453,7 @@ Kevin kjørte ett betalt kall i produksjonen, godkjent av Sondre, med de samme t
 ### Funn for personvernet (må vurderes, ikke bekreftet)
 
 Hvis OpenAI lagrer svarene som standard (punkt 3), lagres også CV-tekst og annonser fra ekte brukere i produksjonen hos OpenAI. Det kommer i tillegg til de 30 dagene med logger for å oppdage misbruk, som står i avsnitt 7 i `vurdering-2-4-kontroll-temperatur-0.md`.
-- Personvernboksen sier at ingenting lagres etter økten (FR-5). Det gjelder appen, men det bør vurderes om lagringen hos leverandøren må nevnes eller slås av.
+- Personvernboksen sier at ingenting lagres etter økten (FR-5). Det gjelder appen, men det bør vurderes om lagringen hos leverandøren må nevnes eller slås av. (Avgjort 2026-11-24: personvernboksen nevner det, spørsmål 9 i `beslutningsark-2-4-sondre.md`.)
 - Det kan slås av med `store: false` i `providerOptions`. Det er en kodeendring og krever godkjenning.
 - Sondre bekrefter først i dashbordet om svarene faktisk er lagret.
 
@@ -549,7 +549,7 @@ Kevin rapporterte ikke treffprosenten, at svaret var på bokmål, stillingen og 
 
 - `store: false` gjelder i produksjonen fra PR #28 (`b50e34a`), som er deployet. **Sondre har bekreftet 2026-11-20 at det virker:** ingen nye rader under Logs etter kl. 16:36.
 - De **56 forespørslene som allerede er lagret**, slettes ikke av endringen. Sondre og Kevin avgjør om de skal slettes i OpenAI-dashbordet.
-- OpenAI kan fortsatt beholde logger for å oppdage misbruk i opptil 30 dager, med mindre organisasjonen har null lagring (avsnitt 7 i vurderingen). Personvernboksen sier «Ingenting lagres» om appen. Kevin avgjør om teksten skal nevne lagringen hos leverandøren.
+- OpenAI kan fortsatt beholde logger for å oppdage misbruk i opptil 30 dager, med mindre organisasjonen har null lagring (avsnitt 7 i vurderingen). Personvernboksen sier «Ingenting lagres» om appen. Kevin avgjør om teksten skal nevne lagringen hos leverandøren. (Avgjort 2026-11-24: personvernboksen nevner det, spørsmål 9 i `beslutningsark-2-4-sondre.md`.)
 
 ### Testsettet med den nye prompten (2026-11-20)
 

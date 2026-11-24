@@ -31,7 +31,7 @@ Studenter og unge jobbsøkere har ofte mer relevant erfaring enn de selv ser. En
 
 Det som skiller verktøyet fra Jobscan, Teal og lignende, er ikke flere funksjoner. Det er ærlighet og gjennomsiktighet på norsk. Verktøyet dikter aldri opp kvalifikasjoner, og hver vurdering viser hvilken tekst i CV-en den bygger på. Treffprosenten regnes ut i kode og forklares. Det er brukeren som bestemmer, og alt språkmodellen lager er forslag som kan redigeres.
 
-**Hvorfor ikke bare bruke en generell chatbot?** Med en generell chatbot må brukeren selv skrive gode instrukser, sjekke at ingenting er diktet opp og vite hva det er lurt å be om. Her er strukturen bygget inn: annonsen brytes ned i annonsekrav, hvert belegg kontrolleres i kode mot CV-teksten (FR-9), treffprosenten regnes ut i kode og ikke av språkmodellen (FR-12), fødselsnummer maskeres før sending (FR-6), og ingenting lagres (NFR-1).
+**Hvorfor ikke bare bruke en generell chatbot?** Med en generell chatbot må brukeren selv skrive gode instrukser, sjekke at ingenting er diktet opp og vite hva det er lurt å be om. Her er strukturen bygget inn: annonsen brytes ned i annonsekrav, hvert belegg kontrolleres i kode mot CV-teksten (FR-9), treffprosenten regnes ut i kode og ikke av språkmodellen (FR-12), fødselsnummer maskeres før sending (FR-6), og appen lagrer ingenting (NFR-1).
 
 Verktøyet krever ingen konto og lagrer ingenting. Brukeren får vite før opplasting at CV-teksten sendes til en ekstern språkmodell, og alt slettes når økten er over.
 
@@ -142,7 +142,7 @@ Brukeren kan lime inn annonsen i et tekstfelt.
 #### FR-5: Informasjon om personvern og bekreftelse
 Over feltene står en kort tekst som forklarer tre ting:
 - CV-teksten sendes til en ekstern språkmodell (leverandør og land oppgis).
-- Ingenting lagres etter økten.
+- Appen lagrer ingenting, og alt er borte når fanen lukkes. Leverandøren kan likevel beholde teksten i opptil 30 dager for å oppdage misbruk (endret 2026-11-24, spørsmål 9 i `_bmad-output/implementation-artifacts/beslutningsark-2-4-sondre.md`).
 - Brukeren bør fjerne fødselsnummer, adresse, bilde og helseopplysninger.
 
 Brukeren må krysse av for at informasjonen er forstått før den første analysen i økten.

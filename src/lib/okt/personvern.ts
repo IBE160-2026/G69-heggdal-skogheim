@@ -9,3 +9,9 @@ export function overforingstekst(leverandor: LeverandorInfo | null): string {
     ? `${sendes} Det betyr at opplysningene overføres ut av EØS.`
     : sendes;
 }
+
+export function lagringstekst(leverandor: LeverandorInfo | null): string {
+  const hvem = leverandor ? leverandor.navn : "Språkmodellen";
+
+  return `Appen lagrer ingenting, og alt er borte når du lukker fanen. ${hvem} kan likevel beholde teksten i opptil 30 dager for å oppdage misbruk.`;
+}

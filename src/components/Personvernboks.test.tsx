@@ -31,7 +31,7 @@ describe("Personvernboks", () => {
     expect(html.match(/<li>/g)).toHaveLength(3);
     expect(html).toContain("<li>CV-teksten sendes til Mistral AI i Frankrike.</li>");
     expect(html).toContain(
-      "<li>Ingenting lagres. Alt er borte når du lukker fanen.</li>",
+      "<li>Appen lagrer ingenting, og alt er borte når du lukker fanen. Mistral AI kan likevel beholde teksten i opptil 30 dager for å oppdage misbruk.</li>",
     );
     expect(html).toContain(
       "<li>Du bør fjerne fødselsnummer, adresse, bilde og helseopplysninger før du analyserer.</li>",
@@ -51,8 +51,19 @@ describe("Personvernboks", () => {
   });
 
   it("FR-5: uten status står den generelle teksten", () => {
-    expect(vis(null)).toContain(
+    const html = vis(null);
+
+    expect(html).toContain(
       "<li>CV-teksten sendes til en ekstern språkmodell.</li>",
+    );
+    expect(html).toContain(
+      "<li>Appen lagrer ingenting, og alt er borte når du lukker fanen. Språkmodellen kan likevel beholde teksten i opptil 30 dager for å oppdage misbruk.</li>",
+    );
+  });
+
+  it("FR-5: med OpenAI sier boksen at OpenAI kan beholde teksten i opptil 30 dager", () => {
+    expect(vis({ navn: "OpenAI", land: "USA", tredjeland: true })).toContain(
+      "<li>Appen lagrer ingenting, og alt er borte når du lukker fanen. OpenAI kan likevel beholde teksten i opptil 30 dager for å oppdage misbruk.</li>",
     );
   });
 
