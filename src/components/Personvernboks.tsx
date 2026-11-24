@@ -4,7 +4,7 @@ import { ShieldCheck } from "lucide-react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useOkt } from "@/lib/okt/OktProvider";
-import { overforingstekst } from "@/lib/okt/personvern";
+import { lagringstekst, overforingstekst } from "@/lib/okt/personvern";
 
 export function Personvernboks() {
   const { tilstand } = useOkt();
@@ -21,7 +21,7 @@ export function Personvernboks() {
       <AlertDescription className="mt-1 text-foreground">
         <ul className="list-disc space-y-1 pl-4">
           <li>{overforingstekst(tilstand.okt.leverandor)}</li>
-          <li>Ingenting lagres. Alt er borte når du lukker fanen.</li>
+          <li>{lagringstekst(tilstand.okt.leverandor)}</li>
           <li>
             Du bør fjerne fødselsnummer, adresse, bilde og helseopplysninger før
             du analyserer.

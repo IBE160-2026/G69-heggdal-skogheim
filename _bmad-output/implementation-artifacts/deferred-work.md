@@ -118,3 +118,10 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-4-avslutning-maaling.md`
   summary: Story 5.1 re-measures SM-1, SM-2 and SM-3 on the final version. With the prompt in production (`5de48e0`, without the example block) they were 8, 11 and 9 of 12, accepted on 2026-11-23 as known weaknesses. Check the failing runs and error types specifically, and run B4 del 2 (NFR-9) again. Without the example block it passed in one call only.
   evidence: `vurdering-2-4-uten-eksempelblokk.md` and § 1 of `kjente-svakheter-2-4.md`. The error types are «Gode samarbeidsevner» Delvis oppfylt from a related job (par 3, key: Mangler), «Selvstendig og ansvarsbevisst» Oppfylt from a self-assessment (par 4, key: Delvis oppfylt), and «forståelse av Windows» in the ad's words (par 2). Decision: Sondre («ja, kjør») and Kevin, 2026-11-23, alternative a in question 2 of `beslutningsark-2-4-sondre.md`. No further prompt tuning in 2.4.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-personvernboks-misbrukslogger.md`
+  summary: In demo mode the privacy box says the text is sent to and may be kept by the named provider, although nothing is sent.
+  evidence: `lagStatus` returns a provider also when `modus` is `demo`; bullet 1 had the same issue before this change.
+- source_spec: `_bmad-output/implementation-artifacts/spec-personvernboks-misbrukslogger.md`
+  summary: The box says Mistral AI may keep the text for 30 days for abuse monitoring; this is not sourced.
+  evidence: Unverified (would be medium if wrong). Settle by checking Mistral's terms or DPA. Production uses OpenAI.

@@ -15,9 +15,11 @@
 
 > Hei! Kevin og jeg lager en app i IBE160 som sammenligner CV-en din med en stillingsannonse og viser krav for krav hva du dekker. Har du 15 minutter til å teste den med din egen CV?
 >
-> Du bruker CV-en du har, og en annonse vi gir deg. CV-teksten sendes til en språkmodell for analyse, men ingenting lagres, og vi noterer verken navnet ditt eller noe fra CV-en. Fjern gjerne fødselsnummer, adresse og bilde først. Appen viser deg hvordan.
+> Du bruker CV-en du har, og en annonse vi gir deg. CV-teksten sendes til en språkmodell for analyse. Appen lagrer ingenting, og vi noterer verken navnet ditt eller noe fra CV-en. Leverandøren av språkmodellen kan likevel beholde teksten i opptil 30 dager for å oppdage misbruk. Fjern gjerne fødselsnummer, adresse og bilde først. Appen viser deg hvordan.
 >
 > Passer det [dag/tid]?
+
+Setningen om at leverandøren kan beholde teksten i opptil 30 dager ble lagt til 2026-11-24, samme innhold som personvernboksen (spørsmål 9 i `beslutningsark-2-4-sondre.md`).
 
 ## 3. Gjennomføring
 
@@ -98,7 +100,7 @@ Brukes når testen ikke kan gjøres fysisk eller på Teams. Personen bruker appe
 > 3. Lim inn annonsen under, trykk *Analyser* og les gjennom resultatet.
 > 4. Svar på spørsmålene nederst. Ikke send oss CV-en eller noe fra den.
 >
-> CV-teksten sendes til en språkmodell for analysen, men ingenting lagres, og alt er borte når du lukker fanen.
+> CV-teksten sendes til en språkmodell for analysen. Appen lagrer ingenting, og alt er borte når du lukker fanen. Leverandøren av språkmodellen kan likevel beholde teksten i opptil 30 dager for å oppdage misbruk.
 >
 > **Annonsen:**
 > [lim inn teksten fra testdata/par-1-butikk-bank/annonse.txt]
