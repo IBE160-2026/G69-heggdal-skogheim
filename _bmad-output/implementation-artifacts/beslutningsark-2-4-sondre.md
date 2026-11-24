@@ -140,7 +140,7 @@ Punkt 4.1 i DPA-en dekker overføringen med SCC eller GDPR art. 45 (EU–U.S. Da
 
 - **Avgjør:** hvem som kontrollerer det, og når. Det kan for eksempel gjøres i DPF-lista (dataprivacyframework.gov) før refleksjonsrapporten skrives.
 - **Anbefaling:** Sondre, siden kontoen og DPA-en er hans.
-- **Svar:** Sondre kontrollerer DPF-lista (dataprivacyframework.gov) før refleksjonsrapporten skrives. (Sondre, 2026-11-23)
+- **Svar:** Sondre kontrollerer DPF-lista (dataprivacyframework.gov) før refleksjonsrapporten skrives. (Sondre, 2026-11-23) **Kontrollert 2026-11-24:** OpenAI står i DPF-lista med status *Active*. OpenAIs personvernerklæring for EU (oppdatert 2026-08-24, punkt 10) bygger overføringene på adekvansbeslutninger (DPF for USA) eller SCC etter GDPR art. 46(2)(c). Overføringen fra OpenAI Ireland Limited til OpenAI OpCo, LLC i USA er dermed dekket av DPF, med SCC i databehandleravtalen (punkt 4.1) i tillegg. (Sondre)
 
 ### 12. Signaturene
 
