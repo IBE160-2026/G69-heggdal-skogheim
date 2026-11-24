@@ -11,7 +11,6 @@
 - [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Story 5.2: sjekk med NVDA/VoiceOver om vellykket kopiering leses opp to ganger (toast «Kopiert» og live-regionen «Kopiert.»)
 - [ ] 2026-11-19 [kevin-nokkel-og-todelte-krav](979-2026-11-19-21-42-57-kevin-nokkel-og-todelte-krav.md) — Story 2.4 (Kevin): regelen for krav med to deler (Delvis oppfylt når én del er dekket) inn i gap-prompten, og fasitene sjekkes
 - [ ] 2026-11-19 [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md) — 1.6 i Safari: fødselsnummer med to trykk (krever Mac eller iPhone)
-- [ ] 2026-11-19 [testopplegg-brukertest-2-8](977-2026-11-19-22-13-05-testopplegg-brukertest-2-8.md) — Finn tre medstudenter utenfor gruppen og avtal tid til brukertesten (2.8), se testopplegget
 - [ ] 2026-11-19 [openai-vilkaar-og-kreditt](976-2026-11-20-12-58-08-openai-vilkaar-og-kreditt.md) — SM-1 ikke bestått (9 av 12, to krav i par 3 under fasit). Løses før innleveringen: fasiten eller modellen?
 - [ ] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — SM-4: treffprosenten i produksjonen for par 2 er 25 % mot 11 % i fasiten (modellen henter andre nøkkelord). Kevin vurderer
 - [ ] 2026-11-19 [brukertest-2-8](972-2026-11-20-20-38-53-brukertest-2-8.md) — Funn fra T1 i brukertesten: «Mangler» leses som «du mangler erfaringen». Vurder om visningen eller rådet skal si at CV-en ikke nevner det
@@ -19,9 +18,11 @@
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Tomme signaturlinjer i rundevurderingene 1–5 og vurdering-2-4-leverandorvalg.md: avklar med Kevin om de skal signeres
 - [ ] 2026-11-19 [personvernboks-misbrukslogger](970-2026-11-24-12-32-42-personvernboks-misbrukslogger.md) — Sjekk personvernboksen i Vercel-forhåndsvisningen (lys/mørk, mobil) før PR #38 flettes
 - [ ] 2026-11-19 [personvernboks-misbrukslogger](970-2026-11-24-12-32-42-personvernboks-misbrukslogger.md) — Kildesjekk at Mistral beholder API-trafikk i 30 dager for misbruk (deferred-work.md)
+- [ ] 2026-11-19 [brukertest-2-8](972-2026-11-20-20-38-53-brukertest-2-8.md) — Brukertest 2.8: én medstudent til utenfor gruppen (T1 var en kjenning og teller ikke i SM-10)
 
 ## Løst
 
+- [x] 2026-11-19 [testopplegg-brukertest-2-8](977-2026-11-19-22-13-05-testopplegg-brukertest-2-8.md) — Finn tre medstudenter utenfor gruppen og avtal tid til brukertesten (2.8), se testopplegget (løst 2026-11-24: Kevin har funnet to; erstattet av punktet om én til)
 - [x] 2026-11-19 [story-2-5-forstaaelige-feil](981-2026-11-19-15-45-54-story-2-5-forstaaelige-feil.md) — Story 2.4/produksjon: oppbrukt kreditt gir Prøv igjen uten henvisning til Prøv med eksempel (deferred-work.md) (løst 2026-11-24: spec-oppbrukt-kreditt, 4ab8eff)
 - [x] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — En mislykket Generer på nytt sletter den forrige analysen (deferred-work.md) (løst 2026-11-24: spec-generer-paa-nytt-beholder-forrige, eaf4d19)
 - [x] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Sondre: sjekk om OPENAI_API_KEY er merket Sensitive i Vercel (løst 2026-11-24: Sensitive (låseikon, verdien kan ikke vises))
