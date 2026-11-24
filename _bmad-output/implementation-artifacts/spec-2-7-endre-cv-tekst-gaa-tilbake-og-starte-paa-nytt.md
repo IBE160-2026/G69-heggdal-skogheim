@@ -2,7 +2,7 @@
 title: 'Story 2.7: Endre CV-tekst, gå tilbake og starte på nytt'
 type: 'feature'
 created: '2026-11-24'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '227ddb328c2ff54689583f2e7cf17d61746f3472'
@@ -182,6 +182,7 @@ context:
   - Mobile in a 373 px iframe (the window could not be resized): the header shows only «Valg». Enter opens the menu with focus on *Endre CV-tekst*, and ArrowDown moves to *Ny analyse*. Enter opens the dialog with the menu closed. Escape: focus on «Valg». The menu item *Endre CV-tekst* puts focus in `cv-tekst`.
   - At 320 px neither the preparation page nor the result page scrolls sideways.
   - Not done: NVDA and VoiceOver (the group does this), and a real phone.
+- **Merged (2026-11-24):** Sondre merged PR #44 as `af35885` with no extra commits and no review comments. The merge tree is identical to `28e4b76`. On `main`: lint, typecheck, 991 tests (58 files) and build are green, the GitHub check `kontroll` and the Vercel deployment succeeded, and `GET /api/status` in production answers `ekte`/OpenAI (free, no generation). Status set to `done`. Still open, outside the story's Definition of Done: the NVDA, VoiceOver and real-phone test (the group's test), and the AD-6 and EXPERIENCE.md deviations in `deferred-work.md`.
 
 ## Spec Change Log
 
