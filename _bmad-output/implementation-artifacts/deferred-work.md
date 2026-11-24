@@ -125,3 +125,12 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-personvernboks-misbrukslogger.md`
   summary: The box says Mistral AI may keep the text for 30 days for abuse monitoring; this is not sourced.
   evidence: Unverified (would be medium if wrong). Settle by checking Mistral's terms or DPA. Production uses OpenAI.
+
+## Deferred from: planning of story 2.7 (2026-11-24)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-7-endre-cv-tekst-gaa-tilbake-og-starte-paa-nytt.md`
+  summary: AD-6 says *Ny analyse* clears all of `innhold`, including `gapVersjon`, but story 2.7 keeps `gapVersjon` on purpose; agree with Sondre whether AD-6 should say so (together with the open AD-6 point about a failed generation keeping `generert` and `redigert`, PR #41).
+  evidence: `kjoring.id` is `gapVersjon + 1` (`medKjoring` in `src/lib/okt/tilstand.ts`), so resetting it would reuse ids and let a late answer match a new run. Kevin decided 2026-11-24 to record the deviation here and not edit ARCHITECTURE-SPINE.md now.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-7-endre-cv-tekst-gaa-tilbake-og-starte-paa-nytt.md`
+  summary: EXPERIENCE.md says *Tilbake til resultatet* shows "bare når det finnes resultater", but Kevin chose (2026-11-24, alternative A) to show it whenever a run exists and the text is unchanged, also while generating and after a failure; agree with Sondre whether EXPERIENCE.md (the component table and the state "Tilbake fra *Endre CV-tekst*") should be updated.
+  evidence: Without it, a user who presses *Endre CV-tekst* during a generation or after a failure has no way back to the result except a new run (a new paid call in real mode). Kevin decided to record the deviation here and not edit EXPERIENCE.md now.

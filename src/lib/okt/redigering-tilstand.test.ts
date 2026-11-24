@@ -5,6 +5,7 @@ import { demoSvar } from "@/testhjelp/gap";
 
 import {
   KOPIERT,
+  redigerteFaner,
   reducer,
   startTilstand,
   type OktHandling,
@@ -250,7 +251,9 @@ describe("kravRedigert", () => {
     expect(gap.redigert).toBe(forrige.redigert);
   });
 
-  it("FR-19: Tilbake etter en mislykket ny generering fjerner den beholdte analysen", () => {
+  // Story 2.7 (godkjent av Kevin): *Tilbake* fra PR #41 er erstattet. *Endre CV-tekst*
+  // og *Tilbake til resultatet* beholder analysen, og bare *Ny analyse* fjerner den.
+  function feiletEtterRedigering(): OktTilstand {
     const redigert = rediger(ferdig(), 0, "tekst", "Endret");
     const merke = {
       resultatdel: "gap" as const,
@@ -264,10 +267,27 @@ describe("kravRedigert", () => {
       feilkode: "llm_feil",
     });
     expect(feilet.innhold.resultatdeler.gap!.redigert).not.toBeNull();
+    return feilet;
+  }
 
-    const tilbake = reducer(feilet, { type: "tilbakeTrykket" });
+  it("FR-19: Endre CV-tekst og Tilbake til resultatet etter en mislykket ny generering beholder analysen og redigeringene", () => {
+    const feilet = feiletEtterRedigering();
+    const forrige = feilet.innhold.resultatdeler.gap!;
 
-    expect(tilbake.innhold.resultatdeler.gap).toBeNull();
+    const endre = reducer(feilet, { type: "endreCvTrykket" });
+    const tilbake = reducer(endre, { type: "tilbakeTilResultatet" });
+    const gap = tilbake.innhold.resultatdeler.gap!;
+
+    expect(tilbake.visning).toBe("resultat");
+    expect(gap.generert).toBe(forrige.generert);
+    expect(gap.redigert).toBe(forrige.redigert);
+    expect(gap.status).toBe("feil");
+  });
+
+  it("FR-21: Ny analyse etter en mislykket ny generering fjerner den beholdte analysen", () => {
+    const tom = reducer(feiletEtterRedigering(), { type: "nyAnalyseBekreftet" });
+
+    expect(tom.innhold.resultatdeler.gap).toBeNull();
   });
 
   it("UX-DR23: redigering endrer ikke live-regionen", () => {
@@ -288,5 +308,48 @@ describe("kopiert", () => {
     expect(en.kunngjoring?.tekst).toBe("Kopiert.");
     expect(to.kunngjoring?.tekst).toBe("Kopiert.");
     expect(to.kunngjoring!.nr).toBe(en.kunngjoring!.nr + 1);
+  });
+});
+
+describe("redigerteFaner", () => {
+  function startetPaaNytt(tilstand: OktTilstand): OktTilstand {
+    return reducer(tilstand, {
+      type: "genereringStartet",
+      resultatdel: "gap",
+      kjoringId: tilstand.innhold.kjoring!.id,
+      gapVersjon: tilstand.innhold.gapVersjon + 1,
+    });
+  }
+
+  it("UX-DR18: uten redigering er listen tom", () => {
+    expect(redigerteFaner(ferdig())).toEqual([]);
+    expect(redigerteFaner(startTilstand)).toEqual([]);
+  });
+
+  it("UX-DR18: en redigert fane står i listen", () => {
+    expect(redigerteFaner(rediger(ferdig(), 0, "tekst", "Endret"))).toEqual([
+      "Gap-analyse og nøkkelord",
+    ]);
+  });
+
+  it("UX-DR18: under en ny generering står fanen i listen, selv om redigeringen er skjult", () => {
+    const startet = startetPaaNytt(rediger(ferdig(), 0, "tekst", "Endret"));
+    expect(startet.innhold.resultatdeler.gap!.status).toBe("genererer");
+
+    expect(redigerteFaner(startet)).toEqual(["Gap-analyse og nøkkelord"]);
+  });
+
+  it("UX-DR18: etter en mislykket ny generering står fanen i listen", () => {
+    const startet = startetPaaNytt(rediger(ferdig(), 0, "tekst", "Endret"));
+    const feilet = reducer(startet, {
+      type: "genereringFeilet",
+      resultatdel: "gap",
+      kjoringId: startet.innhold.kjoring!.id,
+      gapVersjon: startet.innhold.gapVersjon,
+      feilkode: "llm_feil",
+    });
+    expect(feilet.innhold.resultatdeler.gap!.status).toBe("feil");
+
+    expect(redigerteFaner(feilet)).toEqual(["Gap-analyse og nøkkelord"]);
   });
 });

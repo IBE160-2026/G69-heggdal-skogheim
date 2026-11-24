@@ -9,13 +9,24 @@ import {
   screen,
 } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
+import Home from "@/app/page";
+import type { GapAnalyse } from "@/lib/kontrakt/gap";
 import type { Modus } from "@/lib/kontrakt/status";
 import { OktProvider } from "@/lib/okt/OktProvider";
 import { startTilstand, type OktTilstand } from "@/lib/okt/tilstand";
+import { apiMock, demoSvar, gapKall } from "@/testhjelp/gap";
 
-import { AnalyserKnapp, DEMO_VARSEL_ID } from "./AnalyserKnapp";
+import { AnalyserKnapp, DEMO_VARSEL_ID, ENDRET_TEKST } from "./AnalyserKnapp";
 import { ANALYSER_ID, CvPanel } from "./CvPanel";
 
 const VARSEL =
@@ -43,6 +54,7 @@ const KLAR: OktTilstand = {
     cvFil: null,
     demoVarsel: null,
   },
+  visning: "forberedelse",
   kunngjoring: null,
 };
 
@@ -268,5 +280,297 @@ describe("AnalyserKnapp i demomodus", () => {
     fireEvent.click(analyser());
 
     expect(varsel()).toBeNull();
+  });
+});
+
+describe("AnalyserKnapp etter Endre CV-tekst", () => {
+  let mock: ReturnType<typeof apiMock>;
+  let svar: GapAnalyse;
+  let svarNa: ((svar: Response) => void)[];
+
+  beforeAll(async () => {
+    svar = await demoSvar();
+  });
+
+  beforeEach(() => {
+    // Menyen «Valg» på resultatsiden måler størrelsen sin, og jsdom har ikke
+    // ResizeObserver.
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+      },
+    );
+  });
+
+  afterEach(() => {
+    cleanup();
+    vi.unstubAllGlobals();
+  });
+
+  async function vent() {
+    await act(async () => {
+      await new Promise((ferdig) => setTimeout(ferdig));
+    });
+  }
+
+  // Eksempelet vises, og svarene holdes tilbake til testen gir dem.
+  async function apneEksempelet() {
+    svarNa = [];
+    mock = apiMock(() => new Promise<Response>((ferdig) => svarNa.push(ferdig)));
+    vi.stubGlobal("fetch", mock);
+    await act(async () => {
+      render(
+        <OktProvider>
+          <Home />
+        </OktProvider>,
+      );
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Prøv med eksempel" }));
+  }
+
+  async function gi(svarEtter: Response) {
+    await act(async () => svarNa[svarNa.length - 1](svarEtter));
+    await vent();
+  }
+
+  function endreCv() {
+    fireEvent.click(screen.getByRole("button", { name: "Endre CV-tekst" }));
+  }
+
+  function rediger() {
+    fireEvent.change(document.getElementById("krav-0-tekst")!, {
+      target: { value: "Endret krav" },
+    });
+  }
+
+  function analyser() {
+    return document.getElementById(ANALYSER_ID) as HTMLButtonElement;
+  }
+
+  function tilbake() {
+    return screen.queryByRole("button", { name: "Tilbake til resultatet" });
+  }
+
+  // Ferdig analyse med en redigering, og så forberedelsen med avkrysningen gitt.
+  async function redigertOgTilbake() {
+    await apneEksempelet();
+    await gi(Response.json(svar));
+    rediger();
+    endreCv();
+    fireEvent.click(screen.getByRole("checkbox"));
+  }
+
+  it("FR-3: Tilbake til resultatet vises, og endret tekst skjuler den og viser linjen", async () => {
+    await apneEksempelet();
+    await gi(Response.json(svar));
+    endreCv();
+
+    expect(tilbake()).not.toBeNull();
+    expect(screen.queryByText(ENDRET_TEKST)).toBeNull();
+
+    const felt = screen.getByLabelText("CV-tekst") as HTMLTextAreaElement;
+    const original = felt.value;
+    fireEvent.change(felt, { target: { value: `${original} Ny erfaring` } });
+
+    expect(tilbake()).toBeNull();
+    expect(
+      screen.getByText(
+        "Du har endret teksten. Trykk Analyser for en ny analyse.",
+      ),
+    ).toBeTruthy();
+
+    fireEvent.change(felt, { target: { value: original } });
+
+    expect(tilbake()).not.toBeNull();
+    expect(screen.queryByText(ENDRET_TEKST)).toBeNull();
+  });
+
+  it("FR-3: endret annonse skjuler Tilbake til resultatet", async () => {
+    await apneEksempelet();
+    await gi(Response.json(svar));
+    endreCv();
+
+    fireEvent.change(screen.getByLabelText("Annonse"), {
+      target: { value: "Ny annonse. ".repeat(20) },
+    });
+
+    expect(tilbake()).toBeNull();
+    expect(screen.getByText(ENDRET_TEKST)).toBeTruthy();
+  });
+
+  it("UX-DR8: linjen om endret tekst beskriver Analyser, også sammen med årsakene", async () => {
+    await apneEksempelet();
+    await gi(Response.json(svar));
+    endreCv();
+
+    function beskrivelse() {
+      return (analyser().getAttribute("aria-describedby") ?? "")
+        .split(" ")
+        .map((id) => document.getElementById(id)?.textContent)
+        .join(" ");
+    }
+
+    expect(beskrivelse()).not.toContain(ENDRET_TEKST);
+    const felt = screen.getByLabelText("CV-tekst") as HTMLTextAreaElement;
+    fireEvent.change(felt, { target: { value: `${felt.value} Ny erfaring` } });
+
+    // Uten avkrysning er knappen også deaktivert.
+    expect(analyser().getAttribute("aria-disabled")).toBe("true");
+    expect(beskrivelse()).toContain(ENDRET_TEKST);
+    expect(beskrivelse()).toContain("Kryss av for personvern.");
+  });
+
+  it("FR-5: Endre CV-tekst etter Prøv med eksempel krysser ikke av for personvern", async () => {
+    await apneEksempelet();
+    await gi(Response.json(svar));
+    endreCv();
+
+    const avkrysning = screen.getByRole("checkbox");
+    expect(avkrysning.getAttribute("aria-checked")).toBe("false");
+    expect(
+      screen.queryByText(
+        "Du har bekreftet at du har lest informasjonen om personvern.",
+      ),
+    ).toBeNull();
+
+    fireEvent.change(screen.getByLabelText("CV-tekst"), {
+      target: { value: "Kari Nordmann\nKundeservice i fem år." },
+    });
+
+    expect(analyser().getAttribute("aria-disabled")).toBe("true");
+    expect(document.getElementById("analyser-arsaker")?.textContent).toContain(
+      "Kryss av for personvern.",
+    );
+  });
+
+  it("FR-3: Tilbake til resultatet etter en feil uten tidligere analyse viser feilen og gir fokus til «Resultat»", async () => {
+    await apneEksempelet();
+    await gi(Response.json({ feil: { kode: "llm_feil" } }, { status: 502 }));
+    endreCv();
+
+    fireEvent.click(tilbake()!);
+
+    expect(screen.getByRole("alert").textContent).toContain(
+      "Språkmodellen svarte ikke.",
+    );
+    expect(document.activeElement).toBe(
+      screen.getByRole("heading", { level: 1, name: "Resultat" }),
+    );
+    expect(gapKall(mock)).toHaveLength(1);
+  });
+
+  it("UX-DR18: Analyser med en redigert fane spør først, med fokus på Avbryt", async () => {
+    await redigertOgTilbake();
+
+    fireEvent.click(analyser());
+
+    const dialog = screen.getByRole("alertdialog");
+    expect(dialog.textContent).toContain("Starte en ny analyse?");
+    expect(dialog.textContent).toContain(
+      "Alle resultatdelene erstattes. Redigeringene dine i Gap-analyse og nøkkelord blir overskrevet.",
+    );
+    expect(document.activeElement).toBe(
+      screen.getByRole("button", { name: "Avbryt" }),
+    );
+    expect(gapKall(mock)).toHaveLength(1);
+  });
+
+  it("UX-DR18: Avbryt endrer ingenting og gir fokus til Analyser", async () => {
+    await redigertOgTilbake();
+    fireEvent.click(analyser());
+
+    fireEvent.click(screen.getByRole("button", { name: "Avbryt" }));
+    await vent();
+
+    expect(screen.queryByRole("alertdialog")).toBeNull();
+    expect(document.activeElement).toBe(analyser());
+    expect(gapKall(mock)).toHaveLength(1);
+    fireEvent.click(tilbake()!);
+    expect(
+      (document.getElementById("krav-0-tekst") as HTMLTextAreaElement).value,
+    ).toBe("Endret krav");
+  });
+
+  it("UX-DR24: Analyser på nytt starter en ny kjøring, nullstiller resultatdelene og gir fokus til «Resultat»", async () => {
+    await redigertOgTilbake();
+    fireEvent.click(analyser());
+
+    fireEvent.click(screen.getByRole("button", { name: "Analyser på nytt" }));
+    await vent();
+
+    expect(gapKall(mock)).toHaveLength(2);
+    expect(document.activeElement).toBe(
+      screen.getByRole("heading", { level: 1, name: "Resultat" }),
+    );
+    expect(screen.getByRole("tab").textContent).toBe(
+      "Gap-analyse og nøkkelord, genereres",
+    );
+
+    await gi(Response.json(svar));
+    expect(
+      (document.getElementById("krav-0-tekst") as HTMLTextAreaElement).value,
+    ).toBe(svar.krav[0].tekst);
+    expect(screen.getByRole("tab").textContent).toBe("Gap-analyse og nøkkelord");
+  });
+
+  it("FR-3: Analyser uten redigering starter en ny kjøring uten dialog", async () => {
+    await apneEksempelet();
+    await gi(Response.json(svar));
+    endreCv();
+    fireEvent.click(screen.getByRole("checkbox"));
+
+    fireEvent.click(analyser());
+    await vent();
+
+    expect(screen.queryByRole("alertdialog")).toBeNull();
+    expect(gapKall(mock)).toHaveLength(2);
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Resultat" }),
+    ).toBeTruthy();
+  });
+
+  it("UX-DR18: Analyser under en ny generering av en redigert fane spør først", async () => {
+    await apneEksempelet();
+    await gi(Response.json(svar));
+    rediger();
+    fireEvent.click(screen.getByRole("button", { name: "Generer på nytt" }));
+    fireEvent.click(screen.getByRole("button", { name: "Lag ny" }));
+    await vent();
+    endreCv();
+    fireEvent.click(screen.getByRole("checkbox"));
+
+    fireEvent.click(analyser());
+
+    expect(screen.getByRole("alertdialog").textContent).toContain(
+      "Gap-analyse og nøkkelord",
+    );
+  });
+
+  it("FR-26: Analyser med egen tekst i demomodus gir varselet ved første trykk, uten dialog", async () => {
+    await redigertOgTilbake();
+    fireEvent.change(screen.getByLabelText("CV-tekst"), {
+      target: { value: "Kari Nordmann\nKundeservice i fem år." },
+    });
+
+    fireEvent.click(analyser());
+
+    expect(screen.queryByRole("alertdialog")).toBeNull();
+    expect(document.getElementById(DEMO_VARSEL_ID)).not.toBeNull();
+    expect(gapKall(mock)).toHaveLength(1);
+  });
+
+  it("FR-6: et nytt fødselsnummer maskeres ved første trykk, uten dialog", async () => {
+    await redigertOgTilbake();
+    const felt = screen.getByLabelText("CV-tekst") as HTMLTextAreaElement;
+    fireEvent.change(felt, { target: { value: `${felt.value} 01019012345` } });
+
+    fireEvent.click(analyser());
+
+    expect(screen.queryByRole("alertdialog")).toBeNull();
+    expect(felt.value).toContain(FJERNET);
+    expect(gapKall(mock)).toHaveLength(1);
   });
 });

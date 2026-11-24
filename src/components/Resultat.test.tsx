@@ -6,14 +6,22 @@ import {
   render,
   screen,
 } from "@testing-library/react";
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 import Home from "@/app/page";
 import type { GapAnalyse } from "@/lib/kontrakt/gap";
 import { OktProvider } from "@/lib/okt/OktProvider";
 import { apiMock, demoSvar, gapKall } from "@/testhjelp/gap";
 
-import { ANALYSER_ID } from "./CvPanel";
+import { ANALYSER_ID, CV_FELT_ID, VELG_CV_ID } from "./CvPanel";
 import { Kunngjoring } from "./Kunngjoring";
 
 let svar: GapAnalyse;
@@ -23,6 +31,18 @@ let svarAvvist: (feil: Error) => void;
 
 beforeAll(async () => {
   svar = await demoSvar();
+});
+
+beforeEach(() => {
+  // Menyen «Valg» måler størrelsen sin, og jsdom har ikke ResizeObserver.
+  vi.stubGlobal(
+    "ResizeObserver",
+    class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    },
+  );
 });
 
 afterEach(() => {
@@ -209,7 +229,7 @@ describe("Resultat", () => {
       expect(screen.getByRole("button", { name: "Prøv igjen" })).toBeTruthy();
       expect(live()).toBe("");
 
-      fireEvent.click(screen.getByRole("button", { name: "Tilbake" }));
+      fireEvent.click(screen.getByRole("button", { name: "Endre CV-tekst" }));
       expect(
         (screen.getByLabelText("Annonse") as HTMLTextAreaElement).value,
       ).toContain("Sparebanken Testvik");
@@ -423,31 +443,263 @@ describe("Resultat", () => {
     }
   });
 
-  it("UX-DR24: Tilbake under generering viser forberedelsen med teksten beholdt og fokus på Analyser", async () => {
+  it("UX-DR24: Endre CV-tekst under generering viser forberedelsen med teksten beholdt og fokus i CV-feltet, og avbryter ikke", async () => {
     await apneEksempelet();
     expect(panel().getAttribute("aria-busy")).toBe("true");
+    const [, init] = gapKall(mock)[0];
 
-    fireEvent.click(screen.getByRole("button", { name: "Tilbake" }));
-    await svar200();
+    fireEvent.click(screen.getByRole("button", { name: "Endre CV-tekst" }));
 
     expect(screen.queryByRole("heading", { name: "Resultat" })).toBeNull();
-    expect(document.activeElement).toBe(document.getElementById(ANALYSER_ID));
+    expect(document.activeElement).toBe(document.getElementById(CV_FELT_ID));
     expect(
       (screen.getByLabelText("Annonse") as HTMLTextAreaElement).value,
     ).toContain("Sparebanken Testvik");
+    expect(init?.signal?.aborted).toBe(false);
+    expect(live()).toBe("Analyserer. Dette tar inntil 30 sekunder.");
+  });
+
+  it("FR-3: Endre CV-tekst og Tilbake til resultatet gir resultatet uten ny request, med redigeringen og «· redigert»", async () => {
+    await apneEksempelet();
+    await svar200();
+    fireEvent.change(document.getElementById("krav-0-tekst")!, {
+      target: { value: "Endret krav" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Endre CV-tekst" }));
+    expect(document.activeElement).toBe(document.getElementById(CV_FELT_ID));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Tilbake til resultatet" }),
+    );
+
+    expect(document.activeElement).toBe(
+      screen.getByRole("heading", { level: 1 }),
+    );
+    expect(gapKall(mock)).toHaveLength(1);
+    expect(
+      (document.getElementById("krav-0-tekst") as HTMLTextAreaElement).value,
+    ).toBe("Endret krav");
+    expect(screen.getByRole("tab").textContent).toBe(
+      "Gap-analyse og nøkkelord · redigert",
+    );
+  });
+
+  it("FR-3: Tilbake til resultatet under generering viser spinneren, og svaret vises når det kommer", async () => {
+    await apneEksempelet();
+    fireEvent.click(screen.getByRole("button", { name: "Endre CV-tekst" }));
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Tilbake til resultatet" }),
+    );
+
+    expect(screen.getByRole("tab").textContent).toBe(
+      "Gap-analyse og nøkkelord, genereres",
+    );
+    await svar200();
+    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe(
+      svar.stilling,
+    );
+    expect(gapKall(mock)).toHaveLength(1);
+  });
+
+  it("FR-3: svaret som kommer mens forberedelsen vises, står etter Tilbake til resultatet", async () => {
+    await apneEksempelet();
+    fireEvent.click(screen.getByRole("button", { name: "Endre CV-tekst" }));
+
+    await svar200();
+    fireEvent.click(
+      screen.getByRole("button", { name: "Tilbake til resultatet" }),
+    );
+
+    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe(
+      svar.stilling,
+    );
+    expect(gapKall(mock)).toHaveLength(1);
+  });
+
+  it("FR-21: Ny analyse spør først, og Avbryt endrer ingenting og gir fokus tilbake til knappen", async () => {
+    await apneEksempelet();
+    await svar200();
+    const knapp = screen.getByRole("button", { name: "Ny analyse" });
+
+    fireEvent.click(knapp);
+    const dialog = screen.getByRole("alertdialog");
+    expect(dialog.textContent).toContain("Tømme alt?");
+    expect(dialog.textContent).toContain(
+      "CV-teksten, annonsen og alle resultatdelene fjernes.",
+    );
+    expect(document.activeElement).toBe(
+      screen.getByRole("button", { name: "Avbryt" }),
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Avbryt" }));
+    await vent();
+
+    expect(screen.queryByRole("alertdialog")).toBeNull();
+    expect(document.activeElement).toBe(knapp);
+    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe(
+      svar.stilling,
+    );
+  });
+
+  it("FR-21: Tøm alt gir tom forberedelse med fokus på Velg CV-fil, og live-meldingen fjernes", async () => {
+    await apneEksempelet();
+    await svar200();
+
+    fireEvent.click(screen.getByRole("button", { name: "Ny analyse" }));
+    fireEvent.click(screen.getByRole("button", { name: "Tøm alt" }));
+    await vent();
+
+    expect(screen.queryByRole("heading", { name: "Resultat" })).toBeNull();
+    expect(document.activeElement).toBe(document.getElementById(VELG_CV_ID));
+    expect(
+      (screen.getByLabelText("Annonse") as HTMLTextAreaElement).value,
+    ).toBe("");
+    expect(screen.queryByLabelText("CV-tekst")).toBeNull();
+    expect(
+      screen.queryByRole("button", { name: "Tilbake til resultatet" }),
+    ).toBeNull();
     expect(live()).toBe("");
   });
 
-  it("UX-DR24: Tilbake viser forberedelsen med teksten beholdt og fokus på Analyser", async () => {
+  it("AD-6: Tøm alt under generering avbryter requesten, og svaret vises ikke", async () => {
+    await apneEksempelet();
+    const [, init] = gapKall(mock)[0];
+
+    fireEvent.click(screen.getByRole("button", { name: "Ny analyse" }));
+    fireEvent.click(screen.getByRole("button", { name: "Tøm alt" }));
+
+    expect(init?.signal?.aborted).toBe(true);
+    await svar200();
+    expect(screen.queryByRole("heading", { name: "Resultat" })).toBeNull();
+  });
+
+  describe("menyen «Valg» under 640 px", () => {
+    function apneMeny() {
+      const valg = screen.getByRole("button", { name: "Valg" });
+      valg.focus();
+      fireEvent.keyDown(valg, { key: "Enter" });
+      return valg;
+    }
+
+    function menyvalg(navn: string) {
+      return screen.getByRole("menuitem", { name: navn });
+    }
+
+    it("UX-DR9: menyen har Endre CV-tekst og Ny analyse", async () => {
+      await apneEksempelet();
+      await svar200();
+
+      apneMeny();
+
+      expect(
+        screen.getAllByRole("menuitem").map((valg) => valg.textContent),
+      ).toEqual(["Endre CV-tekst", "Ny analyse"]);
+    });
+
+    it("UX-DR24: Endre CV-tekst i menyen gir fokus i CV-feltet", async () => {
+      await apneEksempelet();
+      await svar200();
+
+      apneMeny();
+      fireEvent.click(menyvalg("Endre CV-tekst"));
+      await vent();
+
+      expect(screen.queryByRole("heading", { name: "Resultat" })).toBeNull();
+      expect(document.activeElement).toBe(document.getElementById(CV_FELT_ID));
+    });
+
+    it("UX-DR18: Ny analyse i menyen åpner dialogen, og Avbryt gir fokus til «Valg»", async () => {
+      await apneEksempelet();
+      await svar200();
+
+      const valg = apneMeny();
+      fireEvent.click(menyvalg("Ny analyse"));
+      await vent();
+
+      expect(screen.queryByRole("menu")).toBeNull();
+      expect(screen.getByRole("alertdialog").textContent).toContain(
+        "Tømme alt?",
+      );
+      expect(document.activeElement).toBe(
+        screen.getByRole("button", { name: "Avbryt" }),
+      );
+
+      fireEvent.click(screen.getByRole("button", { name: "Avbryt" }));
+      await vent();
+
+      expect(document.activeElement).toBe(valg);
+      expect(screen.getByRole("heading", { level: 1 })).toBeTruthy();
+    });
+
+    it("UX-DR24: Tøm alt fra menyen gir fokus på Velg CV-fil", async () => {
+      await apneEksempelet();
+      await svar200();
+
+      apneMeny();
+      fireEvent.click(menyvalg("Ny analyse"));
+      await vent();
+      fireEvent.click(screen.getByRole("button", { name: "Tøm alt" }));
+      await vent();
+
+      expect(document.activeElement).toBe(document.getElementById(VELG_CV_ID));
+    });
+  });
+
+  it("FR-19: Endre CV-tekst, Tilbake til resultatet og Generer på nytt som feiler, beholder redigeringen og varselet som før (PR #41, PR #42)", async () => {
     await apneEksempelet();
     await svar200();
+    fireEvent.change(document.getElementById("krav-0-tekst")!, {
+      target: { value: "Endret krav" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Endre CV-tekst" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Tilbake til resultatet" }),
+    );
 
-    fireEvent.click(screen.getByRole("button", { name: "Tilbake" }));
+    fireEvent.click(screen.getByRole("button", { name: "Generer på nytt" }));
+    fireEvent.click(screen.getByRole("button", { name: "Lag ny" }));
+    await vent();
+    await svarFeil(Response.json({ feil: { kode: "llm_feil" } }, { status: 502 }));
 
-    expect(screen.queryByRole("heading", { name: "Resultat" })).toBeNull();
-    expect(document.activeElement).toBe(document.getElementById(ANALYSER_ID));
+    const varsel = screen.getByRole("alert");
+    expect(varsel.textContent).toContain("Språkmodellen svarte ikke.");
+    // Med en forrige analyse har varselet ikke Prøv igjen (PR #41): Generer på nytt
+    // gjør det samme.
     expect(
-      (screen.getByLabelText("Annonse") as HTMLTextAreaElement).value,
-    ).toContain("Sparebanken Testvik");
+      Array.from(varsel.querySelectorAll("button")).map((k) => k.textContent),
+    ).toEqual(["Prøv med eksempel"]);
+    expect(
+      (document.getElementById("krav-0-tekst") as HTMLTextAreaElement).value,
+    ).toBe("Endret krav");
+    expect(screen.getByRole("tab").textContent).toBe(
+      "Gap-analyse og nøkkelord · redigert",
+    );
+  });
+
+  it("NFR-3: Endre CV-tekst og Tilbake til resultatet etter en feil uten analyse gir Prøv igjen og Prøv med eksempel, og Prøv med eksempel viser eksempelet", async () => {
+    await apneEksempelet();
+    await svarFeil(Response.json({ feil: { kode: "llm_feil" } }, { status: 502 }));
+    fireEvent.click(screen.getByRole("button", { name: "Endre CV-tekst" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Tilbake til resultatet" }),
+    );
+
+    const varsel = screen.getByRole("alert");
+    const knapper = Array.from(varsel.querySelectorAll("button"));
+    expect(knapper.map((k) => k.textContent)).toEqual([
+      "Prøv igjen",
+      "Prøv med eksempel",
+    ]);
+
+    fireEvent.click(knapper[1]);
+    fireEvent.click(screen.getByRole("button", { name: "Bruk eksempelet" }));
+    expect(gapKall(mock)).toHaveLength(2);
+    await svar200();
+
+    expect(screen.queryByRole("alert")).toBeNull();
+    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe(
+      svar.stilling,
+    );
   });
 });
