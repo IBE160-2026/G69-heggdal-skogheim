@@ -148,7 +148,7 @@ Signer først når svarene over er ført inn:
 - avsnitt 7 i `vurdering-2-4-kontroll-temperatur-0.md` («Godkjent av»)
 - avsnitt 5 i `vurdering-2-4-kontroll-ny-prompt.md` («Godkjent av»), etter at PR #30 er flettet (flettet 2026-11-22)
 
-**Svar:** Signeres når målingen i spørsmål 2 er gjort og resultatet er ført inn. (Sondre, 2026-11-23)
+**Svar:** Signeres når målingen i spørsmål 2 er gjort og resultatet er ført inn. (Sondre, 2026-11-23) **Signert** av Kevin 2026-11-23 og Sondre 2026-11-24 i alle tre vurderingene (PR #37).
 
 **Fakta (2026-11-23, ikke en del av svaret):** målingen er gjort og ført inn i `vurdering-2-4-uten-eksempelblokk.md`. Claude foreslo at også avsnitt 5 i den vurderingen signeres. **Avtalt av Sondre 2026-11-23** (gitt videre av Kevin): alle tre vurderingene signeres.
 

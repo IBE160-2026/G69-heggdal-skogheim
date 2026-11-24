@@ -172,4 +172,4 @@ Alle målingene under er OpenAI `gpt-4.1-mini` med prompten **før** PR #27 og P
    - SM-1–SM-3 måles også på den endelige versjonen i story 5.1.
 5. **`kevin-maaling-2-4`:** testsettet er kjørt, men vei b) i punkt 2 trenger en ny betalt måling. Avgjør om nøkkelen skal slettes nå eller beholdes for det. Kevin har bestemt (2026-11-20) at den ikke slettes før Sondre har bekreftet at denne rapporten er tilstrekkelig. Deretter sletter Sondre den hos OpenAI, og Kevin sletter Mistral-nøkkelen fra målingen.
 
-**Godkjent av:** Kevin ______ Sondre ______ **Dato:** ______
+**Godkjent av:** Kevin Heggdal (2026-11-23) Sondre Skogheim (2026-11-24) **Dato:** 2026-11-24
