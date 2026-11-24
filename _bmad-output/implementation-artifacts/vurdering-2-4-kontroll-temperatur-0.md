@@ -165,7 +165,7 @@ Verdien er allerede 0 i `src/lib/llm/felles.ts` (`ee49c2b`). Hvis Kevin og Sondr
 - **Land:** at avtaleparten er irsk, endrer ikke hvor behandlingen skjer (USA, se raden over). Personvernteksten om USA og at opplysningene går ut av EØS står derfor fast, og den kontrolleres i produksjonen i del C (C4).
 - **Kreditten:** 5 USD (6,25 USD inkl. 25 % mva., ca. 60 kr), kjøpt én gang 2026-11-19. Det er ikke fylt på senere, og automatisk påfylling er av. Beløpet er under 200 kr inkl. mva.
 
-**Godkjent av:** Kevin Heggdal (2026-11-23) Sondre ______ **Dato:** ______
+**Godkjent av:** Kevin Heggdal (2026-11-23) Sondre Skogheim (2026-11-24) **Dato:** 2026-11-24
 
 ## 8. SM-4: manuell vurdering av nøkkelordene (2026-11-20, gratis)
 
