@@ -11,7 +11,6 @@
 - [ ] 2026-11-19 [story-2-5-forstaaelige-feil](981-2026-11-19-15-45-54-story-2-5-forstaaelige-feil.md) — Story 2.4/produksjon: oppbrukt kreditt gir Prøv igjen uten henvisning til Prøv med eksempel (deferred-work.md)
 - [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Story 5.2: sjekk med NVDA/VoiceOver om vellykket kopiering leses opp to ganger (toast «Kopiert» og live-regionen «Kopiert.»)
 - [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — En mislykket Generer på nytt sletter den forrige analysen (deferred-work.md)
-- [ ] 2026-11-19 [kevin-nokkel-og-todelte-krav](979-2026-11-19-21-42-57-kevin-nokkel-og-todelte-krav.md) — Slett Kevins OpenAI-nøkkel (kevin-maaling-2-4) når målingen i 2.4 er ferdig
 - [ ] 2026-11-19 [kevin-nokkel-og-todelte-krav](979-2026-11-19-21-42-57-kevin-nokkel-og-todelte-krav.md) — Story 2.4 (Kevin): regelen for krav med to deler (Delvis oppfylt når én del er dekket) inn i gap-prompten, og fasitene sjekkes
 - [ ] 2026-11-19 [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md) — 1.6 i Safari: fødselsnummer med to trykk (krever Mac eller iPhone)
 - [ ] 2026-11-19 [testopplegg-brukertest-2-8](977-2026-11-19-22-13-05-testopplegg-brukertest-2-8.md) — Finn tre medstudenter utenfor gruppen og avtal tid til brukertesten (2.8), se testopplegget
@@ -22,9 +21,11 @@
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Sondre: sjekk i DPF-lista om OpenAI er sertifisert, før refleksjonsrapporten
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Sondre: sjekk om OPENAI_API_KEY er merket Sensitive i Vercel
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Refleksjonsrapporten: SM-3 9/12 med prompten i produksjonen (tre krav over fasiten) må stå tydelig
+- [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Tomme signaturlinjer i rundevurderingene 1–5 og vurdering-2-4-leverandorvalg.md: avklar med Kevin om de skal signeres
 
 ## Løst
 
+- [x] 2026-11-19 [kevin-nokkel-og-todelte-krav](979-2026-11-19-21-42-57-kevin-nokkel-og-todelte-krav.md) — Slett Kevins OpenAI-nøkkel (kevin-maaling-2-4) når målingen i 2.4 er ferdig (løst 2026-11-24: slettet av Sondre etter signaturene)
 - [x] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Kevin, 2.4: fjern eksempelblokken fra PR #28 (egen spec og PR), kjør testsettet og B4 én gang. Ikke 12/12: godta avvikene og mål på nytt i 5.1 (løst 2026-11-23: PR #34 flettet, målingen ga SM-1 8/12, SM-2 11/12, SM-3 9/12; avvikene godtatt)
 - [x] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — Kevin, 2.4: kjør testsettet på nytt etter prompt-endringen i PR #28 og sjekk at SM-1 og SM-2 fortsatt er bestått (løst 2026-11-23: kjørt av Kevin 2026-11-20, SM-1 9/12, SM-2 10/12, SM-3 11/12; veien videre i beslutningsarket)
 - [x] 2026-11-19 [brukertest-2-8](972-2026-11-20-20-38-53-brukertest-2-8.md) — T1 i brukertesten: avklar om kontanthåndtering står i CV-en (Mangler feil eller lest som «du mangler»), og avgjør om svaret teller som ja i SM-10 (løst 2026-11-20: står ikke i CV-en, Mangler var riktig, teller som ja)
