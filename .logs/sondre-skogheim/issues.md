@@ -10,7 +10,6 @@
 - [ ] 2026-11-19 [story-2-3-ekte-gap-analyse](983-2026-11-18-20-27-57-story-2-3-ekte-gap-analyse.md) — Story 2.4: juster prompten (bare kvalifikasjoner som krav, ingen duplikater, ingen listetegn først i belegg, stilling i vanlig skrift) og mål mot fasitene
 - [ ] 2026-11-19 [story-2-5-forstaaelige-feil](981-2026-11-19-15-45-54-story-2-5-forstaaelige-feil.md) — Story 2.4/produksjon: oppbrukt kreditt gir Prøv igjen uten henvisning til Prøv med eksempel (deferred-work.md)
 - [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — Story 5.2: sjekk med NVDA/VoiceOver om vellykket kopiering leses opp to ganger (toast «Kopiert» og live-regionen «Kopiert.»)
-- [ ] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — En mislykket Generer på nytt sletter den forrige analysen (deferred-work.md)
 - [ ] 2026-11-19 [kevin-nokkel-og-todelte-krav](979-2026-11-19-21-42-57-kevin-nokkel-og-todelte-krav.md) — Story 2.4 (Kevin): regelen for krav med to deler (Delvis oppfylt når én del er dekket) inn i gap-prompten, og fasitene sjekkes
 - [ ] 2026-11-19 [manuelle-tester-1-6](978-2026-11-19-21-53-41-manuelle-tester-1-6.md) — 1.6 i Safari: fødselsnummer med to trykk (krever Mac eller iPhone)
 - [ ] 2026-11-19 [testopplegg-brukertest-2-8](977-2026-11-19-22-13-05-testopplegg-brukertest-2-8.md) — Finn tre medstudenter utenfor gruppen og avtal tid til brukertesten (2.8), se testopplegget
@@ -24,6 +23,7 @@
 
 ## Løst
 
+- [x] 2026-11-19 [story-2-6-redigere-kopiere](980-2026-11-19-16-14-16-story-2-6-redigere-kopiere.md) — En mislykket Generer på nytt sletter den forrige analysen (deferred-work.md) (løst 2026-11-24: spec-generer-paa-nytt-beholder-forrige, eaf4d19)
 - [x] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Sondre: sjekk om OPENAI_API_KEY er merket Sensitive i Vercel (løst 2026-11-24: Sensitive (låseikon, verdien kan ikke vises))
 - [x] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Sondre: sjekk i DPF-lista om OpenAI er sertifisert, før refleksjonsrapporten (løst 2026-11-24: Active i DPF-lista, ført inn i beslutningsarket)
 - [x] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Personvernboksen: én setning om at OpenAI kan beholde teksten i opptil 30 dager for å oppdage misbruk (egen liten PR) (løst 2026-11-24: PR #38)
