@@ -15,6 +15,56 @@
 **Tittel B (avslutningen):** `Story 2.4: C5 fullført, [AVGJØRES: SM-1 avgjort / avvikene godtatt], og 2-4 satt til done`
 
 > **2026-11-23:** SM-1 er avgjort ved at avvikene uten eksempelblokken er godtatt som kjente svakheter (Sondre og Kevin). Tittelen fylles ut når de andre punktene i «Avslutningspunktene» i C5 i `kjorebok-2-4-del-c.md` er gjort. Grenen `story-2.4-avslutning-maaling` har dokumentasjonen av målingen og er ikke den avsluttende PR-en.
+>
+> **2026-11-24:** alle avslutningspunktene er gjort. Den avsluttende PR-en kommer fra `story-2.4-avslutning-done` (laget fra `main` `a7328d9`), med tittelen og beskrivelsen under. Malen lenger ned står som historikk.
+
+---
+
+## Den avsluttende PR-en (2026-11-24)
+
+**Tittel B, utfylt:** `Story 2.4: C5 fullført, avvikene godtatt som kjente svakheter, og 2-4 satt til done`
+
+**Beskrivelse** (limes inn fra og med «## Formål»):
+
+```markdown
+## Formål
+
+Story 2.4 (velge leverandør ved måling) avsluttes. Valget er OpenAI `gpt-4.1-mini` med temperatur 0, etter AD-11. AK 1–3 i `epics.md` er oppfylt, SM-1 er avgjort, og alle avslutningspunktene i C5 i `kjorebok-2-4-del-c.md` er gjort.
+
+## Status
+
+| Punkt | Status |
+|---|---|
+| SM-1, SM-2, SM-3 uten eksempelblokken (`5de48e0`) | 8, 11 og 9 av 12. Godtatt som kjente svakheter, og måles på nytt i story 5.1 |
+| B4 del 2 (NFR-9) i produksjonen | Bestått |
+| Signaturene i de tre vurderingene | Kevin 2026-11-23, Sondre 2026-11-24 (PR #37) |
+| `store: false` | Bekreftet av Sondre |
+| `kevin-maaling-2-4` (OpenAI) | Slettet av Sondre 2026-11-24 |
+| Mistral-nøkkelen fra målingen | Slettet av Kevin 2026-11-24 |
+| `.env.local` | Begge nøklene er tømt, så lokalt går appen i demomodus |
+| Produksjonen (gratis `GET /api/status`, 2026-11-24 kl. 11:48 UTC) | `ekte`, OpenAI, USA, `tredjeland: true`, `arn1` |
+
+## Endringer (bare dokumentasjon og status)
+
+- `sprint-status.yaml`: `2-4-velge-leverandor-ved-maaling` er `done`, og `last_updated` er 2026-11-24.
+- `spec-2-4-velge-leverandor-ved-maaling.md`: `status: 'done'` i frontmatteren.
+- `kjorebok-2-4-del-c.md`: ny statusboks, C5 er krysset av, og tabellene over avslutningspunktene er oppdatert (PR #38 og PR #39 er tatt med).
+- `kjorebok-2-4-del-b.md`: punktet om nøklene fra målingen er krysset av.
+- `beslutningsark-2-4-sondre.md`: spørsmål 5 er merket som gjort.
+- `.logs/kevin-heggdal/issues.md` og sesjonsloggen `992-…`: avslutningen er logget. Punktene som ikke er betingelser for `done`, står åpne.
+
+**Ikke endret:** `src/`, `scripts/`, `testdata/`, prompten, Vercel og produksjonsnøkkelen. Ingen betalte kall.
+
+## Står åpent (ikke betingelser for `done`)
+
+Forbruksgrensen i C2, `TEMPERATUR`-kommentaren i `felles.ts`, regelen om «fakturaer» i fasiten for par 3, spørsmål 6 (README-forsøket), at `OPENAI_API_KEY` er merket *Sensitive*, refleksjonsrapporten (DPF og SM-3), og ny måling i story 5.1. Alt står i `issues.md` og i C5.
+
+## Til Sondre
+
+Se gjerne over at tabellene i C5 stemmer med det du har gjort, og flett når du er enig.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+```
 
 ---
 

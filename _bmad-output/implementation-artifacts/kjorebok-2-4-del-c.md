@@ -43,6 +43,14 @@
 > - **Avgjort (Sondre: «ja, kjør», gitt videre av Kevin):** avvikene godtas som kjente svakheter og måles på nytt i story 5.1. SM-1 er dermed avgjort.
 > - **Det som gjenstår før `done`,** står i C5 under. 2-4 står fortsatt som `in-progress`.
 >
+> **Oppdatert 2026-11-24, avslutningen (Claude, på oppdrag fra Kevin, grenen `story-2.4-avslutning-done`):**
+> - **PR #37** med signaturene er flettet av Sondre (`dfbce27`). Alle tre vurderingene er signert av Kevin (2026-11-23) og Sondre (2026-11-24). Det er kontrollert på `main` `a7328d9`.
+> - **`kevin-maaling-2-4`** er slettet hos OpenAI av Sondre (2026-11-24, gitt videre av Kevin).
+> - **Mistral-nøkkelen fra målingen** er slettet av Kevin i Mistral-konsollen (2026-11-24).
+> - **`.env.local`** er ryddet. `MISTRAL_API_KEY` og `OPENAI_API_KEY` står tomme, som i `.env.example`. Lokalt går appen dermed i demomodus.
+> - **Produksjonen er kontrollert gratis** 2026-11-24 kl. 11:48 UTC (`GET /api/status`): `HTTP 200`, `{"modus":"ekte","leverandor":{"navn":"OpenAI","land":"USA","tredjeland":true}}`, og `X-Vercel-Id` starter med `arn1`. Produksjonsnøkkelen (`produksjon-vercel-2`) og Vercel er ikke rørt. Merk: `/api/status` viser bare at nøkkelen finnes, ikke at den er gyldig (lærdommen i C3). Den er ikke endret, så det er ikke kjørt noe betalt kall.
+> - **2-4 er satt til `done`** i `sprint-status.yaml`. Ingen betalte kall er kjørt i avslutningen.
+>
 > **Avtalt rekkefølge (Sondre og Kevin, 2026-11-20):**
 > 1. PR-en for del C gjøres ferdig.
 > 2. Sondre går gjennom PR-en og fletter den til `main`.
@@ -174,27 +182,27 @@ Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-
 
 ## C5. Dokumentasjonen og avslutningen
 
-- [ ] Avsnitt 5 og 7 i vurderingen er fylt ut og signert av Kevin og Sondre. **2026-11-22:** begge avsnittene i `vurdering-2-4-kontroll-temperatur-0.md` er fylt ut, men «Godkjent av» i avsnitt 7 er ikke signert. Signaturene er spørsmål 12 i `beslutningsark-2-4-sondre.md`. **2026-11-23:** også «Godkjent av» i avsnitt 5 i `vurdering-2-4-uten-eksempelblokk.md` (den siste målingen) og i avsnitt 5 i `vurdering-2-4-kontroll-ny-prompt.md` skal signeres. Ingen er signert. Sondre signerer etter at målingen er ført inn (svaret på spørsmål 12).
+- [x] Avsnitt 5 og 7 i vurderingen er fylt ut og signert av Kevin og Sondre. **2026-11-24:** alle tre vurderingene er signert av Kevin (2026-11-23) og Sondre (2026-11-24) i PR #37 (`dfbce27`). Krysset av. **2026-11-22:** begge avsnittene i `vurdering-2-4-kontroll-temperatur-0.md` er fylt ut, men «Godkjent av» i avsnitt 7 er ikke signert. Signaturene er spørsmål 12 i `beslutningsark-2-4-sondre.md`. **2026-11-23:** også «Godkjent av» i avsnitt 5 i `vurdering-2-4-uten-eksempelblokk.md` (den siste målingen) og i avsnitt 5 i `vurdering-2-4-kontroll-ny-prompt.md` skal signeres. Ingen er signert. Sondre signerer etter at målingen er ført inn (svaret på spørsmål 12).
 - [x] PRD §10.1 er merket som løst med dato og lenke til vurderingen (forslaget i avsnitt 7). **2026-11-22:** §10.1 sier nå at valget av leverandør og modell er avgjort, med lenke til vurderingen. Resultatene for begge promptene står der, og at ingen av SM-1–SM-3 er bestått med prompten i produksjonen. (Punktet var ikke krysset av 2026-11-22, fordi status for SM-1 var åpen.) **2026-11-23:** §10.1 har nå resultatet uten eksempelblokken (`5de48e0`: SM-1 8, SM-2 11, SM-3 9 av 12, B4 bestått) og beslutningen om å godta avvikene og måle på nytt i 5.1, med lenke til `vurdering-2-4-uten-eksempelblokk.md`. Krysset av.
 - [x] Forslagene om `STANDARD_MODELL` og `MAKS_UTDATA_TOKENS` er godkjent eller avvist av Kevin, og eventuelle endringer er gjort med `bmad-build`. **2026-11-20:**
   - `STANDARD_MODELL.openai` var allerede `gpt-4.1-mini` (`spec-2-4-del-b-valgt-oppsett.md`).
   - `MAKS_UTDATA_TOKENS` beholdes på 8000 (Kevin). Bare kommentaren i `src/lib/llm/felles.ts` er oppdatert (`spec-2-4-del-c-maks-utdata-tokens.md`).
   - Taket vurderes på nytt i epic 3.
-- [ ] Nøklene fra målingen er slettet eller rotert hos leverandørene, og de er fjernet fra `.env.local` hvis de ikke skal brukes videre lokalt. **2026-11-20 (Kevin):** `kevin-maaling-2-4` (OpenAI-nøkkelen fra målingen) slettes ikke før Sondre har bekreftet at rapporten er tilstrekkelig. Deretter sletter Sondre den hos OpenAI, og Kevin sletter Mistral-nøkkelen fra målingen (Kevin, 2026-11-20). **2026-11-23:** målingen er kjørt. Etter spørsmål 5 sletter Sondre `kevin-maaling-2-4` hos OpenAI nå, og Kevin sletter Mistral-nøkkelen og fjerner begge fra `.env.local`. Ikke gjort ennå. Kevin har bedt om at ingen nøkler slettes eller endres før han sier fra (2026-11-23).
+- [x] Nøklene fra målingen er slettet eller rotert hos leverandørene, og de er fjernet fra `.env.local` hvis de ikke skal brukes videre lokalt. **2026-11-24:** Sondre har slettet `kevin-maaling-2-4` hos OpenAI, Kevin har slettet Mistral-nøkkelen fra målingen, og begge verdiene er tømt i `.env.local`. Krysset av. **2026-11-20 (Kevin):** `kevin-maaling-2-4` (OpenAI-nøkkelen fra målingen) slettes ikke før Sondre har bekreftet at rapporten er tilstrekkelig. Deretter sletter Sondre den hos OpenAI, og Kevin sletter Mistral-nøkkelen fra målingen (Kevin, 2026-11-20). **2026-11-23:** målingen er kjørt. Etter spørsmål 5 sletter Sondre `kevin-maaling-2-4` hos OpenAI nå, og Kevin sletter Mistral-nøkkelen og fjerner begge fra `.env.local`. Ikke gjort ennå. Kevin har bedt om at ingen nøkler slettes eller endres før han sier fra (2026-11-23).
 - [x] Sesjonsloggen har resultatet, `LLM_MODELL` og commit (AK 2). **Kontrollert 2026-11-22:** linje 594 i `.logs/kevin-heggdal/993-2026-11-19-15-57-09-story-2-4-del-b-forberedelse.md` har `LLM_LEVERANDOR=openai`, `LLM_MODELL=gpt-4.1-mini` (`gpt-4.1-mini-2025-04-14` fra leverandøren), `TEMPERATUR=0`, commit `ee49c2b` for kontrollen og begrunnelsen etter AD-11. **2026-11-23:** den nye målingen (resultatet, `LLM_MODELL=gpt-4.1-mini`, `gpt-4.1-mini-2025-04-14` og commit `5de48e0`) skal også i sesjonsloggen, etter PRD §6 (SM-1). Det gjøres med `sesjonslogg` når denne dokumentasjonen er godkjent.
-- [ ] `issues.md` er oppdatert for avslutningen. **2026-11-22:** venter til PR #30 fra `story-2.4-b4-resultat` er flettet, fordi `.logs/kevin-heggdal/issues.md` er en del av PR #30. **Oppdatert 2026-11-22 etter flettingen** (`story-2.4-c5-oppfolging`):
+- [x] `issues.md` er oppdatert for avslutningen. **2026-11-24:** oppdatert en siste gang. Punktene om del C, signaturene, nøklene og «Avslutningen av 2-4» er lukket, og punktene som ikke er betingelser for `done`, står åpne. Krysset av. **2026-11-22:** venter til PR #30 fra `story-2.4-b4-resultat` er flettet, fordi `.logs/kevin-heggdal/issues.md` er en del av PR #30. **Oppdatert 2026-11-22 etter flettingen** (`story-2.4-c5-oppfolging`):
   - Lukket: punktet om de kjente svakhetene, og punktet om SM-1-linjen i PRD §10.1.
   - Rettet: «(PR #29)» til «(PR #30)».
   - Lagt til: Kevins foreløpige beslutninger om forbruksgrensen og de to funnene fra del A.
 
   Punktet krysses ikke av ennå, fordi `issues.md` må oppdateres på nytt når Sondre har svart og story 2.4 avsluttes. **2026-11-23:** oppdatert etter målingen og beslutningen (punktet om testsettet med den nye prompten er lukket, og avslutningspunktene står som åpne punkter). Det oppdateres en siste gang når 2-4 settes til `done`.
-- [ ] Først når AK 1–3 er oppfylt og SM-1 er avgjort (avgjort 2026-11-20 med løsning B, SM-1 12 av 12 på den gamle prompten. Med den nye prompten er SM-1 9 av 12, og Kevin og Sondre avgjør om SM-1 fortsatt regnes som avgjort, se avsnitt 5 i `vurdering-2-4-kontroll-ny-prompt.md`): 2-4 settes til `done` i `sprint-status.yaml`. **2026-11-23:** SM-1 er avgjort. Avvikene uten eksempelblokken (8 av 12) er godtatt som kjente svakheter og måles på nytt i 5.1 (Sondre og Kevin). AK 1–3 er oppfylt (AK 2 med `ee49c2b` for valget). Den nye målingen skal i tillegg i sesjonsloggen etter PRD §6. **Gjenstår før `done`:** signaturene på alle tre vurderingene, slettingen av nøklene, og PR-en som setter 2-4 til `done`. **2026-11-23:**
+- [x] Først når AK 1–3 er oppfylt og SM-1 er avgjort (avgjort 2026-11-20 med løsning B, SM-1 12 av 12 på den gamle prompten. Med den nye prompten er SM-1 9 av 12, og Kevin og Sondre avgjør om SM-1 fortsatt regnes som avgjort, se avsnitt 5 i `vurdering-2-4-kontroll-ny-prompt.md`): 2-4 settes til `done` i `sprint-status.yaml`. **2026-11-23:** SM-1 er avgjort. Avvikene uten eksempelblokken (8 av 12) er godtatt som kjente svakheter og måles på nytt i 5.1 (Sondre og Kevin). AK 1–3 er oppfylt (AK 2 med `ee49c2b` for valget). Den nye målingen skal i tillegg i sesjonsloggen etter PRD §6. **Gjenstår før `done`:** signaturene på alle tre vurderingene, slettingen av nøklene, og PR-en som setter 2-4 til `done`. **2026-11-23:**
   - Kevin har bekreftet prompten i produksjonen.
   - Sondre har bekreftet `store: false` og bestemt at alle tre vurderingene signeres.
   - Sesjonsloggen er skrevet (PR #35).
 
-  Se «Avslutningspunktene» under.
-- [ ] **PR-ene:**
+  Se «Avslutningspunktene» under. **2026-11-24:** signaturene og slettingen av nøklene er gjort, og 2-4 er satt til `done` i `sprint-status.yaml` på `story-2.4-avslutning-done`. Krysset av.
+- [x] **PR-ene:**
   - PR-en for del C (dokumentasjonen fram til C3, `pr-2-4-del-c.md`) går til gjennomgang hos Sondre **før** C3, etter den avtalte rekkefølgen.
   - Resultatet fra C3 og C4, og senere statusen `done`, kommer i en egen PR etterpå.
   - Del B er allerede merget (PR #21).
@@ -203,30 +211,31 @@ Fremgangsmåten for Sondre står i [`sjekkliste-2-4-c3-sondre.md`](sjekkliste-2-
   - **2026-11-22:** C5-dokumentasjonen (beslutningsarket, de kjente svakhetene, PRD §10.1 og denne kjøreboka) ligger på `story-2.4-c5-dokumentasjon`. Utkastet til den avsluttende PR-en står i `pr-2-4-c5-avslutning.md`, og den er ikke opprettet. **Flettet som PR #31** (`c7c4a68`, 2026-11-22) med tittel A fra utkastet. Den avsluttende PR-en (tittel B) er ikke opprettet.
   - **2026-11-22:** oppfølgingen etter flettingen ligger på `story-2.4-c5-oppfolging`, laget fra `main` `f36568e`. Den inneholder bare dokumentasjon og er ikke pushet.
   - **2026-11-23:** PR #33 (Sondres svar i beslutningsarket, `7eb7300`) og PR #34 (eksempelblokken fjernet, `5de48e0`) er flettet. Dokumentasjonen av målingen ligger på `story-2.4-avslutning-maaling`, laget fra `main` `5de48e0`. Den er ikke committet eller pushet.
+  - **2026-11-24:** PR #36 og PR #37 (signaturene, `dfbce27`), PR #38 (personvernboksen, `d45e230`) og PR #39 (DPF-sjekken, `0fa077d`) er flettet. Den avsluttende PR-en (tittel B i `pr-2-4-c5-avslutning.md`) kommer fra `story-2.4-avslutning-done`, laget fra `main` `a7328d9`.
   - Push og PR krever Kevins godkjenning.
 
-### Avslutningspunktene (status 2026-11-23)
+### Avslutningspunktene (status 2026-11-24)
 
-**Må være gjort før 2-4 settes til `done`** (punktene over). Oppdatert 2026-11-23 etter Kevins og Sondres svar:
+**Må være gjort før 2-4 settes til `done`** (punktene over). Oppdatert 2026-11-24: alle er gjort.
 
 | Punkt | Eier | Status |
 |---|---|---|
 | Bekreftelse av at prompten uten eksempelblokken (`5de48e0`) blir i produksjonen | Kevin | **Gjort** (bekreftet 2026-11-23) |
-| «Godkjent av» i `vurdering-2-4-kontroll-temperatur-0.md` (avsnitt 7) og `vurdering-2-4-kontroll-ny-prompt.md` (avsnitt 5) | Kevin og Sondre | Ikke signert (spørsmål 12) |
-| «Godkjent av» i `vurdering-2-4-uten-eksempelblokk.md` (avsnitt 5) | Kevin og Sondre | Ikke signert (avtalt av Sondre 2026-11-23) |
+| «Godkjent av» i `vurdering-2-4-kontroll-temperatur-0.md` (avsnitt 7) og `vurdering-2-4-kontroll-ny-prompt.md` (avsnitt 5) | Kevin og Sondre | **Gjort.** Signert av Kevin 2026-11-23 og Sondre 2026-11-24 (PR #37, `dfbce27`) |
+| «Godkjent av» i `vurdering-2-4-uten-eksempelblokk.md` (avsnitt 5) | Kevin og Sondre | **Gjort.** Signert av Kevin 2026-11-23 og Sondre 2026-11-24 (PR #37, `dfbce27`) |
 | `store: false` etter målingen: ingen nye rader under Logs hos OpenAI etter 2026-11-23 kl. 18:38 | Sondre | **Gjort.** Sondre kontrollerte Logs hos OpenAI 2026-11-23: den øverste raden er fortsatt fra 2026-11-20 kl. 16:36, med 56 resultater, så ingen av kallene fra 2026-11-23 er lagret |
 | Sesjonsloggen med den nye målingen: resultatet, `LLM_MODELL` og commit `5de48e0` (PRD §6, SM-1) | Kevin (`sesjonslogg`) | **Gjort** (`997ee7b`, PR #35) |
-| `kevin-maaling-2-4` slettet hos OpenAI | Sondre | Ikke gjort (spørsmål 5). Gjøres etter signaturene |
-| Mistral-nøkkelen fra målingen slettet, og begge nøklene fjernet fra `.env.local` | Kevin | Ikke gjort (spørsmål 5). Gjøres etter signaturene |
-| Commit, push og den avsluttende PR-en (tittel B i `pr-2-4-c5-avslutning.md`) med `issues.md` oppdatert en siste gang, og 2-4 satt til `done` i `sprint-status.yaml` | Kevin, flettes av Sondre | Etter punktene over |
+| `kevin-maaling-2-4` slettet hos OpenAI | Sondre | **Gjort** (2026-11-24, gitt videre av Kevin) |
+| Mistral-nøkkelen fra målingen slettet, og begge nøklene fjernet fra `.env.local` | Kevin | **Gjort** (2026-11-24). Produksjonen er kontrollert gratis etterpå (`/api/status`: `ekte`, OpenAI, USA, `arn1`) |
+| Commit, push og den avsluttende PR-en (tittel B i `pr-2-4-c5-avslutning.md`) med `issues.md` oppdatert en siste gang, og 2-4 satt til `done` i `sprint-status.yaml` | Kevin, flettes av Sondre | Klargjort på `story-2.4-avslutning-done` (2026-11-24). Commit og push etter Kevins godkjenning |
 
 **Åpne, men ikke betingelser for `done`** (følges opp i egne PR-er eller senere stories):
 
 | Punkt | Eier | Kilde |
 |---|---|---|
-| Personvernboksen: én setning om at OpenAI kan beholde teksten i opptil 30 dager for å oppdage misbruk (egen liten PR med spec) | Ikke fordelt | Spørsmål 9 |
+| Personvernboksen: én setning om at OpenAI kan beholde teksten i opptil 30 dager for å oppdage misbruk (egen liten PR med spec) | Sondre | Spørsmål 9. **Gjort** i PR #38 (`d45e230`, `spec-personvernboks-misbrukslogger.md`) |
 | Regelen om «fakturaer» skrives inn i fasiten for par 3 (endring i testdata, krever godkjenning) | Ikke fordelt | Spørsmål 3 |
-| DPF-lista: er OpenAI sertifisert? Før refleksjonsrapporten | Sondre | Spørsmål 11 |
+| DPF-lista: er OpenAI sertifisert? Før refleksjonsrapporten | Sondre | Spørsmål 11. **Kontrollert 2026-11-24** (PR #39): OpenAI står i DPF-lista som *Active*, og SCC i DPA-en (punkt 4.1) kommer i tillegg. Skal med i refleksjonsrapporten |
 | Refleksjonsrapporten skal fremheve SM-3: 9 av 12, med tre krav vurdert over fasiten | Kevin og Sondre | Sondre 2026-11-23, `kjente-svakheter-2-4.md` § 1 |
 | `OPENAI_API_KEY` merket *Sensitive* i Vercel | Sondre | Spørsmål 7 |
 | Hvilket forsøk (16:01 eller 16:36) brukte README-innholdet. Kan leses i Logs hos OpenAI fram til rundt 19.–20. desember | Kevin | Spørsmål 6 |

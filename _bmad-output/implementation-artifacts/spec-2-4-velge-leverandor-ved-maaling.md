@@ -2,7 +2,7 @@
 title: 'Story 2.4 del A: Testsettskriptet for leverandørvalget'
 type: 'feature'
 created: '2026-11-19'
-status: 'in-progress'
+status: 'done'
 baseline_commit: '9f457869ced87878744ab066a2228011a7ee4b1c'
 route: 'dispatch'
 review_loop_iteration: 0
