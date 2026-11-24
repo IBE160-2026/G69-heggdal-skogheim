@@ -28,6 +28,7 @@ describe("reducer", () => {
         resultatdeler: { gap: null },
         gapVersjon: 0,
       },
+      visning: "forberedelse",
       kunngjoring: null,
     });
   });

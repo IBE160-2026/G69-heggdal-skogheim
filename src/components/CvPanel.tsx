@@ -19,7 +19,9 @@ import {
   fjernetTekst,
 } from "@/lib/okt/tilstand";
 
-const FELT_ID = "cv-tekst";
+// Fokusmålene etter *Endre CV-tekst* og en bekreftet *Ny analyse* (UX-DR24).
+export const CV_FELT_ID = "cv-tekst";
+export const VELG_CV_ID = "velg-cv-fil";
 const FJERNET_ID = "cv-fjernet";
 const VARSEL_ID = "cv-varsel";
 const TELLER_ID = "cv-teller";
@@ -157,6 +159,7 @@ export function CvPanel() {
         >
           <Button
             ref={velgKnapp}
+            id={VELG_CV_ID}
             type="button"
             variant="outline"
             className="h-11 px-4 lg:h-9"
@@ -282,12 +285,12 @@ export function CvPanel() {
           </AlertDescription>
         </Alert>
       ) : null}
-      <Label htmlFor={FELT_ID} className="mt-3 block text-label">
+      <Label htmlFor={CV_FELT_ID} className="mt-3 block text-label">
         CV-tekst
       </Label>
       <Textarea
         ref={felt}
-        id={FELT_ID}
+        id={CV_FELT_ID}
         value={cvTekst}
         rows={16}
         autoComplete="off"

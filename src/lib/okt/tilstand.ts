@@ -49,6 +49,14 @@ export type ResultatdelTilstand<T> = {
 export type Resultatdeler = { gap: ResultatdelTilstand<GapAnalyse> | null };
 export type GenerertResultatdel = keyof Resultatdeler;
 
+// Fanenavnene, også brukt i dialogen ved *Analyser* (UX-DR18).
+export const FANENAVN: Record<GenerertResultatdel, string> = {
+  gap: "Gap-analyse og nøkkelord",
+};
+
+// FR-3: hvilken side som vises. Den er ikke data, så den står utenfor `innhold`.
+export type Visning = "forberedelse" | "resultat";
+
 export type OktTilstand = {
   okt: {
     bekreftetPersonvern: boolean;
@@ -61,9 +69,10 @@ export type OktTilstand = {
     demoVarsel: DemoVarsel | null;
     kjoring: Kjoring | null;
     resultatdeler: Resultatdeler;
-    // Øker for hver gap-generering og nullstilles aldri av *Tilbake*.
+    // Øker for hver gap-generering og nullstilles aldri, heller ikke av *Ny analyse*.
     gapVersjon: number;
   };
+  visning: Visning;
   kunngjoring: Kunngjoring | null;
 };
 
@@ -80,7 +89,9 @@ export type OktHandling =
   | { type: "cvFilFeilet" }
   | { type: "cvFilByttet" }
   | { type: "eksempelValgt" }
-  | { type: "tilbakeTrykket" }
+  | { type: "endreCvTrykket" }
+  | { type: "tilbakeTilResultatet" }
+  | { type: "nyAnalyseBekreftet" }
   | {
       type: "genereringStartet";
       resultatdel: GenerertResultatdel;
@@ -125,6 +136,7 @@ export const startTilstand: OktTilstand = {
     resultatdeler: { gap: null },
     gapVersjon: 0,
   },
+  visning: "forberedelse",
   kunngjoring: null,
 };
 
@@ -207,6 +219,7 @@ function medKjoring(
 ): OktTilstand {
   return {
     ...tilstand,
+    visning: "resultat",
     innhold: {
       ...tilstand.innhold,
       demoVarsel: null,
@@ -426,16 +439,26 @@ export function reducer(
       return medCvFil(medCvTekst(utenDemoVarsel(tilstand), "", []), null);
     case "eksempelValgt":
       return eksempel(tilstand);
-    // Midlertidig til story 2.7: tilbake til forberedelsen med teksten beholdt.
-    case "tilbakeTrykket":
+    // FR-3: forberedelsen med teksten beholdt. Kjøringen, resultatdelene og
+    // live-meldingen står, og ingenting avbrytes.
+    case "endreCvTrykket":
+      if (!tilstand.innhold.kjoring) return tilstand;
+      return { ...tilstand, visning: "forberedelse" };
+    // FR-3: tilbake uten ny kjøring, bare når teksten er uendret.
+    case "tilbakeTilResultatet":
+      if (!erUendret(tilstand)) return tilstand;
+      return { ...tilstand, visning: "resultat" };
+    // FR-21, AD-6: alt innhold tømmes, og requesten som går, avbrytes av OktProvider.
+    // Avkrysningen gjelder resten av økten. `gapVersjon` beholdes, så id-ene til
+    // kjøringene aldri gjentas (avvik fra AD-6, se deferred-work.md).
+    case "nyAnalyseBekreftet":
       return {
         ...tilstand,
         innhold: {
-          ...tilstand.innhold,
-          kjoring: null,
-          resultatdeler: { gap: null },
+          ...startTilstand.innhold,
+          gapVersjon: tilstand.innhold.gapVersjon,
         },
-        // Meldingen om at analysen pågår, gjelder ikke lenger.
+        visning: "forberedelse",
         kunngjoring: null,
       };
     case "genereringStartet": {
@@ -496,6 +519,35 @@ export function reducer(
         kunngjoring: kunngjor(tilstand.kunngjoring, [KOPIERT]),
       };
   }
+}
+
+// FR-3: teksten er uendret når utkastet er likt kjøringen, og ingen CV-fil leses.
+export function erUendret(tilstand: OktTilstand): boolean {
+  const { utkast, kjoring } = tilstand.innhold;
+  return (
+    kjoring !== null &&
+    utkast.cvTekst === kjoring.cvTekst &&
+    utkast.annonse === kjoring.annonse &&
+    !erLeser(tilstand)
+  );
+}
+
+// UX-DR18: fanene med redigeringer. En fane er redigert når `redigert !== null`, også
+// etter en feil og under en ny generering, når redigeringen ikke vises.
+export function redigerteFaner(tilstand: OktTilstand): string[] {
+  const { resultatdeler } = tilstand.innhold;
+  return (Object.keys(resultatdeler) as GenerertResultatdel[])
+    .filter((del) => (resultatdeler[del]?.redigert ?? null) !== null)
+    .map((del) => FANENAVN[del]);
+}
+
+// Om et trykk på *Analyser* starter en ny kjøring. Den rene reduceren avgjør, så svaret
+// alltid følger `analyser()`: maskering, årsaker, demovarsel og ukjent modus.
+export function analyserStarterKjoring(tilstand: OktTilstand): boolean {
+  return (
+    reducer(tilstand, { type: "analyserTrykket" }).innhold.kjoring !==
+    tilstand.innhold.kjoring
+  );
 }
 
 export function annonseVurdering(annonse: string): {

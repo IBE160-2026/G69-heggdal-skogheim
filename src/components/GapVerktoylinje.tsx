@@ -18,8 +18,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useOkt } from "@/lib/okt/OktProvider";
+import { FANENAVN } from "@/lib/okt/tilstand";
 
-export const FANENAVN_GAP = "Gap-analyse og nøkkelord";
+export const FANENAVN_GAP = FANENAVN.gap;
 const KUNNE_IKKE_KOPIERE = "Kunne ikke kopiere. Merk teksten og kopier selv.";
 
 const KNAPP = "h-11 w-full px-4 sm:w-auto lg:h-9";

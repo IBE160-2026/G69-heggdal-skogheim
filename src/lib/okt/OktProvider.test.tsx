@@ -151,7 +151,7 @@ describe("startGenerering", () => {
     expect(okt.tilstand.innhold.resultatdeler.gap?.status).toBe("ferdig");
   });
 
-  it("AD-6: Tilbake avbryter, og svaret forkastes", async () => {
+  it("AD-6: Ny analyse avbryter, og svaret forkastes", async () => {
     let svarNa: (svar: Response) => void = () => {};
     const mock = apiMock(
       () => new Promise<Response>((ferdig) => (svarNa = ferdig)),
@@ -160,21 +160,71 @@ describe("startGenerering", () => {
 
     act(() => okt.dispatch({ type: "eksempelValgt" }));
     const [, init] = gapKall(mock)[0];
-    act(() => okt.dispatch({ type: "tilbakeTrykket" }));
+    act(() => okt.dispatch({ type: "nyAnalyseBekreftet" }));
 
     expect(init?.signal?.aborted).toBe(true);
     await act(async () => svarNa(Response.json(svar)));
     await vent();
     expect(okt.tilstand.innhold.resultatdeler.gap).toBeNull();
+    expect(okt.tilstand.innhold.kjoring).toBeNull();
   });
 
-  it("AD-6: ny kjøring etter Tilbake sender en ny request", async () => {
+  it("AD-6: Analyser på nytt avbryter den gamle requesten, og bare det nye svaret vises", async () => {
+    const svarNa: ((svar: Response) => void)[] = [];
+    const mock = apiMock(
+      () => new Promise<Response>((ferdig) => svarNa.push(ferdig)),
+    );
+    monterMed(mock);
+
+    act(() => okt.dispatch({ type: "eksempelValgt" }));
+    const [, forste] = gapKall(mock)[0];
+    act(() => okt.dispatch({ type: "personvernBekreftet" }));
+    act(() => okt.dispatch({ type: "endreCvTrykket" }));
+    act(() => okt.dispatch({ type: "analyserTrykket" }));
+
+    expect(forste?.signal?.aborted).toBe(true);
+    expect(gapKall(mock)).toHaveLength(2);
+    await act(async () =>
+      svarNa[0](Response.json({ ...svar, stilling: "Sent svar" })),
+    );
+    await vent();
+    expect(okt.tilstand.innhold.resultatdeler.gap?.status).toBe("genererer");
+
+    await act(async () => svarNa[1](Response.json(svar)));
+    await vent();
+    expect(okt.tilstand.innhold.resultatdeler.gap?.generert).toEqual(svar);
+    expect(okt.tilstand.innhold.kjoring?.id).toBe(2);
+  });
+
+  it("AD-6: Endre CV-tekst under generering avbryter ikke, og svaret står etter Tilbake til resultatet", async () => {
+    let svarNa: (svar: Response) => void = () => {};
+    const mock = apiMock(
+      () => new Promise<Response>((ferdig) => (svarNa = ferdig)),
+    );
+    monterMed(mock);
+
+    act(() => okt.dispatch({ type: "eksempelValgt" }));
+    const [, init] = gapKall(mock)[0];
+    act(() => okt.dispatch({ type: "endreCvTrykket" }));
+
+    expect(init?.signal?.aborted).toBe(false);
+    await act(async () => svarNa(Response.json(svar)));
+    await vent();
+    act(() => okt.dispatch({ type: "tilbakeTilResultatet" }));
+
+    expect(gapKall(mock)).toHaveLength(1);
+    expect(okt.tilstand.visning).toBe("resultat");
+    expect(okt.tilstand.innhold.resultatdeler.gap?.status).toBe("ferdig");
+    expect(okt.tilstand.innhold.resultatdeler.gap?.generert).toEqual(svar);
+  });
+
+  it("AD-6: ny kjøring etter Ny analyse sender en ny request", async () => {
     const mock = apiMock(async () => Response.json(svar));
     monterMed(mock);
 
     act(() => okt.dispatch({ type: "eksempelValgt" }));
     await vent();
-    act(() => okt.dispatch({ type: "tilbakeTrykket" }));
+    act(() => okt.dispatch({ type: "nyAnalyseBekreftet" }));
     act(() => okt.dispatch({ type: "eksempelValgt" }));
     await vent();
 
