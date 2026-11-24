@@ -17,7 +17,6 @@
 - [ ] 2026-11-19 [openai-vilkaar-og-kreditt](976-2026-11-20-12-58-08-openai-vilkaar-og-kreditt.md) — SM-1 ikke bestått (9 av 12, to krav i par 3 under fasit). Løses før innleveringen: fasiten eller modellen?
 - [ ] 2026-11-19 [produksjon-c3-c4](975-2026-11-20-14-29-16-produksjon-c3-c4.md) — SM-4: treffprosenten i produksjonen for par 2 er 25 % mot 11 % i fasiten (modellen henter andre nøkkelord). Kevin vurderer
 - [ ] 2026-11-19 [brukertest-2-8](972-2026-11-20-20-38-53-brukertest-2-8.md) — Funn fra T1 i brukertesten: «Mangler» leses som «du mangler erfaringen». Vurder om visningen eller rådet skal si at CV-en ikke nevner det
-- [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Sondre: sjekk om OPENAI_API_KEY er merket Sensitive i Vercel
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Refleksjonsrapporten: SM-3 9/12 med prompten i produksjonen (tre krav over fasiten) må stå tydelig
 - [ ] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Tomme signaturlinjer i rundevurderingene 1–5 og vurdering-2-4-leverandorvalg.md: avklar med Kevin om de skal signeres
 - [ ] 2026-11-19 [personvernboks-misbrukslogger](970-2026-11-24-12-32-42-personvernboks-misbrukslogger.md) — Sjekk personvernboksen i Vercel-forhåndsvisningen (lys/mørk, mobil) før PR #38 flettes
@@ -25,6 +24,7 @@
 
 ## Løst
 
+- [x] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Sondre: sjekk om OPENAI_API_KEY er merket Sensitive i Vercel (løst 2026-11-24: Sensitive (låseikon, verdien kan ikke vises))
 - [x] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Sondre: sjekk i DPF-lista om OpenAI er sertifisert, før refleksjonsrapporten (løst 2026-11-24: Active i DPF-lista, ført inn i beslutningsarket)
 - [x] 2026-11-19 [beslutningsark-2-4](971-2026-11-23-16-41-55-beslutningsark-2-4.md) — Personvernboksen: én setning om at OpenAI kan beholde teksten i opptil 30 dager for å oppdage misbruk (egen liten PR) (løst 2026-11-24: PR #38)
 - [x] 2026-11-19 [kevin-nokkel-og-todelte-krav](979-2026-11-19-21-42-57-kevin-nokkel-og-todelte-krav.md) — Slett Kevins OpenAI-nøkkel (kevin-maaling-2-4) når målingen i 2.4 er ferdig (løst 2026-11-24: slettet av Sondre etter signaturene)
