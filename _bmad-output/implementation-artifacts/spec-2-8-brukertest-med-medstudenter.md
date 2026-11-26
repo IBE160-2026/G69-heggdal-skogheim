@@ -147,7 +147,7 @@ context:
 - [x] `.logs/kevin-heggdal/`: sesjonslogg og `issues.md`. Fristen, frysen og T4 føres som åpne punkter.
 
 **Fase 2, etter flettingen (testene og avslutningen):**
-- [ ] Sondre tester produksjonen med eksempelet. Kevin gir Sondre beskjed om at perioden starter. Kevin eller Sondre fører versjonen før T2 i resultatfilen.
+- [x] Sondre tester produksjonen med eksempelet. Kevin gir Sondre beskjed om at perioden starter. Kevin eller Sondre fører versjonen før T2 i resultatfilen.
 - [ ] For hver test: den som leder, sender invitasjonen etter punkt 7, fører raden og skriver i sin egen sesjonslogg.
 - [ ] Etter den siste gyldige testen føres versjonen etter testene og opptellingen. Kom det færre enn to ja, føres også vurderingen fra Kevin og Sondre.
 - [ ] Egen PR for avslutningen: resultatfilen, spec-en og 2-8 settes til `done`, og sesjonsloggen oppdateres.
