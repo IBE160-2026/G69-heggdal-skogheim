@@ -59,9 +59,9 @@ T2, T3 og T4 er de gyldige testene. Erstatninger får T5 og videre. Den som lede
 | | T2 | T3 | T4 |
 |---|---|---|---|
 | Dato | | | |
-| Leder | Kevin | Kevin | |
-| Invitasjon sendt (dato) | | | |
-| Form (hjemmefra/Teams/fysisk) | | | |
+| Leder | Kevin | Kevin | Kevin |
+| Invitasjon sendt (dato) | 2026-11-26 | 2026-11-26 | 2026-11-26 |
+| Form (hjemmefra/Teams/fysisk) | hjemmefra | hjemmefra | hjemmefra |
 | Versjon (V1, V2 …) | | | |
 | Medstudent utenfor gruppen bekreftet før testen | | | |
 | Egen CV (ikke *Prøv med eksempel*) | | | |
