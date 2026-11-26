@@ -14,7 +14,7 @@ Versjonen består av (a) commit-SHA-en til den aktive produksjonsutrullingen i V
 
 | Versjon | Når | Dato | Ført av | (a) Utrulling i Vercel | (b) `LLM_*` (bare verdier) | (c) Siste commit på `main` for stiene | `GET /api/status` |
 |---|---|---|---|---|---|---|---|
-| V1 (før T2) | Før den første gyldige testen | | | | | | |
+| V1 (før T2) | Før den første gyldige testen | 2026-11-26 | Kevin, med verdiene fra Sondres kontroll i Vercel samme dag | `2a375ab` (PR #46), *Ready* og *Current* da Sondre kontrollerte. Koden er lik `31e207b` (PR #45, story 2.7). Sondres logg ble flettet etterpå som `fc51cd1` (kl. 12:09), og Vercel rullet ut på nytt med status vellykket. `2a375ab..fc51cd1` endrer bare loggen hans, så appen er den samme | `LLM_LEVERANDOR` = `openai`, `LLM_MODELL` = `gpt-4.1-mini`. Begge gjelder bare Production, ble lagt til 2026-11-20 og er ikke endret siden. `GRENSE_PER_MINUTT` og `GRENSE_PER_DOGN` er ikke satt, så standardverdiene 10 per minutt og 200 per døgn gjelder | `8685c52` (2026-11-24, 2.7). `git log 8685c52..origin/main` for stiene er tom (`origin/main` = `fc51cd1`) | 2026-11-26: HTTP 200, `ekte`, OpenAI, USA, tredjeland |
 | Slutt (etter siste gyldige test) | Etter den siste gyldige testen | | | | | | |
 
 Legg til en rad (V2, V3 …) mellom V1 og Slutt etter hver retting av en kritisk feil.
@@ -31,16 +31,18 @@ Kontroll:
 
 | Dato | Resultat | Merknad |
 |---|---|---|
-| | | |
+| 2026-11-24 kl. 18:20 (Sondre) | Alt virker: *Endre CV-tekst* og ny analyse, *Tilbake til resultatet*, *Ny analyse* med bekreftelse, mørk modus, og personvernboksen med teksten om 30 dager | Gjort på `https://g69-cv-assistent.vercel.app` uten kall til OpenAI. Produksjonen kjørte koden fra 2.7 (PR #45, `31e207b`). Testen ble gjort før PR #46 ble flettet, men den siste commiten som endret stiene i (c), er fortsatt `8685c52`, så appen er den samme. `GET /api/status` 2026-11-24: `ekte`, OpenAI, USA. Logg: [972-2026-11-20-20-38-53-brukertest-2-8.md](../../.logs/sondre-skogheim/972-2026-11-20-20-38-53-brukertest-2-8.md) (Sondre, 2026-11-24 kl. 18:20) |
 
 **Beskjed om frysen** (Kevin til Sondre):
 
 | Beskjed | Dato | Kanal | Merknad |
 |---|---|---|---|
-| Testperioden starter | | | |
+| Testperioden starter | 2026-11-26 | Discord | Sondre har gitt klarsignal. Ingen innstillinger i Vercel eller OpenAI er endret (Sondre, 2026-11-26). V1 er ført i punkt 1 |
 | Testperioden slutter | | | |
 
 Frysen gjelder koden og innstillingene i Vercel og OpenAI til versjonssjekken etter den siste testen er bestått. Ingen PR som endrer stiene i (c), flettes til `main`. Ingen tilbakerulling eller *Promote* i Vercel. Miljøvariablene i Vercel og innstillingene i OpenAI-prosjektet endres ikke. Logger og dokumentasjon kan flettes så lenge de ikke påvirker hvordan appen virker.
+
+**Grensene for analyser** (vurdert av Kevin 2026-11-25): dagens grenser beholdes under testen, altså 10 per minutt og 200 per UTC-døgn. Det er standardverdiene i `src/lib/pipeline/grense.ts` (AD-9), og `GRENSE_PER_MINUTT` og `GRENSE_PER_DOGN` settes ikke i Vercel (avgjort 2026-11-20, C3 i `kjorebok-2-4-del-c.md`). Begrunnelsen er at det bare ventes 3–6 analyser, langt under begge grensene. Ingenting endres i koden eller i Vercel. Grensene og `MAKS_UTDATA_TOKENS` vurderes på nytt i epic 3.
 
 ## 3. Logg over kritiske feil
 
@@ -57,9 +59,9 @@ T2, T3 og T4 er de gyldige testene. Erstatninger får T5 og videre. Den som lede
 | | T2 | T3 | T4 |
 |---|---|---|---|
 | Dato | | | |
-| Leder | Kevin | Kevin | |
-| Invitasjon sendt (dato) | | | |
-| Form (hjemmefra/Teams/fysisk) | | | |
+| Leder | Kevin | Kevin | Kevin |
+| Invitasjon sendt (dato) | 2026-11-26 | 2026-11-26 | 2026-11-26 |
+| Form (hjemmefra/Teams/fysisk) | hjemmefra | hjemmefra | hjemmefra |
 | Versjon (V1, V2 …) | | | |
 | Medstudent utenfor gruppen bekreftet før testen | | | |
 | Egen CV (ikke *Prøv med eksempel*) | | | |
